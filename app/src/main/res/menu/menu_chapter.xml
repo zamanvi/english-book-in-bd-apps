@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.abmn.englishhub.Activity.MainActivity">
+    <item
+        android:id="@+id/homeNav"
+        android:orderInCategory="100"
+        android:title="Home"
+        app:showAsAction="never"
+        tools:ignore="HardcodedText" />
+</menu>

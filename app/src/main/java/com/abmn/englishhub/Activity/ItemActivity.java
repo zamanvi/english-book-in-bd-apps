@@ -1,0 +1,114 @@
+package com.abmn.englishhub.Activity;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.abmn.englishhub.Adapter.ItemAdapter;
+import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Model.ItemModel;
+import com.abmn.englishhub.R;
+import com.abmn.utility.UConfig;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class ItemActivity extends AppCompatActivity {
+
+    private Activity activity;
+    private List<ItemModel> itemList;
+    private UConfig uConfig;
+    private RecyclerView itemRV;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_item);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        define();
+    }
+
+    private void define() {
+
+        activity = this;
+        uConfig = new UConfig(activity);
+        itemRV = findViewById(R.id.itemRV);
+        itemList = new ArrayList<>();
+
+        Toolbar toolbar = findViewById(R.id.toolbarId);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+        }
+
+        LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
+        linearLayout.setReverseLayout(false);
+        linearLayout.setOrientation(RecyclerView.VERTICAL);
+        itemRV.setLayoutManager(linearLayout);
+
+        String slug = getIntent().getStringExtra(Constant.FROM);
+        getData(slug);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void getData(String data) {
+        JSONArray itemsArray = uConfig.getJSONArray(data);
+        for (int i = 0; i < itemsArray.length(); i++) {
+            try {
+                JSONObject chapter = itemsArray.getJSONObject(i);
+                int id = chapter.getInt("id");
+                String slug = chapter.getString("slug");
+                String chapter_id = chapter.getString("chapter_id");
+                String title = chapter.getString("title");
+                String pageview = chapter.getString("pageview");
+                String book_title = chapter.getString("book_title");
+                String chapter_title = chapter.getString("chapter_title");
+
+                ItemModel model = new ItemModel(id, slug, chapter_id, title, pageview, book_title, chapter_title);
+                itemList.add(model);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        ItemAdapter adapter = new ItemAdapter(itemList, activity);
+        itemRV.setAdapter(adapter);
+        Objects.requireNonNull(itemRV.getAdapter()).notifyDataSetChanged();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_chapter, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.homeNav) {
+            startActivity(new Intent(activity, MainActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
