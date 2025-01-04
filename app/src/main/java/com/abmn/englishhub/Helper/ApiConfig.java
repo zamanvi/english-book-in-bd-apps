@@ -2,7 +2,6 @@ package com.abmn.englishhub.Helper;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -26,9 +25,6 @@ public class ApiConfig {
         UConfig uConfig = new UConfig(activity);
         if (!uConfig.isConnected()){
             uConfig.isConnectedAlert("", "");
-        }
-        if (ProgressDisplay.mProgressBar != null) {
-            ProgressDisplay.mProgressBar.setVisibility(View.GONE);
         }
         ProgressDisplay progressDisplay = new ProgressDisplay(activity);
         if (isProgress)

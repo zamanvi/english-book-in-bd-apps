@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/titleTV"
         android:text="@string/app_name"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

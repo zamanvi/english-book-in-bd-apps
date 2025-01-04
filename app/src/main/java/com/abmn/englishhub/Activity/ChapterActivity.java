@@ -98,7 +98,7 @@ public class ChapterActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + slug, new HashMap<>(), true);
+                }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + slug, new HashMap<>(), false);
 
                 ChapterModel model = new ChapterModel(id, book_id, title, slug, status, pageview, book_title);
                 chapterList.add(model);

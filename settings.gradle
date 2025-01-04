@@ -20,5 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "English Hub"
+rootProject.name = "Master English"
 include ':app'
