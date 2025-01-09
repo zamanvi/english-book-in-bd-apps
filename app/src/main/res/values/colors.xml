@@ -2,6 +2,33 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="chapter">#00266B</color>
     <color name="toolbar">#AF8F62</color>
+
+    <color name="main_theme_color">#6200EE</color>
+
+    <color name="colorPrimary">#AF8F62</color>
+    <color name="colorPrimaryVariant">#7C33E4</color>
+    <color name="colorPrimaryDark">#6200EE</color>
+    <color name="colorSecondary">#7C35E2</color>
+    <color name="colorSecondaryDark">#6200EE</color>
+    <color name="colorAccent">#803BE2</color>
+    <color name="colorPrimaryLight">#8338EF</color>
+    <color name="bg_color">#F8F8F8</color>
+    <color name="gray_blue">#5d6079</color>
+    <color name="dark_gray">#313030</color>
+    <color name="light_gray">#dbdada</color>
+    <color name="green">#008000</color>
+    <color name="profile_bar">#4D2C6E</color>
+    <color name="event_color">#68FFD600</color>
+
+    <color name="chapterBack">#5A69FF</color>
+    <color name="chapterLayout">#120C62</color>
+    <color name="chapterText">#FFFFFF</color>
+
+    <color name="lessonBack">#6B75DB</color>
+    <color name="lessonLayout">#221D66</color>
+    <color name="lessonText">#FFFFFF</color>
+
+    <color name="toolbarColor">#FFC107</color>
+
 </resources>

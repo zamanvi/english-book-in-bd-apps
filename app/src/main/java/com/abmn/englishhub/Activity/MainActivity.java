@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
 
@@ -12,12 +13,16 @@ import androidx.cardview.widget.CardView;
 
 import com.abmn.englishhub.databinding.ActivityMainBinding;
 import com.abmn.utility.UConfig;
+import com.android.volley.Request;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         define();
-        getBookData();
     }
 
     private void define() {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         CardView cardView = findViewById(R.id.bookCV);
         cardView.setOnClickListener(view -> work());
 
+        getBookData();
         work();
     }
 
@@ -58,7 +63,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getBookData() {
-        bookArray = uConfig.getJSONArray("book");
+
+        ApiConfig.RequestToVolley((result, response, error) -> {
+            Log.d("response", response);
+            try {
+                JSONObject bookObject = new JSONObject(response);
+                JSONObject books = bookObject.getJSONObject("books");
+                bookArray = books.getJSONArray(Constant.DATA);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
+
     }
 
     @Override

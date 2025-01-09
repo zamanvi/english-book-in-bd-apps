@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="8dp" />
-            <solid android:color="@color/chapter" /> <!-- Background color of the progress bar track -->
+            <solid android:color="@color/chapterLayout" /> <!-- Background color of the progress bar track -->
         </shape>
     </item>
     <!-- Progress Bar Track -->

@@ -43,8 +43,7 @@ public class ApiConfig {
         String finalUrl = m_url;
         StringRequest stringRequest = new StringRequest(method, finalUrl,
                 response -> {
-                    if (isProgress)
-                        progressDisplay.hideProgress();
+                    progressDisplay.hideProgress();
                     try {
                         JSONObject success = new JSONObject(response).getJSONObject(Constant.SUCCESS);
                         if (success.getBoolean(Constant.STATUS)){
@@ -66,8 +65,7 @@ public class ApiConfig {
                     }
                 },
                 error -> {
-                    if (isProgress)
-                        progressDisplay.hideProgress();
+                    progressDisplay.hideProgress();
                     NetworkResponse networkResponse = error.networkResponse;
                     if (networkResponse != null && networkResponse.data != null) {
                         String errorResponse = new String(networkResponse.data);

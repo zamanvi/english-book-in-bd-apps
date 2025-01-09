@@ -5,7 +5,7 @@
         android:radius="2dp"/>
 
     <gradient
-        android:centerColor="@color/chapter"
-        android:startColor="@color/chapter"
-        android:endColor="@color/chapter"/>
+        android:centerColor="@color/chapterLayout"
+        android:startColor="@color/chapterLayout"
+        android:endColor="@color/chapterLayout"/>
 </shape>

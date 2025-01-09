@@ -50,40 +50,7 @@ public class SplashActivity extends AppCompatActivity {
         activity = this;
         uConfig = new UConfig(activity);
         setProgressBar = findViewById(R.id.setProgressBarId);
-        getBookData();
         initialWork();
-    }
-
-    private void getBookData() {
-
-        ApiConfig.RequestToVolley((result, response, error) -> {
-            Log.d("response", response);
-            try {
-                JSONObject bookObject = new JSONObject(response);
-                JSONObject books = bookObject.getJSONObject("books");
-                JSONArray bookArray = books.getJSONArray(Constant.DATA);
-                uConfig.setJSONArray("book", bookArray);
-
-                JSONObject firstBook = bookArray.getJSONObject(0);
-                String slug = firstBook.getString("slug");
-
-                ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
-                    Log.d("chapterResponse", chapterResponse);
-                    try {
-                        JSONObject jsonObject = new JSONObject(chapterResponse);
-                        JSONObject chapters = jsonObject.getJSONObject("chapters");
-                        JSONArray chapterArray = chapters.getJSONArray(Constant.DATA);
-                        uConfig.setJSONArray(slug, chapterArray);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }, Request.Method.GET, activity, Constant.CHAPTER_API + "?book_slug=" + slug , new HashMap<>(), false);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
-
     }
 
     private void initialWork() {

@@ -17,16 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abmn.englishhub.Adapter.ItemAdapter;
+import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Model.ItemModel;
 import com.abmn.englishhub.R;
-import com.abmn.utility.UConfig;
+import com.android.volley.Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +36,6 @@ public class ItemActivity extends AppCompatActivity {
 
     private Activity activity;
     private List<ItemModel> itemList;
-    private UConfig uConfig;
     private RecyclerView itemRV;
 
     @Override
@@ -53,7 +54,6 @@ public class ItemActivity extends AppCompatActivity {
     private void define() {
 
         activity = this;
-        uConfig = new UConfig(activity);
         itemRV = findViewById(R.id.itemRV);
         itemList = new ArrayList<>();
 
@@ -74,27 +74,39 @@ public class ItemActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data) {
-        JSONArray itemsArray = uConfig.getJSONArray(data);
-        for (int i = 0; i < itemsArray.length(); i++) {
-            try {
-                JSONObject chapter = itemsArray.getJSONObject(i);
-                int id = chapter.getInt("id");
-                String slug = chapter.getString("slug");
-                String chapter_id = chapter.getString("chapter_id");
-                String title = chapter.getString("title");
-                String pageview = chapter.getString("pageview");
-                String book_title = chapter.getString("book_title");
-                String chapter_title = chapter.getString("chapter_title");
 
-                ItemModel model = new ItemModel(id, slug, chapter_id, title, pageview, book_title, chapter_title);
-                itemList.add(model);
+
+        ApiConfig.RequestToVolley((result, response, error) -> {
+            try {
+                JSONObject itemsObject = new JSONObject(response);
+                JSONObject dataObject = itemsObject.getJSONObject("items");
+                JSONArray itemsArray = dataObject.getJSONArray(Constant.DATA);
+
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    try {
+                        JSONObject chapter = itemsArray.getJSONObject(i);
+                        int id = chapter.getInt("id");
+                        String slug = chapter.getString("slug");
+                        String chapter_id = chapter.getString("chapter_id");
+                        String title = chapter.getString("title");
+                        String pageview = chapter.getString("pageview");
+                        String book_title = chapter.getString("book_title");
+                        String chapter_title = chapter.getString("chapter_title");
+
+                        ItemModel model = new ItemModel(id, slug, chapter_id, title, pageview, book_title, chapter_title);
+                        itemList.add(model);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                ItemAdapter adapter = new ItemAdapter(itemList, activity);
+                itemRV.setAdapter(adapter);
+                Objects.requireNonNull(itemRV.getAdapter()).notifyDataSetChanged();
+
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        }
-        ItemAdapter adapter = new ItemAdapter(itemList, activity);
-        itemRV.setAdapter(adapter);
-        Objects.requireNonNull(itemRV.getAdapter()).notifyDataSetChanged();
+        }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + data, new HashMap<>(), false);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

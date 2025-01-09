@@ -46,7 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return itemList.size();
     }
     static class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final LinearLayout rootCV;
+        private final CardView rootCV;
         private final TextView titleTV;
         private final TextView chapterTitleTV;
 

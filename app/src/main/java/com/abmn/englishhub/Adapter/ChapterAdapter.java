@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abmn.englishhub.Activity.ItemActivity;
@@ -45,17 +46,17 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         return chapterList.size();
     }
     static class ChapterViewHolder extends RecyclerView.ViewHolder {
-        private final LinearLayout rootLV;
+        private final CardView rootCV;
         private final TextView titleTV;
 
         public ChapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            rootLV = itemView.findViewById(R.id.rootLV);
+            rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
         }
 
         public void bind(ChapterModel model, Activity activity) {
-            rootLV.setOnClickListener(v-> {
+            rootCV.setOnClickListener(v-> {
                 activity.startActivity(new Intent(activity, ItemActivity.class).putExtra(Constant.FROM, model.getSlug()));
             });
             titleTV.setText(model.getTitle());

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,7 +22,6 @@ import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Model.ChapterModel;
 import com.abmn.englishhub.R;
-import com.abmn.utility.UConfig;
 import com.android.volley.Request;
 
 import org.json.JSONArray;
@@ -37,7 +37,6 @@ public class ChapterActivity extends AppCompatActivity {
 
     private Activity activity;
     private List<ChapterModel> chapterList;
-    private UConfig uConfig;
     private RecyclerView chapterRV;
 
     @Override
@@ -56,7 +55,6 @@ public class ChapterActivity extends AppCompatActivity {
     private void define() {
 
         activity = this;
-        uConfig = new UConfig(activity);
         chapterRV = findViewById(R.id.chapterRV);
         chapterList = new ArrayList<>();
 
@@ -77,38 +75,40 @@ public class ChapterActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data) {
-        JSONArray chapterArray = uConfig.getJSONArray(data);
-        for (int i = 0; i < chapterArray.length(); i++) {
-            try {
-                JSONObject chapter = chapterArray.getJSONObject(i);
-                int id = chapter.getInt("id");
-                String book_id = chapter.getString("book_id");
-                String title = chapter.getString("title");
-                String slug = chapter.getString("slug");
-                String status = chapter.getString("status");
-                String pageview = chapter.getString("pageview");
-                String book_title = chapter.getString("book_title");
 
-                ApiConfig.RequestToVolley((result, response, error) -> {
+
+        ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
+            Log.d("chapterResponse", chapterResponse);
+            try {
+                JSONObject jsonObject = new JSONObject(chapterResponse);
+                JSONObject chapters = jsonObject.getJSONObject("chapters");
+                JSONArray chapterArray = chapters.getJSONArray(Constant.DATA);
+
+                for (int i = 0; i < chapterArray.length(); i++) {
                     try {
-                        JSONObject itemsObject = new JSONObject(response);
-                        JSONObject dataObject = itemsObject.getJSONObject("items");
-                        JSONArray itemsArray = dataObject.getJSONArray(Constant.DATA);
-                        uConfig.setJSONArray(slug, itemsArray);
+                        JSONObject chapter = chapterArray.getJSONObject(i);
+                        int id = chapter.getInt("id");
+                        String book_id = chapter.getString("book_id");
+                        String title = chapter.getString("title");
+                        String slug = chapter.getString("slug");
+                        String status = chapter.getString("status");
+                        String pageview = chapter.getString("pageview");
+                        String book_title = chapter.getString("book_title");
+
+                        ChapterModel model = new ChapterModel(id, book_id, title, slug, status, pageview, book_title);
+                        chapterList.add(model);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + slug, new HashMap<>(), false);
+                }
+                ChapterAdapter adapter = new ChapterAdapter(chapterList, activity);
+                chapterRV.setAdapter(adapter);
+                Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
 
-                ChapterModel model = new ChapterModel(id, book_id, title, slug, status, pageview, book_title);
-                chapterList.add(model);
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-        ChapterAdapter adapter = new ChapterAdapter(chapterList, activity);
-        chapterRV.setAdapter(adapter);
-        Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
+        }, Request.Method.GET, activity, Constant.CHAPTER_API + "?book_slug=" + data , new HashMap<>(), false);
     }
 
     @Override

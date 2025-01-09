@@ -10,8 +10,7 @@
     <include layout="@layout/lyt_toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:padding="10dp"
-        android:background="@color/chapter"
+        android:background="@color/chapterBack"
         android:id="@+id/chapterRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
