@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,13 +47,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
         private final TextView titleTV;
-        private final TextView chapterTitleTV;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
-            chapterTitleTV = itemView.findViewById(R.id.chapterTitleTV);
         }
 
         public void bind(ItemModel model, Activity activity) {
@@ -62,7 +59,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 activity.startActivity(new Intent(activity, ItemDetailsActivity.class).putExtra(Constant.FROM, model.getSlug()));
             });
             titleTV.setText(model.getTitle());
-            chapterTitleTV.setText(model.getChapter_title());
         }
     }
 }

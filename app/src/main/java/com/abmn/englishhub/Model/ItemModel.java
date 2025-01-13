@@ -7,16 +7,14 @@ public class ItemModel {
     private final String title;
     private final String pageview;
     private final String book_title;
-    private final String chapter_title;
 
-    public ItemModel(int id, String slug, String chapter_id, String title, String pageview, String book_title, String chapter_title) {
+    public ItemModel(int id, String slug, String chapter_id, String title, String pageview, String book_title) {
         this.id = id;
         this.slug = slug;
         this.chapter_id = chapter_id;
         this.title = title;
         this.pageview = pageview;
         this.book_title = book_title;
-        this.chapter_title = chapter_title;
     }
 
     public int getId() {
@@ -41,9 +39,5 @@ public class ItemModel {
 
     public String getBook_title() {
         return book_title;
-    }
-
-    public String getChapter_title() {
-        return chapter_title;
     }
 }

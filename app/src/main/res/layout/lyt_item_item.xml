@@ -24,15 +24,6 @@
             android:textColor="@color/lessonText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/chapterTitleTV"
-            android:paddingBottom="5dp"
-            android:text="@string/app_name"
-            android:textSize="20sp"
-            android:textColor="@color/lessonText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

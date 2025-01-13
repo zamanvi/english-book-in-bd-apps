@@ -75,7 +75,6 @@ public class ItemActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data) {
 
-
         ApiConfig.RequestToVolley((result, response, error) -> {
             try {
                 JSONObject itemsObject = new JSONObject(response);
@@ -91,9 +90,8 @@ public class ItemActivity extends AppCompatActivity {
                         String title = chapter.getString("title");
                         String pageview = chapter.getString("pageview");
                         String book_title = chapter.getString("book_title");
-                        String chapter_title = chapter.getString("chapter_title");
 
-                        ItemModel model = new ItemModel(id, slug, chapter_id, title, pageview, book_title, chapter_title);
+                        ItemModel model = new ItemModel(id, slug, chapter_id, title, pageview, book_title);
                         itemList.add(model);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
