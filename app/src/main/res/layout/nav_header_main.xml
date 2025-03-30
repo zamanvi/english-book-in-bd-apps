@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:src="@drawable/book_logo"
+        android:layout_width="200dp"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/app_name" />
+
+    <TextView
+        android:paddingTop="5dp"
+        android:textSize="17sp"
+        android:textColor="#003058"
+        android:text="@string/author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

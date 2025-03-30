@@ -9,6 +9,7 @@ public class Constant {
     //API path
     public static final String BOOK_API = ROOT_API + "book/index";
     public static final String CHAPTER_API = ROOT_API + "book/chapter/index";
+    public static final String CHAPTER_API2 = ROOT_API + "book/chapter/index2";
     public static final String ITEM_API = ROOT_API + "book/item/index";
     public static final String ITEM_SHOW_API = ROOT_API + "book/item/show/";
 

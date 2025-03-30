@@ -24,9 +24,6 @@
             android:name=".Activity.ItemActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ChapterActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity

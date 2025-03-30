@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/share"
+        android:id="@+id/nav_share_id"
+        android:title="Share"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:icon="@drawable/more_app"
+        android:id="@+id/nav_others_app_id"
+        android:title="Other Apps"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:icon="@drawable/review"
+        android:id="@+id/nav_review_id"
+        android:title="Review"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:icon="@drawable/contact"
+        android:id="@+id/nav_contact_id"
+        android:title="Contact"
+        tools:ignore="HardcodedText" />
+</menu>

@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Master English</string>
+    <string name="app_name">English grammar book </string>
     <string name="action_settings">Settings</string>
+    <string name="vocabulary_https_play_google_com_store_apps_details_id"><![CDATA[Best english grammar book in Bangladesh: https://play.google.com/store/apps/details?id=]]></string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="author_name">Best English grammar book\nMd. Norozzaman</string>
 </resources>

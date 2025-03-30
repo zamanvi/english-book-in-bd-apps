@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="2dp"
-    android:paddingBottom="5dp"
     android:id="@+id/rootCV"
     style="@style/listCard">
 

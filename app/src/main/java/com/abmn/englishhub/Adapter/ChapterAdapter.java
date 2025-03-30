@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,7 @@ import com.abmn.englishhub.R;
 
 import java.util.List;
 
-public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder>{
+public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder>{
     private final List<ChapterModel> chapterList;
     private final Activity activity;
 
@@ -30,13 +29,13 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
 
     @NonNull
     @Override
-    public ChapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_item_chapter, parent, false);
-        return new ChapterViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChapterModel model = chapterList.get(position);
         holder.bind(model, activity);
     }
@@ -45,11 +44,11 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
     public int getItemCount() {
         return chapterList.size();
     }
-    static class ChapterViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
         private final TextView titleTV;
 
-        public ChapterViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
