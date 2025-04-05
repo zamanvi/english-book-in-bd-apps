@@ -4,5 +4,6 @@
     <string name="vocabulary_https_play_google_com_store_apps_details_id"><![CDATA[Best english grammar book in Bangladesh: https://play.google.com/store/apps/details?id=]]></string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="author_name">Best English grammar book\nMd. Norozzaman</string>
+    <string name="author_app_name">\"best english grammar book in Bangladesh\"</string>
+    <string name="author_name">MD NOROZZAMAN</string>
 </resources>

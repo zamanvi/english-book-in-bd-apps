@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -13,10 +14,22 @@
 
     <TextView
         android:paddingTop="5dp"
+        android:paddingStart="5dp"
+        android:textSize="17sp"
+        android:textColor="@color/chapterBack"
+        android:text="@string/author_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:paddingTop="5dp"
+        android:paddingStart="5dp"
         android:textSize="17sp"
         android:textColor="#003058"
         android:text="@string/author_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>
