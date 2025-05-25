@@ -4,12 +4,13 @@ plugins {
 
 android {
     namespace 'com.abmn.englishhub'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.abmn.englishhub"
         minSdk 23
-        targetSdk 34
+        //noinspection EditedTargetSdkVersion
+        targetSdk 35
         versionCode 7
         versionName "1.0.7"
 
