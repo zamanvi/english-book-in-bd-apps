@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data) {
-
-
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
             Log.d("chapterResponse", chapterResponse);
             try {
@@ -141,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.nav_vocabulary) {
+            startActivity(new Intent(activity, VocabularyActivity.class));
+            drawer.close();
+            return true;
+        }
         if (item.getItemId() == R.id.nav_share_id) {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");

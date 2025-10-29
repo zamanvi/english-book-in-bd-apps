@@ -18,6 +18,18 @@
         android:theme="@style/Theme.Library"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.WordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.LessonActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.VocabularyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.StaticDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.ItemDetailsActivity"
             android:exported="false" />
         <activity

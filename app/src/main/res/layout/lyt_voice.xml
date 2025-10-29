@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RadioGroup
+        android:id="@+id/radioGroupVoiceSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <RadioButton
+            android:visibility="gone"
+            android:id="@+id/radioSlower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Slower"
+            tools:ignore="HardcodedText" />
+
+        <RadioButton
+            tools:ignore="HardcodedText"
+            android:id="@+id/radioSlow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Slow" />
+
+        <RadioButton
+            tools:ignore="HardcodedText"
+            android:id="@+id/radioNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Normal" />
+
+        <RadioButton
+            tools:ignore="HardcodedText"
+            android:id="@+id/radioFast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fast" />
+
+        <RadioButton
+            android:visibility="gone"
+            tools:ignore="HardcodedText"
+            android:id="@+id/radioFaster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Faster" />
+
+    </RadioGroup>
+</LinearLayout>

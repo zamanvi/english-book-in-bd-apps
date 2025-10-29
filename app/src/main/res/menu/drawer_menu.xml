@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:icon="@drawable/ic_vocabulary"
+        android:id="@+id/nav_vocabulary"
+        android:title="Vocabulary"
+        tools:ignore="HardcodedText" />
+
+    <item
         android:icon="@drawable/share"
         android:id="@+id/nav_share_id"
         android:title="Share"

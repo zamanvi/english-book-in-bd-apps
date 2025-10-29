@@ -13,23 +13,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
-import com.android.volley.Request;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.Objects;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     private Activity activity;
-    private UConfig uConfig;
     private ProgressBar setProgressBar;
 
     @Override
@@ -48,7 +41,11 @@ public class SplashActivity extends AppCompatActivity {
     private void define() {
 
         activity = this;
-        uConfig = new UConfig(activity);
+        UConfig uConfig = new UConfig(activity);
+        if (!uConfig.getBoolean(Constant.IS_SET_VOICE_SPEED)){
+            uConfig.setData(Constant.VOICE_SPEED, "normal");
+            uConfig.setBoolean(Constant.IS_SET_VOICE_SPEED, true);
+        }
         setProgressBar = findViewById(R.id.setProgressBarId);
         initialWork();
     }
