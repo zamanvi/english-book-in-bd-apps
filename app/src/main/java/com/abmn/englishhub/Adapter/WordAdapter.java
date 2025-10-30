@@ -129,13 +129,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             }
             wordTV.invalidate();
 
-//            if (isBMeaning) {
-//                meaningTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//                meaningTV.getPaint().setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.NORMAL));
-//            } else {
-//                meaningTV.getPaint().setMaskFilter(null);
-//            }
-//            meaningTV.invalidate();
+            if (isBMeaning) {
+                meaningTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                meaningTV.getPaint().setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.NORMAL));
+            } else {
+                meaningTV.getPaint().setMaskFilter(null);
+            }
+            meaningTV.invalidate();
 //            meaningTV.setOnClickListener(v -> {
 //                if (meaningTV.getPaint().getMaskFilter() == null) {
 //                    meaningTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

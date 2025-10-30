@@ -139,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.nav_book) {
+            startActivity(new Intent(activity, BookActivity.class));
+            drawer.close();
+            return true;
+        }
         if (item.getItemId() == R.id.nav_vocabulary) {
             startActivity(new Intent(activity, VocabularyActivity.class));
             drawer.close();

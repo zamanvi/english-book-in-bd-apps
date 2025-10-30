@@ -53,8 +53,8 @@ public class WordActivity extends AppCompatActivity {
     private TextView antonymsTvW;
     private String getLessonId;
     private WordAdapter adapter;
-    private ImageView wordCloseIV;
-    private Boolean isWordClose = false;
+    private ImageView wordCloseIV, meaningCloseIV;
+    private Boolean isWordClose = false, isMeaningClose = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +87,12 @@ public class WordActivity extends AppCompatActivity {
         antonymsTvW = findViewById(R.id.antonymsTvW);
 
         wordCloseIV = findViewById(R.id.wordCloseIV);
+        meaningCloseIV = findViewById(R.id.meaningCloseIV);
 
         wordTvW.setOnClickListener(this::wordChange);
         wordCloseIV.setOnClickListener(this::wordChange);
+        meaningTvW.setOnClickListener(this::meaningChange);
+        meaningCloseIV.setOnClickListener(this::meaningChange);
 
         assert getLessonType != null;
         if (getLessonType.equals("verb")){
@@ -142,6 +145,17 @@ public class WordActivity extends AppCompatActivity {
             isWordClose = true;
             wordCloseIV.setImageResource(R.drawable.ic_eye_open);
             adapter.blurWordText();
+        }
+    }
+    private void meaningChange(View view){
+        if (isMeaningClose) {
+            isMeaningClose = false;
+            meaningCloseIV.setImageResource(R.drawable.ic_eye_closed);
+            adapter.removeBlurMeaningText();
+        } else {
+            isMeaningClose = true;
+            meaningCloseIV.setImageResource(R.drawable.ic_eye_open);
+            adapter.blurMeaningText();
         }
     }
 

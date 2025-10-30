@@ -5,6 +5,8 @@
     <color name="toolbar">#AF8F62</color>
 
     <color name="main_theme_color">#6200EE</color>
+    <color name="selected_bg">#FFEB3B</color>
+    <color name="unselected_bg">#FFFFFF</color>
 
     <color name="colorPrimary">#AF8F62</color>
     <color name="colorPrimaryVariant">#7C33E4</color>
