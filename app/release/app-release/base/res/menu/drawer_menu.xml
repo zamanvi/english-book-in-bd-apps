@@ -5,38 +5,38 @@
 —item">
 *http://schemas.android.com/apk/res/androidtitleBook(áƒ„"l
 *http://schemas.android.com/apk/res/androidicon@drawable/ic_book"	(‚€„2
-œødrawable/ic_book0"a
+§œødrawable/ic_book0"a
 *http://schemas.android.com/apk/res/androidid@+id/nav_book"	(Ğ„2
-Ä‚ øid/nav_book0	(*¾
+Ø‚ øid/nav_book0	(*¾
 µitem"D
 *http://schemas.android.com/apk/res/androidtitle
 Vocabulary(áƒ„"x
 *http://schemas.android.com/apk/res/androidicon@drawable/ic_vocabulary"(‚€„2"
- ¦œødrawable/ic_vocabulary0"m
+ Áœødrawable/ic_vocabulary0"m
 *http://schemas.android.com/apk/res/androidid@+id/nav_vocabulary"(Ğ„2
-Ë‚ øid/nav_vocabulary0(*¥
+ß‚ øid/nav_vocabulary0(*¥
 œitem"?
 *http://schemas.android.com/apk/res/androidtitleShare(áƒ„"h
 *http://schemas.android.com/apk/res/androidicon@drawable/share"(‚€„2
-öœødrawable/share0"i
+“‚œødrawable/share0"i
 *http://schemas.android.com/apk/res/androidid@+id/nav_share_id"(Ğ„2
-É‚ øid/nav_share_id0(*º
+İ‚ øid/nav_share_id0(*º
 ±item"D
 *http://schemas.android.com/apk/res/androidtitle
 Other Apps(áƒ„"n
 *http://schemas.android.com/apk/res/androidicon@drawable/more_app"(‚€„2
-Àœødrawable/more_app0"s
+Ûœødrawable/more_app0"s
 *http://schemas.android.com/apk/res/androidid@+id/nav_others_app_id"(Ğ„2 
-Ç‚ øid/nav_others_app_id0(*ª
+Û‚ øid/nav_others_app_id0(*ª
 ¡item"@
 *http://schemas.android.com/apk/res/androidtitleReview(áƒ„"j
 *http://schemas.android.com/apk/res/androidicon@drawable/review"!(‚€„2
-õœødrawable/review0"k
+’‚œødrawable/review0"k
 *http://schemas.android.com/apk/res/androidid@+id/nav_review_id"!(Ğ„2
-È‚ øid/nav_review_id0!(*¯
+Ü‚ øid/nav_review_id0!(*¯
 ¦item"A
 *http://schemas.android.com/apk/res/androidtitleContact(áƒ„"l
 *http://schemas.android.com/apk/res/androidicon@drawable/contact"'(‚€„2
-…œødrawable/contact0"m
+›œødrawable/contact0"m
 *http://schemas.android.com/apk/res/androidid@+id/nav_contact_id"'(Ğ„2
-Å‚ øid/nav_contact_id0'(@
+Ù‚ øid/nav_contact_id0'(@

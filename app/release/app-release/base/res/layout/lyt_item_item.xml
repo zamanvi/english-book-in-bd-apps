@@ -5,13 +5,13 @@
 *http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
 *http://schemas.android.com/apk/res/androidlayout_heightwrap_content"(õ„2:0şÿÿÿÿÿÿÿÿ"R
 *http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0":style@style/listCard"2
-èˆÄøstyle/listCard0ÿÿ"]
+Ğ‰Äøstyle/listCard0ÿÿ"]
 *http://schemas.android.com/apk/res/androidid@+id/rootCV"(Ğ„2
-•ƒ ø	id/rootCV0*°	
+³ƒ ø	id/rootCV0*°	
 §	LinearLayout"v
 *http://schemas.android.com/apk/res/android
 background@color/lessonLayout"(Ô„2
-ñ€”øcolor/lessonLayout0"K
+€”øcolor/lessonLayout0"K
 *http://schemas.android.com/apk/res/androidpadding10dp"(Õ„2:h"R
 *http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0"`
 *http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
@@ -23,9 +23,9 @@ background@color/lessonLayout"(Ô„2
 "L
 *http://schemas.android.com/apk/res/androidtextSize20sp"(•„2:h‚("q
 *http://schemas.android.com/apk/res/android	textColor@color/lessonText"(˜„2
-ò€”øcolor/lessonText0"_
+”øcolor/lessonText0"_
 *http://schemas.android.com/apk/res/androidid@+id/titleTV"(Ğ„2
-úƒ ø
+™„ ø
 id/titleTV0"j
 *http://schemas.android.com/apk/res/androidtext@string/app_name"(Ï‚„2
-€Àøstring/app_name03.
+¡€Àøstring/app_name03.
