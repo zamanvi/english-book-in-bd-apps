@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
         activity = this;
         UConfig uConfig = new UConfig(activity);
-        uConfig.setBoolean(Constant.IS_TEST_ADS, true);
+        uConfig.setBoolean(Constant.IS_TEST_ADS, false);
         if (!uConfig.getBoolean(Constant.IS_SET_VOICE_SPEED)){
             uConfig.setData(Constant.VOICE_SPEED, "normal");
             uConfig.setBoolean(Constant.IS_SET_VOICE_SPEED, true);
