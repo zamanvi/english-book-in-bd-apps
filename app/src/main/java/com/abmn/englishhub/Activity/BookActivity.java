@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -12,12 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.abmn.englishhub.Helper.BannerAdManager;
+import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
+import com.abmn.utility.UConfig;
 
 public class BookActivity extends AppCompatActivity {
 
     private CardView bookCoverCV01, bookCoverCV02;
     private ImageView bookCover01, bookCover02;
+    private BannerAdManager bannerAdManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,16 @@ public class BookActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_arrow);
         }
+        UConfig uConfig = new UConfig(this);
+
+        String bannerAdId;
+        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
+            bannerAdId = this.getString(R.string.BANNER_UNIT_ID_LOCAL);
+        }else {
+            bannerAdId = "" + R.string.BANNER_UNIT_ID;
+        }
+        FrameLayout adContainer = findViewById(R.id.banner_ad_container);
+        BannerAdManager.loadBannerAd(this, adContainer, bannerAdId);
 
         ImageView callIB = findViewById(R.id.callIB);
         ImageView whatsappIB = findViewById(R.id.whatsappIB);
@@ -125,5 +140,4 @@ public class BookActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

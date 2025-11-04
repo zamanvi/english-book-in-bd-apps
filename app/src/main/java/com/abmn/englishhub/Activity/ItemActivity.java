@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,8 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abmn.englishhub.Adapter.ItemAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.ItemModel;
 import com.abmn.englishhub.R;
+import com.abmn.utility.UConfig;
 import com.android.volley.Request;
 
 import org.json.JSONArray;
@@ -37,6 +40,7 @@ public class ItemActivity extends AppCompatActivity {
     private Activity activity;
     private List<ItemModel> itemList;
     private RecyclerView itemRV;
+    private InterstitialAdManager interstitialAdManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,13 @@ public class ItemActivity extends AppCompatActivity {
         define();
     }
 
+    @Override
+    public void onDestroy() {
+        if (interstitialAdManager != null) {
+            interstitialAdManager = null;
+        }
+        super.onDestroy();
+    }
     private void define() {
 
         activity = this;
@@ -70,6 +81,31 @@ public class ItemActivity extends AppCompatActivity {
 
         String slug = getIntent().getStringExtra(Constant.FROM);
         getData(slug);
+
+        CountDownTimer countDownTimer = new CountDownTimer(30000, 1000) {
+            @Override
+            public void onFinish() {
+                callAds();
+            }
+
+            @Override
+            public void onTick(long l) {
+
+            }
+        };
+        countDownTimer.start();
+    }
+
+    private void callAds() {
+        UConfig uConfig = new UConfig(activity);
+        String interstitialAdId;
+        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
+            interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
+        }else {
+            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
+        }
+        interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
+        interstitialAdManager.loadInterstitialAd();
     }
 
     @SuppressLint("NotifyDataSetChanged")

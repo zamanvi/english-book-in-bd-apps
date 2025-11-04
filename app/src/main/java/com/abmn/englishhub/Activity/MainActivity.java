@@ -12,7 +12,9 @@ import android.os.Bundle;
 
 import com.abmn.englishhub.Adapter.ChapterAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
+import com.abmn.englishhub.Helper.BannerAdManager;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.ChapterModel;
 import com.abmn.englishhub.R;
 
@@ -25,11 +27,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abmn.utility.UConfig;
 import com.android.volley.Request;
 import com.google.android.material.navigation.NavigationView;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -44,9 +49,12 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Activity activity;
+    private UConfig uConfig;
     private List<ChapterModel> chapterList;
     private RecyclerView chapterRV;
     private DrawerLayout drawer;
+    private InterstitialAdManager interstitialAdManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void define() {
         activity = this;
+        uConfig = new UConfig(activity);
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
@@ -81,6 +90,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         linearLayout.setReverseLayout(false);
         linearLayout.setOrientation(RecyclerView.VERTICAL);
         chapterRV.setLayoutManager(linearLayout);
+
+        CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onFinish() {
+                callAds();
+            }
+
+            @Override
+            public void onTick(long l) {
+
+            }
+        };
+        countDownTimer.start();
+    }
+
+    private void callAds() {
+        String interstitialAdId;
+        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
+            interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
+        }else {
+            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
+        }
+        interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
+        interstitialAdManager.loadInterstitialAd();
     }
 
     private void getBookData() {

@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Library"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7889299981957538~9193529586" />
+
         <activity
             android:name=".Activity.BookActivity"
             android:exported="false" />

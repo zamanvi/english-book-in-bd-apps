@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abmn.englishhub.Adapter.WordAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.WordModel;
 import com.abmn.texttospeech.Base;
 import com.abmn.utility.UConfig;
@@ -55,6 +57,7 @@ public class WordActivity extends AppCompatActivity {
     private WordAdapter adapter;
     private ImageView wordCloseIV, meaningCloseIV;
     private Boolean isWordClose = false, isMeaningClose = false;
+    private InterstitialAdManager interstitialAdManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,29 @@ public class WordActivity extends AppCompatActivity {
                 }
             }
         });
+        CountDownTimer countDownTimer = new CountDownTimer(30000, 1000) {
+            @Override
+            public void onFinish() {
+                callAds();
+            }
+
+            @Override
+            public void onTick(long l) {
+
+            }
+        };
+        countDownTimer.start();
+    }
+
+    private void callAds() {
+        String interstitialAdId;
+        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
+            interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
+        }else {
+            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
+        }
+        interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
+        interstitialAdManager.loadInterstitialAd();
     }
 
     private void wordChange(View view){
@@ -311,5 +337,13 @@ public class WordActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d("WordActivityTry", Objects.requireNonNull(e.getMessage()));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (interstitialAdManager != null) {
+            interstitialAdManager = null;
+        }
+        super.onDestroy();
     }
 }

@@ -3,6 +3,7 @@ package com.abmn.englishhub.Activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abmn.englishhub.Adapter.WordChapterAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.WordChapterModel;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
@@ -30,11 +32,13 @@ import java.util.Objects;
 
 public class VocabularyActivity extends AppCompatActivity {
     private Activity activity;
+    private UConfig uConfig;
     private RecyclerView chapterRV;
     private List<WordChapterModel> chapterList;
     private boolean isLoading = false;
     private int currentPage = 1;
     private int lastPage = 1;
+    private InterstitialAdManager interstitialAdManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class VocabularyActivity extends AppCompatActivity {
 
     private void define() {
         activity = this;
-        UConfig uConfig = new UConfig(activity);
+        uConfig = new UConfig(activity);
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -82,6 +86,29 @@ public class VocabularyActivity extends AppCompatActivity {
                 }
             }
         });
+        CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onFinish() {
+                callAds();
+            }
+
+            @Override
+            public void onTick(long l) {
+
+            }
+        };
+        countDownTimer.start();
+    }
+
+    private void callAds() {
+        String interstitialAdId;
+        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
+            interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
+        }else {
+            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
+        }
+        interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
+        interstitialAdManager.loadInterstitialAd();
     }
 
     @Override
@@ -146,5 +173,13 @@ public class VocabularyActivity extends AppCompatActivity {
                 isLoading = false;
             }
         }, Request.Method.GET, activity, url, new HashMap<>(), true);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (interstitialAdManager != null) {
+            interstitialAdManager = null;
+        }
+        super.onDestroy();
     }
 }

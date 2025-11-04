@@ -35,4 +35,5 @@ public class Constant {
     public static final String DATA = "data";
     public static final String IS_SET_VOICE_SPEED = "is_set_voice_speed";
     public static final String VOICE_SPEED = "voice_speed";
+    public static final String IS_TEST_ADS = "is_test_ads";
 }

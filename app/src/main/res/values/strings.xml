@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">English grammar book </string>
+    <string name="BANNER_UNIT_ID">ca-app-pub-7889299981957538/1516513255</string>
+    <string name="BANNER_UNIT_ID_LOCAL">ca-app-pub-3940256099942544/6300978111 </string>
+    <string name="INTERSTITIAL_UNIT_ID">ca-app-pub-7889299981957538/3347086781</string>
+    <string name="INTERSTITIAL_UNIT_ID_LOCAL">ca-app-pub-3940256099942544/1033173712</string>
     <string name="action_settings">Settings</string>
     <string name="vocabulary_https_play_google_com_store_apps_details_id"><![CDATA[Best english grammar book in Bangladesh: https://play.google.com/store/apps/details?id=]]></string>
     <string name="open">Open</string>
