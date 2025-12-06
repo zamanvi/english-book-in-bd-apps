@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         chapterRV = findViewById(R.id.chapterRV);
         chapterList = new ArrayList<>();
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(activity, drawer, toolbar, R.string.open, R.string.close);
-        toggle.syncState();
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(activity, drawer, toolbar, R.string.open, R.string.close);
+//        toggle.syncState();
 
         @SuppressLint("CutPasteId")
         NavigationView navView = findViewById(R.id.nav_view);
