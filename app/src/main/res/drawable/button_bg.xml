@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Pressed / Ripple State -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp"/>
+            <solid android:color="#1A000000"/> <!-- Light overlay -->
+        </shape>
+    </item>
+
+    <!-- Normal State -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp"/>
+            <solid android:color="@color/black"/>
+            <size android:height="44dp"/> <!-- proper height -->
+        </shape>
+    </item>
+
+</selector>

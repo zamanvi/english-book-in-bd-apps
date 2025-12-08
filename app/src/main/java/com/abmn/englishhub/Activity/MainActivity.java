@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
-        getBookData();
+//        getBookData();
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
         linearLayout.setReverseLayout(false);

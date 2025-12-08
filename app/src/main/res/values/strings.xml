@@ -60,4 +60,8 @@
         Ouch, Ah etc. Example: Alas! Her father is dead.
 
     </string>
+    <string name="listening">Listening</string>
+    <string name="writing">Writing</string>
+    <string name="speaking">Speaking</string>
+    <string name="games">Games</string>
 </resources>

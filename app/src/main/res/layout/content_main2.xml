@@ -16,7 +16,7 @@
         android:paddingRight="20dp"
         android:paddingTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="100dp">
 
         <TextView
             android:text="this is text"
@@ -40,6 +40,7 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/chapterRV"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -49,11 +50,190 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listening"
+                android:padding="10dp"
+                android:background="@drawable/tab_selected_bg"
+                android:textColor="#1A1A2E"
+                android:layout_margin="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/writing"
+                android:padding="10dp"
+                android:background="@drawable/tab_bg"
+                android:textColor="#1A1A2E"
+                android:layout_margin="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speaking"
+                android:padding="10dp"
+                android:background="@drawable/tab_bg"
+                android:textColor="#1A1A2E"
+                android:layout_margin="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/games"
+                android:padding="10dp"
+                android:background="@drawable/tab_bg"
+                android:textColor="#1A1A2E"
+                android:layout_margin="6dp"/>
+        </LinearLayout>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Task"
+            android:textColor="#1A1A2E"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp"
+            tools:ignore="HardcodedText" />
+
+        <!-- 2x2 Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true">
+
+            <!-- LISTENING - SELECTED CARD -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/card_selected"
+                android:padding="20dp"
+                android:elevation="10dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/icon_01" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listening"
+                    android:textColor="#1A1A2E"
+                    android:layout_marginTop="12dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- WRITING -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/card_normal"
+                android:padding="20dp"
+                android:elevation="8dp">
+
+                <ImageView
+                    android:contentDescription="@string/app_name"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_02" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/writing"
+                    android:textColor="#1A1A2E"
+                    android:layout_marginTop="12dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- SPEAKING -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/card_normal"
+                android:padding="20dp"
+                android:elevation="8dp">
+
+                <ImageView
+                    android:contentDescription="@string/app_name"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_03" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/speaking"
+                    android:textColor="#1A1A2E"
+                    android:layout_marginTop="12dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- GAMES -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/card_normal"
+                android:padding="20dp"
+                android:elevation="8dp">
+
+                <ImageView
+                    android:contentDescription="@string/app_name"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_04" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/games"
+                    android:textColor="#1A1A2E"
+                    android:layout_marginTop="12dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </GridLayout>
+
+    </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:menu="@menu/nav_menu"
-        android:background="@color/chapterLayout"
-        android:layout_gravity="bottom"
+        android:background="#65ADCE"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"/>
 
 </LinearLayout>
