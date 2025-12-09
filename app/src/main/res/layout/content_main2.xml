@@ -231,9 +231,13 @@
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        app:menu="@menu/nav_menu"
-        android:background="#65ADCE"
+        android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="60dp"
+        android:background="@color/bottom_nav_bg"
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemTextColor="@color/bottom_nav_selector"
+        app:itemRippleColor="@color/your_ripple_color"/>
 
 </LinearLayout>

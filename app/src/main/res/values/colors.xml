@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="toolbar">#AF8F62</color>
+    <color name="toolbar">#008000</color>
 
     <color name="main_theme_color">#6200EE</color>
     <color name="selected_bg">#FFEB3B</color>
@@ -32,5 +32,10 @@
     <color name="lessonText">#FFFFFF</color>
 
     <color name="toolbarColor">#22F829</color>
+
+    <color name="bottom_nav_bg">#FFFFFF</color>
+    <color name="your_active_color">#39FF00</color>
+    <color name="your_inactive_color">#777777</color>
+    <color name="your_ripple_color">#2239FF00</color>
 
 </resources>
