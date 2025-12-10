@@ -50,7 +50,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <include layout="@layout/lyt_chapter_up"/>
+
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
