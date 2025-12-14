@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootCV"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/rootCV"
-    style="@style/listCard">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="@color/chapterLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_unit_inactive_border"
+        android:orientation="vertical"
+        android:padding="18dp">
 
-    <TextView
-        android:id="@+id/titleTV"
-        android:text="@string/app_name"
-        android:textSize="20sp"
-        android:textColor="@color/chapterText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
 
+            <TextView
+                android:id="@+id/titleTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:text="@string/app_name"
+                android:textColor="#091D40"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="CORRECT 35/50"-->
+            <!--                    android:textColor="#4C5E80"-->
+            <!--                    android:textSize="12sp"-->
+            <!--                    android:gravity="end"-->
+            <!--                    android:textStyle="bold" />-->
+        </LinearLayout>
+
+        <!--            <TextView-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="6dp"-->
+        <!--                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt."-->
+        <!--                android:textColor="#6E7A90"-->
+        <!--                android:textSize="12sp" />-->
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
-
-<!--    <?xml version="1.0" encoding="utf-8"?>-->
-<!--<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--android:id="@+id/rootCV"-->
-<!--style="@style/listCard"-->
-<!--app:cardUseCompatPadding="true"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="wrap_content">-->
-
-<!--<LinearLayout-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:orientation="horizontal"-->
-<!--    android:padding="12dp">-->
-
-<!--    <TextView-->
-<!--        android:drawablePadding="5dp"-->
-<!--        android:id="@+id/titleTV"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/app_name"-->
-<!--        android:textSize="20sp"-->
-<!--        app:drawableStartCompat="@drawable/book" />-->
-
-<!--</LinearLayout>-->
-
-<!--</androidx.cardview.widget.CardView>-->

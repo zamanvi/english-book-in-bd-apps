@@ -18,14 +18,12 @@ public class BookActivity extends AppCompatActivity {
 
     private CardView bookCoverCV01, bookCoverCV02;
     private ImageView bookCover01, bookCover02;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
         define();
-
     }
 
     private void define() {

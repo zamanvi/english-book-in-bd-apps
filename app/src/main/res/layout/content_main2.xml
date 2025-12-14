@@ -39,21 +39,7 @@
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        android:id="@+id/chapterRV"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/lyt_item_chapter"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <include layout="@layout/lyt_chapter_up"/>
-
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -68,6 +54,7 @@
             android:layout_marginBottom="20dp">
 
             <TextView
+                android:id="@+id/listeningTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/listening"

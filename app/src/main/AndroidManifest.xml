@@ -21,6 +21,9 @@
             android:name=".Activity.BookActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.ChapterActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.WordActivity"
             android:exported="false" />
         <activity

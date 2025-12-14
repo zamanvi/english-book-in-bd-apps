@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootCV"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/rootCV"
-    style="@style/listCard">
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#F4F9FB"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
-        android:background="@color/lessonLayout"
-        android:orientation="vertical"
-        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
 
         <TextView
             android:id="@+id/titleTV"
-            android:paddingBottom="5dp"
-            android:text="@string/app_name"
-            android:textSize="20sp"
-            android:textColor="@color/lessonText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Lorem ipsum dolor sit amet,"
+            android:textColor="#6E7A90"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
