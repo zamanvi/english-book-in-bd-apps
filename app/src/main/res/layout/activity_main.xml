@@ -14,7 +14,7 @@ tools:context=".Activity.MainActivity">
 
     <include layout="@layout/lyt_toolbar" />
 
-    <include layout="@layout/content_main2" />
+    <include layout="@layout/content_main" />
 
 </com.google.android.material.appbar.AppBarLayout>
 

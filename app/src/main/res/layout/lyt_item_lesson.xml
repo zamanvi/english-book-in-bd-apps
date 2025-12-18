@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:text="CORRECT 35/50"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
             </LinearLayout>

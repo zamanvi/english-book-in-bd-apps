@@ -4,17 +4,17 @@
     <color name="white">#FFFFFFFF</color>
     <color name="toolbar">#39FF00</color>
 
-    <color name="main_theme_color">#6200EE</color>
+    <color name="main_theme_color">#39FF00</color>
     <color name="selected_bg">#FFEB3B</color>
     <color name="unselected_bg">#FFFFFF</color>
 
-    <color name="colorPrimary">#39FF00</color>
-    <color name="colorPrimaryVariant">#7C33E4</color>
-    <color name="colorPrimaryDark">#6200EE</color>
-    <color name="colorSecondary">#7C35E2</color>
-    <color name="colorSecondaryDark">#6200EE</color>
-    <color name="colorAccent">#803BE2</color>
-    <color name="colorPrimaryLight">#8338EF</color>
+    <color name="colorPrimary">#2f2c61</color>
+    <color name="colorPrimaryVariant">#2f2c61</color>
+    <color name="colorPrimaryDark">#2f2c61</color>
+    <color name="colorSecondary">#2f2c61</color>
+    <color name="colorSecondaryDark">#2f2c61</color>
+    <color name="colorAccent">#2f2c61</color>
+    <color name="colorPrimaryLight">#2f2c61</color>
     <color name="bg_color">#F8F8F8</color>
     <color name="gray_blue">#5d6079</color>
     <color name="dark_gray">#313030</color>
