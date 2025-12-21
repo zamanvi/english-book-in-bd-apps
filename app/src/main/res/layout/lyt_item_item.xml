@@ -10,21 +10,14 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp">
 
-    <LinearLayout
+    <TextView
+        android:padding="18dp"
+        android:id="@+id/titleTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="18dp">
+        android:text="Lorem ipsum dolor sit amet,"
+        android:textColor="#6E7A90"
+        android:textSize="12sp"
+        tools:ignore="HardcodedText" />
 
-
-        <TextView
-            android:id="@+id/titleTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Lorem ipsum dolor sit amet,"
-            android:textColor="#6E7A90"
-            android:textSize="12sp"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
 </androidx.cardview.widget.CardView>

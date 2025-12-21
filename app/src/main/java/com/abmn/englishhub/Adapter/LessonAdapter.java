@@ -32,7 +32,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
     @NonNull
     @Override
     public BlogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_item_lesson, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_item_item, parent, false);
         return new BlogViewHolder(view);
     }
 
@@ -49,20 +49,16 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
     static class BlogViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
         private final TextView titleTV;
-        private final TextView planTV;
 
         public BlogViewHolder(@NonNull View itemView) {
             super(itemView);
             rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
-            planTV = itemView.findViewById(R.id.planTV);
         }
 
         public void bind(LessonModel model, Activity activity) {
-            UConfig uConfig = new UConfig(activity);
             rootCV.setOnClickListener(v-> activity.startActivity(new Intent(activity, WordActivity.class).putExtra(Constant.FROM, "" + model.getId()).putExtra(Constant.FROM_TITLE, model.getTitle()).putExtra(Constant.FROM_TYPE, model.getChapter_type())));
             titleTV.setText(model.getTitle());
-            planTV.setText(model.getPlan());
         }
     }
 }

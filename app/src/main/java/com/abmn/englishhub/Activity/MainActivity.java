@@ -55,9 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
-        TextView listeningTV = findViewById(R.id.listeningTV);
+        TextView grammarTV = findViewById(R.id.grammarTV);
+        grammarTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
 
-        listeningTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
+        TextView vocabularyTV = findViewById(R.id.vocabularyTV);
+        vocabularyTV.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
 
     }
 

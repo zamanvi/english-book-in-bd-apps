@@ -82,22 +82,23 @@
                 android:gravity="center_horizontal">
 
                 <TextView
-                    android:id="@+id/listeningTV"
+                    android:id="@+id/vocabularyTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
                     android:background="@drawable/tab_selected_bg"
                     android:padding="10dp"
-                    android:text="@string/listening"
+                    android:text="@string/vocabulary"
                     android:textColor="#1A1A2E" />
 
                 <TextView
+                    android:id="@+id/grammarTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
                     android:background="@drawable/tab_bg"
                     android:padding="10dp"
-                    android:text="@string/writing"
+                    android:text="@string/grammar"
                     android:textColor="#1A1A2E" />
 
                 <TextView
@@ -161,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="@string/listening"
+                    android:text="@string/vocabulary"
                     android:textColor="#1A1A2E"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -187,7 +188,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="@string/writing"
+                    android:text="@string/grammar"
                     android:textColor="#1A1A2E"
                     android:textSize="16sp" />
             </LinearLayout>

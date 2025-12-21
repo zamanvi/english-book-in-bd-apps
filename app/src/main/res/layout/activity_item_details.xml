@@ -17,8 +17,10 @@
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:textSize="20sp"
+        android:padding="5dp"
         android:textStyle="bold"
-        android:theme="?attr/actionBarTheme" />
+        android:textColor="@color/active_color"
+        android:background="@color/bottom_nav_bg"/>
 
     <WebView
         android:visibility="visible"

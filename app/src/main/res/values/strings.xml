@@ -6,8 +6,8 @@
     <string name="close">Close</string>
     <string name="author_app_name">\"best english grammar book in Bangladesh\"</string>
     <string name="author_name">MD NOROZZAMAN</string>
-    <string name="listening">Vocabulary</string>
-    <string name="writing">Grammar</string>
+    <string name="vocabulary">Vocabulary</string>
+    <string name="grammar">Grammar</string>
     <string name="speaking">Daily Vocabulary</string>
     <string name="games">Writing &amp; Reading</string>
 </resources>
