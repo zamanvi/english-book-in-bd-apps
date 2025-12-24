@@ -3,11 +3,10 @@ package com.abmn.englishhub.Helper;
 public class Constant {
     //Base Url
     public static final String ROOT_DOMAIN = "https://backend.masterenglishbook.com/";
-    public static final String ROOT_DOMAIN2 = "https://grammer.masterenglishbook.com/";
     public static final String API = "api/v2/app/";
     public static final String API2 = "api/";
     public static final String ROOT_API = ROOT_DOMAIN + API;
-    public static final String ROOT_API2 = ROOT_DOMAIN2 + API2;
+    public static final String ROOT_API2 = ROOT_DOMAIN + API2 + "grammer/";
 
     //API path
     public static final String BOOK_API = ROOT_API + "book/index";

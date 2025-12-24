@@ -133,15 +133,15 @@ public class LessonActivity extends AppCompatActivity {
                         JSONObject lesson = dataArray.getJSONObject(i);
                         int id = lesson.getInt("id");
                         String title = lesson.getString("title");
-                        String plan = lesson.getString("plan");
-                        String plan_id = lesson.getString("plan_id");
-                        String chapter_type = lesson.getString("chapter_type");
+//                        String plan = lesson.getString("plan");
+//                        String plan_id = lesson.getString("plan_id");
+//                        String chapter_type = lesson.getString("chapter_type");
                         String chapter_id = lesson.getString("chapter_id");
                         boolean status = lesson.getBoolean("status");
                         String created_at = lesson.getString("created_at");
                         String updated_at = lesson.getString("updated_at");
 
-                        LessonModel model = new LessonModel(id, title, plan, plan_id, chapter_type, chapter_id, status, created_at, updated_at);
+                        LessonModel model = new LessonModel(id, title, "", "", "", chapter_id, status, created_at, updated_at);
                         lessonList.add(model);
                     }
                     if (currentPage == 1) {

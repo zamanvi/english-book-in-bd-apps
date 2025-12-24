@@ -76,6 +76,8 @@ public class ApiConfig {
             public Map<String, String> getHeaders() {
                 Map<String, String> params1 = new HashMap<>();
                 params1.put(Constant.ACCEPT, Constant.APPLICATION_JSON);
+                params1.put("x-api-key", "app");
+                params1.put("Content-Type", Constant.APPLICATION_JSON);
                 params1.put(Constant.AUTHORIZATION, Constant.BEARER + uConfig.getData(Constant.TOKEN));
 //                Log.d("srHeaders", params1 + ", " + params + ", " + finalUrl);
                 return params1;
