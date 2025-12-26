@@ -1,0 +1,42 @@
+
+ë
+;
+android*http://schemas.android.com/apk/res/android@menu* 
+—item">
+*http://schemas.android.com/apk/res/androidtitleBook(áƒ„"l
+*http://schemas.android.com/apk/res/androidicon@drawable/ic_book"	(‚€„2
+§œødrawable/ic_book0"a
+*http://schemas.android.com/apk/res/androidid@+id/nav_book"	(Ğ„2
+Ø‚ øid/nav_book0	(*¾
+µitem"D
+*http://schemas.android.com/apk/res/androidtitle
+Vocabulary(áƒ„"x
+*http://schemas.android.com/apk/res/androidicon@drawable/ic_vocabulary"(‚€„2"
+ Áœødrawable/ic_vocabulary0"m
+*http://schemas.android.com/apk/res/androidid@+id/nav_vocabulary"(Ğ„2
+ß‚ øid/nav_vocabulary0(*¥
+œitem"?
+*http://schemas.android.com/apk/res/androidtitleShare(áƒ„"h
+*http://schemas.android.com/apk/res/androidicon@drawable/share"(‚€„2
+“‚œødrawable/share0"i
+*http://schemas.android.com/apk/res/androidid@+id/nav_share_id"(Ğ„2
+İ‚ øid/nav_share_id0(*º
+±item"D
+*http://schemas.android.com/apk/res/androidtitle
+Other Apps(áƒ„"n
+*http://schemas.android.com/apk/res/androidicon@drawable/more_app"(‚€„2
+Ûœødrawable/more_app0"s
+*http://schemas.android.com/apk/res/androidid@+id/nav_others_app_id"(Ğ„2 
+Û‚ øid/nav_others_app_id0(*ª
+¡item"@
+*http://schemas.android.com/apk/res/androidtitleReview(áƒ„"j
+*http://schemas.android.com/apk/res/androidicon@drawable/review"!(‚€„2
+’‚œødrawable/review0"k
+*http://schemas.android.com/apk/res/androidid@+id/nav_review_id"!(Ğ„2
+Ü‚ øid/nav_review_id0!(*¯
+¦item"A
+*http://schemas.android.com/apk/res/androidtitleContact(áƒ„"l
+*http://schemas.android.com/apk/res/androidicon@drawable/contact"'(‚€„2
+›œødrawable/contact0"m
+*http://schemas.android.com/apk/res/androidid@+id/nav_contact_id"'(Ğ„2
+Ù‚ øid/nav_contact_id0'(@

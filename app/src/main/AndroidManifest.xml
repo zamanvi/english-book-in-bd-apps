@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"
+        tools:ignore="AdvertisingIdPolicy" />
+
     <application
         android:name=".Helper.MyApplication"
         android:allowBackup="true"
@@ -17,6 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Library"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7889299981957538~9193529586" />
+
         <activity
             android:name=".Activity.BookActivity"
             android:exported="false" />

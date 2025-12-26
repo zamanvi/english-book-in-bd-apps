@@ -3,6 +3,7 @@ package com.abmn.englishhub.Activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abmn.englishhub.Adapter.LessonAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.LessonModel;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
@@ -30,12 +32,14 @@ import java.util.Objects;
 
 public class LessonActivity extends AppCompatActivity {
     private Activity activity;
+    private UConfig uConfig;
     private RecyclerView lessonRV;
     private List<LessonModel> lessonList;
     private boolean isLoading = false;
     private int currentPage = 1;
     private int lastPage = 1;
     private String getChapterId;
+    private InterstitialAdManager interstitialAdManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +48,18 @@ public class LessonActivity extends AppCompatActivity {
         define();
         loadInitialData();
     }
+
+    @Override
+    public void onDestroy() {
+        if (interstitialAdManager != null) {
+            interstitialAdManager = null;
+        }
+        super.onDestroy();
+    }
     private void define() {
 
         activity = this;
-        UConfig uConfig = new UConfig(activity);
+        uConfig = new UConfig(activity);
         getChapterId = getIntent().getStringExtra(Constant.FROM);
         String getChapterTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
         setToolbar("Vocabulary: " + getChapterTitle);
@@ -79,6 +91,29 @@ public class LessonActivity extends AppCompatActivity {
                 }
             }
         });
+        CountDownTimer countDownTimer = new CountDownTimer(30000, 1000) {
+            @Override
+            public void onFinish() {
+                callAds();
+            }
+
+            @Override
+            public void onTick(long l) {
+
+            }
+        };
+        countDownTimer.start();
+    }
+
+    private void callAds() {
+        String interstitialAdId;
+        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
+            interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
+        }else {
+            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
+        }
+        interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
+        interstitialAdManager.loadInterstitialAd();
     }
 
     private void setToolbar(String title) {
