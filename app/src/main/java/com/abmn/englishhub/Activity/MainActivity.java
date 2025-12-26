@@ -10,50 +10,34 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.abmn.englishhub.Adapter.ChapterAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
-import com.abmn.englishhub.Helper.BannerAdManager;
 import com.abmn.englishhub.Helper.Constant;
-import com.abmn.englishhub.Helper.InterstitialAdManager;
-import com.abmn.englishhub.Model.ChapterModel;
 import com.abmn.englishhub.R;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.abmn.utility.UConfig;
 import com.android.volley.Request;
 import com.google.android.material.navigation.NavigationView;
 
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Activity activity;
-    private UConfig uConfig;
-    private List<ChapterModel> chapterList;
-    private RecyclerView chapterRV;
     private DrawerLayout drawer;
-    private InterstitialAdManager interstitialAdManager;
+    private TextView lessonCountTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void define() {
         activity = this;
-        uConfig = new UConfig(activity);
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
@@ -74,100 +57,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         drawer = findViewById(R.id.drawer_layout);
-        chapterRV = findViewById(R.id.chapterRV);
-        chapterList = new ArrayList<>();
+        lessonCountTV = findViewById(R.id.lessonCountTV);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(activity, drawer, toolbar, R.string.open, R.string.close);
-        toggle.syncState();
+        getLessonData();
 
         @SuppressLint("CutPasteId")
         NavigationView navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
-        getBookData();
+        TextView grammarTV = findViewById(R.id.grammarTV);
+        LinearLayout grammarLL = findViewById(R.id.grammarLL);
+        grammarTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
+        grammarLL.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
 
-        LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
-        linearLayout.setReverseLayout(false);
-        linearLayout.setOrientation(RecyclerView.VERTICAL);
-        chapterRV.setLayoutManager(linearLayout);
+        TextView vocabularyTV = findViewById(R.id.vocabularyTV);
+        LinearLayout vocabularyLL = findViewById(R.id.vocabularyLL);
+        vocabularyTV.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
+        vocabularyLL.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
 
-        CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
-            @Override
-            public void onFinish() {
-                callAds();
-            }
-
-            @Override
-            public void onTick(long l) {
-
-            }
-        };
-        countDownTimer.start();
-    }
-
-    private void callAds() {
-        String interstitialAdId;
-        if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
-            interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
-        }else {
-            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
-        }
-        interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
-        interstitialAdManager.loadInterstitialAd();
-    }
-
-    private void getBookData() {
-
-        ApiConfig.RequestToVolley((result, response, error) -> {
-            Log.d("response", response);
-            try {
-                JSONObject bookObject = new JSONObject(response);
-                JSONObject books = bookObject.getJSONObject("books");
-                JSONArray bookArray = books.getJSONArray(Constant.DATA);
-                JSONObject firstBook = bookArray.getJSONObject(0);
-                String slug = firstBook.getString("slug");
-                getData(slug);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
-
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void getData(String data) {
-        ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
-            Log.d("chapterResponse", chapterResponse);
-            try {
-                JSONObject jsonObject = new JSONObject(chapterResponse);
-                JSONObject chapters = jsonObject.getJSONObject("chapters");
-                JSONArray chapterArray = chapters.getJSONArray(Constant.DATA);
-
-                for (int i = 0; i < chapterArray.length(); i++) {
-                    try {
-                        JSONObject chapter = chapterArray.getJSONObject(i);
-                        int id = chapter.getInt("id");
-                        String book_id = chapter.getString("book_id");
-                        String title = chapter.getString("title");
-                        String slug = chapter.getString("slug");
-                        String status = chapter.getString("status");
-                        String pageview = chapter.getString("pageview");
-                        String book_title = chapter.getString("book_title");
-
-                        ChapterModel model = new ChapterModel(id, book_id, title, slug, status, pageview, book_title);
-                        chapterList.add(model);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                ChapterAdapter adapter = new ChapterAdapter(chapterList, activity);
-                chapterRV.setAdapter(adapter);
-                Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }, Request.Method.GET, activity, Constant.CHAPTER_API2 + "?book_slug=" + data , new HashMap<>(), false);
     }
 
     @Override
@@ -231,14 +138,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Toast.makeText(context, "Clipboard not available", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss();
-                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                     .setCancelable(true)
                     .show();
             drawer.close();
             return true;
         }
         return false;
+    }
+
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+    private void getLessonData() {
+        String url = Constant.ROOT_API2 + "initial";
+        ApiConfig.RequestToVolley((result, response, error) -> {
+            Log.d("lessonData", response);
+            if (result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    lessonCountTV.setText(jsonObject.getString("lessons") + " Lessons");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                Log.d("else", error);
+            }
+
+        }, Request.Method.GET, activity, url, new HashMap<>(), true);
     }
 }
