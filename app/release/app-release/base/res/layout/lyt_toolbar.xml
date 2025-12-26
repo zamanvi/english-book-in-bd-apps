@@ -1,22 +1,0 @@
-
-á
-;
-android*http://schemas.android.com/apk/res/android@
-4
-app'http://schemas.android.com/apk/res-auto@!androidx.appcompat.widget.Toolbar"–
-*http://schemas.android.com/apk/res/android
-popupTheme#@style/ThemeOverlay.AppCompat.Light"(©‰„2.
-,ş„Äø"style/ThemeOverlay.AppCompat.Light0"v
-*http://schemas.android.com/apk/res/android
-background@color/toolbarColor"(Ô„2
-œ†”øcolor/toolbarColor0"w
-*http://schemas.android.com/apk/res/android	minHeight?attr/actionBarSize"(À‚„2 
-†€Œøattr/actionBarSize0@"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"(õ„2:0şÿÿÿÿÿÿÿÿ"y
-'http://schemas.android.com/apk/res-autotitleTextColor@android:color/black"(´‰Œø2
-Œ€˜android:color/black0"™
-*http://schemas.android.com/apk/res/androidtheme'@style/ThemeOverlay.AppCompat.ActionBar"(€€„22
-0÷„Äø&style/ThemeOverlay.AppCompat.ActionBar0"c
-*http://schemas.android.com/apk/res/androidid@+id/toolbarId"(Ğ„2
-ıƒ øid/toolbarId0@

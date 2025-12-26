@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.abmn.englishhub.Helper.ApiConfig;
+import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
 
 import androidx.annotation.NonNull;
@@ -18,16 +20,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.volley.Request;
 import com.google.android.material.navigation.NavigationView;
 
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Activity activity;
     private DrawerLayout drawer;
+    private TextView lessonCountTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +57,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         drawer = findViewById(R.id.drawer_layout);
+        lessonCountTV = findViewById(R.id.lessonCountTV);
 
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(activity, drawer, toolbar, R.string.open, R.string.close);
-//        toggle.syncState();
+        getLessonData();
 
         @SuppressLint("CutPasteId")
         NavigationView navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
         TextView grammarTV = findViewById(R.id.grammarTV);
+        LinearLayout grammarLL = findViewById(R.id.grammarLL);
         grammarTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
+        grammarLL.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
 
         TextView vocabularyTV = findViewById(R.id.vocabularyTV);
+        LinearLayout vocabularyLL = findViewById(R.id.vocabularyLL);
         vocabularyTV.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
+        vocabularyLL.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
 
     }
 
@@ -124,14 +138,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Toast.makeText(context, "Clipboard not available", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss();
-                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                     .setCancelable(true)
                     .show();
             drawer.close();
             return true;
         }
         return false;
+    }
+
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+    private void getLessonData() {
+        String url = Constant.ROOT_API2 + "initial";
+        ApiConfig.RequestToVolley((result, response, error) -> {
+            Log.d("lessonData", response);
+            if (result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    lessonCountTV.setText(jsonObject.getString("lessons") + " Lessons");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                Log.d("else", error);
+            }
+
+        }, Request.Method.GET, activity, url, new HashMap<>(), true);
     }
 }

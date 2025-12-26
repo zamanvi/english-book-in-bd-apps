@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="this is text"
+            android:text=""
             tools:ignore="HardcodedText" />
 
         <LinearLayout
@@ -34,10 +34,11 @@
                 app:cardCornerRadius="50dp">
 
                 <TextView
+                    android:id="@+id/lessonCountTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="10 Lessons"
+                    android:text="Lessons"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     tools:ignore="HardcodedText" />
@@ -142,6 +143,7 @@
             android:useDefaultMargins="true">
 
             <LinearLayout
+                android:id="@+id/vocabularyLL"
                 android:layout_width="0dp"
                 android:layout_height="170dp"
                 android:layout_columnWeight="1"
@@ -168,6 +170,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/grammarLL"
                 android:layout_width="0dp"
                 android:layout_height="170dp"
                 android:layout_columnWeight="1"

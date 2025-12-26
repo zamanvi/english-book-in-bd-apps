@@ -1,18 +1,0 @@
-
-ø
-;
-android*http://schemas.android.com/apk/res/android2LinearLayout"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
-*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"R
-*http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0"Y
-*http://schemas.android.com/apk/res/androidid	@+id/main"(Ğ„2
-…‚ øid/main0*V
-Ninclude"Clayout@layout/lyt_toolbar"
-2 
-¼€¬ølayout/lyt_toolbar0ÿÿ
--*Ş
-Õ)androidx.recyclerview.widget.RecyclerView"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
-*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"c
-*http://schemas.android.com/apk/res/androidid@+id/chapterRV"(Ğ„2
-ø€ øid/chapterRV002

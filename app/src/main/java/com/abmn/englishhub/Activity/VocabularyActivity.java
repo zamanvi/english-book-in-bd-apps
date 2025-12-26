@@ -113,7 +113,7 @@ public class VocabularyActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void fetchData(int page) {
         String url = Constant.ROOT_API2 + Constant.CHAPTERS + "?page=" + page;
-        String tag = "MainActivity";
+        String tag = "VocabularyActivity";
         ApiConfig.RequestToVolley((result, response, error) -> {
             Log.d("response", response);
             try {
