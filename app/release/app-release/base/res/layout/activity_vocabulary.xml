@@ -6,13 +6,13 @@
 *http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"R
 *http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0"Y
 *http://schemas.android.com/apk/res/androidid	@+id/main"(Ğ„2
-š‚ øid/main0*V
+Ÿ‚ øid/main0*V
 Ninclude"Clayout@layout/lyt_toolbar"
 2 
-¿€¬ølayout/lyt_toolbar0ÿÿ
+À€¬ølayout/lyt_toolbar0ÿÿ
 -*Ş
 Õ)androidx.recyclerview.widget.RecyclerView"`
 *http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
 *http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"c
 *http://schemas.android.com/apk/res/androidid@+id/chapterRV"(Ğ„2
-‡ øid/chapterRV002
+ˆ øid/chapterRV002
