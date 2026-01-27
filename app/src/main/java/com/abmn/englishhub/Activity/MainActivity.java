@@ -1,5 +1,6 @@
 package com.abmn.englishhub.Activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -8,6 +9,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.abmn.englishhub.Helper.ApiConfig;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.Request;
@@ -75,6 +78,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         vocabularyTV.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
         vocabularyLL.setOnClickListener(view -> startActivity(new Intent(activity, VocabularyActivity.class)));
 
+        if (Build.VERSION.SDK_INT >= 33) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    1001
+            );
+        }
     }
 
     @Override
