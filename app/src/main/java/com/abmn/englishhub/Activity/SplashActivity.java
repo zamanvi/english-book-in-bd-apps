@@ -54,17 +54,27 @@ public class SplashActivity extends AppCompatActivity {
     private void initialWork() {
         Thread thread = new Thread(() -> {
             setProgressStage();
-            work();
+            runOnUiThread(() -> handleNotificationIntent(getIntent()));
         });
         thread.start();
     }
 
-    private void work() {
-        Intent intent;
-        intent = new Intent(activity, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void handleNotificationIntent(Intent intent) {
+
+        String type = intent.getStringExtra("type");
+        String slug = intent.getStringExtra("slug");
+
+        Intent startIntent;
+
+        if ("item".equals(type) && slug != null) {
+            startIntent = new Intent(activity, ItemDetailsActivity.class);
+            startIntent.putExtra(Constant.FROM, slug);
+        } else {
+            startIntent = new Intent(activity, MainActivity.class);
+        }
+
+        startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startIntent);
     }
 
     private void setProgressStage() {

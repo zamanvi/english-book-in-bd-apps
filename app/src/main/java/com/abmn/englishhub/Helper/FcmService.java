@@ -7,11 +7,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.abmn.englishhub.Activity.ItemDetailsActivity;
 import com.abmn.englishhub.Activity.SplashActivity;
 import com.abmn.englishhub.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -23,13 +23,14 @@ public class FcmService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        String type = remoteMessage.getData().get("type");
         String slug = remoteMessage.getData().get("slug");
-        String id = remoteMessage.getData().get("id");
-
-        Log.d("notice", remoteMessage.toString());
-
         Intent intent = new Intent(this, SplashActivity.class);
-//        intent.putExtra("id", id);
+        assert type != null;
+        if (type.equals("item")){
+            intent.putExtra("type", type);
+            intent.putExtra("slug", slug);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
