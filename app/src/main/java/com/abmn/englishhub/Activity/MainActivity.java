@@ -69,9 +69,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navView.setNavigationItemSelectedListener(this);
 
         TextView grammarTV = findViewById(R.id.grammarTV);
+        TextView dailyVocabularyTV = findViewById(R.id.dailyVocabularyTV);
+        TextView writingAndReadingTV = findViewById(R.id.writingAndReadingTV);
         LinearLayout grammarLL = findViewById(R.id.grammarLL);
-        grammarTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
-        grammarLL.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class)));
+        LinearLayout dailyVocabularyLL = findViewById(R.id.dailyVocabularyLL);
+        LinearLayout writingAndReadingLL = findViewById(R.id.writingAndReadingLL);
+        grammarTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
+        dailyVocabularyTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
+        writingAndReadingTV.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
+        grammarLL.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
+        dailyVocabularyLL.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
+        writingAndReadingLL.setOnClickListener(view -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
 
         TextView vocabularyTV = findViewById(R.id.vocabularyTV);
         LinearLayout vocabularyLL = findViewById(R.id.vocabularyLL);

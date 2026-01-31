@@ -53,8 +53,9 @@ public class ChapterActivity extends AppCompatActivity {
         chapterRV = findViewById(R.id.chapterRV);
         chapterList = new ArrayList<>();
 
+        String getType = getIntent().getStringExtra("type");
 
-        getBookData();
+        getBookData(getType);
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
         linearLayout.setReverseLayout(false);
@@ -63,7 +64,7 @@ public class ChapterActivity extends AppCompatActivity {
     }
 
 
-    private void getBookData() {
+    private void getBookData(String getType) {
 
         ApiConfig.RequestToVolley((result, response, error) -> {
             Log.d("response", response);
@@ -71,9 +72,9 @@ public class ChapterActivity extends AppCompatActivity {
                 JSONObject bookObject = new JSONObject(response);
                 JSONObject books = bookObject.getJSONObject("books");
                 JSONArray bookArray = books.getJSONArray(Constant.DATA);
-                JSONObject firstBook = bookArray.getJSONObject(0);
+                JSONObject firstBook = bookArray.getJSONObject(1);
                 String slug = firstBook.getString("slug");
-                getData(slug);
+                getData(slug, getType);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -82,7 +83,7 @@ public class ChapterActivity extends AppCompatActivity {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void getData(String data) {
+    private void getData(String data, String getType) {
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
             Log.d("chapterResponse", chapterResponse);
             try {
@@ -114,7 +115,7 @@ public class ChapterActivity extends AppCompatActivity {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }, Request.Method.GET, activity, Constant.CHAPTER_API2 + "?book_slug=" + data , new HashMap<>(), false);
+        }, Request.Method.GET, activity, Constant.CHAPTER_API2 + "?book_slug=" + data + "&type=" + getType , new HashMap<>(), false);
     }
 
 }
