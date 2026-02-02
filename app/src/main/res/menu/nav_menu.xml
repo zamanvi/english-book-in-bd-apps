@@ -20,9 +20,9 @@
         tools:ignore="HardcodedText" />
 
     <item
-        android:icon="@drawable/notification"
-        android:id="@+id/navNotification"
-        android:title="Notification"
+        android:icon="@drawable/notice"
+        android:id="@+id/navNotice"
+        android:title="Notice"
         tools:ignore="HardcodedText" />
 
     <item

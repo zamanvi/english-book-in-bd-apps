@@ -122,9 +122,15 @@ public class LessonActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_arrow); // Optional: Custom back icon
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     private void loadInitialData() {
         lessonList = new ArrayList<>();
         LessonAdapter adapter = new LessonAdapter(lessonList, activity);

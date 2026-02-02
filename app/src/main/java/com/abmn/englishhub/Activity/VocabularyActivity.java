@@ -57,7 +57,6 @@ public class VocabularyActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Vocabulary");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_arrow);
         }
         chapterRV = findViewById(R.id.chapterRV);
 
@@ -98,6 +97,12 @@ public class VocabularyActivity extends AppCompatActivity {
             }
         };
         countDownTimer.start();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void callAds() {

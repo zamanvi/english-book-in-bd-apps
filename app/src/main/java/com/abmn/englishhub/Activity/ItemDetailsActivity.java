@@ -8,9 +8,11 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -62,6 +64,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
         titleTV = findViewById(R.id.titleTV);
         detailsWV = findViewById(R.id.detailsWV);
 
+        Toolbar toolbar = findViewById(R.id.toolbarId);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         String slug = getIntent().getStringExtra(Constant.FROM);
         getData(slug);
 
@@ -77,6 +86,12 @@ public class ItemDetailsActivity extends AppCompatActivity {
             }
         };
         countDownTimer.start();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void callAds() {
@@ -97,18 +112,23 @@ public class ItemDetailsActivity extends AppCompatActivity {
         WebSettings webSettings = detailsWV.getSettings();
 
         ApiConfig.RequestToVolley((result, response, error) -> {
-            try {
-                JSONObject item = new JSONObject(response).getJSONObject("item");
-                String title = item.getString("title");
-                String details = item.getString("details");
-                titleTV.setText(title);
-                detailsWV.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            if (result){
+                try {
+                    JSONObject item = new JSONObject(response).getJSONObject("item");
+                    String title = item.getString("title");
+                    String details = item.getString("details");
+                    titleTV.setText(title);
+                    detailsWV.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-                String htmlData = "<!DOCTYPE html><html><head></head><body>" + details + "</body></html>";
-                webSettings.setJavaScriptEnabled(true);
-                detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                    String htmlData = "<!DOCTYPE html><html><head></head><body>" + details + "</body></html>";
+                    webSettings.setJavaScriptEnabled(true);
+                    detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }else {
+                Toast.makeText(activity, "Slug not found in database", Toast.LENGTH_SHORT).show();
+                onSupportNavigateUp();
             }
         }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true);
     }

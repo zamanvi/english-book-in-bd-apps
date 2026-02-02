@@ -55,9 +55,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         }
 
         public void bind(ItemModel model, Activity activity) {
-            rootCV.setOnClickListener(v-> {
-                activity.startActivity(new Intent(activity, ItemDetailsActivity.class).putExtra(Constant.FROM, model.getSlug()));
-            });
+            rootCV.setOnClickListener(v-> activity.startActivity(new Intent(activity, ItemDetailsActivity.class).putExtra(Constant.FROM, model.getSlug())));
             titleTV.setText(model.getTitle());
         }
     }

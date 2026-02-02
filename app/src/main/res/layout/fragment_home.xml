@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    tools:context=".fragment.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Lessons"
+                    android:text="107 Lessons"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     tools:ignore="HardcodedText" />
@@ -53,7 +53,7 @@
                 android:background="@drawable/top_layout_bg">
 
                 <View
-                    android:layout_width="40dp"
+                    android:layout_width="80dp"
                     android:layout_height="20dp"
                     android:background="@drawable/top_layout_bg_view" />
 
@@ -255,17 +255,5 @@
         </GridLayout>
 
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:labelVisibilityMode="labeled"
-        app:itemTextAppearanceActive="@color/active_color"
-        android:background="@color/bottom_nav_bg"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemRippleColor="@color/ripple_color"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:menu="@menu/nav_menu" />
 
 </LinearLayout>

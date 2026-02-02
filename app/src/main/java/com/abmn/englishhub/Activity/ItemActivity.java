@@ -72,6 +72,7 @@ public class ItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getString(R.string.app_name));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
@@ -94,6 +95,12 @@ public class ItemActivity extends AppCompatActivity {
             }
         };
         countDownTimer.start();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void callAds() {

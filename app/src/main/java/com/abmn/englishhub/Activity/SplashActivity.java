@@ -79,9 +79,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void setProgressStage() {
         int progress;
-        for (progress = 1; progress <= 101; progress = progress + 1) {
+        for (progress = 1; progress <= 21; progress = progress + 1) {
             try {
-                Thread.sleep(20);
+                Thread.sleep(10);
                 setProgressBar.setProgress(progress);
             } catch (Exception e) {
                 Log.d("setProgress", Objects.requireNonNull(e.getMessage()));

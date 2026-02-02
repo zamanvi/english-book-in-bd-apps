@@ -47,7 +47,7 @@ public class ChapterActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.app_name);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         chapterRV = findViewById(R.id.chapterRV);
@@ -63,6 +63,11 @@ public class ChapterActivity extends AppCompatActivity {
         chapterRV.setLayoutManager(linearLayout);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 
     private void getBookData(String getType) {
 

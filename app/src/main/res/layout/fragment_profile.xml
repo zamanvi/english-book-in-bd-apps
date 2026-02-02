@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A2E"
+            android:layout_marginBottom="16dp"
+            tools:ignore="HardcodedText" />
+
+        <!-- Book -->
+        <LinearLayout
+            android:id="@+id/menuBook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_normal"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_book" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Book"
+                tools:ignore="HardcodedText"
+                android:textSize="16sp"
+                android:textColor="#1A1A2E" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <!-- Vocabulary -->
+        <LinearLayout
+            android:id="@+id/menuVocabulary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_normal"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_vocabulary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Vocabulary"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText"
+                android:textColor="#1A1A2E" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <!-- Share -->
+        <LinearLayout
+            android:id="@+id/menuShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_normal"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/share" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Share"
+                tools:ignore="HardcodedText"
+                android:textSize="16sp"
+                android:textColor="#1A1A2E" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <!-- Other Apps -->
+        <LinearLayout
+            android:id="@+id/menuOtherApps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_normal"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/more_app"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Other Apps"
+                tools:ignore="HardcodedText"
+                android:textSize="16sp"
+                android:textColor="#1A1A2E" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <!-- Review -->
+        <LinearLayout
+            android:id="@+id/menuReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_normal"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/review" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Review"
+                tools:ignore="HardcodedText"
+                android:textSize="16sp"
+                android:textColor="#1A1A2E" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <!-- Contact -->
+        <LinearLayout
+            android:id="@+id/menuContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_normal"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/contact" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Contact"
+                android:textSize="16sp"
+                android:textColor="#1A1A2E"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:contentDescription="@string/app_name"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
