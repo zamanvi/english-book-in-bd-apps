@@ -11,7 +11,6 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.abmn.englishhub.Activity.ItemDetailsActivity;
 import com.abmn.englishhub.Activity.SplashActivity;
 import com.abmn.englishhub.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -51,7 +50,7 @@ public class FcmService extends FirebaseMessagingService {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "abmnmenglish")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

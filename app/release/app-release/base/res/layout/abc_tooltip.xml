@@ -22,7 +22,7 @@ paddingEnd!@dimen/tooltip_horizontal_padding"((´‡„2,
 background?attr/tooltipFrameBackground"((Ô„2)
 'ÊŠŒøattr/tooltipFrameBackground0"¢
 *http://schemas.android.com/apk/res/androidtextAppearance'@style/TextAppearance.AppCompat.Tooltip"((´€„22
-0ÖƒÄø&style/TextAppearance.AppCompat.Tooltip0"}
+0ÖƒÈø&style/TextAppearance.AppCompat.Tooltip0"}
 *http://schemas.android.com/apk/res/androidlayout_margin@dimen/tooltip_margin"((ö„2 
 ‡ˆ˜ødimen/tooltip_margin0@"‘
 *http://schemas.android.com/apk/res/androidpaddingBottom@dimen/tooltip_vertical_padding"((Ù„2*
@@ -32,7 +32,7 @@ background?attr/tooltipFrameBackground"((Ô„2)
 *http://schemas.android.com/apk/res/androidmaxWidth256dp"((Ÿ‚„2:h€"H
 *http://schemas.android.com/apk/res/androidmaxLines3"((Ó‚„2:0"_
 *http://schemas.android.com/apk/res/androidid@+id/message"((Ğ„2
-¼‚ ø
+Å‚ ø
 id/message0"
 *http://schemas.android.com/apk/res/android
 paddingTop@dimen/tooltip_vertical_padding"((×„2*

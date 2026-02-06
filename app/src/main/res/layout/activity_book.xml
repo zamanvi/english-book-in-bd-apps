@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,71 +10,148 @@
 
     <include layout="@layout/lyt_toolbar" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="বইটি সংগ্রহ করতে"
-            android:textColor="@color/main_theme_color"
-            android:textSize="25sp"
-            android:layout_marginBottom="50dp"
-            tools:ignore="HardcodedText" />
+        android:layout_weight="1">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/callIB"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="call"
-                android:padding="5dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_call"
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="5dp">
+
+                <ImageView
+                    android:id="@+id/bookCover01"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:contentDescription="book cover 1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/book_cover_1"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/bookCover02"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:contentDescription="book cover 1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/book_cover_2"
+                    android:visibility="gone"
+                    tools:ignore="HardcodedText" />
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bookCoverCV01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="5dp">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:contentDescription="facebook"
+                        android:padding="5dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/book_cover_1"
+                        tools:ignore="HardcodedText" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bookCoverCV02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="5dp">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:contentDescription="youtube"
+                        android:padding="5dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/book_cover_2"
+                        tools:ignore="HardcodedText" />
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="@color/main_theme_color"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="বইটি সংগ্রহ করতে"
+                android:textSize="25sp"
                 tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:id="@+id/whatsappIB"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="whatsapp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_whatsapp"
-                tools:ignore="HardcodedText" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp">
 
-            <ImageView
-                android:id="@+id/facebookIB"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="facebook"
-                android:padding="5dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/facebook"
-                tools:ignore="HardcodedText" />
+                <ImageView
+                    android:id="@+id/callIB"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="call"
+                    android:padding="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_call"
+                    tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:id="@+id/youtubeIB"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="youtube"
-                android:padding="5dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/youtube"
-                tools:ignore="HardcodedText" />
+                <ImageView
+                    android:id="@+id/whatsappIB"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="whatsapp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_whatsapp"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/facebookIB"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="facebook"
+                    android:padding="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/facebook"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/youtubeIB"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="youtube"
+                    android:padding="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/youtube"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
     <FrameLayout
         android:id="@+id/banner_ad_container"

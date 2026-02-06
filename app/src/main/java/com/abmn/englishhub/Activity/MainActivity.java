@@ -18,7 +18,9 @@ import com.abmn.englishhub.fragment.HomeFragment;
 import com.abmn.englishhub.fragment.NoticeFragment;
 import com.abmn.englishhub.fragment.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
                     1001
             );
         }
+
+        FirebaseMessaging.getInstance()
+                .subscribeToTopic("abmnmenglish")
+                .addOnCompleteListener(task -> {
+                    Log.d("FCM", task.isSuccessful()
+                            ? "Subscribed to topic"
+                            : "Topic subscription failed");
+                });
+
 
         fragment = new HomeFragment();
 
@@ -115,4 +126,5 @@ public class MainActivity extends AppCompatActivity {
             new android.os.Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
         }
     }
+
 }

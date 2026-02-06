@@ -6,11 +6,11 @@
 *http://schemas.android.com/apk/res/androidlayout_widthwrap_content"(ô„2:0şÿÿÿÿÿÿÿÿ"a
 *http://schemas.android.com/apk/res/androidlayout_heightwrap_content"(õ„2:0şÿÿÿÿÿÿÿÿ*÷
 î	ImageView"o
-*http://schemas.android.com/apk/res/androidsrc@drawable/book_logo"(™‚„2
-€œødrawable/book_logo0"M
+*http://schemas.android.com/apk/res/androidsrc@mipmap/ic_launcher"(™‚„2
+€€¸ømipmap/ic_launcher0"M
 *http://schemas.android.com/apk/res/android	scaleTypefitXY"(‚„2:0"x
 *http://schemas.android.com/apk/res/androidcontentDescription@string/app_name"(ó„„2
-¡€Àøstring/app_name0"R
+¡€Äøstring/app_name0"R
 *http://schemas.android.com/apk/res/androidlayout_width200dp"(ô„2:h"S
 *http://schemas.android.com/apk/res/androidlayout_height180dp"(õ„2:hè9*µ
 ¬TextView"`
@@ -25,7 +25,7 @@
 paddingTop5dp"(×„2:h
 "x
 *http://schemas.android.com/apk/res/androidtext@string/author_app_name"(Ï‚„2"
- £€Àøstring/author_app_name0&*
+ £€Äøstring/author_app_name0&*
 „TextView"`
 *http://schemas.android.com/apk/res/androidlayout_widthwrap_content"!(ô„2:0şÿÿÿÿÿÿÿÿ"a
 *http://schemas.android.com/apk/res/androidlayout_heightwrap_content"!(õ„2:0şÿÿÿÿÿÿÿÿ"L
@@ -37,4 +37,4 @@ paddingTop5dp"(×„2:h
 paddingTop5dp"!(×„2:h
 "p
 *http://schemas.android.com/apk/res/androidtext@string/author_name"!(Ï‚„2
-¤€Àøstring/author_name0!&*
+¤€Äøstring/author_name0!&*

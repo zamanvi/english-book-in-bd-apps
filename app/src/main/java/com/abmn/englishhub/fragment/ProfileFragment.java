@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.BookActivity;
@@ -37,35 +37,37 @@ public class ProfileFragment extends Fragment {
 
         Activity activity = getActivity();
 
-        LinearLayout menuBook = view.findViewById(R.id.menuBook);
-        LinearLayout menuVocabulary = view.findViewById(R.id.menuVocabulary);
-        LinearLayout menuShare = view.findViewById(R.id.menuShare);
-        LinearLayout menuOtherApps = view.findViewById(R.id.menuOtherApps);
-        LinearLayout menuReview = view.findViewById(R.id.menuReview);
-        LinearLayout menuContact = view.findViewById(R.id.menuContact);
+        CardView menuBookCV = view.findViewById(R.id.menuBookCV);
+        CardView menuVocabularyCV = view.findViewById(R.id.menuVocabularyCV);
+        CardView menuShareCV = view.findViewById(R.id.menuShareCV);
+        CardView menuOtherAppsCV = view.findViewById(R.id.menuOtherAppsCV);
+        CardView menuReviewCV = view.findViewById(R.id.menuReviewCV);
+        CardView menuContactCV = view.findViewById(R.id.menuContactCV);
 
-        menuBook.setOnClickListener(v -> startActivity(new Intent(activity, BookActivity.class)));
-        menuVocabulary.setOnClickListener(v -> startActivity(new Intent(activity, VocabularyActivity.class)));
-        menuShare.setOnClickListener(v -> {
+        menuBookCV.setOnClickListener(v -> startActivity(new Intent(activity, BookActivity.class)));
+        menuVocabularyCV.setOnClickListener(v -> startActivity(new Intent(activity, VocabularyActivity.class)));
+        menuShareCV.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
+            assert activity != null;
             String shareMessage = getString(R.string.vocabulary_https_play_google_com_store_apps_details_id) + activity.getPackageName();
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            activity.startActivity(Intent.createChooser(shareIntent, "Share via"));
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
         });
-        menuOtherApps.setOnClickListener(v -> {
+        menuOtherAppsCV.setOnClickListener(v -> {
             try {
-                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=MD+,+norozzaman")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=MD+,+norozzaman")));
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(activity, "Unable to open store", Toast.LENGTH_SHORT).show();
             }
         });
-        menuReview.setOnClickListener(v -> {
+        menuReviewCV.setOnClickListener(v -> {
             try {
+                assert activity != null;
                 Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity(intent);
+                startActivity(intent);
             } catch (ActivityNotFoundException e) {
                 Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -73,7 +75,8 @@ public class ProfileFragment extends Fragment {
                 activity.startActivity(intent);
             }
         });
-        menuContact.setOnClickListener(v -> {
+        menuContactCV.setOnClickListener(v -> {
+            assert activity != null;
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("Contact Us").setMessage("norozzaman996@gmail.com").setPositiveButton("Copy", (dialog, which) -> {
                 Context context = activity.getApplicationContext(); // Use application context

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/book_logo"
+            android:src="@mipmap/ic_launcher"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:scaleType="fitXY"

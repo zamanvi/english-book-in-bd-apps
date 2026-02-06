@@ -12,7 +12,7 @@
 &ã‡˜ødimen/mtrl_switch_thumb_size0@*²
 ©group"’
 *http://schemas.android.com/apk/res/androidname$@string/mtrl_switch_thumb_group_name"(ƒ€„2/
--¶Àø#string/mtrl_switch_thumb_group_name0"·
+-¼Äø#string/mtrl_switch_thumb_group_name0"·
 *http://schemas.android.com/apk/res/androidpivotY5@integer/mtrl_switch_thumb_viewport_center_coordinate"(¶ƒ„2A
 ?¿€¤ø4integer/mtrl_switch_thumb_viewport_center_coordinate0 "·
 *http://schemas.android.com/apk/res/androidpivotX5@integer/mtrl_switch_thumb_viewport_center_coordinate"(µƒ„2A
@@ -20,6 +20,6 @@
 path"U
 *http://schemas.android.com/apk/res/android	fillColor	#ffffffff" („ˆ„2:Hÿÿÿÿ"š
 *http://schemas.android.com/apk/res/androidpathData&@string/mtrl_switch_thumb_path_pressed" (…ˆ„21
-/ºÀø%string/mtrl_switch_thumb_path_pressed0"
+/ÀÄø%string/mtrl_switch_thumb_path_pressed0"
 *http://schemas.android.com/apk/res/androidname#@string/mtrl_switch_thumb_path_name" (ƒ€„2.
-,¹Àø"string/mtrl_switch_thumb_path_name0 CL
+,¿Äø"string/mtrl_switch_thumb_path_name0 CL
