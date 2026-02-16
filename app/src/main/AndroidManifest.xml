@@ -5,11 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
         tools:ignore="AdvertisingIdPolicy" />
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".Helper.MyApplication"
@@ -22,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Library"
         tools:targetApi="31">
+        <activity
+            android:name=".Activity.SocialLinkActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -60,8 +62,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+
         <service
             android:name=".Helper.FcmService"
             android:exported="false">

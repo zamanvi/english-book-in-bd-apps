@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.abmn.englishhub.Activity.ItemDetailsActivity;
 import com.abmn.englishhub.Adapter.NoticeAdapter;
@@ -96,8 +95,6 @@ public class NoticeFragment extends Fragment {
             Intent intent = new Intent(activity, ItemDetailsActivity.class);
             intent.putExtra(Constant.FROM, noticeModel.getSlug());
             startActivity(intent);
-        }else {
-            Toast.makeText(activity, "This Notification has not any action", Toast.LENGTH_SHORT).show();
         }
     }
     private void loadMoreData() {

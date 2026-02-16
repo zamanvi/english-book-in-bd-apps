@@ -4,7 +4,7 @@
 android*http://schemas.android.com/apk/res/android	.LinearLayout"–
 *http://schemas.android.com/apk/res/android
 background#@drawable/offline_dialog_background"	(Ô„2.
-,œ‚œø"drawable/offline_dialog_background0"S
+,‚œø"drawable/offline_dialog_background0"S
 *http://schemas.android.com/apk/res/androidpaddingVertical40dp"	(¾Š„2:hP"N
 *http://schemas.android.com/apk/res/android
 paddingTop40dp"	(×„2:hP"Q
@@ -21,11 +21,11 @@ paddingTop40dp"	(×„2:hP"Q
 1ÐÄø'string/offline_dialog_image_description0"T
 *http://schemas.android.com/apk/res/android	scaleTypecenterInside"(‚„2:0"
 *http://schemas.android.com/apk/res/androidsrc*@drawable/offline_dialog_default_icon_42dp"(™‚„25
-3‚œø)drawable/offline_dialog_default_icon_42dp0"P
+3ž‚œø)drawable/offline_dialog_default_icon_42dp0"P
 *http://schemas.android.com/apk/res/androidlayout_width42dp"(ô„2:hT"Q
 *http://schemas.android.com/apk/res/androidlayout_height42dp"(õ„2:hT"y
 *http://schemas.android.com/apk/res/androidid@+id/offline_dialog_image"(Ð„2#
-!…ƒ øid/offline_dialog_image0"S
+!‡ƒ øid/offline_dialog_image0"S
 *http://schemas.android.com/apk/res/androidlayout_gravitycenter"(³„2:8D*²
 ©LinearLayout"`
 *http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
@@ -40,7 +40,7 @@ paddingTop14dp"(×„2:h*š
 *http://schemas.android.com/apk/res/android	textColor@android:color/black"(˜„2
 Œ€˜android:color/black0"w
 *http://schemas.android.com/apk/res/androidid@+id/offline_dialog_text"(Ð„2"
- †ƒ øid/offline_dialog_text0"€
+ ˆƒ øid/offline_dialog_text0"€
 *http://schemas.android.com/apk/res/androidtext@string/offline_dialog_text"(Ï‚„2&
 $ÑÄøstring/offline_dialog_text08*’
 ‰TextView"M
@@ -52,7 +52,7 @@ visibilitygone"&(Ü„2:0"L
 *http://schemas.android.com/apk/res/android	textColor@android:color/darker_gray"&(˜„2$
 "€€˜android:color/darker_gray0"Œ
 *http://schemas.android.com/apk/res/androidid"@id/offline_dialog_advertiser_name"&(Ð„2-
-+„ƒ ø!id/offline_dialog_advertiser_name0"N
++†ƒ ø!id/offline_dialog_advertiser_name0"N
 *http://schemas.android.com/apk/res/android
 paddingTop12dp"&(×„2:h"7
 *http://schemas.android.com/apk/res/androidtext(Ï‚„&>(	.

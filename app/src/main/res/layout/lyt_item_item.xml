@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="Lorem ipsum dolor sit amet,"
         android:textColor="#6E7A90"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:ignore="HardcodedText" />
 
 </androidx.cardview.widget.CardView>

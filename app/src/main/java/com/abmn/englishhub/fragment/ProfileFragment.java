@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,11 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.BookActivity;
+import com.abmn.englishhub.Activity.SocialLinkActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.R;
+
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
@@ -43,9 +47,11 @@ public class ProfileFragment extends Fragment {
         CardView menuOtherAppsCV = view.findViewById(R.id.menuOtherAppsCV);
         CardView menuReviewCV = view.findViewById(R.id.menuReviewCV);
         CardView menuContactCV = view.findViewById(R.id.menuContactCV);
+        CardView menuSocialMediaCV = view.findViewById(R.id.menuSocialMediaCV);
 
         menuBookCV.setOnClickListener(v -> startActivity(new Intent(activity, BookActivity.class)));
         menuVocabularyCV.setOnClickListener(v -> startActivity(new Intent(activity, VocabularyActivity.class)));
+        menuSocialMediaCV.setOnClickListener(v -> startActivity(new Intent(activity, SocialLinkActivity.class)));
         menuShareCV.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -58,7 +64,7 @@ public class ProfileFragment extends Fragment {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=MD+,+norozzaman")));
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(activity, "Unable to open store", Toast.LENGTH_SHORT).show();
+                Log.d("log", Objects.requireNonNull(e.getMessage()));
             }
         });
         menuReviewCV.setOnClickListener(v -> {

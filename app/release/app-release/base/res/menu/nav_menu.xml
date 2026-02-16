@@ -7,30 +7,30 @@
 *http://schemas.android.com/apk/res/androidicon@drawable/home"(‚€„2
 «œødrawable/home0"_
 *http://schemas.android.com/apk/res/androidid@+id/navHome"(Ğ„2
-ç‚ ø
+é‚ ø
 id/navHome0(*³
 ªitem"C
 *http://schemas.android.com/apk/res/androidtitle	Education(áƒ„"r
 *http://schemas.android.com/apk/res/androidicon@drawable/graduation"(‚€„2
 ªœødrawable/graduation0"i
 *http://schemas.android.com/apk/res/androidid@+id/navEducation"(Ğ„2
-æ‚ øid/navEducation0(*—
+è‚ øid/navEducation0(*—
 item"=
 *http://schemas.android.com/apk/res/androidtitleAdd(áƒ„"f
 *http://schemas.android.com/apk/res/androidicon@drawable/plus"(‚€„2
-Ÿ‚œødrawable/plus0"_
+ ‚œødrawable/plus0"_
 *http://schemas.android.com/apk/res/androidid@+id/navPlus"(Ğ„2
-é‚ ø
+ë‚ ø
 id/navPlus0(*¢
 ™item"@
 *http://schemas.android.com/apk/res/androidtitleNotice(áƒ„"j
 *http://schemas.android.com/apk/res/androidicon@drawable/notice"(‚€„2
-‚œødrawable/notice0"c
+‚œødrawable/notice0"c
 *http://schemas.android.com/apk/res/androidid@+id/navNotice"(Ğ„2
-è‚ øid/navNotice0(*§
+ê‚ øid/navNotice0(*§
 item"A
 *http://schemas.android.com/apk/res/androidtitleProfile(áƒ„"l
 *http://schemas.android.com/apk/res/androidicon@drawable/profile" (‚€„2
- ‚œødrawable/profile0"e
+¡‚œødrawable/profile0"e
 *http://schemas.android.com/apk/res/androidid@+id/navProfile" (Ğ„2
-ê‚ øid/navProfile0 (4
+ì‚ øid/navProfile0 (4

@@ -8,10 +8,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.abmn.englishhub.Helper.BannerAdManager;
 import com.abmn.englishhub.Helper.Constant;
@@ -19,7 +23,6 @@ import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
 
 public class BookActivity extends AppCompatActivity {
-
     private CardView bookCoverCV01, bookCoverCV02;
     private ImageView bookCover01, bookCover02;
     private BannerAdManager bannerAdManager;
@@ -27,7 +30,13 @@ public class BookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_book);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         define();
 

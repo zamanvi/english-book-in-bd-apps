@@ -8,7 +8,6 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -127,7 +126,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
             }else {
-                Toast.makeText(activity, "Slug not found in database", Toast.LENGTH_SHORT).show();
                 onSupportNavigateUp();
             }
         }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true);
