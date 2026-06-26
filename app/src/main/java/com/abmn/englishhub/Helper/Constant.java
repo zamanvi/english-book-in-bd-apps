@@ -22,7 +22,7 @@ public class Constant {
     public static final String AUTHORIZATION = "authorization";
     public static final String BEARER = "Bearer ";
     public static final String TOKEN = "_token";
-    public static final String PUBLIC_KEY_VALUE = "public_key=eyJpdiI6ImlGM2FHR2R6aEJLQ28wT0MxenNjcGc9PSIsInZhbHVlIjoiSlUxWVJ1dkpQOUV1ZHJvTVE4Rk9PY3hMaWNYS3ViRzdIN1FRazQ3N0ZZL1RoVTBZUG54ZnU2bExTY0JQUmNZZS9WeS9reXBGNVhlTmswOWZ5MENBOEE9PSIsIm1hYyI6IjljNWY3M2IwMWE0ZWEwYjA3MmExMjYyMjk4YjQ5ZmU3NmEwNjllNzU1MTM5ODQxYzhhMDI4YjllOTMwNDkyODEiLCJ0YWciOiIifQ";
+    public static final String PUBLIC_KEY_VALUE = "public_key=eyJpdiI6InB3bGtRS2NXT1pheEdDSi8zTjhpTWc9PSIsInZhbHVlIjoiRHBxdVMzaXVYRVFJb2dMNExSblUzeDVOQW5zV1I4WnIzZ1U5cmF0NjhHaG9iMU5WbXZYYnJ3Z0R4RXpPa3FZbEp5amRxL3dYN3d0VmhPRThadUZCamc9PSIsIm1hYyI6IjZjNDgyZjIwOGUxMzU0NjY5Zjg5ZmQ0OTJkZDEyN2RmMGM2NWMyNjNhMTRhZmZjYjRjMDc3ZjU0ZjY4ODJjNTciLCJ0YWciOiIifQ";
     public static final String CODE = "code";
     public static final String FROM = "abmn_from";
     public static final String FROM_TITLE = "abmn_from_title";
