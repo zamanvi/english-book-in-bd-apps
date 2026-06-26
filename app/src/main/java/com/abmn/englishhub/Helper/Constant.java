@@ -1,4 +1,4 @@
-﻿package com.abmn.englishhub.Helper;
+package com.abmn.englishhub.Helper;
 
 public class Constant {
     //Base Url
@@ -22,7 +22,7 @@ public class Constant {
     public static final String AUTHORIZATION = "authorization";
     public static final String BEARER = "Bearer ";
     public static final String TOKEN = "_token";
-    public static final String PUBLIC_KEY_VALUE = "public_key=eyJpdiI6Im5iZ2RlRFFhbG93aWM0czBrTEhTUVE9PSIsInZhbHVlIjoiUy9BbU9nK0t5bjNpTGNpYWxKSThJOEYzYUR3WlBDeEZEbFRmK3ZrOUwyZ2lPV3FGUXR1Yk5NWDhhMkM4bUNhWk41WnhEWEppcENGSVVvS2xuVld0QXc9PSIsIm1hYyI6ImUxMzFhZWFkYzNiYTAzNjYzNzkxNDU5MzhjZDNiNTA0Y2I5OTViYTk4OWYxYjFhYmRmNjZjNjFkNDlhNTUzNWMiLCJ0YWciOiIifQ";
+    public static final String PUBLIC_KEY_VALUE = "public_key=eyJpdiI6ImlGM2FHR2R6aEJLQ28wT0MxenNjcGc9PSIsInZhbHVlIjoiSlUxWVJ1dkpQOUV1ZHJvTVE4Rk9PY3hMaWNYS3ViRzdIN1FRazQ3N0ZZL1RoVTBZUG54ZnU2bExTY0JQUmNZZS9WeS9reXBGNVhlTmswOWZ5MENBOEE9PSIsIm1hYyI6IjljNWY3M2IwMWE0ZWEwYjA3MmExMjYyMjk4YjQ5ZmU3NmEwNjllNzU1MTM5ODQxYzhhMDI4YjllOTMwNDkyODEiLCJ0YWciOiIifQ";
     public static final String CODE = "code";
     public static final String FROM = "abmn_from";
     public static final String FROM_TITLE = "abmn_from_title";
@@ -36,4 +36,3 @@ public class Constant {
     public static final String VOICE_SPEED = "voice_speed";
     public static final String IS_TEST_ADS = "is_test_ads";
 }
-
