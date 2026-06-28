@@ -14,6 +14,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chapterRV"
         android:layout_marginTop="8dp"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/lyt_item_chapter"
         android:layout_width="match_parent"
