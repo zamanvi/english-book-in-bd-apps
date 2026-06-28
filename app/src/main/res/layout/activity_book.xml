@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_color"
     tools:context=".Activity.BookActivity">
 
     <include layout="@layout/lyt_toolbar" />
@@ -20,17 +21,50 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+            <!-- Navy header -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:elevation="10dp"
-                app:cardCornerRadius="5dp">
+                android:background="@color/colorPrimary"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&#128218; Physical Book"
+                    android:textColor="#9FA8DA"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.05"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Get the Book"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- Book Cover -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
 
                 <ImageView
                     android:id="@+id/bookCover01"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="460dp"
                     android:contentDescription="book cover 1"
                     android:scaleType="fitXY"
                     android:src="@drawable/book_cover_1"
@@ -39,8 +73,8 @@
                 <ImageView
                     android:id="@+id/bookCover02"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:contentDescription="book cover 1"
+                    android:layout_height="460dp"
+                    android:contentDescription="book cover 2"
                     android:scaleType="fitXY"
                     android:src="@drawable/book_cover_2"
                     android:visibility="gone"
@@ -48,6 +82,7 @@
 
             </androidx.cardview.widget.CardView>
 
+            <!-- Cover thumbnails -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,15 +93,15 @@
                     android:id="@+id/bookCoverCV01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="5dp">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="4dp">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:contentDescription="facebook"
-                        android:padding="5dp"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="book 1 thumb"
+                        android:padding="4dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/book_cover_1"
                         tools:ignore="HardcodedText" />
@@ -76,15 +111,15 @@
                     android:id="@+id/bookCoverCV02"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="5dp">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="4dp">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:contentDescription="youtube"
-                        android:padding="5dp"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="book 2 thumb"
+                        android:padding="4dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/book_cover_2"
                         tools:ignore="HardcodedText" />
@@ -92,62 +127,134 @@
 
             </LinearLayout>
 
-            <TextView
-                android:textColor="@color/main_theme_color"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
+            <!-- Order Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="বইটি সংগ্রহ করতে"
-                android:textSize="25sp"
-                tools:ignore="HardcodedText" />
+                android:layout_margin="16dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                <ImageView
-                    android:id="@+id/callIB"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="call"
-                    android:padding="5dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_call"
-                    tools:ignore="HardcodedText" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="বইটি সংগ্রহ করতে"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        tools:ignore="HardcodedText" />
 
-                <ImageView
-                    android:id="@+id/whatsappIB"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="whatsapp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_whatsapp"
-                    tools:ignore="HardcodedText" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:text="Contact us via any channel below"
+                        android:textColor="#9FA8DA"
+                        android:textSize="12sp"
+                        tools:ignore="HardcodedText" />
 
-                <ImageView
-                    android:id="@+id/facebookIB"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="facebook"
-                    android:padding="5dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/facebook"
-                    tools:ignore="HardcodedText" />
+                    <!-- Contact icons row -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/youtubeIB"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="youtube"
-                    android:padding="5dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/youtube"
-                    tools:ignore="HardcodedText" />
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="3dp"
+                            app:cardBackgroundColor="#E8F5E9">
 
-            </LinearLayout>
+                            <ImageView
+                                android:id="@+id/callIB"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:contentDescription="call"
+                                android:padding="12dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_call"
+                                tools:ignore="HardcodedText" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="3dp"
+                            app:cardBackgroundColor="#E8F5E9">
+
+                            <ImageView
+                                android:id="@+id/whatsappIB"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:contentDescription="whatsapp"
+                                android:padding="10dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_whatsapp"
+                                tools:ignore="HardcodedText" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="3dp"
+                            app:cardBackgroundColor="#E3F2FD">
+
+                            <ImageView
+                                android:id="@+id/facebookIB"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:contentDescription="facebook"
+                                android:padding="10dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/facebook"
+                                tools:ignore="HardcodedText" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="3dp"
+                            app:cardBackgroundColor="#FCE4EC">
+
+                            <ImageView
+                                android:id="@+id/youtubeIB"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:contentDescription="youtube"
+                                android:padding="10dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/youtube"
+                                tools:ignore="HardcodedText" />
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
 
         </LinearLayout>
 
