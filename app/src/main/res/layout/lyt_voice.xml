@@ -4,7 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/bg_color">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="Select Speed"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
 
     <RadioGroup
         android:id="@+id/radioGroupVoiceSpeed"
@@ -18,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Slower"
+            android:textColor="@color/colorPrimary"
             tools:ignore="HardcodedText" />
 
         <RadioButton
@@ -25,21 +37,29 @@
             android:id="@+id/radioSlow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Slow" />
+            android:layout_marginBottom="8dp"
+            android:text="Slow"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp" />
 
         <RadioButton
             tools:ignore="HardcodedText"
             android:id="@+id/radioNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Normal" />
+            android:layout_marginBottom="8dp"
+            android:text="Normal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp" />
 
         <RadioButton
             tools:ignore="HardcodedText"
             android:id="@+id/radioFast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fast" />
+            android:text="Fast"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp" />
 
         <RadioButton
             android:visibility="gone"
@@ -47,7 +67,8 @@
             android:id="@+id/radioFaster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Faster" />
+            android:text="Faster"
+            android:textColor="@color/colorPrimary" />
 
     </RadioGroup>
 </LinearLayout>
