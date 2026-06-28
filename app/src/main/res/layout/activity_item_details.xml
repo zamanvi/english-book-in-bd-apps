@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_color"
     tools:context=".Activity.ItemDetailsActivity">
 
     <include layout="@layout/lyt_toolbar" />
 
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:id="@+id/titleTV"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:textSize="20sp"
-        android:padding="5dp"
-        android:textStyle="bold"
-        android:textColor="@color/active_color"
-        android:background="@color/bottom_nav_bg"/>
+        android:layout_margin="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:cardBackgroundColor="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/titleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="14dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFD700" />
+
+    </androidx.cardview.widget.CardView>
 
     <WebView
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:visibility="visible"
         android:id="@+id/detailsWV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         tools:ignore="WebViewLayout" />
 
 </LinearLayout>
