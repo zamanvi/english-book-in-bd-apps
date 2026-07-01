@@ -79,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance()
                 .subscribeToTopic("abmnmenglish")
-                .addOnCompleteListener(task -> Log.d("FCM", task.isSuccessful()
-                        ? "Subscribed to topic"
-                        : "Topic subscription failed"));
+                .addOnCompleteListener(task -> {});
 
         checkNewVersion();
 
@@ -117,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkNewVersion() {
         ApiConfig.RequestToVolley((result, response, error) -> {
-            Log.d("responseAppVersion", response);
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String app_version = jsonObject.getString("app_version");

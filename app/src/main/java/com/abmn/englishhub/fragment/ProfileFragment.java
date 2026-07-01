@@ -64,7 +64,7 @@ public class ProfileFragment extends Fragment {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=MD+,+norozzaman")));
             } catch (ActivityNotFoundException e) {
-                Log.d("log", Objects.requireNonNull(e.getMessage()));
+                // ignored
             }
         });
         menuReviewCV.setOnClickListener(v -> {

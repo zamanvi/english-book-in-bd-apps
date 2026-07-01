@@ -112,11 +112,8 @@ public class NoticeFragment extends Fragment {
         String url = Constant.ROOT_API + "notices/grammar?page=" + page;
         String tag = "NoticeModel";
 
-        Log.d("url", url);
-
         ApiConfig.RequestToVolley((result, response, error) -> {
             try {
-                Log.d("Notice", response);
                 if (result) {
                     JSONObject chaptersObject = new JSONObject(response).getJSONObject("notices");
                     JSONArray dataArray = chaptersObject.getJSONArray(Constant.DATA);
@@ -138,7 +135,7 @@ public class NoticeFragment extends Fragment {
                     Objects.requireNonNull(noticeRV.getAdapter()).notifyDataSetChanged();
                 }
             } catch (Exception e) {
-                Log.d(tag + "_exception", Objects.requireNonNull(e.getMessage()));
+                // ignored
             } finally {
                 isLoading = false;
             }

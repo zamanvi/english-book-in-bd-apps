@@ -56,7 +56,6 @@ public class InterstitialAdManager {
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                Log.d("InterstitialAd", "Failed to load: " + loadAdError.getMessage());
                 isAdLoading = false;
             }
         });

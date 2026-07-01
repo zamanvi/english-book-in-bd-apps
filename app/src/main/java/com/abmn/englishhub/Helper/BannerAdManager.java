@@ -1,7 +1,6 @@
 package com.abmn.englishhub.Helper;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -12,11 +11,8 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 public class BannerAdManager {
-    private static final String TAG = "BannerAdManager";
-
     public static void loadBannerAd(Activity activity, FrameLayout adContainer, String adUnitId) {
         if (adContainer == null || adUnitId == null || adUnitId.isEmpty()) {
-            Log.w(TAG, "Invalid container or ad unit ID");
             return;
         }
 
@@ -32,14 +28,10 @@ public class BannerAdManager {
 
         adView.setAdListener(new AdListener() {
             @Override
-            public void onAdLoaded() {
-                Log.d(TAG, "Banner ad loaded.");
-            }
+            public void onAdLoaded() {}
 
             @Override
-            public void onAdFailedToLoad(@NonNull com.google.android.gms.ads.LoadAdError adError) {
-                Log.e(TAG, "Banner ad failed: " + adError.getMessage());
-            }
+            public void onAdFailedToLoad(@NonNull com.google.android.gms.ads.LoadAdError adError) {}
         });
     }
 }

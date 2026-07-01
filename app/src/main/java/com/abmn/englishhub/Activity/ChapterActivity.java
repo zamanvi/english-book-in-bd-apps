@@ -82,7 +82,6 @@ public class ChapterActivity extends AppCompatActivity {
     private void getBookData(String getType) {
 
         ApiConfig.RequestToVolley((result, response, error) -> {
-            Log.d("response", response);
             try {
                 JSONObject bookObject = new JSONObject(response);
                 JSONObject books = bookObject.getJSONObject("books");
@@ -100,7 +99,6 @@ public class ChapterActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data, String getType) {
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
-            Log.d("chapterResponse", chapterResponse);
             try {
                 JSONObject jsonObject = new JSONObject(chapterResponse);
                 JSONObject chapters = jsonObject.getJSONObject("chapters");

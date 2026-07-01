@@ -172,8 +172,6 @@ public class LessonActivity extends AppCompatActivity {
         String url = Constant.ROOT_API2 + Constant.LESSONS + "/" + getChapterId + "?page=" + page;
         String tag = "LessonActivity";
 
-        Log.d("url", url);
-
         ApiConfig.RequestToVolley((result, response, error) -> {
             try {
                 if (result) {
@@ -184,9 +182,6 @@ public class LessonActivity extends AppCompatActivity {
                         JSONObject lesson = dataArray.getJSONObject(i);
                         int id = lesson.getInt("id");
                         String title = lesson.getString("title");
-//                        String plan = lesson.getString("plan");
-//                        String plan_id = lesson.getString("plan_id");
-//                        String chapter_type = lesson.getString("chapter_type");
                         String chapter_id = lesson.getString("chapter_id");
                         boolean status = lesson.getBoolean("status");
                         String created_at = lesson.getString("created_at");
@@ -201,7 +196,7 @@ public class LessonActivity extends AppCompatActivity {
                     Objects.requireNonNull(lessonRV.getAdapter()).notifyDataSetChanged();
                 }
             } catch (Exception e) {
-                Log.d(tag + "_exception", Objects.requireNonNull(e.getMessage()));
+                // ignored
             } finally {
                 isLoading = false;
             }

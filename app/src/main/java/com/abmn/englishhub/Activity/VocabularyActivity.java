@@ -157,7 +157,6 @@ public class VocabularyActivity extends AppCompatActivity {
         String url = Constant.ROOT_API2 + Constant.CHAPTERS + "?page=" + page;
         String tag = "VocabularyActivity";
         ApiConfig.RequestToVolley((result, response, error) -> {
-            Log.d("response", response);
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 if (result) {
@@ -183,7 +182,7 @@ public class VocabularyActivity extends AppCompatActivity {
                     Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
                 }
             } catch (Exception e) {
-                Log.d(tag + "_exception", Objects.requireNonNull(e.getMessage()));
+                // ignored
             } finally {
                 isLoading = false;
             }

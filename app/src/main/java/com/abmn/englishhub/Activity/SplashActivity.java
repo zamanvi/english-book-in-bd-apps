@@ -135,7 +135,7 @@ public class SplashActivity extends AppCompatActivity {
                 Thread.sleep(10);
                 setProgressBar.setProgress(progress);
             } catch (Exception e) {
-                Log.d("setProgress", Objects.requireNonNull(e.getMessage()));
+                // ignored
             }
         }
     }

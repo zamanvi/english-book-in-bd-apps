@@ -136,25 +136,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 meaningTV.getPaint().setMaskFilter(null);
             }
             meaningTV.invalidate();
-//            meaningTV.setOnClickListener(v -> {
-//                if (meaningTV.getPaint().getMaskFilter() == null) {
-//                    meaningTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//                    meaningTV.getPaint().setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.NORMAL));
-//                } else {
-//                    meaningTV.getPaint().setMaskFilter(null);
-//                }
-//                meaningTV.invalidate(); // Refresh the text view
-//            });
 
             wordTV.setOnClickListener(v -> {
                 play(wordTV.getContext(), model.getWord(), wordTV);
-//                if (wordTV.getPaint().getMaskFilter() == null) {
-//                    wordTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//                    wordTV.getPaint().setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.NORMAL));
-//                } else {
-//                    wordTV.getPaint().setMaskFilter(null);
-//                }
-//                wordTV.invalidate();
             });
             synonymsTV.setOnClickListener(v -> play(synonymsTV.getContext(), model.getSynonyms(), synonymsTV));
             antonymsTV.setOnClickListener(v -> play(antonymsTV.getContext(), model.getAntonyms(), antonymsTV));

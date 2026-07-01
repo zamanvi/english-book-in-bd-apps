@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
-import android.util.Log;
-
 import com.abmn.utility.Core.Config;
-
-import java.util.Objects;
 
 public class MyApplication extends Application {
 
@@ -25,10 +21,9 @@ public class MyApplication extends Application {
         String version = "";
         try {
             PackageInfo pInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-            version = pInfo.versionName; // Get version number
-            Log.d("AppVersion", "Version: " + version);
+            version = pInfo.versionName;
         } catch (Exception e) {
-            Log.d("AppVersion", Objects.requireNonNull(e.getMessage()));
+            // ignored
         }
         return version;
     }

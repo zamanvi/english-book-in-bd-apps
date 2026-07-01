@@ -1,8 +1,6 @@
 package com.abmn.englishhub.Helper;
 
 import android.app.Activity;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.abmn.utility.UConfig;
@@ -47,7 +45,6 @@ public class ApiConfig {
                     try {
                         JSONObject success = new JSONObject(response).getJSONObject(Constant.SUCCESS);
                         if (success.getBoolean(Constant.STATUS)){
-                            Log.d("abmn_message-success", success.getString(Constant.MESSAGE));
                             JSONObject data = success.getJSONObject(Constant.DATA);
                             result.onResponse(true, String.valueOf(data), "");
                         }else {
@@ -56,7 +53,6 @@ public class ApiConfig {
                                 JSONObject error = jsonObject.getJSONObject(Constant.ERROR);
                                 String message = error.getString(Constant.MESSAGE);
                                 int code = error.getInt(Constant.CODE);
-                                Log.d("abmn_message-error", message + ", code: " + code);
                                 result.onResponse(false, "", message);
                             }
                         }
@@ -79,13 +75,11 @@ public class ApiConfig {
                 params1.put("x-api-key", "app");
                 params1.put("Content-Type", Constant.APPLICATION_JSON);
                 params1.put(Constant.AUTHORIZATION, Constant.BEARER + uConfig.getData(Constant.TOKEN));
-//                Log.d("srHeaders", params1 + ", " + params + ", " + finalUrl);
                 return params1;
             }
             @NonNull
             @Override
             protected Map<String, String> getParams() {
-//                Log.d("srParams", params + ", " + finalUrl + ", " + getHeaders());
                 return params;
             }
 

@@ -299,7 +299,6 @@ public class WordActivity extends AppCompatActivity {
         String tag = "WordActivity";
         try {
             ApiConfig.RequestToVolley((result, response, error) -> {
-                Log.d("response: ", response);
                 try {
                     if (result) {
                         JSONObject chaptersObject = new JSONObject(response).getJSONObject(Constant.WORDS);
@@ -344,13 +343,13 @@ public class WordActivity extends AppCompatActivity {
                         Objects.requireNonNull(wordRV.getAdapter()).notifyDataSetChanged();
                     }
                 } catch (Exception e) {
-                    Log.d(tag + "_exception", Objects.requireNonNull(e.getMessage()));
+                    // ignored
                 } finally {
                     isLoading = false;
                 }
             }, Request.Method.GET, activity, url, new HashMap<>(), true);
         } catch (Exception e) {
-            Log.d("WordActivityTry", Objects.requireNonNull(e.getMessage()));
+            // ignored
         }
     }
 
