@@ -78,6 +78,9 @@ public class ApiConfig {
                     if (networkResponse != null && networkResponse.data != null) {
                         String errorResponse = new String(networkResponse.data);
                         result.onResponse(false, errorResponse, "");
+                    } else {
+                        // Network timeout / no connection — must still fire callback
+                        result.onResponse(false, "", "");
                     }
                 }) {
             @Override
@@ -100,7 +103,7 @@ public class ApiConfig {
                 return super.parseNetworkResponse(response);
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(8000, 0, 0));
         queue.add(stringRequest);
     }
 
