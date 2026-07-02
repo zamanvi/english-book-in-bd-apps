@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.MyApplication;
+import com.abmn.englishhub.Helper.StreakReminderReceiver;
 import com.abmn.englishhub.R;
 
 import androidx.activity.EdgeToEdge;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance()
                 .subscribeToTopic("abmnmenglish")
                 .addOnCompleteListener(task -> {});
+
+        // Schedule daily 8pm streak reminder if not already played today
+        StreakReminderReceiver.schedule(this);
 
         checkNewVersion();
 

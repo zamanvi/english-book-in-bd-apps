@@ -1,12 +1,14 @@
 package com.abmn.englishhub.Helper;
 
 import android.app.Activity;
+import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.abmn.utility.UConfig;
 import com.abmn.utility.UI.ProgressDisplay;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -19,6 +21,16 @@ import java.util.Map;
 
 public class ApiConfig {
 
+    // Singleton queue — avoids creating a new RequestQueue on every API call
+    private static RequestQueue requestQueue;
+
+    private static RequestQueue getQueue(Context context) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+        }
+        return requestQueue;
+    }
+
     public static void RequestToVolley(VolleyCallback result, int method, Activity activity, String url, Map<String, String> params, boolean isProgress) {
         UConfig uConfig = new UConfig(activity);
         if (!uConfig.isConnected()){
@@ -30,7 +42,7 @@ public class ApiConfig {
         else
             progressDisplay.hideProgress();
 
-        RequestQueue queue = Volley.newRequestQueue(activity);
+        RequestQueue queue = getQueue(activity);
         String m_url = url;
         if (m_url.contains("?")){
             m_url = m_url + "&" + Constant.PUBLIC_KEY_VALUE;
@@ -90,5 +102,63 @@ public class ApiConfig {
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
         queue.add(stringRequest);
+    }
+
+    // ── Simple GET — for game public endpoints (x-api-key: app) ──
+
+    public interface SimpleCallback {
+        void onSuccess(String response);
+    }
+
+    public interface ErrorCallback {
+        void onError(Exception error);
+    }
+
+    public static void getRequest(Context context, String url,
+                                  SimpleCallback onSuccess, ErrorCallback onError) {
+        rawRequest(context, Request.Method.GET, url, null, onSuccess, onError);
+    }
+
+    public static void postRequest(Context context, String url, JSONObject body,
+                                   SimpleCallback onSuccess, ErrorCallback onError) {
+        rawRequest(context, Request.Method.POST, url, body, onSuccess, onError);
+    }
+
+    private static void rawRequest(Context context, int method, String url,
+                                   JSONObject body,
+                                   SimpleCallback onSuccess, ErrorCallback onError) {
+        RequestQueue queue = getQueue(context);
+        String finalUrl = url.contains("?")
+                ? url + "&" + Constant.PUBLIC_KEY_VALUE
+                : url + "?" + Constant.PUBLIC_KEY_VALUE;
+
+        final String bodyStr = body != null ? body.toString() : null;
+
+        StringRequest req = new StringRequest(method, finalUrl,
+                response -> { if (onSuccess != null) onSuccess.onSuccess(response); },
+                error -> { if (onError != null) onError.onError(error); }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> h = new HashMap<>();
+                h.put("Accept", "application/json");
+                h.put("Content-Type", "application/json");
+                h.put("x-api-key", "app");
+                return h;
+            }
+
+            @Override
+            public byte[] getBody() {
+                return bodyStr != null ? bodyStr.getBytes() : null;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        req.setRetryPolicy(new DefaultRetryPolicy(15000, 1, 1.0f));
+        queue.add(req);
     }
 }

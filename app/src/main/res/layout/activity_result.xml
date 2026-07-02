@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_deep"
+    tools:context=".Activity.ResultActivity">
+
+    <!-- ── Scrollable content ────────────────────────────────── -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomActions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="16dp">
+
+            <!-- ── Result emoji / grade ───────────────────── -->
+            <TextView
+                android:id="@+id/resultEmojiTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏆"
+                android:textSize="60sp"
+                android:layout_marginBottom="10dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/resultGradeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excellent!"
+                android:textColor="@color/text_primary"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/resultSubtitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You're on fire today"
+                android:textColor="@color/text_inactive"
+                android:textSize="13sp"
+                android:layout_marginBottom="32dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- ── Score ring card ────────────────────────── -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="24dp">
+
+                    <!-- Score fraction -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/correctCountTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="8"
+                            android:textColor="@color/indigo"
+                            android:textSize="52sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / "
+                            android:textColor="@color/text_muted"
+                            android:textSize="28sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/totalCountTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="সঠিক উত্তর"
+                        android:textColor="@color/text_inactive"
+                        android:textSize="11sp"
+                        android:layout_marginBottom="20dp"
+                        tools:ignore="HardcodedText" />
+
+                    <!-- Score progress bar -->
+                    <ProgressBar
+                        android:id="@+id/scoreBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp"
+                        android:progressDrawable="@drawable/progress_bar_indigo"
+                        android:max="100"
+                        android:progress="0" />
+
+                    <TextView
+                        android:id="@+id/scorePercentTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="80%"
+                        android:textColor="@color/indigo"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ── Stats row: XP / Streak / Accuracy ─────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="14dp">
+
+                <!-- XP earned -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    app:cardBackgroundColor="@color/bg_card"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="14dp">
+                        <TextView
+                            android:id="@+id/xpEarnedBigTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+8"
+                            android:textColor="@color/indigo"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⚡ XP Earned"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Streak -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    app:cardBackgroundColor="@color/bg_card"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="14dp">
+                        <TextView
+                            android:id="@+id/streakResultTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🔥 3"
+                            android:textColor="@color/coral"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="দিনের Streak"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Accuracy -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    app:cardBackgroundColor="@color/bg_card"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="14dp">
+                        <TextView
+                            android:id="@+id/accuracyTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="80%"
+                            android:textColor="@color/teal"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🎯 Accuracy"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!-- ── Rank card (shows after XP submitted) ───── -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/rankCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/gold_dim"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🏅"
+                        android:textSize="20sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="লিডারবোর্ডে তোমার অবস্থান"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:layout_marginStart="10dp"
+                        tools:ignore="HardcodedText" />
+                    <TextView
+                        android:id="@+id/newRankTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#12"
+                        android:textColor="@color/gold"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- ── Bottom action buttons (pinned) ────────────────────── -->
+    <LinearLayout
+        android:id="@+id/bottomActions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="32dp"
+        android:paddingTop="12dp"
+        android:background="@color/bg_deep"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/playAgainBtn"
+            style="@style/btn_primary"
+            android:text="আবার খেলো ⚡"
+            tools:ignore="HardcodedText" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/homeBtn"
+            style="@style/btn_outline"
+            android:layout_marginTop="10dp"
+            android:text="হোমে ফিরে যাও"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

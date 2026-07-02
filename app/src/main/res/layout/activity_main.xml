@@ -22,10 +22,11 @@
         android:layout_height="wrap_content"
         app:labelVisibilityMode="labeled"
         app:itemTextAppearanceActive="@color/active_color"
-        android:background="@color/bottom_nav_bg"
+        android:background="@color/bg_card"
         app:itemIconTint="@color/bottom_nav_selector"
         app:itemRippleColor="@color/ripple_color"
         app:itemTextColor="@color/bottom_nav_selector"
+        app:elevation="8dp"
         app:menu="@menu/nav_menu" />
 
 </LinearLayout>

@@ -66,12 +66,14 @@
 # VOLLEY
 ############################################
 
+-keep class com.android.volley.** { *; }
 -dontwarn com.android.volley.**
 
 ############################################
 # TEXT TO SPEECH
 ############################################
 
+-keep class android.speech.tts.** { *; }
 -dontwarn android.speech.tts.**
 
 ############################################

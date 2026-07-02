@@ -2,11 +2,26 @@ package com.abmn.englishhub.Helper;
 
 public class Constant {
     //Base Url
-    public static final String ROOT_DOMAIN = "https://red-rose-academy-backend-laravel-production.up.railway.app/";
+    public static final String ROOT_DOMAIN = "https://backend.masterenglishbook.com/";
+    public static final String ROOT_DOMAIN_FALLBACK = "https://red-rose-academy-backend-laravel-production.up.railway.app/";
     public static final String API = "api/v2/app/";
     public static final String API2 = "api/";
     public static final String ROOT_API = ROOT_DOMAIN + API;
     public static final String ROOT_API2 = ROOT_DOMAIN + API2 + "grammer/";
+    public static final String ROOT_API_GAME = ROOT_DOMAIN + API2 + "game/";
+
+    // Game API endpoints
+    public static final String GAME_DAILY_WORD = ROOT_API_GAME + "daily-word";
+    public static final String GAME_QUIZ = ROOT_API_GAME + "quiz/";
+    public static final String GAME_LEADERBOARD = ROOT_API_GAME + "leaderboard";
+    public static final String GAME_XP = ROOT_API + "game/xp";
+    public static final String GAME_STREAK = ROOT_API + "game/streak";
+    public static final String GAME_STREAK_UPDATE = ROOT_API + "game/streak/update";
+
+    // Grammar API endpoints
+    public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
+    public static final String GRAMMAR_LESSONS  = ROOT_API2 + "lessons/";
+    public static final String GRAMMAR_WORDS    = ROOT_API2 + "words/";
 
     //API path
     public static final String BOOK_API = ROOT_API + "book/index";
@@ -35,4 +50,20 @@ public class Constant {
     public static final String IS_SET_VOICE_SPEED = "is_set_voice_speed";
     public static final String VOICE_SPEED = "voice_speed";
     public static final String IS_TEST_ADS = "is_test_ads";
+
+    // Game / user prefs
+    public static final String STREAK_DAYS        = "streak_days";
+    public static final String TOTAL_XP           = "total_xp";
+    public static final String USER_RANK          = "user_rank";
+    public static final String USER_NAME          = "user_name";
+    public static final String LAST_PLAYED_DATE   = "last_played_date";
+    public static final String OPENED_LESSONS_PFX = "opened_lessons_";
+
+    // Shared date format — used by ResultActivity + StreakReminderReceiver
+    public static String todayString() {
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        return c.get(java.util.Calendar.YEAR) + "-"
+                + (c.get(java.util.Calendar.MONTH) + 1) + "-"
+                + c.get(java.util.Calendar.DAY_OF_MONTH);
+    }
 }

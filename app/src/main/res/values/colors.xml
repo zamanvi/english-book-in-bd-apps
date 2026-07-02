@@ -1,46 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ── Core backgrounds ─────────────────────────────────── -->
+    <color name="bg_deep">#07081A</color>
+    <color name="bg_card">#0C0E26</color>
+    <color name="bg_elevated">#191B40</color>
+    <color name="bg_active">#252860</color>
+    <color name="bg_stroke">#0F1030</color>
+
+    <!-- ── Brand colors ─────────────────────────────────────── -->
+    <color name="indigo">#8B7FFF</color>
+    <color name="indigo_deep">#6C5FF5</color>
+    <color name="indigo_dim">#8B7FFF1A</color>
+    <color name="coral">#FF6B4A</color>
+    <color name="coral_dim">#FF6B4A14</color>
+    <color name="teal">#00E8B8</color>
+    <color name="teal_dim">#00E8B814</color>
+    <color name="gold">#FFD438</color>
+    <color name="gold_dim">#FFD43814</color>
+    <color name="red_wrong">#FF3F6C</color>
+    <color name="red_wrong_dim">#FF3F6C14</color>
+
+    <!-- ── Text colors ──────────────────────────────────────── -->
+    <color name="text_primary">#DDE0FF</color>
+    <color name="text_secondary">#9098C0</color>
+    <color name="text_muted">#6870A8</color>
+    <color name="text_inactive">#5A6090</color>
+
+    <!-- ── Legacy / compat names ─────────────────────────────── -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-    <!-- Premium Navy + Gold Theme -->
-    <color name="toolbar">#1A237E</color>
-    <color name="main_theme_color">#1A237E</color>
-    <color name="selected_bg">#FFD700</color>
-    <color name="unselected_bg">#FFFFFF</color>
-
-    <color name="colorPrimary">#1A237E</color>
-    <color name="colorPrimaryVariant">#0D1757</color>
-    <color name="colorPrimaryDark">#0D1757</color>
-    <color name="colorSecondary">#FFD700</color>
+    <color name="colorPrimary">#8B7FFF</color>
+    <color name="colorPrimaryVariant">#6C5FF5</color>
+    <color name="colorPrimaryDark">#07081A</color>
+    <color name="colorSecondary">#FFD438</color>
     <color name="colorSecondaryDark">#FFC200</color>
-    <color name="colorAccent">#FFD700</color>
-    <color name="colorPrimaryLight">#283593</color>
-
-    <color name="bg_color">#F5F7FA</color>
-    <color name="gray_blue">#5C6BC0</color>
-    <color name="dark_gray">#212121</color>
-    <color name="light_gray">#E8EAF6</color>
-    <color name="green">#00897B</color>
-    <color name="profile_bar">#0D1757</color>
-    <color name="event_color">#80FFD700</color>
-
-    <!-- Chapter Cards - Deep Blue gradient feel -->
-    <color name="chapterBack">#283593</color>
-    <color name="chapterLayout">#0D1757</color>
-    <color name="chapterText">#FFFFFF</color>
-
-    <!-- Lesson Cards - Indigo -->
-    <color name="lessonBack">#3949AB</color>
-    <color name="lessonLayout">#1A237E</color>
-    <color name="lessonText">#FFFFFF</color>
-
-    <color name="toolbarColor">#1A237E</color>
-
-    <!-- Bottom Navigation -->
-    <color name="bottom_nav_bg">#0D1757</color>
-    <color name="active_color">#FFD700</color>
-    <color name="inactive_color">#9FA8DA</color>
-    <color name="ripple_color">#33FFD700</color>
+    <color name="colorAccent">#8B7FFF</color>
+    <color name="bg_color">#07081A</color>
+    <color name="toolbar">#07081A</color>
+    <color name="toolbarColor">#07081A</color>
+    <color name="main_theme_color">#8B7FFF</color>
+    <color name="selected_bg">#8B7FFF</color>
+    <color name="unselected_bg">#0C0E26</color>
+    <color name="bottom_nav_bg">#07081A</color>
+    <color name="active_color">#8B7FFF</color>
+    <color name="inactive_color">#2E3060</color>
+    <color name="ripple_color">#338B7FFF</color>
+    <color name="chapterBack">#0C0E26</color>
+    <color name="chapterLayout">#07081A</color>
+    <color name="chapterText">#DDE0FF</color>
+    <color name="lessonBack">#191B40</color>
+    <color name="lessonLayout">#0C0E26</color>
+    <color name="lessonText">#DDE0FF</color>
+    <color name="profile_bar">#07081A</color>
+    <color name="gray_blue">#9098C0</color>
+    <color name="dark_gray">#DDE0FF</color>
+    <color name="light_gray">#0F1030</color>
+    <color name="green">#00E8B8</color>
+    <color name="event_color">#33FFD438</color>
 
 </resources>

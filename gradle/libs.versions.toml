@@ -16,6 +16,7 @@ texttospeech = "1.0.4"
 volley = "1.2.1"
 googleGmsGoogleServices = "4.4.2"
 firebaseMessaging = "24.1.1"
+recyclerview = "1.4.0"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -33,6 +34,7 @@ utility = { module = "com.github.mdnayeemsarker:Utility", version.ref = "utility
 texttospeech = { module = "com.github.mdnayeemsarker:TextToSpeech", version.ref = "texttospeech" }
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

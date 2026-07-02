@@ -1,55 +1,295 @@
 package com.abmn.englishhub.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.abmn.englishhub.Activity.ChapterActivity;
-import com.abmn.englishhub.Activity.VocabularyActivity;
-import com.abmn.englishhub.R;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
+import com.abmn.englishhub.Activity.ChapterActivity;
+import com.abmn.englishhub.Activity.LeaderboardActivity;
+import com.abmn.englishhub.Activity.QuizActivity;
+import com.abmn.englishhub.Activity.VocabularyActivity;
+import com.abmn.englishhub.Helper.ApiConfig;
+import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.R;
+import com.abmn.utility.UConfig;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
     private Activity activity;
+
+    // Word of day
+    private TextView wordOfDayTV, wordMeaningTV;
+    private CardView ttsBtn;
+    private String currentWord = "";
+
+    // Stats
+    private TextView totalXpTV, streakCountTV, rankTV, streakTV, greetingNameTV;
+
+    // Continue learning
+    private TextView lessonCountTV, continueLessonTV, lessonProgressTV;
+    private ProgressBar lessonProgress;
+
+    // Quick actions
+    private CardView quickQuizBtn, leaderboardBtn;
+
+    // TTS engine
+    private TextToSpeech tts;
+    private boolean ttsReady = false;
+
+    // Last lesson id for Quick Quiz
+    private int lastLessonId = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        define(view);
-
+        activity = getActivity();
+        bindViews(view);
+        initTts();
+        setupClickListeners();
+        loadUserStats();
+        loadDailyWord();
+        loadGrammarProgress();
         return view;
     }
 
-    private void define(View view) {
+    // ── View binding ─────────────────────────────────────────────
 
-        activity = getActivity();
+    private void bindViews(View view) {
+        // Time-aware greeting
+        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        String timeGreeting = hour < 12 ? "Good morning ☀️"
+                : hour < 17 ? "Good afternoon 👋"
+                : "Good evening 🌙";
+        ((android.widget.TextView) view.findViewById(R.id.greetingTimeTV)).setText(timeGreeting);
 
-        TextView grammarTV = view.findViewById(R.id.grammarTV);
-        TextView dailyVocabularyTV = view.findViewById(R.id.dailyVocabularyTV);
-        TextView writingAndReadingTV = view.findViewById(R.id.writingAndReadingTV);
-        LinearLayout grammarLL = view.findViewById(R.id.grammarLL);
-        LinearLayout dailyVocabularyLL = view.findViewById(R.id.dailyVocabularyLL);
-        LinearLayout writingAndReadingLL = view.findViewById(R.id.writingAndReadingLL);
-        grammarTV.setOnClickListener(v -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
-        dailyVocabularyTV.setOnClickListener(v -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
-        writingAndReadingTV.setOnClickListener(v -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
-        grammarLL.setOnClickListener(v -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
-        dailyVocabularyLL.setOnClickListener(v -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
-        writingAndReadingLL.setOnClickListener(v -> startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
+        greetingNameTV  = view.findViewById(R.id.greetingNameTV);
+        streakTV        = view.findViewById(R.id.streakTV);
+        totalXpTV       = view.findViewById(R.id.totalXpTV);
+        streakCountTV   = view.findViewById(R.id.streakCountTV);
+        rankTV          = view.findViewById(R.id.rankTV);
+        wordOfDayTV     = view.findViewById(R.id.wordOfDayTV);
+        wordMeaningTV   = view.findViewById(R.id.wordMeaningTV);
+        ttsBtn          = view.findViewById(R.id.ttsBtn);
+        lessonCountTV   = view.findViewById(R.id.lessonCountTV);
+        continueLessonTV  = view.findViewById(R.id.continueLessonTV);
+        lessonProgress    = view.findViewById(R.id.lessonProgress);
+        lessonProgressTV  = view.findViewById(R.id.lessonProgressTV);
+        quickQuizBtn    = view.findViewById(R.id.quickQuizBtn);
+        leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
 
-        TextView vocabularyTV = view.findViewById(R.id.vocabularyTV);
-        LinearLayout vocabularyLL = view.findViewById(R.id.vocabularyLL);
-        vocabularyTV.setOnClickListener(v -> startActivity(new Intent(activity, VocabularyActivity.class)));
-        vocabularyLL.setOnClickListener(v -> startActivity(new Intent(activity, VocabularyActivity.class)));
+        // Category cards
+        view.findViewById(R.id.vocabularyLL).setOnClickListener(v ->
+                startActivity(new Intent(activity, VocabularyActivity.class)));
+        view.findViewById(R.id.grammarLL).setOnClickListener(v ->
+                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
+        view.findViewById(R.id.dailyVocabularyLL).setOnClickListener(v ->
+                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
+        view.findViewById(R.id.writingAndReadingLL).setOnClickListener(v ->
+                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
+    }
+
+    // ── Click listeners ──────────────────────────────────────────
+
+    private void setupClickListeners() {
+        quickQuizBtn.setOnClickListener(v ->
+                startActivity(new Intent(activity, QuizActivity.class)
+                        .putExtra("lesson_id", lastLessonId)));
+
+        leaderboardBtn.setOnClickListener(v ->
+                startActivity(new Intent(activity, LeaderboardActivity.class)));
+
+        ttsBtn.setOnClickListener(v -> speakWord());
+    }
+
+    // ── TTS ──────────────────────────────────────────────────────
+
+    private void initTts() {
+        tts = new TextToSpeech(activity, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(Locale.US);
+                ttsReady = true;
+            }
+        });
+    }
+
+    private void speakWord() {
+        if (!ttsReady || currentWord.isEmpty()) return;
+        tts.speak(currentWord, TextToSpeech.QUEUE_FLUSH, null, "word_tts");
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+            tts = null;
+        }
+        super.onDestroyView();
+    }
+
+    // ── User stats ────────────────────────────────────────────────
+
+    private void loadUserStats() {
+        UConfig uConfig = new UConfig(activity);
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+
+        String name = uConfig.getData("name");
+        if (name != null && !name.isEmpty()) {
+            greetingNameTV.setText("Hey, " + name + " 👋");
+        }
+
+        int xp     = prefs.getInt(Constant.TOTAL_XP, 0);
+        int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
+        int rank   = prefs.getInt(Constant.USER_RANK, 0);
+
+        totalXpTV.setText(String.valueOf(xp));
+        streakCountTV.setText("🔥 " + streak);
+        rankTV.setText(rank > 0 ? "#" + rank : "—");
+        streakTV.setText("🔥 " + streak + " দিন");
+
+        // Refresh from server if logged in
+        String token = uConfig.getData(Constant.TOKEN);
+        if (token != null && !token.isEmpty()) {
+            fetchStreakFromServer(prefs);
+        }
+    }
+
+    private void fetchStreakFromServer(SharedPreferences prefs) {
+        ApiConfig.getRequest(activity, Constant.GAME_STREAK, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
+                JSONObject data = json.optJSONObject(Constant.DATA);
+                if (data == null) return;
+                int streak = data.optInt("streak_days", 0);
+                int xp     = data.optInt("total_xp", 0);
+                int rank   = data.optInt("rank", 0);
+
+                prefs.edit()
+                        .putInt(Constant.STREAK_DAYS, streak)
+                        .putInt(Constant.TOTAL_XP, xp)
+                        .putInt(Constant.USER_RANK, rank)
+                        .apply();
+
+                if (activity != null) activity.runOnUiThread(() -> {
+                    totalXpTV.setText(String.valueOf(xp));
+                    streakCountTV.setText("🔥 " + streak);
+                    rankTV.setText(rank > 0 ? "#" + rank : "—");
+                    streakTV.setText("🔥 " + streak + " দিন");
+                });
+            } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    // ── Daily word ────────────────────────────────────────────────
+
+    private void loadDailyWord() {
+        ApiConfig.getRequest(activity, Constant.GAME_DAILY_WORD, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
+                JSONObject data = json.optJSONObject(Constant.DATA);
+                if (data == null) return;
+
+                String word    = data.optString("word", "");
+                String meaning = data.optString("meaning", "");
+                int lessonId   = data.optInt("lesson_id", 1);
+
+                currentWord  = word;
+                lastLessonId = lessonId > 0 ? lessonId : 1;
+
+                if (activity != null) activity.runOnUiThread(() -> {
+                    if (!word.isEmpty())    wordOfDayTV.setText(word);
+                    if (!meaning.isEmpty()) wordMeaningTV.setText(meaning);
+                });
+            } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    // ── Grammar progress (lesson count + continue learning) ───────
+
+    private void loadGrammarProgress() {
+        // Fetch chapters to get total lesson count
+        ApiConfig.getRequest(activity, Constant.GRAMMAR_CHAPTERS, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                // Grammar API uses different envelope — try both formats
+                JSONArray chapters = null;
+                if (json.has("data")) {
+                    chapters = json.getJSONArray("data");
+                } else if (json.has("chapters")) {
+                    chapters = json.getJSONArray("chapters");
+                }
+                if (chapters == null) return;
+
+                int totalLessons = 0;
+                String firstChapterName = "";
+                int firstChapterId = 1;
+
+                for (int i = 0; i < chapters.length(); i++) {
+                    JSONObject ch = chapters.getJSONObject(i);
+                    totalLessons += ch.optInt("lesson_count", ch.optInt("lessons_count", 0));
+                    if (i == 0) {
+                        firstChapterName = ch.optString("title", ch.optString("name", ""));
+                        firstChapterId   = ch.optInt("id", 1);
+                    }
+                }
+
+                final int total = totalLessons;
+                final String chapName = firstChapterName;
+                final int chapId = firstChapterId;
+
+                if (activity != null) activity.runOnUiThread(() -> {
+                    lessonCountTV.setText(total + " lessons");
+                    if (!chapName.isEmpty()) continueLessonTV.setText(chapName);
+                    loadLessonProgress(chapId, total);
+                });
+
+            } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    private void loadLessonProgress(int chapterId, int totalLessons) {
+        // Fetch lessons in first chapter to estimate progress %
+        String url = Constant.GRAMMAR_LESSONS + chapterId;
+        ApiConfig.getRequest(activity, url, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                JSONArray lessons = null;
+                if (json.has("data"))    lessons = json.getJSONArray("data");
+                else if (json.has("lessons")) lessons = json.getJSONArray("lessons");
+                if (lessons == null) return;
+
+                int chapterLessons = lessons.length();
+                // Simple heuristic: assume user has opened first chapter
+                // Real progress tracking would need local db; use 0 for now
+                SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+                int openedLessons = prefs.getInt("opened_lessons_" + chapterId, 0);
+                int pct = chapterLessons > 0
+                        ? Math.min(100, (openedLessons * 100) / chapterLessons)
+                        : 0;
+
+                if (activity != null) activity.runOnUiThread(() -> {
+                    lessonProgress.setProgress(pct);
+                    lessonProgressTV.setText(pct + "%");
+                });
+            } catch (Exception ignored) {}
+        }, error -> {});
     }
 }
