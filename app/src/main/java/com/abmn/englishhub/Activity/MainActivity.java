@@ -119,14 +119,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkNewVersion() {
         ApiConfig.RequestToVolley((result, response, error) -> {
+            if (!result || response == null || response.isEmpty()) return;
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String app_version = jsonObject.getString("app_version");
                 String app_version_text = jsonObject.getString("app_version_text");
-
                 checkAppVersion(app_version, app_version_text);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Log.e("MainActivity", "checkNewVersion parse error", e);
             }
         }, Request.Method.GET, activity, Constant.ROOT_API + "app-version", new HashMap<>(), false);
     }
