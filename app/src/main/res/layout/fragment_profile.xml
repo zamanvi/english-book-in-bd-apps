@@ -12,58 +12,91 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="20dp"
         android:paddingBottom="100dp">
 
-        <!-- ── Avatar + name ───────────────────────────────── -->
-        <LinearLayout
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- Hero header card — avatar + name + level badge        -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp">
 
-            <!-- Avatar circle -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                app:cardBackgroundColor="@color/indigo_dim"
-                app:cardCornerRadius="36dp"
-                app:cardElevation="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="28dp"
+                android:paddingBottom="24dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <!-- Avatar circle with indigo ring -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    app:cardBackgroundColor="@color/indigo_dim"
+                    app:cardCornerRadius="42dp"
+                    app:cardElevation="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="👤"
+                        android:textSize="36sp"
+                        android:gravity="center" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Name -->
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="👤"
-                    android:textSize="32sp"
-                    android:gravity="center" />
-            </androidx.cardview.widget.CardView>
+                    android:id="@+id/profileNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your Name"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/nunito"
+                    android:letterSpacing="0.01"
+                    android:layout_marginTop="14dp"
+                    tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/profileNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your Name"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                tools:ignore="HardcodedText" />
+                <!-- Level badge chip -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardBackgroundColor="@color/indigo_dim"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp">
+                    <TextView
+                        android:id="@+id/profileLevelTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ইংরেজি শিক্ষার্থী"
+                        android:textColor="@color/indigo"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/nunito"
+                        android:textStyle="bold"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        tools:ignore="HardcodedText" />
+                </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/profileLevelTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ইংরেজি শিক্ষার্থী"
-                android:textColor="@color/text_inactive"
-                android:textSize="11sp"
-                android:layout_marginTop="3dp"
-                tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
-
-        <!-- ── Game stats: XP / Streak / Rank ─────────────── -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- Stats row: XP / Streak / Rank                        -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,156 +105,190 @@
             android:paddingEnd="16dp"
             android:layout_marginBottom="16dp">
 
+            <!-- XP card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="6dp"
                 app:cardBackgroundColor="@color/bg_card"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp">
+                    android:paddingTop="16dp"
+                    android:paddingBottom="14dp">
+                    <!-- Accent top line -->
+                    <View
+                        android:layout_width="28dp"
+                        android:layout_height="3dp"
+                        android:background="@color/indigo"
+                        android:layout_marginBottom="10dp" />
                     <TextView
                         android:id="@+id/profileXpTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/indigo"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/nunito" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="⚡ XP"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
-                        android:layout_marginTop="3dp"
+                        android:fontFamily="@font/nunito"
+                        android:letterSpacing="0.05"
+                        android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Streak card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
                 app:cardBackgroundColor="@color/bg_card"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp">
+                    android:paddingTop="16dp"
+                    android:paddingBottom="14dp">
+                    <View
+                        android:layout_width="28dp"
+                        android:layout_height="3dp"
+                        android:background="@color/coral"
+                        android:layout_marginBottom="10dp" />
                     <TextView
                         android:id="@+id/profileStreakTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/coral"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/nunito" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔥 দিন"
+                        android:text="🔥 Days"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
-                        android:layout_marginTop="3dp"
+                        android:fontFamily="@font/nunito"
+                        android:letterSpacing="0.05"
+                        android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Rank card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="6dp"
                 app:cardBackgroundColor="@color/bg_card"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp">
+                    android:paddingTop="16dp"
+                    android:paddingBottom="14dp">
+                    <View
+                        android:layout_width="28dp"
+                        android:layout_height="3dp"
+                        android:background="@color/gold"
+                        android:layout_marginBottom="10dp" />
                     <TextView
                         android:id="@+id/profileRankTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="—"
                         android:textColor="@color/gold"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/nunito" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🏅 Rank"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
-                        android:layout_marginTop="3dp"
+                        android:fontFamily="@font/nunito"
+                        android:letterSpacing="0.05"
+                        android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
-        <!-- ── 7-day streak calendar ───────────────────────── -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- 7-day streak calendar                                 -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             app:cardBackgroundColor="@color/bg_card"
-            app:cardCornerRadius="14dp"
+            app:cardCornerRadius="18dp"
             app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="14dp">
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="14dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="এই সপ্তাহ"
+                        android:text="THIS WEEK"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
                         android:textStyle="bold"
-                        android:letterSpacing="0.07"
+                        android:fontFamily="@font/nunito"
+                        android:letterSpacing="0.10"
                         tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/weekStreakLabelTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="০ / ৭ দিন"
+                        android:text="0 / 7 Days"
                         android:textColor="@color/coral"
                         android:textSize="10sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/nunito"
                         tools:ignore="HardcodedText" />
 
                 </LinearLayout>
 
-                <!-- Day dots row — filled programmatically -->
                 <LinearLayout
                     android:id="@+id/weekDaysRow"
                     android:layout_width="match_parent"
@@ -230,24 +297,25 @@
                     android:gravity="center" />
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <!-- ── Section label: Menu ─────────────────────────── -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- Section label: LEARN                                  -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MENU"
+            android:text="LEARN"
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:letterSpacing="0.07"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/nunito"
+            android:letterSpacing="0.12"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginBottom="10dp"
             tools:ignore="HardcodedText" />
 
-        <!-- ── Menu items ───────────────────────────────────── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,32 +323,67 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- Book -->
+            <!-- ── Book ──────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuBookCV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/bg_card">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="14dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="📖" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="Book" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+
+                    <!-- Icon circle -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/indigo_dim"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="📖" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Book"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="All grammar chapters"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -288,32 +391,66 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Vocabulary -->
+            <!-- ── Vocabulary ─────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuVocabularyCV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/bg_card">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="14dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="📚" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="Vocabulary" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/teal_dim"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="📚" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vocabulary"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5000+ words to master"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -321,32 +458,189 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Share -->
+        </LinearLayout>
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- Section label: APP                                    -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="APP"
+            android:textColor="@color/text_inactive"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/nunito"
+            android:letterSpacing="0.12"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <!-- ── Update (NEW) ───────────────────────────────── -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/menuUpdateCV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/bg_elevated">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:gravity="center_vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="#1A8B7FFF"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="⬆️" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Get Latest Update"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/nunito"
+                                tools:ignore="HardcodedText" />
+                            <!-- NEW badge -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                app:cardBackgroundColor="@color/teal"
+                                app:cardCornerRadius="6dp"
+                                app:cardElevation="0dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="NEW"
+                                    android:textColor="#07081A"
+                                    android:textSize="8sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/nunito"
+                                    android:letterSpacing="0.05"
+                                    android:paddingStart="6dp"
+                                    android:paddingEnd="6dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingBottom="2dp"
+                                    tools:ignore="HardcodedText" />
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="নতুন ফিচার ও বাগ ফিক্স পান"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
+                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/indigo" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ── Share ──────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuShareCV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/bg_card">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="14dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="🔗" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="বন্ধুদের সাথে শেয়ার করো" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/gold_dim"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="🔗" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="বন্ধুদের সাথে শেয়ার করো"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Friends learn together"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -354,65 +648,66 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Other Apps -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/menuOtherAppsCV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/bg_card">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="🧩" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="আমাদের অন্যান্য অ্যাপ" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
-                        android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
-                        app:tint="@color/text_inactive" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Review -->
+            <!-- ── Rate & Review ──────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuReviewCV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/bg_card">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="14dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="⭐" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="রেটিং ও রিভিউ দাও" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/gold_dim"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="⭐" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="রেটিং ও রিভিউ দাও"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rate us on Play Store"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -420,32 +715,66 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Contact -->
+            <!-- ── Contact ────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuContactCV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/bg_card">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="14dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="✉️" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="যোগাযোগ করো" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/coral_dim"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="✉️" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="যোগাযোগ করো"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="norozzaman996@gmail.com"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -453,7 +782,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Social Media -->
+            <!-- ── Social Media ───────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuSocialMediaCV"
                 android:layout_width="match_parent"
@@ -461,23 +790,57 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/bg_card">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="14dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="28dp" android:layout_height="wrap_content"
-                        android:text="📡" android:textSize="18sp" android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:layout_marginStart="12dp"
-                        android:text="আমাদের সোশ্যাল মিডিয়া" android:textColor="@color/text_primary"
-                        android:textSize="14sp" android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/indigo_dim"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+                        <TextView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="📡" android:textSize="18sp"
+                            android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="আমাদের সোশ্যাল মিডিয়া"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Follow us for updates"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="11sp"
+                            android:fontFamily="@font/nunito"
+                            android:layout_marginTop="1dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"

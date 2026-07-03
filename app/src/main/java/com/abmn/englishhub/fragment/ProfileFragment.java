@@ -178,7 +178,7 @@ public class ProfileFragment extends Fragment {
             row.addView(cell);
         }
 
-        weekLabel.setText(activeDays + " / ৭ দিন");
+        weekLabel.setText(activeDays + " / 7 Days");
     }
 
     // ── Existing menu items (all logic preserved) ─────────────────
@@ -205,11 +205,17 @@ public class ProfileFragment extends Fragment {
             startActivity(Intent.createChooser(shareIntent, "Share via"));
         });
 
-        view.findViewById(R.id.menuOtherAppsCV).setOnClickListener(v -> {
+        view.findViewById(R.id.menuUpdateCV).setOnClickListener(v -> {
             try {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/developer?id=MD+,+norozzaman")));
-            } catch (ActivityNotFoundException ignored) {}
+                Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName());
+                activity.startActivity(new Intent(Intent.ACTION_VIEW, uri)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            }
         });
 
         view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> {
