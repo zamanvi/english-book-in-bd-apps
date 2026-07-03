@@ -123,7 +123,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     webSettings.setJavaScriptEnabled(true);
                     detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    android.util.Log.e("ItemDetailsActivity", "parse error", e);
                 }
             }else {
                 onSupportNavigateUp();

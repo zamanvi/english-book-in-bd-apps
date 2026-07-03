@@ -80,8 +80,8 @@ public class ChapterActivity extends AppCompatActivity {
     }
 
     private void getBookData(String getType) {
-
         ApiConfig.RequestToVolley((result, response, error) -> {
+            if (!result || response == null || response.isEmpty()) return;
             try {
                 JSONObject bookObject = new JSONObject(response);
                 JSONObject books = bookObject.getJSONObject("books");
@@ -90,15 +90,15 @@ public class ChapterActivity extends AppCompatActivity {
                 String slug = firstBook.getString("slug");
                 getData(slug, getType);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Log.e("ChapterActivity", "getBookData parse error", e);
             }
         }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data, String getType) {
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
+            if (!chapterResult || chapterResponse == null || chapterResponse.isEmpty()) return;
             try {
                 JSONObject jsonObject = new JSONObject(chapterResponse);
                 JSONObject chapters = jsonObject.getJSONObject("chapters");
@@ -114,11 +114,9 @@ public class ChapterActivity extends AppCompatActivity {
                         String status = chapter.getString("status");
                         String pageview = chapter.getString("pageview");
                         String book_title = chapter.getString("book_title");
-
-                        ChapterModel model = new ChapterModel(id, book_id, title, slug, status, pageview, book_title);
-                        chapterList.add(model);
+                        chapterList.add(new ChapterModel(id, book_id, title, slug, status, pageview, book_title));
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e("ChapterActivity", "chapter parse error", e);
                     }
                 }
                 ChapterAdapter adapter = new ChapterAdapter(chapterList, activity);
@@ -126,9 +124,9 @@ public class ChapterActivity extends AppCompatActivity {
                 Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
 
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Log.e("ChapterActivity", "getData parse error", e);
             }
-        }, Request.Method.GET, activity, Constant.CHAPTER_API2 + "?book_slug=" + data + "&type=" + getType , new HashMap<>(), false);
+        }, Request.Method.GET, activity, Constant.CHAPTER_API2 + "?book_slug=" + data + "&type=" + getType, new HashMap<>(), false);
     }
 
 }

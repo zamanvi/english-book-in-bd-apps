@@ -69,7 +69,8 @@ public class ApiConfig {
                             }
                         }
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        android.util.Log.e("ApiConfig", "response parse error", e);
+                        result.onResponse(false, "", "parse_error");
                     }
                 },
                 error -> {

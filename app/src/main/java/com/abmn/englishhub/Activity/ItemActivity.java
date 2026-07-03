@@ -119,6 +119,7 @@ public class ItemActivity extends AppCompatActivity {
     private void getData(String data) {
 
         ApiConfig.RequestToVolley((result, response, error) -> {
+            if (!result || response == null || response.isEmpty()) return;
             try {
                 JSONObject itemsObject = new JSONObject(response);
                 JSONObject dataObject = itemsObject.getJSONObject("items");
@@ -137,7 +138,7 @@ public class ItemActivity extends AppCompatActivity {
                         ItemModel model = new ItemModel(id, slug, chapter_id, title, pageview, book_title);
                         itemList.add(model);
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        android.util.Log.e("ItemActivity", "item parse error", e);
                     }
                 }
                 ItemAdapter adapter = new ItemAdapter(itemList, activity);
@@ -145,7 +146,7 @@ public class ItemActivity extends AppCompatActivity {
                 Objects.requireNonNull(itemRV.getAdapter()).notifyDataSetChanged();
 
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                android.util.Log.e("ItemActivity", "getData parse error", e);
             }
         }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + data, new HashMap<>(), false);
     }
