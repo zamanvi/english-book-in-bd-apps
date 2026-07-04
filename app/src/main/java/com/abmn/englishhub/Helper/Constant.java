@@ -2,8 +2,8 @@ package com.abmn.englishhub.Helper;
 
 public class Constant {
     //Base Url
-    public static final String ROOT_DOMAIN = "https://backend.masterenglishbook.com/";
-    public static final String ROOT_DOMAIN_FALLBACK = "https://red-rose-academy-backend-laravel-production.up.railway.app/";
+    public static final String ROOT_DOMAIN = "https://red-rose-academy-backend-laravel-production.up.railway.app/";
+    public static final String ROOT_DOMAIN_FALLBACK = "https://backend.masterenglishbook.com/";
     public static final String API = "api/v2/app/";
     public static final String API2 = "api/";
     public static final String ROOT_API = ROOT_DOMAIN + API;
