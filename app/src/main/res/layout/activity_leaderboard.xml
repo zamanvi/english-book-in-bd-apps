@@ -100,7 +100,7 @@
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:ellipsize="end"
                 tools:ignore="HardcodedText" />
 
@@ -159,7 +159,7 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:ellipsize="end"
                 tools:ignore="HardcodedText" />
 
@@ -217,7 +217,7 @@
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:ellipsize="end"
                 tools:ignore="HardcodedText" />
 
