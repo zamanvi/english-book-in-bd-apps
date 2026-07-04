@@ -45,7 +45,7 @@
                     android:id="@+id/greetingNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Welcome Back 👋"
+                    android:text="Welcome Back"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -60,18 +60,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_coral_pill"
-                android:paddingStart="12dp"
+                android:paddingStart="10dp"
                 android:paddingEnd="12dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:src="@drawable/ic_flame"
+                    android:contentDescription="@string/app_name"
+                    app:tint="@color/coral"
+                    android:layout_marginEnd="4dp" />
+
                 <TextView
                     android:id="@+id/streakTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🔥 ০ দিন"
+                    android:text="০ দিন"
                     android:textColor="@color/coral"
                     android:textSize="11sp"
                     android:textStyle="bold"
@@ -103,11 +111,12 @@
                     android:gravity="center"
                     android:padding="12dp"
                     android:background="@drawable/grad_stat_xp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⚡"
-                        android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_bolt"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/indigo" />
                     <TextView
                         android:id="@+id/totalXpTV"
                         android:layout_width="wrap_content"
@@ -116,7 +125,7 @@
                         android:textColor="@color/indigo"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -144,11 +153,12 @@
                     android:gravity="center"
                     android:padding="12dp"
                     android:background="@drawable/grad_stat_streak">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🔥"
-                        android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_flame"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/coral" />
                     <TextView
                         android:id="@+id/streakCountTV"
                         android:layout_width="wrap_content"
@@ -157,7 +167,7 @@
                         android:textColor="@color/coral"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -184,11 +194,12 @@
                     android:gravity="center"
                     android:padding="12dp"
                     android:background="@drawable/grad_stat_rank">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🏅"
-                        android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_trophy"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/gold" />
                     <TextView
                         android:id="@+id/rankTV"
                         android:layout_width="wrap_content"
@@ -197,7 +208,7 @@
                         android:textColor="@color/gold"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -293,12 +304,13 @@
                         app:cardBackgroundColor="@color/indigo_dim"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="0dp">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="🔊"
-                            android:textSize="16sp"
-                            android:gravity="center" />
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_volume_up"
+                            android:contentDescription="@string/app_name"
+                            app:tint="@color/indigo" />
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
@@ -333,11 +345,12 @@
                     android:gravity="center"
                     android:padding="16dp"
                     android:background="@drawable/grad_quiz">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⚡"
-                        android:textSize="24sp" />
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_bolt"
+                        android:contentDescription="@string/app_name"
+                        app:tint="#FFFFFF" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -345,7 +358,7 @@
                         android:textColor="#FFFFFF"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="8dp"
                         tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -377,11 +390,12 @@
                     android:gravity="center"
                     android:padding="16dp"
                     android:background="@drawable/grad_leaderboard">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🏆"
-                        android:textSize="24sp" />
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_trophy"
+                        android:contentDescription="@string/app_name"
+                        app:tint="#FFFFFF" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -389,7 +403,7 @@
                         android:textColor="#FFFFFF"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="8dp"
                         tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -454,12 +468,13 @@
                         app:cardBackgroundColor="@color/indigo_dim"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="0dp">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="📖"
-                            android:textSize="17sp"
-                            android:gravity="center" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_book_open"
+                            android:contentDescription="@string/app_name"
+                            app:tint="@color/indigo" />
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout
@@ -557,7 +572,7 @@
 
         </LinearLayout>
 
-        <!-- ── Category tiles: Vocabulary + Grammar ──────────── -->
+        <!-- ── Category tiles row 1: Vocabulary + Grammar ──────── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -583,11 +598,12 @@
                     android:gravity="center"
                     android:padding="16dp"
                     android:background="@drawable/grad_vocab">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📚"
-                        android:textSize="32sp" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_vocabulary"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/indigo" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -627,11 +643,12 @@
                     android:gravity="center"
                     android:padding="16dp"
                     android:background="@drawable/grad_grammar">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✏️"
-                        android:textSize="32sp" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_school"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/coral" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -654,6 +671,7 @@
 
         </LinearLayout>
 
+        <!-- ── Category tiles row 2: Speaking + Writing ─────── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -678,11 +696,12 @@
                     android:gravity="center"
                     android:padding="16dp"
                     android:background="@drawable/grad_speaking">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🗣️"
-                        android:textSize="32sp" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_mic"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/teal" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -722,11 +741,12 @@
                     android:gravity="center"
                     android:padding="16dp"
                     android:background="@drawable/grad_writing">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📝"
-                        android:textSize="32sp" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_edit_note"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/blue_accent" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
