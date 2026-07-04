@@ -38,11 +38,18 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        loadStats(view);
-        buildWeekCalendar(view);
-        wireMenuItems(view);
-        return view;
+        try {
+            View view = inflater.inflate(R.layout.fragment_profile, container, false);
+            loadStats(view);
+            buildWeekCalendar(view);
+            wireMenuItems(view);
+            return view;
+        } catch (Throwable t) {
+            android.widget.Toast.makeText(getContext(),
+                "Profile error: " + t.getClass().getSimpleName() + ": " + t.getMessage(),
+                android.widget.Toast.LENGTH_LONG).show();
+            return new android.view.View(getContext());
+        }
     }
 
     // ── Stats ────────────────────────────────────────────────────
