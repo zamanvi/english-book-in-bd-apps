@@ -22,16 +22,16 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="@color/indigo_dim"
+            app:cardBackgroundColor="@color/indigo_deep"
             app:cardElevation="0dp">
 
             <ImageView
-                android:src="@drawable/ic_chapter"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:src="@drawable/ic_book"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
-                app:tint="@color/indigo" />
+                app:tint="#FFFFFF" />
 
         </androidx.cardview.widget.CardView>
 

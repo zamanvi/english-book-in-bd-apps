@@ -11,17 +11,17 @@
     <!-- ── Brand colors ─────────────────────────────────────── -->
     <color name="indigo">#A78BFA</color>
     <color name="indigo_deep">#7C3AED</color>
-    <color name="indigo_dim">#A78BFA22</color>
+    <color name="indigo_dim">#22A78BFA</color>
     <color name="coral">#FB923C</color>
-    <color name="coral_dim">#FB923C22</color>
+    <color name="coral_dim">#22FB923C</color>
     <color name="teal">#34D399</color>
-    <color name="teal_dim">#34D39922</color>
+    <color name="teal_dim">#2234D399</color>
     <color name="gold">#FBBF24</color>
-    <color name="gold_dim">#FBBF2422</color>
+    <color name="gold_dim">#22FBBF24</color>
     <color name="red_wrong">#F43F5E</color>
-    <color name="red_wrong_dim">#F43F5E22</color>
+    <color name="red_wrong_dim">#22F43F5E</color>
     <color name="blue_accent">#60A5FA</color>
-    <color name="blue_accent_dim">#60A5FA22</color>
+    <color name="blue_accent_dim">#2260A5FA</color>
     <color name="pink_accent">#F472B6</color>
 
     <!-- ── Text colors ──────────────────────────────────────── -->
