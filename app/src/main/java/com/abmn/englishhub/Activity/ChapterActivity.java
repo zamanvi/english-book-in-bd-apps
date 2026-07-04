@@ -86,7 +86,7 @@ public class ChapterActivity extends AppCompatActivity {
                 JSONObject bookObject = new JSONObject(response);
                 JSONObject books = bookObject.getJSONObject("books");
                 JSONArray bookArray = books.getJSONArray(Constant.DATA);
-                JSONObject firstBook = bookArray.getJSONObject(1);
+                JSONObject firstBook = bookArray.getJSONObject(0);
                 String slug = firstBook.getString("slug");
                 getData(slug, getType);
             } catch (Exception e) {
