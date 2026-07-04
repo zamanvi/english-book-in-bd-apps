@@ -133,6 +133,7 @@
                         android:textColor="@color/indigo"
                         android:textSize="22sp"
                         android:textStyle="bold"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -175,6 +176,7 @@
                         android:textColor="@color/coral"
                         android:textSize="22sp"
                         android:textStyle="bold"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -216,6 +218,7 @@
                         android:textColor="@color/gold"
                         android:textSize="22sp"
                         android:textStyle="bold"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
