@@ -178,14 +178,27 @@
                             android:textSize="22sp"
                             android:textStyle="bold"
                             tools:ignore="HardcodedText" />
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⚡ XP Earned"
-                            android:textColor="@color/text_inactive"
-                            android:textSize="10sp"
-                            android:layout_marginTop="4dp"
-                            tools:ignore="HardcodedText" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="4dp">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:src="@drawable/ic_bolt"
+                                android:contentDescription="@string/app_name"
+                                app:tint="@color/text_inactive"
+                                android:layout_marginEnd="3dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="XP Earned"
+                                android:textColor="@color/text_inactive"
+                                android:textSize="10sp"
+                                tools:ignore="HardcodedText" />
+                        </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -249,14 +262,27 @@
                             android:textSize="22sp"
                             android:textStyle="bold"
                             tools:ignore="HardcodedText" />
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🎯 Accuracy"
-                            android:textColor="@color/text_inactive"
-                            android:textSize="10sp"
-                            android:layout_marginTop="4dp"
-                            tools:ignore="HardcodedText" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="4dp">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:src="@drawable/ic_check"
+                                android:contentDescription="@string/app_name"
+                                app:tint="@color/text_inactive"
+                                android:layout_marginEnd="3dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Accuracy"
+                                android:textColor="@color/text_inactive"
+                                android:textSize="10sp"
+                                tools:ignore="HardcodedText" />
+                        </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -277,11 +303,12 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:padding="14dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🏅"
-                        android:textSize="20sp" />
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_trophy"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/gold" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -325,7 +352,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/playAgainBtn"
             style="@style/btn_primary"
-            android:text="আবার খেলো ⚡"
+            android:text="আবার খেলো"
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.button.MaterialButton

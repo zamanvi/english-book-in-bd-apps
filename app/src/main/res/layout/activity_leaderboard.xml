@@ -32,13 +32,14 @@
             app:cardBackgroundColor="@color/bg_card"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="←"
-                android:textColor="@color/text_secondary"
-                android:textSize="16sp"
-                android:gravity="center" />
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_right"
+                android:contentDescription="@string/app_name"
+                android:rotation="180"
+                app:tint="@color/text_secondary" />
         </androidx.cardview.widget.CardView>
 
         <TextView
