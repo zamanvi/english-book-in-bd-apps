@@ -121,18 +121,20 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     detailsWV.setBackgroundColor(android.graphics.Color.parseColor("#07081A"));
 
                     String darkCss = "<style>" +
-                        "body{background:#07081A;color:#F0EEFF;font-family:'Segoe UI',sans-serif;font-size:15px;line-height:1.7;padding:12px 16px;}" +
-                        "h1,h2,h3,h4{color:#A78BFA;margin-top:18px;}" +
-                        "b,strong{color:#FBBF24;}" +
-                        "i,em{color:#34D399;}" +
-                        "a{color:#60A5FA;}" +
+                        "html,body{background:#07081A !important;color:#F0EEFF !important;font-family:'Segoe UI',sans-serif;font-size:15px;line-height:1.8;padding:12px 16px;}" +
+                        "*{color:#F0EEFF !important;background-color:transparent !important;}" +
+                        "h1,h2,h3,h4,h5,h6{color:#A78BFA !important;margin-top:18px;margin-bottom:6px;}" +
+                        "b,strong{color:#FBBF24 !important;}" +
+                        "i,em{color:#34D399 !important;}" +
+                        "a{color:#60A5FA !important;}" +
                         "p{margin:8px 0;}" +
-                        "table{width:100%;border-collapse:collapse;margin:12px 0;}" +
-                        "th{background:#191B40;color:#A78BFA;padding:8px;border:1px solid #2E3060;}" +
-                        "td{background:#0C0E26;color:#F0EEFF;padding:8px;border:1px solid #2E3060;}" +
-                        "ul,ol{padding-left:20px;color:#F0EEFF;}" +
+                        "table{width:100% !important;border-collapse:collapse !important;margin:12px 0;}" +
+                        "th{background:#191B40 !important;color:#A78BFA !important;padding:8px;border:1px solid #2E3060 !important;}" +
+                        "td{background:#0C0E26 !important;color:#F0EEFF !important;padding:8px;border:1px solid #2E3060 !important;}" +
+                        "ul,ol{padding-left:20px;}" +
                         "li{margin:4px 0;}" +
-                        "code,pre{background:#191B40;color:#34D399;padding:2px 6px;border-radius:4px;}" +
+                        "code,pre{background:#191B40 !important;color:#34D399 !important;padding:2px 6px;border-radius:4px;}" +
+                        "span,div,font,label{color:inherit !important;background:transparent !important;}" +
                         "</style>";
 
                     String htmlData = "<!DOCTYPE html><html><head>" + darkCss + "</head><body>" + details + "</body></html>";
