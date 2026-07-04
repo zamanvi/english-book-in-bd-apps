@@ -229,13 +229,17 @@ public class HomeFragment extends Fragment {
         ApiConfig.getRequest(activity, Constant.GRAMMAR_CHAPTERS, response -> {
             try {
                 JSONObject json = new JSONObject(response);
-                // Grammar API uses different envelope — try both formats
+                // API envelope: success.data.chapters.data
                 JSONArray chapters = null;
-                if (json.has("data")) {
-                    chapters = json.getJSONArray("data");
-                } else if (json.has("chapters")) {
-                    chapters = json.getJSONArray("chapters");
-                }
+                try {
+                    chapters = json.getJSONObject("success")
+                                   .getJSONObject("data")
+                                   .getJSONObject("chapters")
+                                   .getJSONArray("data");
+                } catch (Exception ignored) {}
+                // Fallback: flat data or chapters key
+                if (chapters == null && json.has("data"))     chapters = json.optJSONArray("data");
+                if (chapters == null && json.has("chapters")) chapters = json.optJSONArray("chapters");
                 if (chapters == null) return;
 
                 int totalLessons = 0;
@@ -254,9 +258,10 @@ public class HomeFragment extends Fragment {
                 final int total = totalLessons;
                 final String chapName = firstChapterName;
                 final int chapId = firstChapterId;
+                final int chapCount = chapters.length();
 
                 if (activity != null) activity.runOnUiThread(() -> {
-                    lessonCountTV.setText(total + " lessons");
+                    lessonCountTV.setText(chapCount + " chapters");
                     if (!chapName.isEmpty()) continueLessonTV.setText(chapName);
                     loadLessonProgress(chapId, total);
                 });
