@@ -121,7 +121,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     detailsWV.setBackgroundColor(android.graphics.Color.parseColor("#07081A"));
 
                     String darkCss = "<style>" +
-                        "html,body{background:#07081A !important;color:#E8E4FF !important;font-family:'Roboto','Noto Sans',sans-serif;font-size:15px;line-height:1.15;padding:10px 14px;margin:0;}" +
+                        "html,body{background:#07081A !important;color:#E8E4FF !important;font-family:'Roboto','Noto Sans Bengali','Noto Sans',sans-serif;font-size:15px;line-height:1.15;padding:10px 14px;margin:0;}" +
                         "*{color:#E8E4FF !important;background-color:transparent !important;box-sizing:border-box;}" +
                         "h1,h2,h3,h4,h5,h6{color:#A78BFA !important;margin-top:14px;margin-bottom:4px;line-height:1.3;}" +
                         "b,strong{color:#FBBF24 !important;}" +
