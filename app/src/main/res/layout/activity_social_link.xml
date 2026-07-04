@@ -59,7 +59,7 @@
             android:layout_margin="6dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/bg_elevated"
             app:cardCornerRadius="18dp"
             app:cardElevation="4dp">
 
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Facebook"
-                    android:textColor="#1A237E"
+                    android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
@@ -101,7 +101,7 @@
             android:layout_margin="6dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/bg_elevated"
             app:cardCornerRadius="18dp"
             app:cardElevation="4dp">
 
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="YouTube"
-                    android:textColor="#1A237E"
+                    android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
