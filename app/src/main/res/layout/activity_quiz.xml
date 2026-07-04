@@ -33,13 +33,13 @@
             app:cardBackgroundColor="@color/bg_card"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="✕"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:gravity="center" />
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_close"
+                android:contentDescription="@string/app_name"
+                app:tint="@color/text_secondary" />
         </androidx.cardview.widget.CardView>
 
         <!-- Progress dots -->
@@ -65,11 +65,13 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⚡"
-                android:textSize="11sp" />
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/ic_bolt"
+                android:contentDescription="@string/app_name"
+                app:tint="@color/indigo"
+                android:layout_marginEnd="3dp" />
 
             <TextView
                 android:id="@+id/xpCountTV"
@@ -131,12 +133,13 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⏱ "
-                android:textSize="11sp"
-                android:textColor="@color/text_inactive" />
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/ic_timer"
+                android:contentDescription="@string/app_name"
+                app:tint="@color/text_inactive"
+                android:layout_marginEnd="3dp" />
 
             <TextView
                 android:id="@+id/timerTV"
@@ -433,14 +436,13 @@
             android:layout_marginBottom="12dp"
             android:visibility="gone">
 
-            <TextView
+            <ImageView
                 android:id="@+id/feedbackIconTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="✓"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/teal" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@string/app_name"
+                app:tint="@color/teal" />
 
             <LinearLayout
                 android:layout_width="0dp"

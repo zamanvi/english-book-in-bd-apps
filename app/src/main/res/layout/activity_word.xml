@@ -1,119 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
+    android:background="@color/bg_deep"
     tools:context=".Activity.WordActivity">
 
     <include layout="@layout/lyt_toolbar"/>
 
-    <LinearLayout
+    <!-- ── Column header row ─────────────────────────────────── -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingTop="10dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@+id/counterTvW"
-            android:layout_width="32dp"
-            android:layout_height="wrap_content"
-            android:text="#"
-            android:textColor="#FFD700"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        app:cardBackgroundColor="@color/bg_elevated"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
             android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/wordCloseIV"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_eye_closed"
-                android:layout_width="18dp"
-                android:layout_height="18dp"/>
-
+            <!-- # counter -->
             <TextView
-                android:id="@+id/wordTvW"
+                android:id="@+id/counterTvW"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:text="#"
+                android:textColor="@color/gold"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <!-- Word column -->
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Word"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:layout_marginStart="4dp"
-                tools:ignore="HardcodedText" />
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/wordCloseIV"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_eye_closed"
+                    android:contentDescription="@string/app_name"
+                    app:tint="@color/text_inactive" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/wordTvW"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:text="Word"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:id="@+id/meaningCloseIV"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_eye_closed"
-                android:layout_width="18dp"
-                android:layout_height="18dp"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/meaningTvW"
+            <!-- Meaning column -->
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Meaning"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/meaningCloseIV"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_eye_closed"
+                    android:contentDescription="@string/app_name"
+                    app:tint="@color/text_inactive" />
+
+                <TextView
+                    android:id="@+id/meaningTvW"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="Meaning"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- Synonyms column -->
+            <TextView
+                android:id="@+id/synonymsTvW"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Syn."
+                android:textColor="@color/teal"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginStart="4dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- Antonyms column -->
+            <TextView
+                android:id="@+id/antonymsTvW"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ant."
+                android:textColor="@color/red_wrong"
+                android:textSize="12sp"
+                android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/synonymsTvW"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Syn."
-            android:textColor="#9FA8DA"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/antonymsTvW"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ant."
-            android:textColor="#9FA8DA"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wordRV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="4dp"
+        android:clipToPadding="false" />
 
 </LinearLayout>
