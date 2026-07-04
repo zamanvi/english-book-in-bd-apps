@@ -81,15 +81,25 @@ public class ChapterActivity extends AppCompatActivity {
 
     private void getBookData(String getType) {
         ApiConfig.RequestToVolley((result, response, error) -> {
-            if (!result || response == null || response.isEmpty()) return;
+            if (!result) {
+                runOnUiThread(() -> android.widget.Toast.makeText(activity, "API fail: " + error, android.widget.Toast.LENGTH_LONG).show());
+                return;
+            }
+            if (response == null || response.isEmpty()) {
+                runOnUiThread(() -> android.widget.Toast.makeText(activity, "Empty response", android.widget.Toast.LENGTH_LONG).show());
+                return;
+            }
             try {
                 JSONObject bookObject = new JSONObject(response);
+                String preview = response.substring(0, Math.min(100, response.length()));
+                runOnUiThread(() -> android.widget.Toast.makeText(activity, "resp: " + preview, android.widget.Toast.LENGTH_LONG).show());
                 JSONObject books = bookObject.getJSONObject("books");
                 JSONArray bookArray = books.getJSONArray(Constant.DATA);
                 JSONObject firstBook = bookArray.getJSONObject(0);
                 String slug = firstBook.getString("slug");
                 getData(slug, getType);
             } catch (Exception e) {
+                runOnUiThread(() -> android.widget.Toast.makeText(activity, "Parse err: " + e.getMessage(), android.widget.Toast.LENGTH_LONG).show());
                 Log.e("ChapterActivity", "getBookData parse error", e);
             }
         }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
