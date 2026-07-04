@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_color"
+    android:background="@color/bg_deep"
     tools:context=".fragment.NoticeFragment">
 
+    <!-- ── Header ─────────────────────────────────────────────── -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_volume_up"
+            android:contentDescription="@string/app_name"
+            app:tint="@color/indigo"
+            android:layout_marginEnd="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="&#128276; Notices &amp; Updates"
-            android:textColor="@color/white"
+            android:text="Notices &amp; Updates"
+            android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
@@ -28,6 +42,9 @@
         android:id="@+id/noticeRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="24dp"
+        android:clipToPadding="false" />
 
 </LinearLayout>
