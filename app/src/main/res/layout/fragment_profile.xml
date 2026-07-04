@@ -24,7 +24,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/bg_card"
+            app:cardBackgroundColor="#00000000"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp">
 
@@ -36,7 +36,8 @@
                 android:paddingTop="28dp"
                 android:paddingBottom="24dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp">
+                android:paddingEnd="20dp"
+                android:background="@drawable/grad_word_of_day">
 
                 <!-- Avatar circle with indigo ring -->
                 <androidx.cardview.widget.CardView
@@ -109,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
-                app:cardBackgroundColor="@color/bg_card"
+                app:cardBackgroundColor="#00000000"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
@@ -118,7 +119,8 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingTop="16dp"
-                    android:paddingBottom="14dp">
+                    android:paddingBottom="14dp"
+                    android:background="@drawable/grad_stat_xp">
                     <!-- Accent top line -->
                     <View
                         android:layout_width="28dp"
@@ -153,7 +155,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
-                app:cardBackgroundColor="@color/bg_card"
+                app:cardBackgroundColor="#00000000"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
@@ -162,7 +164,8 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingTop="16dp"
-                    android:paddingBottom="14dp">
+                    android:paddingBottom="14dp"
+                    android:background="@drawable/grad_stat_streak">
                     <View
                         android:layout_width="28dp"
                         android:layout_height="3dp"
@@ -195,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="6dp"
-                app:cardBackgroundColor="@color/bg_card"
+                app:cardBackgroundColor="#00000000"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
@@ -204,7 +207,8 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingTop="16dp"
-                    android:paddingBottom="14dp">
+                    android:paddingBottom="14dp"
+                    android:background="@drawable/grad_stat_rank">
                     <View
                         android:layout_width="28dp"
                         android:layout_height="3dp"
