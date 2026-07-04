@@ -9,7 +9,7 @@
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="#FFFFFF">
+    app:cardBackgroundColor="@color/bg_elevated">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="#E8EAF6"
+            app:cardBackgroundColor="@color/indigo_dim"
             app:cardElevation="0dp">
 
             <ImageView
@@ -30,7 +30,8 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                app:tint="@color/indigo" />
 
         </androidx.cardview.widget.CardView>
 
@@ -46,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textColor="#1A237E"
+                android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -55,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Tap to explore"
-                android:textColor="#9FA8DA"
+                android:textColor="@color/text_muted"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -65,7 +66,7 @@
             android:layout_height="20dp"
             android:src="@drawable/ic_arrow_right"
             android:contentDescription="@string/app_name"
-            app:tint="#9FA8DA" />
+            app:tint="@color/text_muted" />
 
     </LinearLayout>
 

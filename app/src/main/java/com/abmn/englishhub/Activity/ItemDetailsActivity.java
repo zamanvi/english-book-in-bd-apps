@@ -118,8 +118,24 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     String details = item.getString("details");
                     titleTV.setText(title);
                     detailsWV.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                    detailsWV.setBackgroundColor(android.graphics.Color.parseColor("#07081A"));
 
-                    String htmlData = "<!DOCTYPE html><html><head></head><body>" + details + "</body></html>";
+                    String darkCss = "<style>" +
+                        "body{background:#07081A;color:#F0EEFF;font-family:'Segoe UI',sans-serif;font-size:15px;line-height:1.7;padding:12px 16px;}" +
+                        "h1,h2,h3,h4{color:#A78BFA;margin-top:18px;}" +
+                        "b,strong{color:#FBBF24;}" +
+                        "i,em{color:#34D399;}" +
+                        "a{color:#60A5FA;}" +
+                        "p{margin:8px 0;}" +
+                        "table{width:100%;border-collapse:collapse;margin:12px 0;}" +
+                        "th{background:#191B40;color:#A78BFA;padding:8px;border:1px solid #2E3060;}" +
+                        "td{background:#0C0E26;color:#F0EEFF;padding:8px;border:1px solid #2E3060;}" +
+                        "ul,ol{padding-left:20px;color:#F0EEFF;}" +
+                        "li{margin:4px 0;}" +
+                        "code,pre{background:#191B40;color:#34D399;padding:2px 6px;border-radius:4px;}" +
+                        "</style>";
+
+                    String htmlData = "<!DOCTYPE html><html><head>" + darkCss + "</head><body>" + details + "</body></html>";
                     webSettings.setJavaScriptEnabled(true);
                     detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
                 } catch (Exception e) {
