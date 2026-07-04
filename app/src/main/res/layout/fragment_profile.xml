@@ -14,9 +14,9 @@
         android:orientation="vertical"
         android:paddingBottom="100dp">
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-        <!-- Hero header card â€” avatar + name + level badge        -->
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- Hero header card — avatar + name + level badge        -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="ðŸ‘¤"
+                        android:text="👤"
                         android:textSize="36sp"
                         android:gravity="center" />
                 </androidx.cardview.widget.CardView>
@@ -62,7 +62,6 @@
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
-
                     android:letterSpacing="0.01"
                     android:layout_marginTop="14dp"
                     tools:ignore="HardcodedText" />
@@ -79,10 +78,9 @@
                         android:id="@+id/profileLevelTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="à¦‡à¦‚à¦°à§‡à¦œà¦¿ à¦¶à¦¿à¦•à§à¦·à¦¾à¦°à§à¦¥à§€"
+                        android:text="ইংরেজি শিক্ষার্থী"
                         android:textColor="@color/indigo"
                         android:textSize="11sp"
-
                         android:textStyle="bold"
                         android:paddingStart="14dp"
                         android:paddingEnd="14dp"
@@ -94,9 +92,9 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <!-- Stats row: XP / Streak / Rank                        -->
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,14 +133,12 @@
                         android:textColor="@color/indigo"
                         android:textSize="22sp"
                         android:textStyle="bold"
- />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="âš¡ XP"
+                        android:text="⚡ XP"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
-
                         android:letterSpacing="0.05"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
@@ -179,14 +175,12 @@
                         android:textColor="@color/coral"
                         android:textSize="22sp"
                         android:textStyle="bold"
- />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ðŸ”¥ Days"
+                        android:text="🔥 Days"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
-
                         android:letterSpacing="0.05"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
@@ -218,18 +212,16 @@
                         android:id="@+id/profileRankTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="â€”"
+                        android:text="—"
                         android:textColor="@color/gold"
                         android:textSize="22sp"
                         android:textStyle="bold"
- />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ðŸ… Rank"
+                        android:text="🏅 Rank"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
-
                         android:letterSpacing="0.05"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
@@ -238,9 +230,9 @@
 
         </LinearLayout>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <!-- 7-day streak calendar                                 -->
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -272,7 +264,6 @@
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
                         android:textStyle="bold"
-
                         android:letterSpacing="0.10"
                         tools:ignore="HardcodedText" />
 
@@ -284,7 +275,6 @@
                         android:textColor="@color/coral"
                         android:textSize="10sp"
                         android:textStyle="bold"
-
                         tools:ignore="HardcodedText" />
 
                 </LinearLayout>
@@ -299,9 +289,9 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <!-- Section label: LEARN                                  -->
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -309,7 +299,6 @@
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
-
             android:letterSpacing="0.12"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -323,7 +312,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- â”€â”€ Book â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Book ──────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuBookCV"
                 android:layout_width="match_parent"
@@ -354,7 +343,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="ðŸ“–" android:textSize="18sp"
+                            android:text="📖" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -371,7 +360,6 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold"
-
                             tools:ignore="HardcodedText" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -379,7 +367,6 @@
                             android:text="All grammar chapters"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
@@ -391,7 +378,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- â”€â”€ Vocabulary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Vocabulary ─────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuVocabularyCV"
                 android:layout_width="match_parent"
@@ -421,7 +408,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="ðŸ“š" android:textSize="18sp"
+                            android:text="📚" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -438,7 +425,6 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold"
-
                             tools:ignore="HardcodedText" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -446,7 +432,6 @@
                             android:text="5000+ words to master"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
@@ -460,9 +445,9 @@
 
         </LinearLayout>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <!-- Section label: APP                                    -->
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════════════════════════════════════════════════ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -470,7 +455,6 @@
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
-
             android:letterSpacing="0.12"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -485,7 +469,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- â”€â”€ Update (NEW) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Update (NEW) ───────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuUpdateCV"
                 android:layout_width="match_parent"
@@ -515,7 +499,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="â¬†ï¸" android:textSize="18sp"
+                            android:text="⬆️" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -537,7 +521,6 @@
                                 android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
-
                                 tools:ignore="HardcodedText" />
                             <!-- NEW badge -->
                             <androidx.cardview.widget.CardView
@@ -554,7 +537,6 @@
                                     android:textColor="#07081A"
                                     android:textSize="8sp"
                                     android:textStyle="bold"
-
                                     android:letterSpacing="0.05"
                                     android:paddingStart="6dp"
                                     android:paddingEnd="6dp"
@@ -566,10 +548,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="à¦¨à¦¤à§à¦¨ à¦«à¦¿à¦šà¦¾à¦° à¦“ à¦¬à¦¾à¦— à¦«à¦¿à¦•à§à¦¸ à¦ªà¦¾à¦¨"
+                            android:text="নতুন ফিচার ও বাগ ফিক্স পান"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
@@ -581,7 +562,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- â”€â”€ Share â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Share ──────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuShareCV"
                 android:layout_width="match_parent"
@@ -611,7 +592,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="ðŸ”—" android:textSize="18sp"
+                            android:text="🔗" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -624,11 +605,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="à¦¬à¦¨à§à¦§à§à¦¦à§‡à¦° à¦¸à¦¾à¦¥à§‡ à¦¶à§‡à¦¯à¦¼à¦¾à¦° à¦•à¦°à§‹"
+                            android:text="বন্ধুদের সাথে শেয়ার করো"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold"
-
                             tools:ignore="HardcodedText" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -636,7 +616,6 @@
                             android:text="Friends learn together"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
@@ -648,7 +627,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- â”€â”€ Rate & Review â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Rate & Review ──────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuReviewCV"
                 android:layout_width="match_parent"
@@ -678,7 +657,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="â­" android:textSize="18sp"
+                            android:text="⭐" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -691,11 +670,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="à¦°à§‡à¦Ÿà¦¿à¦‚ à¦“ à¦°à¦¿à¦­à¦¿à¦‰ à¦¦à¦¾à¦“"
+                            android:text="রেটিং ও রিভিউ দাও"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold"
-
                             tools:ignore="HardcodedText" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -703,7 +681,6 @@
                             android:text="Rate us on Play Store"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
@@ -715,7 +692,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- â”€â”€ Contact â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Contact ────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuContactCV"
                 android:layout_width="match_parent"
@@ -745,7 +722,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="âœ‰ï¸" android:textSize="18sp"
+                            android:text="✉️" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -758,11 +735,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦— à¦•à¦°à§‹"
+                            android:text="যোগাযোগ করো"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold"
-
                             tools:ignore="HardcodedText" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -770,7 +746,6 @@
                             android:text="norozzaman996@gmail.com"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
@@ -782,7 +757,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- â”€â”€ Social Media â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <!-- ── Social Media ───────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuSocialMediaCV"
                 android:layout_width="match_parent"
@@ -811,7 +786,7 @@
                         app:cardElevation="0dp">
                         <TextView android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="ðŸ“¡" android:textSize="18sp"
+                            android:text="📡" android:textSize="18sp"
                             android:gravity="center" />
                     </androidx.cardview.widget.CardView>
 
@@ -824,11 +799,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¸à§‹à¦¶à§à¦¯à¦¾à¦² à¦®à¦¿à¦¡à¦¿à¦¯à¦¼à¦¾"
+                            android:text="আমাদের সোশ্যাল মিডিয়া"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:textStyle="bold"
-
                             tools:ignore="HardcodedText" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -836,7 +810,6 @@
                             android:text="Follow us for updates"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
-
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
