@@ -319,72 +319,6 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- ── Book ──────────────────────────────────────── -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/menuBookCV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/bg_card">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    android:gravity="center_vertical">
-
-                    <!-- Icon circle -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/indigo_dim"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="📖" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="14dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Book"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="All grammar chapters"
-                            android:textColor="@color/text_inactive"
-                            android:textSize="11sp"
-                            android:layout_marginTop="1dp"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
-                        android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
-                        app:tint="@color/text_inactive" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
             <!-- ── Vocabulary ─────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuVocabularyCV"
@@ -406,19 +340,12 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/teal_dim"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="📚" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_vocabulary"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/teal" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -442,7 +369,6 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -476,7 +402,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- ── Update (NEW) ───────────────────────────────── -->
+            <!-- ── Update ────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuUpdateCV"
                 android:layout_width="match_parent"
@@ -497,19 +423,12 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="#1A8B7FFF"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="⬆️" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_update"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/indigo" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -529,7 +448,6 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 tools:ignore="HardcodedText" />
-                            <!-- NEW badge -->
                             <androidx.cardview.widget.CardView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -544,7 +462,6 @@
                                     android:textColor="#07081A"
                                     android:textSize="8sp"
                                     android:textStyle="bold"
-                                    android:letterSpacing="0.05"
                                     android:paddingStart="6dp"
                                     android:paddingEnd="6dp"
                                     android:paddingTop="2dp"
@@ -561,7 +478,6 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -590,19 +506,12 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/gold_dim"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="🔗" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/share"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/gold" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -626,7 +535,6 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -655,19 +563,12 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/gold_dim"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="⭐" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/review"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/coral" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -691,7 +592,6 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -720,19 +620,12 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/coral_dim"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="✉️" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_mail"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/blue_accent" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -756,7 +649,6 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
@@ -784,19 +676,12 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:gravity="center_vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/indigo_dim"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <TextView android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="📡" android:textSize="18sp"
-                            android:gravity="center" />
-                    </androidx.cardview.widget.CardView>
-
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_globe"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/indigo" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -820,7 +705,6 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription="@string/app_name"
