@@ -121,23 +121,27 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     detailsWV.setBackgroundColor(android.graphics.Color.parseColor("#07081A"));
 
                     String darkCss = "<style>" +
-                        "html,body{background:#07081A !important;color:#F0EEFF !important;font-family:'Segoe UI',sans-serif;font-size:15px;line-height:1.8;padding:12px 16px;}" +
-                        "*{color:#F0EEFF !important;background-color:transparent !important;}" +
-                        "h1,h2,h3,h4,h5,h6{color:#A78BFA !important;margin-top:18px;margin-bottom:6px;}" +
+                        "html,body{background:#07081A !important;color:#E8E4FF !important;font-family:'Roboto','Noto Sans',sans-serif;font-size:15px;line-height:1.6;padding:10px 14px;margin:0;}" +
+                        "*{color:#E8E4FF !important;background-color:transparent !important;box-sizing:border-box;}" +
+                        "h1,h2,h3,h4,h5,h6{color:#A78BFA !important;margin-top:14px;margin-bottom:4px;line-height:1.3;}" +
                         "b,strong{color:#FBBF24 !important;}" +
                         "i,em{color:#34D399 !important;}" +
                         "a{color:#60A5FA !important;}" +
-                        "p{margin:8px 0;}" +
-                        "table{width:100% !important;border-collapse:collapse !important;margin:12px 0;}" +
-                        "th{background:#191B40 !important;color:#A78BFA !important;padding:8px;border:1px solid #2E3060 !important;}" +
-                        "td{background:#0C0E26 !important;color:#F0EEFF !important;padding:8px;border:1px solid #2E3060 !important;}" +
-                        "ul,ol{padding-left:20px;}" +
-                        "li{margin:4px 0;}" +
-                        "code,pre{background:#191B40 !important;color:#34D399 !important;padding:2px 6px;border-radius:4px;}" +
+                        "p{margin:4px 0;}" +
+                        "p:empty{display:none;}" +
+                        "br{line-height:1.2;}" +
+                        "table{width:100% !important;border-collapse:collapse !important;margin:10px 0;font-size:14px;}" +
+                        "th{background:#191B40 !important;color:#A78BFA !important;padding:7px;border:1px solid #2E3060 !important;}" +
+                        "td{background:#0C0E26 !important;color:#E8E4FF !important;padding:7px;border:1px solid #2E3060 !important;}" +
+                        "ul,ol{padding-left:18px;margin:4px 0;}" +
+                        "li{margin:3px 0;}" +
+                        "code,pre{background:#191B40 !important;color:#34D399 !important;padding:2px 5px;border-radius:4px;font-size:13px;}" +
                         "span,div,font,label{color:inherit !important;background:transparent !important;}" +
+                        "img{max-width:100% !important;height:auto !important;}" +
                         "</style>";
 
-                    String htmlData = "<!DOCTYPE html><html><head>" + darkCss + "</head><body>" + details + "</body></html>";
+                    String metaViewport = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>";
+                    String htmlData = "<!DOCTYPE html><html><head>" + metaViewport + darkCss + "</head><body>" + details + "</body></html>";
                     webSettings.setJavaScriptEnabled(true);
                     detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
                 } catch (Exception e) {
