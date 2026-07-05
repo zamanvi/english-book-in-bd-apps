@@ -25,8 +25,8 @@ public class ResultActivity extends AppCompatActivity {
     private TextView resultEmojiTV, resultGradeTV, resultSubtitleTV;
     private TextView correctCountTV, totalCountTV, scorePercentTV;
     private TextView xpEarnedBigTV, streakResultTV, accuracyTV;
-    private TextView newRankTV;
-    private CardView rankCard;
+    private TextView newRankTV, liptoEarnedTV;
+    private CardView rankCard, liptoEarnedCard;
     private ProgressBar scoreBar;
 
     private int correct, total, xpEarned, lessonId;
@@ -61,6 +61,8 @@ public class ResultActivity extends AppCompatActivity {
         newRankTV        = findViewById(R.id.newRankTV);
         rankCard         = findViewById(R.id.rankCard);
         scoreBar         = findViewById(R.id.scoreBar);
+        liptoEarnedTV    = findViewById(R.id.liptoEarnedTV);
+        liptoEarnedCard  = findViewById(R.id.liptoEarnedCard);
     }
 
     private void populateStatic() {
@@ -212,6 +214,10 @@ public class ResultActivity extends AppCompatActivity {
                     int newBalance = json.optInt("balance", 0);
                     getSharedPreferences("app_prefs", MODE_PRIVATE)
                             .edit().putInt(Constant.LIPTO_BALANCE, newBalance).apply();
+                    runOnUiThread(() -> {
+                        liptoEarnedTV.setText("+" + xpEarned);
+                        liptoEarnedCard.setVisibility(View.VISIBLE);
+                    });
                 }
             } catch (Exception ignored) {}
         }, error -> {});

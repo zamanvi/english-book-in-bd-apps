@@ -72,14 +72,16 @@ public class ProfileFragment extends Fragment {
             levelTV.setText(xpToLevel(xp));
         }
 
-        // XP / Streak / Rank
+        // XP / Streak / Rank / Lipto
         int xp     = prefs.getInt(Constant.TOTAL_XP, 0);
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
         int rank   = prefs.getInt(Constant.USER_RANK, 0);
+        int lipto  = prefs.getInt(Constant.LIPTO_BALANCE, 0);
 
         ((TextView) view.findViewById(R.id.profileXpTV)).setText(String.valueOf(xp));
         ((TextView) view.findViewById(R.id.profileStreakTV)).setText(String.valueOf(streak));
         ((TextView) view.findViewById(R.id.profileRankTV)).setText(rank > 0 ? "#" + rank : "—");
+        ((TextView) view.findViewById(R.id.profileLiptoTV)).setText(String.valueOf(lipto));
     }
 
     private String xpToLevel(int xp) {
@@ -193,9 +195,6 @@ public class ProfileFragment extends Fragment {
     private void wireMenuItems(View view) {
         Activity activity = getActivity();
         if (activity == null) return;
-
-        view.findViewById(R.id.menuBookCV).setOnClickListener(v ->
-                startActivity(new Intent(activity, BookActivity.class)));
 
         view.findViewById(R.id.menuVocabularyCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, VocabularyActivity.class)));
