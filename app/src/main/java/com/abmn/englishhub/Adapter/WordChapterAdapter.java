@@ -56,7 +56,10 @@ public class WordChapterAdapter extends RecyclerView.Adapter<WordChapterAdapter.
         }
 
         public void bind(WordChapterModel model, Activity activity) {
-            rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, LessonActivity.class).putExtra(Constant.FROM, "" + model.getId()).putExtra(Constant.FROM_TITLE, model.getTitle())));
+            rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, LessonActivity.class)
+                    .putExtra(Constant.FROM, "" + model.getId())
+                    .putExtra(Constant.FROM_TITLE, model.getTitle())
+                    .putExtra(Constant.FROM_TYPE, model.getType())));
             titleTV.setText(model.getTitle());
         }
     }

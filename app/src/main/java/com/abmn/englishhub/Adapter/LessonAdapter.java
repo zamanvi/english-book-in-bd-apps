@@ -23,10 +23,12 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
 
     private final List<LessonModel> lessonList;
     private final Activity activity;
+    private final String chapterType;
 
-    public LessonAdapter(List<LessonModel> lessonList, Activity activity) {
+    public LessonAdapter(List<LessonModel> lessonList, Activity activity, String chapterType) {
         this.lessonList = lessonList;
         this.activity = activity;
+        this.chapterType = chapterType;
     }
 
     @NonNull
@@ -39,7 +41,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
     @Override
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         LessonModel model = lessonList.get(position);
-        holder.bind(model, activity);
+        holder.bind(model, activity, chapterType);
     }
 
     @Override
@@ -56,8 +58,11 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
             titleTV = itemView.findViewById(R.id.titleTV);
         }
 
-        public void bind(LessonModel model, Activity activity) {
-            rootCV.setOnClickListener(v-> activity.startActivity(new Intent(activity, WordActivity.class).putExtra(Constant.FROM, "" + model.getId()).putExtra(Constant.FROM_TITLE, model.getTitle()).putExtra(Constant.FROM_TYPE, model.getChapter_type())));
+        public void bind(LessonModel model, Activity activity, String chapterType) {
+            rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
+                    .putExtra(Constant.FROM, "" + model.getId())
+                    .putExtra(Constant.FROM_TITLE, model.getTitle())
+                    .putExtra(Constant.FROM_TYPE, chapterType)));
             titleTV.setText(model.getTitle());
         }
     }

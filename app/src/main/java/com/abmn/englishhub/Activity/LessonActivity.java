@@ -43,6 +43,7 @@ public class LessonActivity extends AppCompatActivity {
     private int currentPage = 1;
     private int lastPage = 1;
     private String getChapterId;
+    private String getChapterType;
     private InterstitialAdManager interstitialAdManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +72,11 @@ public class LessonActivity extends AppCompatActivity {
         activity = this;
         uConfig = new UConfig(activity);
         getChapterId = getIntent().getStringExtra(Constant.FROM);
+        getChapterType = getIntent().getStringExtra(Constant.FROM_TYPE);
+        if (getChapterType == null) getChapterType = "vocabulary";
         String getChapterTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
-        setToolbar("Vocabulary: " + getChapterTitle);
+        String toolbarTitle = "verb".equals(getChapterType) ? "Verb: " : "Vocabulary: ";
+        setToolbar(toolbarTitle + getChapterTitle);
 
         lessonRV = findViewById(R.id.lessonRV);
 
@@ -143,7 +147,7 @@ public class LessonActivity extends AppCompatActivity {
 
     private void loadInitialData() {
         lessonList = new ArrayList<>();
-        LessonAdapter adapter = new LessonAdapter(lessonList, activity);
+        LessonAdapter adapter = new LessonAdapter(lessonList, activity, getChapterType);
         lessonRV.setAdapter(adapter);
         fetchData(currentPage);
     }
