@@ -151,10 +151,14 @@ public class ResultActivity extends AppCompatActivity {
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
                     JSONObject data = json.optJSONObject(Constant.DATA);
                     if (data == null) return;
-                    int newRank = data.optInt("rank", 0);
+                    int newRank   = data.optInt("rank", 0);
+                    int totalXp   = data.optInt("total_xp", 0);
+                    getSharedPreferences("app_prefs", MODE_PRIVATE)
+                            .edit()
+                            .putInt(Constant.USER_RANK, newRank)
+                            .putInt(Constant.TOTAL_XP, totalXp)
+                            .apply();
                     if (newRank > 0) {
-                        getSharedPreferences("app_prefs", MODE_PRIVATE)
-                                .edit().putInt(Constant.USER_RANK, newRank).apply();
                         runOnUiThread(() -> {
                             newRankTV.setText("#" + newRank);
                             rankCard.setVisibility(View.VISIBLE);
@@ -162,9 +166,7 @@ public class ResultActivity extends AppCompatActivity {
                     }
                 }
             } catch (Exception ignored) {}
-        }, error -> {
-            // XP submit failed silently — will retry next quiz
-        });
+        }, error -> {});
     }
 
     private void updateStreak() {

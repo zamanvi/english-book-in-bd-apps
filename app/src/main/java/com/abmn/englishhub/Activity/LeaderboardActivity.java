@@ -86,8 +86,10 @@ public class LeaderboardActivity extends AppCompatActivity {
                 JSONArray list = json.optJSONArray(Constant.DATA);
                 if (list == null) return;
 
-                // Find current user name from UConfig
+                // Find current user by ID (name match is unreliable)
                 UConfig uConfig = new UConfig(this);
+                String myUserId = uConfig.getData(Constant.TOKEN) != null
+                        ? uConfig.getData("user_id") : null;
                 String myName = uConfig.getData("name");
 
                 List<JSONObject> rows = new ArrayList<>();
@@ -96,7 +98,11 @@ public class LeaderboardActivity extends AppCompatActivity {
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject entry = list.getJSONObject(i);
                     rows.add(entry);
-                    if (myName != null && myName.equalsIgnoreCase(entry.optString("name"))) {
+                    boolean matchById   = myUserId != null
+                            && String.valueOf(entry.optInt("id")).equals(myUserId);
+                    boolean matchByName = myName != null
+                            && myName.equalsIgnoreCase(entry.optString("name"));
+                    if (matchById || matchByName) {
                         myEntry = entry;
                     }
                 }

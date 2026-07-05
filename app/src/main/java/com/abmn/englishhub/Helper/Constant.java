@@ -8,15 +8,16 @@ public class Constant {
     public static final String API2 = "api/";
     public static final String ROOT_API = ROOT_DOMAIN + API;
     public static final String ROOT_API2 = ROOT_DOMAIN + API2 + "grammer/";
-    public static final String ROOT_API_GAME = ROOT_DOMAIN + API2 + "game/";
+    public static final String ROOT_API_GAME      = ROOT_DOMAIN + API2 + "game/";
+    public static final String ROOT_API_GAME_AUTH = ROOT_DOMAIN + API2 + "app/game/";
 
     // Game API endpoints
-    public static final String GAME_DAILY_WORD = ROOT_API_GAME + "daily-word";
-    public static final String GAME_QUIZ = ROOT_API_GAME + "quiz/";
-    public static final String GAME_LEADERBOARD = ROOT_API_GAME + "leaderboard";
-    public static final String GAME_XP = ROOT_API + "game/xp";
-    public static final String GAME_STREAK = ROOT_API + "game/streak";
-    public static final String GAME_STREAK_UPDATE = ROOT_API + "game/streak/update";
+    public static final String GAME_DAILY_WORD    = ROOT_API_GAME      + "daily-word";
+    public static final String GAME_QUIZ          = ROOT_API_GAME      + "quiz/";
+    public static final String GAME_LEADERBOARD   = ROOT_API_GAME      + "leaderboard";
+    public static final String GAME_XP            = ROOT_API_GAME_AUTH + "xp";
+    public static final String GAME_STREAK        = ROOT_API_GAME_AUTH + "streak";
+    public static final String GAME_STREAK_UPDATE = ROOT_API_GAME_AUTH + "streak/update";
 
     // Grammar API endpoints
     public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
@@ -33,7 +34,7 @@ public class Constant {
     public static final String LESSONS = "lessons";
     public static final String WORDS = "words";
     public static final String ACCEPT = "Accept";
-    public static final String APPLICATION_JSON = "application+json";
+    public static final String APPLICATION_JSON = "application/json";
     public static final String AUTHORIZATION = "authorization";
     public static final String BEARER = "Bearer ";
     public static final String TOKEN = "_token";
