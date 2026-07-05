@@ -398,12 +398,30 @@
             android:text="আবার খেলো"
             tools:ignore="HardcodedText" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/homeBtn"
-            style="@style/btn_outline"
-            android:layout_marginTop="10dp"
-            android:text="হোমে ফিরে যাও"
-            tools:ignore="HardcodedText" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/homeBtn"
+                style="@style/btn_outline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="হোম"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/shareResultBtn"
+                style="@style/btn_outline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="শেয়ার 📤"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

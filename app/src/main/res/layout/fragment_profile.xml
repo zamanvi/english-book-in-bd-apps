@@ -90,6 +90,54 @@
                         tools:ignore="HardcodedText" />
                 </androidx.cardview.widget.CardView>
 
+                <!-- XP progress to next level -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="14dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+                        <TextView
+                            android:id="@+id/profileLevelLabelTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Level 1"
+                            android:textColor="@color/indigo"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textSize="11sp" />
+                        <TextView
+                            android:id="@+id/profileXpToNextTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="50 XP to next level"
+                            android:textColor="@color/text_inactive"
+                            android:textSize="10sp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                    <ProgressBar
+                        android:id="@+id/profileLevelProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:progressDrawable="@drawable/progress_bar_indigo"
+                        android:max="100"
+                        android:progress="0" />
+                </LinearLayout>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

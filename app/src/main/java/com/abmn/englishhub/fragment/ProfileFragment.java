@@ -22,10 +22,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.BookActivity;
+import com.abmn.englishhub.Activity.LoginActivity;
 import com.abmn.englishhub.Activity.SocialLinkActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.LevelHelper;
 import com.abmn.englishhub.R;
+import android.widget.ProgressBar;
 import com.abmn.utility.UConfig;
 
 import java.text.SimpleDateFormat;
@@ -61,15 +64,23 @@ public class ProfileFragment extends Fragment {
         UConfig uConfig = new UConfig(activity);
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
 
+        // Show login prompt if not logged in
+        String token = uConfig.getData(Constant.TOKEN);
+        TextView nameTV = view.findViewById(R.id.profileNameTV);
+        if (token == null || token.isEmpty()) {
+            nameTV.setText("লগইন করোনি");
+            nameTV.setOnClickListener(v ->
+                    startActivity(new Intent(activity, LoginActivity.class)));
+        }
+
         // Name
         String name = uConfig.getData("name");
-        TextView nameTV = view.findViewById(R.id.profileNameTV);
         if (name != null && !name.isEmpty()) {
             nameTV.setText(name);
             // Level label based on XP
             int xp = prefs.getInt(Constant.TOTAL_XP, 0);
             TextView levelTV = view.findViewById(R.id.profileLevelTV);
-            levelTV.setText(xpToLevel(xp));
+            levelTV.setText(LevelHelper.getLevelTitle(xp));
         }
 
         // XP / Streak / Rank / Lipto
@@ -82,15 +93,16 @@ public class ProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.profileStreakTV)).setText(String.valueOf(streak));
         ((TextView) view.findViewById(R.id.profileRankTV)).setText(rank > 0 ? "#" + rank : "—");
         ((TextView) view.findViewById(R.id.profileLiptoTV)).setText(String.valueOf(lipto));
+
+        // Level progress bar
+        ((TextView) view.findViewById(R.id.profileLevelLabelTV)).setText(LevelHelper.getLevelLabel(xp));
+        int toNext = LevelHelper.getXpToNextLevel(xp);
+        ((TextView) view.findViewById(R.id.profileXpToNextTV)).setText(
+                toNext > 0 ? toNext + " XP to next level" : "Max Level! 🏆");
+        ((ProgressBar) view.findViewById(R.id.profileLevelProgressBar))
+                .setProgress(LevelHelper.getLevelProgressPercent(xp));
     }
 
-    private String xpToLevel(int xp) {
-        if (xp >= 500) return "🏆 চ্যাম্পিয়ন";
-        if (xp >= 200) return "⭐ অ্যাডভান্সড";
-        if (xp >= 80)  return "📈 মধ্যবর্তী";
-        if (xp >= 20)  return "🌱 শিক্ষানবিশ";
-        return "ইংরেজি শিক্ষার্থী";
-    }
 
     // ── 7-day streak calendar ─────────────────────────────────────
 

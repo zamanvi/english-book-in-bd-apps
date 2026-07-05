@@ -262,6 +262,67 @@
 
         </LinearLayout>
 
+        <!-- ── Level XP progress card ───────────────────────────── -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:id="@+id/levelLabelTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Level 1"
+                        android:textColor="@color/indigo"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+                    <TextView
+                        android:id="@+id/levelTitleTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=" · শিক্ষানবিশ"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp"
+                        tools:ignore="HardcodedText" />
+                    <TextView
+                        android:id="@+id/xpToNextTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50 XP to next"
+                        android:textColor="@color/text_inactive"
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/levelProgressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:progressDrawable="@drawable/progress_bar_indigo"
+                    android:max="100"
+                    android:progress="0" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- ── Word of the Day card ───────────────────────────── -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

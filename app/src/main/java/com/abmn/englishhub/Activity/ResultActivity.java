@@ -238,6 +238,33 @@ public class ResultActivity extends AppCompatActivity {
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             finish();
         });
+
+        findViewById(R.id.shareResultBtn).setOnClickListener(v -> shareResult());
+    }
+
+    private void shareResult() {
+        int pct = total > 0 ? (correct * 100) / total : 0;
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
+
+        String grade = pct >= 90 ? "অসাধারণ! 🏆"
+                : pct >= 70 ? "বাহ, ভালো! ⭐"
+                : pct >= 50 ? "ভালো চেষ্টা! 👍"
+                : "হাল ছাড়িনি! 💪";
+
+        String text = "আমি English Grammar Book-এ Quiz খেললাম!\n\n"
+                + "✅ " + correct + "/" + total + " সঠিক (" + pct + "%)\n"
+                + "⚡ +" + xpEarned + " XP অর্জন\n"
+                + "🔥 " + streak + " দিনের Streak\n"
+                + grade + "\n\n"
+                + "তুমিও শেখা শুরু করো 👇\n"
+                + "https://play.google.com/store/apps/details?id=" + getPackageName()
+                + "\n#EnglishGrammarBook #LearnEnglish";
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(shareIntent, "শেয়ার করো"));
     }
 
     @Override

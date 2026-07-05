@@ -21,6 +21,7 @@ import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.LevelHelper;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
 
@@ -39,7 +40,9 @@ public class HomeFragment extends Fragment {
     private String currentWord = "";
 
     // Stats
-    private TextView totalXpTV, streakCountTV, rankTV, streakTV, greetingNameTV;
+    private TextView totalXpTV, streakCountTV, rankTV, streakTV, greetingNameTV, liptoBalanceTV;
+    private TextView levelLabelTV, levelTitleTV, xpToNextTV;
+    private ProgressBar levelProgressBar;
 
     // Continue learning
     private TextView lessonCountTV, continueLessonTV, lessonProgressTV;
@@ -83,6 +86,7 @@ public class HomeFragment extends Fragment {
         totalXpTV       = view.findViewById(R.id.totalXpTV);
         streakCountTV   = view.findViewById(R.id.streakCountTV);
         rankTV          = view.findViewById(R.id.rankTV);
+        liptoBalanceTV  = view.findViewById(R.id.liptoBalanceTV);
         wordOfDayTV     = view.findViewById(R.id.wordOfDayTV);
         wordMeaningTV   = view.findViewById(R.id.wordMeaningTV);
         ttsBtn          = view.findViewById(R.id.ttsBtn);
@@ -92,6 +96,10 @@ public class HomeFragment extends Fragment {
         lessonProgressTV  = view.findViewById(R.id.lessonProgressTV);
         quickQuizBtn    = view.findViewById(R.id.quickQuizBtn);
         leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
+        levelLabelTV    = view.findViewById(R.id.levelLabelTV);
+        levelTitleTV    = view.findViewById(R.id.levelTitleTV);
+        xpToNextTV      = view.findViewById(R.id.xpToNextTV);
+        levelProgressBar = view.findViewById(R.id.levelProgressBar);
 
         // Category cards
         view.findViewById(R.id.vocabularyLL).setOnClickListener(v ->
@@ -157,16 +165,20 @@ public class HomeFragment extends Fragment {
         int xp     = prefs.getInt(Constant.TOTAL_XP, 0);
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
         int rank   = prefs.getInt(Constant.USER_RANK, 0);
+        int lipto  = prefs.getInt(Constant.LIPTO_BALANCE, 0);
 
         totalXpTV.setText(String.valueOf(xp));
         streakCountTV.setText("🔥 " + streak);
         rankTV.setText(rank > 0 ? "#" + rank : "—");
         streakTV.setText("🔥 " + streak + " দিন");
+        liptoBalanceTV.setText(String.valueOf(lipto));
+        updateLevelUI(xp);
 
         // Refresh from server if logged in
         String token = uConfig.getData(Constant.TOKEN);
         if (token != null && !token.isEmpty()) {
             fetchStreakFromServer(prefs);
+            fetchLiptoBalance(prefs);
         }
     }
 
@@ -192,9 +204,31 @@ public class HomeFragment extends Fragment {
                     streakCountTV.setText("🔥 " + streak);
                     rankTV.setText(rank > 0 ? "#" + rank : "—");
                     streakTV.setText("🔥 " + streak + " দিন");
+                    updateLevelUI(xp);
                 });
             } catch (Exception ignored) {}
         }, error -> {});
+    }
+
+    private void fetchLiptoBalance(SharedPreferences prefs) {
+        ApiConfig.getRequest(activity, Constant.GAME_LIPTO_BALANCE, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
+                int balance = json.optInt("balance", 0);
+                prefs.edit().putInt(Constant.LIPTO_BALANCE, balance).apply();
+                if (activity != null) activity.runOnUiThread(() ->
+                        liptoBalanceTV.setText(String.valueOf(balance)));
+            } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    private void updateLevelUI(int xp) {
+        levelLabelTV.setText(LevelHelper.getLevelLabel(xp));
+        levelTitleTV.setText(" · " + LevelHelper.getLevelTitle(xp));
+        int toNext = LevelHelper.getXpToNextLevel(xp);
+        xpToNextTV.setText(toNext > 0 ? toNext + " XP to next" : "Max Level!");
+        levelProgressBar.setProgress(LevelHelper.getLevelProgressPercent(xp));
     }
 
     // ── Daily word ────────────────────────────────────────────────
