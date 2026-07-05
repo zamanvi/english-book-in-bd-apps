@@ -69,6 +69,15 @@
             android:name=".Activity.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.GroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.GroupLeaderboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.BattleActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.LeaderboardActivity"
             android:exported="false" />
         <activity

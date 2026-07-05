@@ -29,7 +29,7 @@ public class ResultActivity extends AppCompatActivity {
     private CardView rankCard, liptoEarnedCard;
     private ProgressBar scoreBar;
 
-    private int correct, total, xpEarned, lessonId;
+    private int correct, total, xpEarned, lessonId, battleId, timeSec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,8 @@ public class ResultActivity extends AppCompatActivity {
         total    = getIntent().getIntExtra("total", 10);
         xpEarned = getIntent().getIntExtra("xp", 0);
         lessonId = getIntent().getIntExtra("lesson_id", 1);
+        battleId = getIntent().getIntExtra("battle_id", 0);
+        timeSec  = getIntent().getIntExtra("time_sec", 0);
 
         bindViews();
         populateStatic();
@@ -133,6 +135,7 @@ public class ResultActivity extends AppCompatActivity {
         submitXp();
         updateStreak();
         if (xpEarned > 0) submitLipto();
+        if (battleId > 0) submitBattleResult();
     }
 
     private void submitXp() {
@@ -220,6 +223,24 @@ public class ResultActivity extends AppCompatActivity {
                     });
                 }
             } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    private void submitBattleResult() {
+        UConfig uConfig = new UConfig(this);
+        String token = uConfig.getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("score", correct);
+            body.put("total", total);
+            body.put("time_sec", timeSec);
+        } catch (Exception ignored) {}
+
+        String url = Constant.BATTLE_BASE + battleId + "/submit";
+        ApiConfig.postRequest(this, url, body, response -> {
+            // Battle result submitted silently
         }, error -> {});
     }
 

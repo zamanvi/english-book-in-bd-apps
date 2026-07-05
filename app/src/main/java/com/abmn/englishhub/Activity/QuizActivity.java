@@ -46,6 +46,8 @@ public class QuizActivity extends AppCompatActivity {
     private boolean answered = false;
     private CountDownTimer countDownTimer;
     private int lessonId = 1;
+    private int battleId = 0;  // 0 = normal quiz, >0 = part of a battle
+    private long quizStartMs = 0;
 
     // Option card references in array for easy iteration
     private CardView[] optionCards;
@@ -61,6 +63,7 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         lessonId = getIntent().getIntExtra("lesson_id", 1);
+        battleId = getIntent().getIntExtra("battle_id", 0);
 
         bindViews();
         setupClickListeners();
@@ -141,6 +144,7 @@ public class QuizActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         quizLoadingBar.setVisibility(View.GONE);
                         buildProgressDots();
+                        quizStartMs = System.currentTimeMillis();
                         showQuestion(0);
                     });
                 }
@@ -359,6 +363,11 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
+    private int totalTimeSec() {
+        if (quizStartMs == 0) return 0;
+        return (int) ((System.currentTimeMillis() - quizStartMs) / 1000);
+    }
+
     private void goToResult() {
         if (countDownTimer != null) countDownTimer.cancel();
         Intent intent = new Intent(this, ResultActivity.class);
@@ -366,6 +375,8 @@ public class QuizActivity extends AppCompatActivity {
         intent.putExtra("total", questions.size());
         intent.putExtra("xp", totalXpEarned);
         intent.putExtra("lesson_id", lessonId);
+        intent.putExtra("battle_id", battleId);
+        intent.putExtra("time_sec", totalTimeSec());
         startActivity(intent);
         finish();
     }

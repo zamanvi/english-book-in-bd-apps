@@ -22,6 +22,19 @@ public class Constant {
     public static final String GAME_LIPTO_EARN     = ROOT_API_GAME_AUTH + "lipto/earn";
     public static final String GAME_LIPTO_SPEND    = ROOT_API_GAME_AUTH + "lipto/spend";
 
+    // Group / Room endpoints
+    public static final String GROUP_CREATE        = ROOT_API_GAME_AUTH + "group/create";
+    public static final String GROUP_JOIN          = ROOT_API_GAME_AUTH + "group/join";
+    public static final String GROUP_MY            = ROOT_API_GAME_AUTH + "group/my";
+    public static final String GROUP_LEADERBOARD   = ROOT_API_GAME_AUTH + "group/";  // + code + "/leaderboard"
+    public static final String GROUP_LEAVE         = ROOT_API_GAME_AUTH + "group/";  // + code + "/leave"
+
+    // Battle endpoints
+    public static final String BATTLE_CHALLENGE    = ROOT_API_GAME_AUTH + "battle/challenge";
+    public static final String BATTLE_PENDING      = ROOT_API_GAME_AUTH + "battle/pending";
+    public static final String BATTLE_HISTORY      = ROOT_API_GAME_AUTH + "battle/history";
+    public static final String BATTLE_BASE         = ROOT_API_GAME_AUTH + "battle/";  // + id or id/submit
+
     // Grammar API endpoints
     public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
     public static final String GRAMMAR_LESSONS  = ROOT_API2 + "lessons/";

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_deep"
+    tools:context=".Activity.GroupLeaderboardActivity">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/app_name"
+            app:tint="@color/text_primary"
+            android:padding="6dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+            <TextView
+                android:id="@+id/groupNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="লিডারবোর্ড"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/groupCodeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="কোড: XXXXXXXX"
+                android:textColor="@color/text_inactive"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <!-- Share code button -->
+        <ImageView
+            android:id="@+id/shareCodeBtn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_share"
+            android:contentDescription="@string/app_name"
+            app:tint="@color/indigo"
+            android:padding="6dp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/leaderboardRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>

@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setText("লগইন হচ্ছে...");
         errorTV.setVisibility(View.GONE);
 
-        String url = Constant.ROOT_API + "login?" + Constant.PUBLIC_KEY_VALUE;
+        String url = Constant.ROOT_API + "login";
         JSONObject body = new JSONObject();
         try {
             body.put("email", email);

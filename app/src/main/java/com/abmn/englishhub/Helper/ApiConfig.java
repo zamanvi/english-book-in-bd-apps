@@ -120,16 +120,26 @@ public class ApiConfig {
 
     public static void getRequest(Context context, String url,
                                   SimpleCallback onSuccess, ErrorCallback onError) {
-        rawRequest(context, Request.Method.GET, url, null, onSuccess, onError);
+        rawRequest(context, Request.Method.GET, url, null, null, onSuccess, onError);
+    }
+
+    public static void getRequest(Context context, String url, String token,
+                                  SimpleCallback onSuccess, ErrorCallback onError) {
+        rawRequest(context, Request.Method.GET, url, null, token, onSuccess, onError);
     }
 
     public static void postRequest(Context context, String url, JSONObject body,
                                    SimpleCallback onSuccess, ErrorCallback onError) {
-        rawRequest(context, Request.Method.POST, url, body, onSuccess, onError);
+        rawRequest(context, Request.Method.POST, url, body, null, onSuccess, onError);
+    }
+
+    public static void postRequest(Context context, String url, JSONObject body, String token,
+                                   SimpleCallback onSuccess, ErrorCallback onError) {
+        rawRequest(context, Request.Method.POST, url, body, token, onSuccess, onError);
     }
 
     private static void rawRequest(Context context, int method, String url,
-                                   JSONObject body,
+                                   JSONObject body, String authToken,
                                    SimpleCallback onSuccess, ErrorCallback onError) {
         RequestQueue queue = getQueue(context);
         String finalUrl = url.contains("?")
@@ -137,6 +147,7 @@ public class ApiConfig {
                 : url + "?" + Constant.PUBLIC_KEY_VALUE;
 
         final String bodyStr = body != null ? body.toString() : null;
+        final String token   = authToken;
 
         StringRequest req = new StringRequest(method, finalUrl,
                 response -> { if (onSuccess != null) onSuccess.onSuccess(response); },
@@ -148,6 +159,9 @@ public class ApiConfig {
                 h.put("Accept", "application/json");
                 h.put("Content-Type", "application/json");
                 h.put("x-api-key", "app");
+                if (token != null && !token.isEmpty()) {
+                    h.put(Constant.AUTHORIZATION, Constant.BEARER + token);
+                }
                 return h;
             }
 

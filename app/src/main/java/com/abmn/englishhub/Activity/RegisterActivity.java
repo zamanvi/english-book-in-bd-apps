@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setText("রেজিস্ট্রেশন হচ্ছে...");
         errorTV.setVisibility(View.GONE);
 
-        String url = Constant.ROOT_API + "register?" + Constant.PUBLIC_KEY_VALUE;
+        String url = Constant.ROOT_API + "register";
         JSONObject body = new JSONObject();
         try {
             body.put("name", name);

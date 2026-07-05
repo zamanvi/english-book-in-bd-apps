@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_deep"
+    tools:context=".Activity.BattleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="@string/app_name"
+                app:tint="@color/text_primary"
+                android:padding="6dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="১ vs ১ যুদ্ধ"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <!-- Challenge section -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="চ্যালেঞ্জ পাঠাও"
+                    android:textColor="@color/text_inactive"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.10"
+                    android:layout_marginBottom="12dp"
+                    tools:ignore="HardcodedText" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="প্রতিপক্ষের User ID"
+                    android:layout_marginBottom="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/bg_elevated"
+                    app:hintTextColor="@color/text_inactive">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/opponentIdET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Lesson ID"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/bg_elevated"
+                    app:hintTextColor="@color/text_inactive">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lessonIdET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/challengeBtn"
+                    style="@style/btn_primary"
+                    android:text="চ্যালেঞ্জ করো"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/challengeErrorTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/red_wrong"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:layout_marginTop="6dp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Pending challenges -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="আমার জন্য অপেক্ষা করছে"
+            android:textColor="@color/text_inactive"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.10"
+            android:paddingStart="20dp"
+            android:layout_marginBottom="10dp"
+            tools:ignore="HardcodedText" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pendingRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- History -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ইতিহাস"
+            android:textColor="@color/text_inactive"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.10"
+            android:paddingStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            tools:ignore="HardcodedText" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="24dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+</ScrollView>
