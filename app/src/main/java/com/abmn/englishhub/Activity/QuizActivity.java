@@ -344,15 +344,18 @@ public class QuizActivity extends AppCompatActivity {
 
     // ── Helpers ───────────────────────────────────────────────────
 
+    // Per-option colors for Option C design: purple / blue / amber / pink
+    private static final int[] OPTION_CARD_BG   = {0xFF1E1060, 0xFF0A1E30, 0xFF1E1400, 0xFF1E0A18};
+    private static final int[] OPTION_LABEL_RES = {R.drawable.option_label_a, R.drawable.option_label_b, R.drawable.option_label_c, R.drawable.option_label_d};
+    private static final int[] OPTION_LABEL_TXT = {0xFF1A1060, 0xFF0A1830, 0xFF1E1000, 0xFF1E0A18};
+    private static final int[] OPTION_TEXT_CLR  = {0xFFC4BEFF, 0xFF7DD3FC, 0xFFFDE68A, 0xFFFBCFE8};
+
     private void resetOptionStyles() {
-        int cardBg    = ContextCompat.getColor(this, R.color.bg_card);
-        int labelColor = ContextCompat.getColor(this, R.color.indigo);
-        int textColor  = ContextCompat.getColor(this, R.color.text_primary);
         for (int i = 0; i < optionCards.length; i++) {
-            optionCards[i].setCardBackgroundColor(cardBg);
-            optionLabels[i].setTextColor(labelColor);
-            optionLabels[i].setBackgroundResource(R.drawable.option_label_bg);
-            optionTexts[i].setTextColor(textColor);
+            optionCards[i].setCardBackgroundColor(OPTION_CARD_BG[i]);
+            optionLabels[i].setBackgroundResource(OPTION_LABEL_RES[i]);
+            optionLabels[i].setTextColor(OPTION_LABEL_TXT[i]);
+            optionTexts[i].setTextColor(OPTION_TEXT_CLR[i]);
         }
     }
 
