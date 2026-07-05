@@ -107,12 +107,12 @@ public class WordActivity extends AppCompatActivity {
         meaningTvW.setOnClickListener(this::meaningChange);
         meaningCloseIV.setOnClickListener(this::meaningChange);
 
-        assert getLessonType != null;
-        if (getLessonType.equals("verb")){
+        if ("verb".equals(getLessonType)){
             wordTvW.setText("Verb 1");
             meaningTvW.setText("Meaning");
             synonymsTvW.setText("Verb 2");
             antonymsTvW.setText("Verb 3");
+            setToolbar("Verb: " + getLessonTitle);
         }else {
             wordTvW.setText("Word");
             meaningTvW.setText("Meaning");

@@ -182,12 +182,13 @@ public class LessonActivity extends AppCompatActivity {
                         JSONObject lesson = dataArray.getJSONObject(i);
                         int id = lesson.getInt("id");
                         String title = lesson.getString("title");
+                        String type = lesson.optString("type", "vocabulary");
                         String chapter_id = lesson.getString("chapter_id");
                         boolean status = lesson.getBoolean("status");
                         String created_at = lesson.getString("created_at");
                         String updated_at = lesson.getString("updated_at");
 
-                        LessonModel model = new LessonModel(id, title, "", "", "", chapter_id, status, created_at, updated_at);
+                        LessonModel model = new LessonModel(id, title, "", "", type, chapter_id, status, created_at, updated_at);
                         lessonList.add(model);
                     }
                     if (currentPage == 1) {
