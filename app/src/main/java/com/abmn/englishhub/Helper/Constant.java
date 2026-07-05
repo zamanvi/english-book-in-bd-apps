@@ -18,6 +18,9 @@ public class Constant {
     public static final String GAME_XP            = ROOT_API_GAME_AUTH + "xp";
     public static final String GAME_STREAK        = ROOT_API_GAME_AUTH + "streak";
     public static final String GAME_STREAK_UPDATE = ROOT_API_GAME_AUTH + "streak/update";
+    public static final String GAME_LIPTO_BALANCE  = ROOT_API_GAME_AUTH + "lipto/balance";
+    public static final String GAME_LIPTO_EARN     = ROOT_API_GAME_AUTH + "lipto/earn";
+    public static final String GAME_LIPTO_SPEND    = ROOT_API_GAME_AUTH + "lipto/spend";
 
     // Grammar API endpoints
     public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
@@ -55,6 +58,7 @@ public class Constant {
     // Game / user prefs
     public static final String STREAK_DAYS        = "streak_days";
     public static final String TOTAL_XP           = "total_xp";
+    public static final String LIPTO_BALANCE      = "lipto_balance";
     public static final String USER_RANK          = "user_rank";
     public static final String USER_NAME          = "user_name";
     public static final String LAST_PLAYED_DATE   = "last_played_date";

@@ -130,6 +130,7 @@ public class ResultActivity extends AppCompatActivity {
     private void submitXpAndStreak() {
         submitXp();
         updateStreak();
+        if (xpEarned > 0) submitLipto();
     }
 
     private void submitXp() {
@@ -190,6 +191,30 @@ public class ResultActivity extends AppCompatActivity {
         }, error -> {
             // Streak update failed silently — will retry next quiz
         });
+    }
+
+    private void submitLipto() {
+        UConfig uConfig = new UConfig(this);
+        String token = uConfig.getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("amount", xpEarned);
+            body.put("source", "quiz");
+            body.put("description", "Quiz lesson #" + lessonId + " — " + correct + "/" + total + " correct");
+        } catch (Exception ignored) {}
+
+        ApiConfig.postRequest(this, Constant.GAME_LIPTO_EARN, body, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
+                    int newBalance = json.optInt("balance", 0);
+                    getSharedPreferences("app_prefs", MODE_PRIVATE)
+                            .edit().putInt(Constant.LIPTO_BALANCE, newBalance).apply();
+                }
+            } catch (Exception ignored) {}
+        }, error -> {});
     }
 
     // ── Buttons ──────────────────────────────────────────────────
