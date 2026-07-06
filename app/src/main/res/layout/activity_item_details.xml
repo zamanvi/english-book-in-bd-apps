@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_color"
+    android:background="@color/bg_deep"
     tools:context=".Activity.ItemDetailsActivity">
 
     <include layout="@layout/lyt_toolbar" />
@@ -17,7 +17,7 @@
         android:layout_margin="12dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="3dp"
-        app:cardBackgroundColor="@color/colorPrimary">
+        app:cardBackgroundColor="@color/indigo_dim">
 
         <TextView
             android:id="@+id/titleTV"
@@ -34,8 +34,8 @@
         android:id="@+id/detailsWV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         tools:ignore="WebViewLayout" />
 
