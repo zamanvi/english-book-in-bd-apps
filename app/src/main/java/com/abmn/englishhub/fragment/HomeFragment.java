@@ -15,7 +15,9 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.abmn.englishhub.Activity.BattleActivity;
 import com.abmn.englishhub.Activity.ChapterActivity;
+import com.abmn.englishhub.Activity.GroupActivity;
 import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
@@ -49,7 +51,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar lessonProgress;
 
     // Quick actions
-    private CardView quickQuizBtn, leaderboardBtn;
+    private CardView quickQuizBtn, leaderboardBtn, groupBtn, battleBtn;
 
     // TTS engine
     private TextToSpeech tts;
@@ -96,6 +98,8 @@ public class HomeFragment extends Fragment {
         lessonProgressTV  = view.findViewById(R.id.lessonProgressTV);
         quickQuizBtn    = view.findViewById(R.id.quickQuizBtn);
         leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
+        groupBtn        = view.findViewById(R.id.groupBtn);
+        battleBtn       = view.findViewById(R.id.battleBtn);
         levelLabelTV    = view.findViewById(R.id.levelLabelTV);
         levelTitleTV    = view.findViewById(R.id.levelTitleTV);
         xpToNextTV      = view.findViewById(R.id.xpToNextTV);
@@ -121,6 +125,12 @@ public class HomeFragment extends Fragment {
 
         leaderboardBtn.setOnClickListener(v ->
                 startActivity(new Intent(activity, LeaderboardActivity.class)));
+
+        groupBtn.setOnClickListener(v ->
+                startActivity(new Intent(activity, GroupActivity.class)));
+
+        battleBtn.setOnClickListener(v ->
+                startActivity(new Intent(activity, BattleActivity.class)));
 
         ttsBtn.setOnClickListener(v -> speakWord());
     }
