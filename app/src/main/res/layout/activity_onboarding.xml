@@ -18,6 +18,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Skip — top right -->
+    <TextView
+        android:id="@+id/skipTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="এড়িয়ে যাও"
+        android:textColor="@color/text_muted"
+        android:textSize="13sp"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
+
     <!-- Bottom bar: dots + button -->
     <LinearLayout
         android:id="@+id/bottomBar"
@@ -25,10 +38,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="40dp"
-        android:paddingTop="16dp"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+        android:paddingBottom="48dp"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -47,23 +60,10 @@
             android:id="@+id/onboardingNextBtn"
             style="@style/btn_primary"
             android:layout_width="wrap_content"
-            android:minWidth="120dp"
+            android:minWidth="130dp"
             android:text="পরবর্তী"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
-
-    <!-- Skip -->
-    <TextView
-        android:id="@+id/skipTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="এড়িয়ে যাও"
-        android:textColor="@color/text_inactive"
-        android:textSize="13sp"
-        android:padding="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,67 +15,121 @@
         <!-- Toolbar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
             <ImageView
                 android:id="@+id/backBtn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:src="@drawable/ic_arrow_back"
                 android:contentDescription="@string/app_name"
                 app:tint="@color/text_primary"
-                android:padding="6dp" />
+                android:padding="10dp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="১ vs ১ যুদ্ধ"
                 android:textColor="@color/text_primary"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
 
-        <!-- Challenge section -->
+        <!-- Hero banner -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
             app:cardBackgroundColor="@color/bg_card"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:background="@drawable/grad_leaderboard"
+                android:padding="24dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚔️"
+                    android:textSize="48sp"
+                    android:layout_marginBottom="8dp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="বন্ধুকে চ্যালেঞ্জ করো"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quiz-এ জিতে XP অর্জন করো"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Challenge section -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="চ্যালেঞ্জ পাঠাও"
-                    android:textColor="@color/text_inactive"
-                    android:textSize="10sp"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.10"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     tools:ignore="HardcodedText" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="প্রতিপক্ষের User ID"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="12dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_elevated"
-                    app:hintTextColor="@color/text_inactive">
+                    app:boxStrokeColor="@color/bg_active"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:hintTextColor="@color/text_muted">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/opponentIdET"
                         android:layout_width="match_parent"
@@ -88,10 +142,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Lesson ID"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_elevated"
-                    app:hintTextColor="@color/text_inactive">
+                    app:boxStrokeColor="@color/bg_active"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:hintTextColor="@color/text_muted">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/lessonIdET"
                         android:layout_width="match_parent"
@@ -114,19 +172,19 @@
                     android:textColor="@color/red_wrong"
                     android:textSize="12sp"
                     android:visibility="gone"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     tools:ignore="HardcodedText" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Pending challenges -->
+        <!-- Pending challenges label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="আমার জন্য অপেক্ষা করছে"
-            android:textColor="@color/text_inactive"
-            android:textSize="10sp"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
             android:textStyle="bold"
             android:letterSpacing="0.10"
             android:paddingStart="20dp"
@@ -137,22 +195,22 @@
             android:id="@+id/pendingRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false" />
 
-        <!-- History -->
+        <!-- History label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ইতিহাস"
-            android:textColor="@color/text_inactive"
-            android:textSize="10sp"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
             android:textStyle="bold"
             android:letterSpacing="0.10"
             android:paddingStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="10dp"
             tools:ignore="HardcodedText" />
 
@@ -160,9 +218,9 @@
             android:id="@+id/historyRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="24dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="32dp"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false" />
 
