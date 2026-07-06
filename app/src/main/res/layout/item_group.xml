@@ -106,7 +106,7 @@
             android:src="@drawable/ic_arrow_right"
             android:layout_marginStart="8dp"
             app:tint="@color/text_inactive"
-            android:contentDescription="@string/app_name" />
+            android:contentDescription="" />
 
     </LinearLayout>
 

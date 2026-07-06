@@ -479,7 +479,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_vocabulary"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription=""
                             app:tint="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout
@@ -507,7 +507,7 @@
                     </LinearLayout>
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription=""
                         app:tint="@color/text_inactive" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -570,7 +570,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_update"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription=""
                             app:tint="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout
@@ -624,7 +624,7 @@
                     </LinearLayout>
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription=""
                         app:tint="@color/indigo" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -661,7 +661,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/share"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription=""
                             app:tint="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout
@@ -681,7 +681,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="বন্ধুদের সাথে শেয়ার করো"
+                            android:text="বন্ধুদের invite করো, একসাথে শেখো"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"
@@ -689,7 +689,7 @@
                     </LinearLayout>
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription=""
                         app:tint="@color/text_inactive" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -726,7 +726,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/review"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription=""
                             app:tint="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout
@@ -754,7 +754,7 @@
                     </LinearLayout>
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription=""
                         app:tint="@color/text_inactive" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -791,7 +791,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_mail"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription=""
                             app:tint="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout
@@ -819,7 +819,7 @@
                     </LinearLayout>
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription=""
                         app:tint="@color/text_inactive" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -855,7 +855,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_globe"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription=""
                             app:tint="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout
@@ -883,7 +883,7 @@
                     </LinearLayout>
                     <ImageView android:layout_width="14dp" android:layout_height="14dp"
                         android:src="@drawable/ic_arrow_right"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription=""
                         app:tint="@color/text_inactive" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

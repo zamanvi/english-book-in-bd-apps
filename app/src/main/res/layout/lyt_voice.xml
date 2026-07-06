@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/bg_color">
+    android:background="@color/bg_deep">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="উচ্চারণের গতি বেছে নাও"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/text_primary"
         android:textSize="14sp"
         android:textStyle="bold"
         tools:ignore="HardcodedText" />
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="অনেক ধীরে"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_primary"
             tools:ignore="HardcodedText" />
 
         <RadioButton
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="ধীরে"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_primary"
             android:textSize="15sp" />
 
         <RadioButton
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="স্বাভাবিক"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_primary"
             android:textSize="15sp" />
 
         <RadioButton
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="দ্রুত"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_primary"
             android:textSize="15sp" />
 
         <RadioButton
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="অনেক দ্রুত"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/text_primary" />
 
     </RadioGroup>
 </LinearLayout>

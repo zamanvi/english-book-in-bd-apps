@@ -53,7 +53,7 @@
                 android:id="@+id/resultSubtitleTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You're on fire today"
+                android:text="দারুণ করেছ, চালিয়ে যাও!"
                 android:textColor="@color/text_inactive"
                 android:textSize="13sp"
                 android:layout_marginBottom="32dp"
@@ -188,13 +188,13 @@
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:src="@drawable/ic_bolt"
-                                android:contentDescription="@string/app_name"
+                                android:contentDescription="XP"
                                 app:tint="@color/text_inactive"
                                 android:layout_marginEnd="3dp" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="XP Earned"
+                                android:text="অর্জিত XP"
                                 android:textColor="@color/text_inactive"
                                 android:textSize="10sp"
                                 tools:ignore="HardcodedText" />
@@ -272,13 +272,13 @@
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:src="@drawable/ic_check"
-                                android:contentDescription="@string/app_name"
+                                android:contentDescription="নির্ভুলতা"
                                 app:tint="@color/text_inactive"
                                 android:layout_marginEnd="3dp" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Accuracy"
+                                android:text="নির্ভুলতা"
                                 android:textColor="@color/text_inactive"
                                 android:textSize="10sp"
                                 tools:ignore="HardcodedText" />
@@ -315,7 +315,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Lipto Earned"
+                        android:text="অর্জিত Lipto"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         tools:ignore="HardcodedText" />
@@ -350,7 +350,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/ic_trophy"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="লিডারবোর্ড র‌্যাংক"
                         app:tint="@color/gold" />
                     <TextView
                         android:layout_width="0dp"

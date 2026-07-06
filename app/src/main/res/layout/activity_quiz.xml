@@ -38,7 +38,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_close"
-                android:contentDescription="@string/app_name"
+                android:contentDescription="Quiz বন্ধ করো"
                 app:tint="@color/text_secondary" />
         </androidx.cardview.widget.CardView>
 
@@ -69,7 +69,7 @@
                 android:layout_width="13dp"
                 android:layout_height="13dp"
                 android:src="@drawable/ic_bolt"
-                android:contentDescription="@string/app_name"
+                android:contentDescription="XP"
                 app:tint="@color/indigo"
                 android:layout_marginEnd="3dp" />
 
@@ -137,7 +137,7 @@
                 android:layout_width="13dp"
                 android:layout_height="13dp"
                 android:src="@drawable/ic_timer"
-                android:contentDescription="@string/app_name"
+                android:contentDescription="সময়"
                 app:tint="@color/text_inactive"
                 android:layout_marginEnd="3dp" />
 
@@ -510,7 +510,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextBtn"
             style="@style/btn_primary"
-            android:text="Next →"
+            android:text="পরবর্তী →"
             android:visibility="gone"
             tools:ignore="HardcodedText" />
 

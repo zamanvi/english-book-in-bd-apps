@@ -23,7 +23,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_volume_up"
-            android:contentDescription="@string/app_name"
+            android:contentDescription="নোটিশ"
             app:tint="@color/indigo"
             android:layout_marginEnd="10dp" />
 

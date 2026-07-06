@@ -73,7 +73,7 @@
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     android:src="@drawable/ic_flame"
-                    android:contentDescription="@string/app_name"
+                    android:contentDescription="Streak"
                     app:tint="@color/coral"
                     android:layout_marginEnd="4dp" />
 
@@ -117,7 +117,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_bolt"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="XP"
                         app:tint="@color/indigo" />
                     <TextView
                         android:id="@+id/totalXpTV"
@@ -161,7 +161,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_flame"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Streak"
                         app:tint="@color/coral" />
                     <TextView
                         android:id="@+id/streakCountTV"
@@ -204,7 +204,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_trophy"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Rank"
                         app:tint="@color/gold" />
                     <TextView
                         android:id="@+id/rankTV"
@@ -317,7 +317,7 @@
                         android:id="@+id/xpToNextTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50 XP to next"
+                        android:text="পরের level-এ যেতে আরও XP দরকার"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
                         tools:ignore="HardcodedText" />
@@ -420,7 +420,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_volume_up"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription="শব্দ শোনো"
                             app:tint="@color/indigo" />
                     </androidx.cardview.widget.CardView>
 
@@ -460,7 +460,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_bolt"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Quick Quiz"
                         app:tint="#FFFFFF" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -474,7 +474,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Test yourself"
+                        android:text="নিজেকে যাচাই করো"
                         android:textColor="#FFBBA0"
                         android:textSize="8sp"
                         android:layout_marginTop="2dp"
@@ -505,7 +505,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_trophy"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Leaderboard"
                         app:tint="#FFFFFF" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -519,7 +519,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Top learners"
+                        android:text="সেরা শিক্ষার্থীরা"
                         android:textColor="#FFD9A0"
                         android:textSize="8sp"
                         android:layout_marginTop="2dp"
@@ -679,7 +679,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_book_open"
-                            android:contentDescription="@string/app_name"
+                            android:contentDescription="পাঠ চালিয়ে যাও"
                             app:tint="@color/indigo" />
                     </androidx.cardview.widget.CardView>
 
@@ -808,7 +808,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/ic_vocabulary"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Vocabulary"
                         app:tint="@color/indigo" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -853,7 +853,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/ic_school"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Grammar"
                         app:tint="@color/coral" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -867,7 +867,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Full course"
+                        android:text="সম্পূর্ণ কোর্স"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"
@@ -906,7 +906,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/ic_mic"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Speaking"
                         app:tint="@color/teal" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -920,7 +920,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Daily practice"
+                        android:text="প্রতিদিন অনুশীলন"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"
@@ -951,7 +951,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/ic_edit_note"
-                        android:contentDescription="@string/app_name"
+                        android:contentDescription="Writing"
                         app:tint="@color/blue_accent" />
                     <TextView
                         android:layout_width="wrap_content"
