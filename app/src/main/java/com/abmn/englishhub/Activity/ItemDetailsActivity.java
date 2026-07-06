@@ -121,32 +121,97 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     detailsWV.setBackgroundColor(android.graphics.Color.parseColor("#07081A"));
 
                     String darkCss = "<style>" +
-                        "html,body{background:#07081A !important;color:#E0DCFF !important;font-family:'Roboto','Noto Sans Bengali','Noto Sans',sans-serif;font-size:15px;line-height:1.6;padding:12px 16px 24px;margin:0;}" +
+                        /* ── Base ─────────────────────────────────────────── */
+                        "html,body{" +
+                        "  background:#07081A !important;" +
+                        "  color:#E0DCFF !important;" +
+                        "  font-family:'Roboto','Noto Sans Bengali','Noto Sans',sans-serif;" +
+                        "  font-size:15.5px;" +
+                        "  line-height:1.65;" +
+                        "  padding:14px 16px 32px;" +
+                        "  margin:0;" +
+                        "  word-break:break-word;" +
+                        "}" +
                         "*{box-sizing:border-box;}" +
-                        /* Normalize ALL elements to body color by default, then override selectively */
-                        "p,li,td,th,span,div,font,label,a,code,pre,blockquote{color:#E0DCFF !important;background:transparent !important;}" +
-                        /* Headings: uniform size 16px, indigo, tightly controlled margins */
-                        "h1,h2,h3,h4,h5,h6{color:#A78BFA !important;background:transparent !important;font-size:16px !important;font-weight:700;margin:16px 0 4px;line-height:1.4;padding:0;}" +
-                        /* Subheading divider line effect via bottom border on h2/h3 */
-                        "h2,h3{border-bottom:1px solid #1E1F4A;padding-bottom:4px;}" +
-                        "b,strong{color:#FBBF24 !important;}" +
-                        "i,em{color:#8BE8C0 !important;}" +
+                        /* ── Reset inline editor noise ────────────────────── */
+                        "font{" +
+                        "  font-size:15.5px !important;" +
+                        "  font-family:inherit !important;" +
+                        "  color:inherit !important;" +
+                        "}" +
+                        /* ── Default element colors ───────────────────────── */
+                        "p,li,td,th,span,div,label,code,pre,blockquote{" +
+                        "  color:#E0DCFF !important;" +
+                        "  background:transparent !important;" +
+                        "}" +
                         "a{color:#60A5FA !important;}" +
-                        /* Paragraphs: tight, no double spacing */
+                        /* ── Headings — clear visual hierarchy ────────────── */
+                        "h1{" +
+                        "  color:#A78BFA !important;" +
+                        "  background:transparent !important;" +
+                        "  font-size:18px !important;" +
+                        "  font-weight:700;" +
+                        "  margin:20px 0 6px;" +
+                        "  line-height:1.35;" +
+                        "  padding:0;" +
+                        "}" +
+                        "h2{" +
+                        "  color:#A78BFA !important;" +
+                        "  background:transparent !important;" +
+                        "  font-size:16px !important;" +
+                        "  font-weight:700;" +
+                        "  margin:18px 0 5px;" +
+                        "  line-height:1.35;" +
+                        "  padding:0 0 4px;" +
+                        "  border-bottom:1px solid #1E1F4A;" +
+                        "}" +
+                        "h3{" +
+                        "  color:#A78BFA !important;" +
+                        "  background:transparent !important;" +
+                        "  font-size:15px !important;" +
+                        "  font-weight:700;" +
+                        "  margin:16px 0 4px;" +
+                        "  line-height:1.35;" +
+                        "  padding:0 0 3px;" +
+                        "  border-bottom:1px solid #1A1C40;" +
+                        "}" +
+                        "h4,h5,h6{" +
+                        "  color:#FBBF24 !important;" +
+                        "  background:transparent !important;" +
+                        "  font-size:15.5px !important;" +
+                        "  font-weight:700;" +
+                        "  margin:14px 0 4px;" +
+                        "  line-height:1.35;" +
+                        "  padding:0;" +
+                        "}" +
+                        /* ── Highlights ───────────────────────────────────── */
+                        "b,strong{color:#FBBF24 !important;}" +
+                        "i,em{color:#8BE8C0 !important;font-style:italic;}" +
+                        /* ── Paragraphs & whitespace control ─────────────── */
                         "p{margin:0 0 8px;padding:0;}" +
-                        "p:empty,br+br{display:none;}" +
-                        /* Collapse multiple <br> to single line gap */
-                        "br{content:'';display:block;margin:2px 0;}" +
-                        "ul,ol{padding-left:20px;margin:4px 0 8px;}" +
-                        "li{margin:4px 0;line-height:1.55;}" +
+                        "p:empty{display:none;}" +
+                        ":first-child{margin-top:0;}" +
+                        "br{content:'';display:block;margin:1px 0;}" +
+                        /* ── Lists ────────────────────────────────────────── */
+                        "ul,ol{padding-left:16px;margin:4px 0 8px;}" +
+                        "li{margin:4px 0;line-height:1.6;color:#E0DCFF !important;}" +
+                        /* ── Example / blockquote blocks ─────────────────── */
+                        "blockquote{" +
+                        "  border-left:3px solid #A78BFA;" +
+                        "  background:#0E1030 !important;" +
+                        "  margin:10px 0;" +
+                        "  padding:8px 12px;" +
+                        "  border-radius:0 6px 6px 0;" +
+                        "  color:#C4BFEF !important;" +
+                        "}" +
+                        /* ── Tables ───────────────────────────────────────── */
                         "table{width:100% !important;border-collapse:collapse !important;margin:10px 0;font-size:14px;}" +
                         "th{background:#191B40 !important;color:#A78BFA !important;padding:8px;border:1px solid #2E3060 !important;text-align:left;}" +
                         "td{background:#0C0E26 !important;color:#E0DCFF !important;padding:8px;border:1px solid #2E3060 !important;}" +
+                        /* ── Code ─────────────────────────────────────────── */
                         "code,pre{background:#12143A !important;color:#34D399 !important;padding:2px 6px;border-radius:4px;font-size:13px;}" +
-                        "blockquote{border-left:3px solid #A78BFA;margin:8px 0;padding:4px 12px;color:#B8B4E0 !important;}" +
-                        "img{max-width:100% !important;height:auto !important;border-radius:6px;margin:6px 0;}" +
-                        /* Remove any inline font-size that makes headings giant or body tiny */
-                        "font[size]{font-size:15px !important;}" +
+                        /* ── Images ───────────────────────────────────────── */
+                        "img{max-width:100% !important;height:auto !important;border-radius:6px;margin:6px 0;display:block;}" +
                         "</style>";
 
                     String metaViewport = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>";
