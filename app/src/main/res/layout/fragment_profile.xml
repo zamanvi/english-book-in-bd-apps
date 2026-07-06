@@ -67,6 +67,23 @@
                     android:layout_marginTop="14dp"
                     tools:ignore="HardcodedText" />
 
+                <!-- User ID (tap to copy — needed for battle challenges) -->
+                <TextView
+                    android:id="@+id/profileUserIdTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID: —"
+                    android:textColor="@color/text_inactive"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:background="@drawable/bg_pill_inactive"
+                    tools:ignore="HardcodedText" />
+
                 <!-- Level badge chip -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"

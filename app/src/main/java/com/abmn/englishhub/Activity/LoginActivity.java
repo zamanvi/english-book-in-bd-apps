@@ -70,10 +70,20 @@ public class LoginActivity extends AppCompatActivity {
 
                     String token = data.optString("token", "");
                     String name  = data.optString("name", "");
+                    int userId   = data.optInt("id", 0);
 
                     UConfig uConfig = new UConfig(this);
                     uConfig.setData(Constant.TOKEN, token);
                     uConfig.setData("name", name);
+
+                    // Save user_id to prefs for battle challenge feature
+                    if (userId > 0) {
+                        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                .edit().putInt("user_id", userId).apply();
+                    }
+
+                    // Save FCM token to backend after login
+                    com.abmn.englishhub.Helper.FcmService.saveTokenToBackend(this);
 
                     goToMain();
                 } else {

@@ -77,10 +77,23 @@ public class ProfileFragment extends Fragment {
         String name = uConfig.getData("name");
         if (name != null && !name.isEmpty()) {
             nameTV.setText(name);
-            // Level label based on XP
             int xp = prefs.getInt(Constant.TOTAL_XP, 0);
             TextView levelTV = view.findViewById(R.id.profileLevelTV);
             levelTV.setText(LevelHelper.getLevelTitle(xp));
+        }
+
+        // User ID — tap to copy (needed to challenge in battle)
+        TextView userIdTV = view.findViewById(R.id.profileUserIdTV);
+        int userId = prefs.getInt("user_id", 0);
+        if (userId > 0) {
+            userIdTV.setText("ID: " + userId);
+            userIdTV.setOnClickListener(v -> {
+                ClipboardManager cm = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(ClipData.newPlainText("user_id", String.valueOf(userId)));
+                Toast.makeText(activity, "ID copied: " + userId, Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            userIdTV.setVisibility(android.view.View.GONE);
         }
 
         // XP / Streak / Rank / Lipto

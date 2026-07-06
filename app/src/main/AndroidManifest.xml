@@ -69,6 +69,9 @@
             android:name=".Activity.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.OnboardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.GroupActivity"
             android:exported="false" />
         <activity

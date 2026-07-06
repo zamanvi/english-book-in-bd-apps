@@ -29,6 +29,9 @@ public class Constant {
     public static final String GROUP_LEADERBOARD   = ROOT_API_GAME_AUTH + "group/";  // + code + "/leaderboard"
     public static final String GROUP_LEAVE         = ROOT_API_GAME_AUTH + "group/";  // + code + "/leave"
 
+    // Notification endpoints
+    public static final String NOTIF_TOKEN = ROOT_API_GAME_AUTH + "notification/token";
+
     // Battle endpoints
     public static final String BATTLE_CHALLENGE    = ROOT_API_GAME_AUTH + "battle/challenge";
     public static final String BATTLE_PENDING      = ROOT_API_GAME_AUTH + "battle/pending";

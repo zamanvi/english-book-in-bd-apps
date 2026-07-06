@@ -117,10 +117,20 @@ public class SplashActivity extends AppCompatActivity {
         String type = intent.getStringExtra("type");
         String slug = intent.getStringExtra("slug");
 
+        // First launch → show onboarding
+        boolean onboardingDone = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getBoolean("onboarding_done", false);
+
         Intent startIntent;
-        if ("item".equals(type) && slug != null) {
+        if (!onboardingDone && type == null) {
+            startIntent = new Intent(activity, OnboardingActivity.class);
+        } else if ("item".equals(type) && slug != null) {
             startIntent = new Intent(activity, ItemDetailsActivity.class);
             startIntent.putExtra(Constant.FROM, slug);
+        } else if ("battle".equals(type)) {
+            startIntent = new Intent(activity, com.abmn.englishhub.Activity.BattleActivity.class);
+            String battleId = intent.getStringExtra("battle_id");
+            if (battleId != null) startIntent.putExtra("battle_id", Integer.parseInt(battleId));
         } else {
             startIntent = new Intent(activity, MainActivity.class);
         }
