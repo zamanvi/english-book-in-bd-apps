@@ -300,6 +300,8 @@
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:ignore="HardcodedText" />
 
             <TextView

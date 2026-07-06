@@ -248,6 +248,7 @@
             android:id="@+id/optionA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="56dp"
             android:layout_marginBottom="6dp"
             android:clickable="true"
             android:focusable="true"
@@ -282,6 +283,8 @@
                     android:text="Fluent and persuasive speaker"
                     android:textColor="#C4BEFF"
                     android:textSize="13sp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -291,6 +294,7 @@
             android:id="@+id/optionB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="56dp"
             android:layout_marginBottom="6dp"
             android:clickable="true"
             android:focusable="true"
@@ -325,6 +329,8 @@
                     android:text="Shy and introverted"
                     android:textColor="#7DD3FC"
                     android:textSize="13sp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -334,6 +340,7 @@
             android:id="@+id/optionC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="56dp"
             android:layout_marginBottom="6dp"
             android:clickable="true"
             android:focusable="true"
@@ -368,6 +375,8 @@
                     android:text="Angry and aggressive"
                     android:textColor="#FDE68A"
                     android:textSize="13sp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -377,6 +386,7 @@
             android:id="@+id/optionD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="56dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
@@ -410,6 +420,8 @@
                     android:text="Confusing and unclear"
                     android:textColor="#FBCFE8"
                     android:textSize="13sp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

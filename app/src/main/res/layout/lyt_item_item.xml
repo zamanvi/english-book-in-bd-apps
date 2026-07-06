@@ -34,6 +34,8 @@
             android:text="Lorem ipsum dolor sit amet,"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
+            android:maxLines="2"
+            android:ellipsize="end"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>

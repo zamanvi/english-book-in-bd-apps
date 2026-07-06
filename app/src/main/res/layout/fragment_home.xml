@@ -49,6 +49,8 @@
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_marginTop="2dp"
                     tools:ignore="HardcodedText" />
 
@@ -109,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:background="@drawable/grad_stat_xp">
                     <ImageView
                         android:layout_width="18dp"
@@ -123,15 +125,17 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/indigo"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total XP"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -151,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:background="@drawable/grad_stat_streak">
                     <ImageView
                         android:layout_width="18dp"
@@ -165,15 +169,17 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/coral"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Streak"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -192,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:background="@drawable/grad_stat_rank">
                     <ImageView
                         android:layout_width="18dp"
@@ -206,15 +212,17 @@
                         android:layout_height="wrap_content"
                         android:text="—"
                         android:textColor="@color/gold"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Rank"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -233,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:background="@drawable/grad_stat_xp">
                     <TextView
                         android:layout_width="wrap_content"
@@ -246,15 +254,17 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/indigo"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_marginTop="4dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lipto"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -466,7 +476,7 @@
                         android:layout_height="wrap_content"
                         android:text="Test yourself"
                         android:textColor="#FFBBA0"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -511,7 +521,7 @@
                         android:layout_height="wrap_content"
                         android:text="Top learners"
                         android:textColor="#FFD9A0"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -563,7 +573,7 @@
                         android:layout_height="wrap_content"
                         android:text="গ্রুপ বানাও"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -606,7 +616,7 @@
                         android:layout_height="wrap_content"
                         android:text="বন্ধুকে চ্যালেঞ্জ করো"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="8sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>

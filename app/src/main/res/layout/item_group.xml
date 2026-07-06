@@ -47,7 +47,9 @@
                 android:text="—"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <!-- Code pill -->
             <LinearLayout

@@ -38,6 +38,8 @@
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/groupCodeTV"

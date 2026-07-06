@@ -64,6 +64,8 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.01"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_marginTop="14dp"
                     tools:ignore="HardcodedText" />
 
