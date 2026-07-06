@@ -97,6 +97,10 @@ public class ChapterActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data, String getType) {
+        String url = Constant.CHAPTER_API2 + "?book_slug=" + data;
+        if (getType != null && !getType.isEmpty()) {
+            url += "&type=" + getType;
+        }
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
             if (!chapterResult || chapterResponse == null || chapterResponse.isEmpty()) return;
             try {
@@ -126,7 +130,7 @@ public class ChapterActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e("ChapterActivity", "getData parse error", e);
             }
-        }, Request.Method.GET, activity, Constant.CHAPTER_API2 + "?book_slug=" + data, new HashMap<>(), false);
+        }, Request.Method.GET, activity, url, new HashMap<>(), false);
     }
 
 }
