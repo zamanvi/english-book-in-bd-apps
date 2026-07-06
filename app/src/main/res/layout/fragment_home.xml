@@ -464,7 +464,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="নিজেকে যাচাই করো"
+                        android:text="Test yourself"
                         android:textColor="#FFBBA0"
                         android:textSize="9sp"
                         android:layout_marginTop="2dp"
@@ -509,7 +509,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="সেরা শিক্ষার্থী"
+                        android:text="Top learners"
                         android:textColor="#FFD9A0"
                         android:textSize="9sp"
                         android:layout_marginTop="2dp"
@@ -739,7 +739,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="সব অধ্যায়"
+                android:text="Chapters"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -755,7 +755,7 @@
                     android:id="@+id/lessonCountTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="০ টি পাঠ"
+                    android:text="0 lessons"
                     android:textColor="@color/indigo"
                     android:textSize="10sp"
                     android:textStyle="bold"
@@ -812,7 +812,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="৫০০০+ শব্দ"
+                        android:text="5000+ শব্দ"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"
@@ -857,7 +857,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="সম্পূর্ণ কোর্স"
+                        android:text="Full course"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"
@@ -910,7 +910,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="প্রতিদিনের চর্চা"
+                        android:text="Daily practice"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"
@@ -955,7 +955,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="পড়া ও লেখা"
+                        android:text="Reading &amp; Writing"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"

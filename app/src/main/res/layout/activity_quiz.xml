@@ -498,7 +498,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextBtn"
             style="@style/btn_primary"
-            android:text="পরের প্রশ্ন →"
+            android:text="Next →"
             android:visibility="gone"
             tools:ignore="HardcodedText" />
 

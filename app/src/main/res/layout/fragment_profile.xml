@@ -428,7 +428,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="শেখার সুযোগ"
+            android:text="LEARN"
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
@@ -497,7 +497,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="৫০০০+ শব্দ শিখো"
+                            android:text="5000+ words to master"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"
@@ -518,7 +518,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="অ্যাপ"
+            android:text="APP"
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
