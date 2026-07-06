@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputEditText emailET, passwordET;
+    private TextInputEditText nameET, passwordET;
     private TextView errorTV;
     private MaterialButton loginBtn;
 
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailET    = findViewById(R.id.loginEmailET);
+        nameET     = findViewById(R.id.loginNameET);
         passwordET = findViewById(R.id.loginPasswordET);
         errorTV    = findViewById(R.id.loginErrorTV);
         loginBtn   = findViewById(R.id.loginBtn);
@@ -37,16 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.goToRegisterTV).setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
-
-        findViewById(R.id.skipLoginTV).setOnClickListener(v -> goToMain());
     }
 
     private void attemptLogin() {
-        String email    = emailET.getText() != null ? emailET.getText().toString().trim() : "";
+        String name     = nameET.getText() != null ? nameET.getText().toString().trim() : "";
         String password = passwordET.getText() != null ? passwordET.getText().toString() : "";
 
-        if (email.isEmpty() || password.isEmpty()) {
-            showError("ইমেইল এবং পাসওয়ার্ড দিন");
+        if (name.isEmpty() || password.isEmpty()) {
+            showError("নাম এবং পাসওয়ার্ড দিন");
             return;
         }
 
@@ -57,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         String url = Constant.ROOT_API + "login";
         JSONObject body = new JSONObject();
         try {
-            body.put("email", email);
+            body.put("name", name);
             body.put("password", password);
         } catch (Exception ignored) {}
 
@@ -68,26 +66,26 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject data = json.optJSONObject(Constant.DATA);
                     if (data == null) { showError("Server error"); return; }
 
+                    // Backend wraps user fields inside data.user
+                    JSONObject userObj = data.optJSONObject("user");
                     String token = data.optString("token", "");
-                    String name  = data.optString("name", "");
-                    int userId   = data.optInt("id", 0);
+                    String userName = userObj != null ? userObj.optString("name", name) : name;
+                    int userId = userObj != null ? userObj.optInt("id", 0) : 0;
 
                     UConfig uConfig = new UConfig(this);
                     uConfig.setData(Constant.TOKEN, token);
-                    uConfig.setData("name", name);
+                    uConfig.setData("name", userName);
 
-                    // Save user_id to prefs for battle challenge feature
                     if (userId > 0) {
                         getSharedPreferences("app_prefs", MODE_PRIVATE)
                                 .edit().putInt("user_id", userId).apply();
                     }
 
-                    // Save FCM token to backend after login
                     com.abmn.englishhub.Helper.FcmService.saveTokenToBackend(this);
 
                     goToMain();
                 } else {
-                    showError(json.optString(Constant.MESSAGE, "ইমেইল বা পাসওয়ার্ড ভুল"));
+                    showError(json.optString(Constant.MESSAGE, "নাম বা পাসওয়ার্ড ভুল"));
                 }
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");

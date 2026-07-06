@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText nameET, phoneET, emailET, passwordET;
+    private TextInputEditText nameET, passwordET, confirmPasswordET;
     private TextView errorTV;
     private MaterialButton registerBtn;
 
@@ -27,43 +27,44 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        nameET      = findViewById(R.id.registerNameET);
-        phoneET     = findViewById(R.id.registerPhoneET);
-        emailET     = findViewById(R.id.registerEmailET);
-        passwordET  = findViewById(R.id.registerPasswordET);
-        errorTV     = findViewById(R.id.registerErrorTV);
-        registerBtn = findViewById(R.id.registerBtn);
+        nameET              = findViewById(R.id.registerNameET);
+        passwordET          = findViewById(R.id.registerPasswordET);
+        confirmPasswordET   = findViewById(R.id.registerConfirmPasswordET);
+        errorTV             = findViewById(R.id.registerErrorTV);
+        registerBtn         = findViewById(R.id.registerBtn);
 
         registerBtn.setOnClickListener(v -> attemptRegister());
         findViewById(R.id.goToLoginTV).setOnClickListener(v -> finish());
     }
 
     private void attemptRegister() {
-        String name     = nameET.getText()     != null ? nameET.getText().toString().trim()     : "";
-        String phone    = phoneET.getText()    != null ? phoneET.getText().toString().trim()    : "";
-        String email    = emailET.getText()    != null ? emailET.getText().toString().trim()    : "";
-        String password = passwordET.getText() != null ? passwordET.getText().toString()         : "";
+        String name            = nameET.getText()            != null ? nameET.getText().toString().trim()            : "";
+        String password        = passwordET.getText()        != null ? passwordET.getText().toString()               : "";
+        String confirmPassword = confirmPasswordET.getText() != null ? confirmPasswordET.getText().toString()        : "";
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            showError("নাম, ইমেইল এবং পাসওয়ার্ড দিন");
+        if (name.isEmpty()) {
+            showError("তোমার নাম লিখো");
             return;
         }
-        if (password.length() < 8) {
-            showError("পাসওয়ার্ড কমপক্ষে ৮ অক্ষর হতে হবে");
+        if (password.length() < 6) {
+            showError("পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে");
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            showError("পাসওয়ার্ড দুটো মিলছে না");
             return;
         }
 
         registerBtn.setEnabled(false);
-        registerBtn.setText("রেজিস্ট্রেশন হচ্ছে...");
+        registerBtn.setText("তৈরি হচ্ছে...");
         errorTV.setVisibility(View.GONE);
 
         String url = Constant.ROOT_API + "register";
         JSONObject body = new JSONObject();
         try {
             body.put("name", name);
-            body.put("phone", phone.isEmpty() ? "01000000000" : phone);
-            body.put("email", email);
             body.put("password", password);
+            body.put("password_confirmation", confirmPassword);
         } catch (Exception ignored) {}
 
         ApiConfig.postRequest(this, url, body, response -> {
@@ -82,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     finish();
                 } else {
-                    showError(json.optString(Constant.MESSAGE, "রেজিস্ট্রেশন ব্যর্থ হয়েছে"));
+                    showError(json.optString(Constant.MESSAGE, "একাউন্ট তৈরি ব্যর্থ হয়েছে"));
                 }
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
@@ -95,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
             errorTV.setText(msg);
             errorTV.setVisibility(View.VISIBLE);
             registerBtn.setEnabled(true);
-            registerBtn.setText("রেজিস্ট্রেশন করো");
+            registerBtn.setText("একাউন্ট তৈরি করো");
         });
     }
 }

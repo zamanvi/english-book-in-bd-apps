@@ -26,164 +26,144 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:paddingTop="56dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="48dp"
             android:paddingBottom="40dp">
 
-            <!-- Logo / Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📚"
-                android:textSize="64sp"
-                android:layout_marginBottom="20dp"
-                tools:ignore="HardcodedText" />
+            <!-- App icon -->
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/graduation"
+                app:tint="@color/indigo"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="App logo" />
 
+            <!-- App name -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="স্বাগতম!"
+                android:text="Master English Book"
                 android:textColor="@color/text_primary"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
                 tools:ignore="HardcodedText" />
 
+            <!-- Tagline -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="তোমার account-এ লগইন করো"
-                android:textColor="@color/text_muted"
-                android:textSize="14sp"
-                android:layout_marginBottom="40dp"
+                android:text="শেখো, বাড়াও, জয় করো"
+                android:textColor="@color/text_inactive"
+                android:textSize="13sp"
+                android:layout_marginBottom="36dp"
                 tools:ignore="HardcodedText" />
 
             <!-- Form card -->
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/bg_card"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
+                android:orientation="vertical"
+                android:background="@drawable/grad_word_of_day"
+                android:padding="20dp">
 
-                <LinearLayout
+                <!-- Card header -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="স্বাগতম! 👋"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="20dp"
+                    tools:ignore="HardcodedText" />
+
+                <!-- Name input -->
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <!-- Email input -->
-                    <com.google.android.material.textfield.TextInputLayout
+                    android:hint="তোমার নাম"
+                    android:layout_marginBottom="14dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/bg_active"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:hintTextColor="@color/text_muted">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginNameET"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="তোমার ইমেইল ঠিকানা"
-                        android:layout_marginBottom="14dp"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="@color/bg_active"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        app:hintTextColor="@color/text_muted">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/loginEmailET"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:imeOptions="actionNext"
-                            android:textColor="@color/text_primary"
-                            android:textColorHint="@color/text_muted"
-                            android:backgroundTint="@android:color/transparent" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
+                        android:backgroundTint="@android:color/transparent" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Password input -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="পাসওয়ার্ড দাও"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="@color/bg_active"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        app:hintTextColor="@color/text_muted"
-                        app:passwordToggleEnabled="true">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/loginPasswordET"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:imeOptions="actionDone"
-                            android:textColor="@color/text_primary"
-                            android:textColorHint="@color/text_muted" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Error message -->
-                    <TextView
-                        android:id="@+id/loginErrorTV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="@color/red_wrong"
-                        android:textSize="12sp"
-                        android:visibility="gone"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="12dp"
-                        tools:ignore="HardcodedText" />
-
-                    <!-- Login button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/loginBtn"
-                        style="@style/btn_primary"
-                        android:layout_marginTop="8dp"
-                        android:text="লগইন করো"
-                        tools:ignore="HardcodedText" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Register link -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="24dp">
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Password input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Account নেই? "
-                    android:textColor="@color/text_muted"
-                    android:textSize="13sp"
+                    android:hint="পাসওয়ার্ড"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/bg_active"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:hintTextColor="@color/text_muted"
+                    app:passwordToggleEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginPasswordET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
+                        android:backgroundTint="@android:color/transparent" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Error message -->
+                <TextView
+                    android:id="@+id/loginErrorTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/coral"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
                     tools:ignore="HardcodedText" />
+
+                <!-- Login button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/loginBtn"
+                    style="@style/btn_primary"
+                    android:layout_marginTop="8dp"
+                    android:text="লগইন করো"
+                    tools:ignore="HardcodedText" />
+
+                <!-- Go to register -->
                 <TextView
                     android:id="@+id/goToRegisterTV"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="রেজিস্ট্রেশন করো"
+                    android:text="নতুন? একাউন্ট তৈরি করো →"
                     android:textColor="@color/indigo"
                     android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:gravity="center"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="4dp"
                     tools:ignore="HardcodedText" />
-            </LinearLayout>
 
-            <!-- Skip -->
-            <TextView
-                android:id="@+id/skipLoginTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="লগইন ছাড়াই দেখো"
-                android:textColor="@color/text_inactive"
-                android:textSize="12sp"
-                android:layout_marginTop="8dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp"
-                tools:ignore="HardcodedText" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
