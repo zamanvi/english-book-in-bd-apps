@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <item
-        android:icon="@drawable/home"
         android:id="@+id/navHome"
+        android:icon="@drawable/home"
         android:title="Home"
         tools:ignore="HardcodedText" />
 
     <item
-        android:icon="@drawable/graduation"
         android:id="@+id/navEducation"
-        android:title="Education"
+        android:icon="@drawable/graduation"
+        android:title="Learn"
         tools:ignore="HardcodedText" />
 
     <item
-        android:icon="@drawable/plus"
-        android:id="@+id/navPlus"
-        android:title="Add"
-        tools:ignore="HardcodedText" />
-
-    <item
-        android:icon="@drawable/notice"
         android:id="@+id/navNotice"
+        android:icon="@drawable/notice"
         android:title="Notice"
         tools:ignore="HardcodedText" />
 
     <item
-        android:icon="@drawable/profile"
         android:id="@+id/navProfile"
+        android:icon="@drawable/profile"
         android:title="Profile"
         tools:ignore="HardcodedText" />
+
 </menu>

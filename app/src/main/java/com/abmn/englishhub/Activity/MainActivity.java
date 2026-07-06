@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.fragment.HomeFragment;
+import com.abmn.englishhub.fragment.LearnFragment;
 import com.abmn.englishhub.fragment.NoticeFragment;
 import com.abmn.englishhub.fragment.ProfileFragment;
 import com.android.volley.Request;
@@ -100,9 +101,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.navHome) {
                 fragment = new HomeFragment();
             } else if (id == R.id.navEducation) {
-                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading"));
-            } else if (id == R.id.navPlus) {
-                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar"));
+                fragment = new LearnFragment();
             } else if (id == R.id.navNotice) {
                 fragment = new NoticeFragment();
             } else if (id == R.id.navProfile) {
@@ -161,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
         isNavigatingProgrammatically = true;
         if (fragment instanceof HomeFragment) {
             bottomNav.setSelectedItemId(R.id.navHome);
+        } else if (fragment instanceof LearnFragment) {
+            bottomNav.setSelectedItemId(R.id.navEducation);
         } else if (fragment instanceof NoticeFragment) {
             bottomNav.setSelectedItemId(R.id.navNotice);
         } else if (fragment instanceof ProfileFragment) {
