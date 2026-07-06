@@ -55,8 +55,8 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
     }
 
     private void loadLeaderboard() {
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty() || groupCode == null) return;
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty() || groupCode == null) return;
 
         String url = Constant.GROUP_LEADERBOARD + groupCode + "/leaderboard";
         ApiConfig.getRequest(this, url, token, response -> {

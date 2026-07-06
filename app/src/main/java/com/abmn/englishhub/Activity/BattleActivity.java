@@ -37,6 +37,14 @@ public class BattleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_battle);
 
         opponentIdET      = findViewById(R.id.opponentIdET);
@@ -71,8 +79,8 @@ public class BattleActivity extends AppCompatActivity {
             return;
         }
 
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty()) { showError("লগইন করো আগে"); return; }
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) { showError("লগইন করো আগে"); return; }
 
         JSONObject body = new JSONObject();
         try {
@@ -105,8 +113,8 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     private void loadPending() {
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty()) return;
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
         ApiConfig.getRequest(this, Constant.BATTLE_PENDING, token, response -> {
             try {
                 JSONObject r = new JSONObject(response);
@@ -120,8 +128,8 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     private void loadHistory() {
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty()) return;
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
         ApiConfig.getRequest(this, Constant.BATTLE_HISTORY, token, response -> {
             try {
                 JSONObject r = new JSONObject(response);

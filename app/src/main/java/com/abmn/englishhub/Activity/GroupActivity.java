@@ -1,5 +1,6 @@
 package com.abmn.englishhub.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -39,6 +40,14 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_group);
 
         bindViews();
@@ -97,8 +106,8 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void createGroup(String name) {
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty()) { showError("লগইন করো আগে"); return; }
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) { showError("লগইন করো আগে"); return; }
 
         JSONObject body = new JSONObject();
         try { body.put("name", name); } catch (Exception ignored) {}
@@ -119,8 +128,8 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void joinGroup(String code) {
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty()) { showError("লগইন করো আগে"); return; }
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) { showError("লগইন করো আগে"); return; }
 
         JSONObject body = new JSONObject();
         try { body.put("code", code.toUpperCase()); } catch (Exception ignored) {}
@@ -150,8 +159,8 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void loadMyGroups() {
-        String token = UConfig.getString(this, "auth_token", "");
-        if (token.isEmpty()) return;
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
 
         ApiConfig.getRequest(this, Constant.GROUP_MY, token, response -> {
             try {
