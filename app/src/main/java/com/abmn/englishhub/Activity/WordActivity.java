@@ -107,18 +107,11 @@ public class WordActivity extends AppCompatActivity {
         meaningTvW.setOnClickListener(this::meaningChange);
         meaningCloseIV.setOnClickListener(this::meaningChange);
 
-        if ("verb".equals(getLessonType)){
-            wordTvW.setText("Verb 1");
-            meaningTvW.setText("Meaning");
-            synonymsTvW.setText("Verb 2");
-            antonymsTvW.setText("Verb 3");
-            setToolbar("Verb: " + getLessonTitle);
-        }else {
-            wordTvW.setText("Word");
-            meaningTvW.setText("Meaning");
-            synonymsTvW.setText("Synonyms");
-            antonymsTvW.setText("Antonyms");
-        }
+        wordTvW.setText("V1 / Word");
+        meaningTvW.setText("Meaning");
+        synonymsTvW.setText("V2 / Synonyms");
+        antonymsTvW.setText("V3 / Antonyms");
+        setToolbar(getLessonTitle);
 
         wordRV = findViewById(R.id.wordRV);
 
@@ -322,24 +315,8 @@ public class WordActivity extends AppCompatActivity {
                         if (currentPage == 1) {
                             lastPage = chaptersObject.getInt("last_page");
                         }
-                        // Logic for visibility of synonymsTvW and antonymsTvW
-                        boolean isAnySynonymNotNull = wordList.stream()
-                                .anyMatch(word -> word.getSynonyms() != null && !"null".equals(word.getSynonyms()));
-
-                        boolean isAnyAntonymNotNull = wordList.stream()
-                                .anyMatch(word -> word.getAntonyms() != null && !"null".equals(word.getAntonyms()));
-
-                        if (isAnySynonymNotNull) {
-                            synonymsTvW.setVisibility(View.VISIBLE);
-                        } else {
-                            synonymsTvW.setVisibility(View.GONE);
-                        }
-
-                        if (isAnyAntonymNotNull) {
-                            antonymsTvW.setVisibility(View.VISIBLE);
-                        } else {
-                            antonymsTvW.setVisibility(View.GONE);
-                        }
+                        synonymsTvW.setVisibility(View.VISIBLE);
+                        antonymsTvW.setVisibility(View.VISIBLE);
                         Objects.requireNonNull(wordRV.getAdapter()).notifyDataSetChanged();
                     }
                 } catch (Exception e) {

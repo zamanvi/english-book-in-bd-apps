@@ -75,8 +75,7 @@ public class LessonActivity extends AppCompatActivity {
         getChapterType = getIntent().getStringExtra(Constant.FROM_TYPE);
         if (getChapterType == null) getChapterType = "vocabulary";
         String getChapterTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
-        String toolbarTitle = "verb".equals(getChapterType) ? "Verb: " : "Vocabulary: ";
-        setToolbar(toolbarTitle + getChapterTitle);
+        setToolbar(getChapterTitle);
 
         lessonRV = findViewById(R.id.lessonRV);
 

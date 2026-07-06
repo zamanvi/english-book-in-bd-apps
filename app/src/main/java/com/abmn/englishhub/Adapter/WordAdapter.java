@@ -92,34 +92,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             wordTV.setText(model.getWord());
             meaningTV.setText(model.getMeaning());
 
-            antonymsTV.setText(model.getAntonyms());
             counterTV.setText("" + (position + 1));
 
-            boolean isAnySynonymNotNull = wordList.stream()
-                    .anyMatch(word -> word.getSynonyms() != null && !"null".equals(word.getSynonyms()));
+            String syn = model.getSynonyms();
+            String ant = model.getAntonyms();
 
-            boolean isAnyAntonymsNotNull = wordList.stream()
-                    .anyMatch(word -> word.getAntonyms() != null && !"null".equals(word.getAntonyms()));
+            synonymsTV.setVisibility(View.VISIBLE);
+            synonymsTV.setText((syn == null || "null".equals(syn)) ? "—" : syn);
 
-            if (isAnySynonymNotNull) {
-                synonymsTV.setVisibility(View.VISIBLE);
-                if (model.getSynonyms().equals("null"))
-                    synonymsTV.setText("");
-                else
-                    synonymsTV.setText(model.getSynonyms());
-            } else {
-                synonymsTV.setVisibility(View.GONE);
-            }
-
-            if (isAnyAntonymsNotNull) {
-                antonymsTV.setVisibility(View.VISIBLE);
-                if (model.getAntonyms().equals("null"))
-                    antonymsTV.setText("");
-                else
-                    antonymsTV.setText(model.getAntonyms());
-            } else {
-                antonymsTV.setVisibility(View.GONE);
-            }
+            antonymsTV.setVisibility(View.VISIBLE);
+            antonymsTV.setText((ant == null || "null".equals(ant)) ? "—" : ant);
 
             if (isBWord) {
                 wordTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
