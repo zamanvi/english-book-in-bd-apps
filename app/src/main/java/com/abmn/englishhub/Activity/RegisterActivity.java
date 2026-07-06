@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText nameET, passwordET, confirmPasswordET;
+    private TextInputEditText nameET, emailET, passwordET, confirmPasswordET;
     private TextView errorTV;
     private MaterialButton registerBtn;
 
@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         nameET              = findViewById(R.id.registerNameET);
+        emailET             = findViewById(R.id.registerEmailET);
         passwordET          = findViewById(R.id.registerPasswordET);
         confirmPasswordET   = findViewById(R.id.registerConfirmPasswordET);
         errorTV             = findViewById(R.id.registerErrorTV);
@@ -38,12 +39,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        String name            = nameET.getText()            != null ? nameET.getText().toString().trim()            : "";
-        String password        = passwordET.getText()        != null ? passwordET.getText().toString()               : "";
-        String confirmPassword = confirmPasswordET.getText() != null ? confirmPasswordET.getText().toString()        : "";
+        String name            = nameET.getText()            != null ? nameET.getText().toString().trim()  : "";
+        String email           = emailET.getText()           != null ? emailET.getText().toString().trim()  : "";
+        String password        = passwordET.getText()        != null ? passwordET.getText().toString()     : "";
+        String confirmPassword = confirmPasswordET.getText() != null ? confirmPasswordET.getText().toString() : "";
 
         if (name.isEmpty()) {
             showError("তোমার নাম লিখো");
+            return;
+        }
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showError("সঠিক email address দাও");
             return;
         }
         if (password.length() < 6) {
@@ -63,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         JSONObject body = new JSONObject();
         try {
             body.put("name", name);
+            body.put("email", email);
             body.put("password", password);
             body.put("password_confirmation", confirmPassword);
         } catch (Exception ignored) {}

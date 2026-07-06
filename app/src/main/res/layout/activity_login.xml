@@ -150,6 +150,19 @@
                     android:text="লগইন করো"
                     tools:ignore="HardcodedText" />
 
+                <!-- Forgot password -->
+                <TextView
+                    android:id="@+id/forgotPasswordTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="পাসওয়ার্ড ভুলে গেছো?"
+                    android:textColor="@color/gold"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="2dp"
+                    tools:ignore="HardcodedText" />
+
                 <!-- Go to register -->
                 <TextView
                     android:id="@+id/goToRegisterTV"
@@ -159,7 +172,7 @@
                     android:textColor="@color/indigo"
                     android:textSize="13sp"
                     android:gravity="center"
-                    android:paddingTop="14dp"
+                    android:paddingTop="10dp"
                     android:paddingBottom="4dp"
                     tools:ignore="HardcodedText" />
 

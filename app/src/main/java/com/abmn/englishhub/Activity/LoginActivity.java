@@ -34,9 +34,11 @@ public class LoginActivity extends AppCompatActivity {
 
         loginBtn.setOnClickListener(v -> attemptLogin());
 
-        findViewById(R.id.goToRegisterTV).setOnClickListener(v -> {
-            startActivity(new Intent(this, RegisterActivity.class));
-        });
+        findViewById(R.id.goToRegisterTV).setOnClickListener(v ->
+            startActivity(new Intent(this, RegisterActivity.class)));
+
+        findViewById(R.id.forgotPasswordTV).setOnClickListener(v ->
+            startActivity(new Intent(this, ForgotPasswordActivity.class)));
     }
 
     private void attemptLogin() {
