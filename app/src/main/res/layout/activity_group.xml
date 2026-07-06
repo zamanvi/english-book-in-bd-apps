@@ -112,7 +112,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="গ্রুপের নাম"
+                    android:hint="গ্রুপের নাম লেখো (যেমন: আমার ক্লাস)"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/bg_active"
@@ -165,7 +165,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="গ্রুপ কোড (8 অক্ষর)"
+                    android:hint="8 অক্ষরের কোড লেখো (বন্ধু শেয়ার করেছে)"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/bg_active"
@@ -213,7 +213,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="আমার গ্রুপ"
+        android:text="আমি যে গ্রুপে আছি"
         android:textColor="@color/text_muted"
         android:textSize="11sp"
         android:textStyle="bold"

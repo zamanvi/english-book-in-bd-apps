@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quiz-এ জিতে XP অর্জন করো"
+                    android:text="বন্ধুর সাথে quiz লড়াই করো, বেশি স্কোর করলে তুমি জিতবে"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp"
                     android:gravity="center"
@@ -121,7 +121,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="প্রতিপক্ষের User ID"
+                    android:hint="বন্ধুর User ID (Profile থেকে কপি করো)"
                     android:layout_marginBottom="12dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/bg_active"
@@ -141,7 +141,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Lesson ID"
+                    android:hint="Lesson নম্বর (যেমন: 5)"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/bg_active"
@@ -161,7 +161,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/challengeBtn"
                     style="@style/btn_primary"
-                    android:text="চ্যালেঞ্জ করো"
+                    android:text="⚔️ চ্যালেঞ্জ পাঠাও"
                     tools:ignore="HardcodedText" />
 
                 <TextView
@@ -182,7 +182,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="আমার জন্য অপেক্ষা করছে"
+            android:text="⏳ আমার উত্তর দেওয়া বাকি"
             android:textColor="@color/text_muted"
             android:textSize="11sp"
             android:textStyle="bold"
@@ -204,7 +204,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ইতিহাস"
+            android:text="📋 আগের Battle গুলো"
             android:textColor="@color/text_muted"
             android:textSize="11sp"
             android:textStyle="bold"

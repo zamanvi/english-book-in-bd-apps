@@ -140,7 +140,7 @@
                             android:id="@+id/profileXpToNextTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="50 XP to next level"
+                            android:text="পরের level-এ যেতে আরও XP দরকার"
                             android:textColor="@color/text_inactive"
                             android:textSize="10sp"
                             tools:ignore="HardcodedText" />
@@ -338,7 +338,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lipto Balance"
+                        android:text="Lipto ব্যালেন্স"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp"
                         android:letterSpacing="0.05"
@@ -356,7 +356,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="quiz খেলে আরও আয় করো →"
+                    android:text="Quiz দিলে Lipto পাবে →"
                     android:textColor="@color/text_inactive"
                     android:textSize="10sp"
                     tools:ignore="HardcodedText" />
@@ -393,7 +393,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="THIS WEEK"
+                        android:text="এই সপ্তাহ"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
                         android:textStyle="bold"
@@ -404,7 +404,7 @@
                         android:id="@+id/weekStreakLabelTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0 / 7 Days"
+                        android:text="০ / ৭ দিন"
                         android:textColor="@color/coral"
                         android:textSize="10sp"
                         android:textStyle="bold"
@@ -428,7 +428,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LEARN"
+            android:text="শেখার সুযোগ"
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
@@ -497,7 +497,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5000+ words to master"
+                            android:text="৫০০০+ শব্দ শিখো"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"
@@ -518,7 +518,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="APP"
+            android:text="অ্যাপ"
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:textStyle="bold"
@@ -585,7 +585,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Get Latest Update"
+                                android:text="নতুন আপডেট পাও"
                                 android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
@@ -614,7 +614,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="নতুন ফিচার ও বাগ ফিক্স পান"
+                            android:text="নতুন ফিচার ও সমস্যা সমাধান"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"
@@ -679,7 +679,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Friends learn together"
+                            android:text="বন্ধুদের সাথে শেয়ার করো"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"
@@ -744,7 +744,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rate us on Play Store"
+                            android:text="Play Store-এ রেটিং দাও"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"
@@ -873,7 +873,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Follow us for updates"
+                            android:text="আমাদের follow করো"
                             android:textColor="@color/text_inactive"
                             android:textSize="11sp"
                             android:layout_marginTop="1dp"

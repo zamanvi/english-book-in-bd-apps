@@ -464,7 +464,7 @@
                     android:id="@+id/feedbackTitleTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correct!"
+                    android:text="সঠিক! 🎉"
                     android:textColor="@color/teal"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -498,7 +498,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextBtn"
             style="@style/btn_primary"
-            android:text="Next →"
+            android:text="পরের প্রশ্ন →"
             android:visibility="gone"
             tools:ignore="HardcodedText" />
 

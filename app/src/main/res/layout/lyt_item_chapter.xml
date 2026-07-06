@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Tap to explore"
+                android:text="ট্যাপ করে দেখো"
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
 
