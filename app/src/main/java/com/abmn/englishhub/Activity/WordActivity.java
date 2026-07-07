@@ -112,6 +112,11 @@ public class WordActivity extends AppCompatActivity {
             meaningTvW.setText("অর্থ");
             synonymsTvW.setText("🇺🇸 American");
             antonymsTvW.setText("🇬🇧 British");
+        } else if ("exam_vocab_appeared".equals(getLessonType) || "exam_vocab_upcoming".equals(getLessonType)) {
+            wordTvW.setText("শব্দ");
+            meaningTvW.setText("অর্থ");
+            synonymsTvW.setText("📋 পরীক্ষা / বিষয়");
+            antonymsTvW.setText("🔤 English Synonym");
         } else {
             wordTvW.setText("শব্দ (V1)");
             meaningTvW.setText("অর্থ");
