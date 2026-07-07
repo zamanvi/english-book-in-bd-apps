@@ -107,10 +107,17 @@ public class WordActivity extends AppCompatActivity {
         meaningTvW.setOnClickListener(this::meaningChange);
         meaningCloseIV.setOnClickListener(this::meaningChange);
 
-        wordTvW.setText("শব্দ (V1)");
-        meaningTvW.setText("অর্থ");
-        synonymsTvW.setText("সমার্থক (V2/V3)");
-        antonymsTvW.setText("বিপরীত শব্দ");
+        if ("american_british".equals(getLessonType)) {
+            wordTvW.setText("শব্দ");
+            meaningTvW.setText("অর্থ");
+            synonymsTvW.setText("🇺🇸 American");
+            antonymsTvW.setText("🇬🇧 British");
+        } else {
+            wordTvW.setText("শব্দ (V1)");
+            meaningTvW.setText("অর্থ");
+            synonymsTvW.setText("সমার্থক (V2/V3)");
+            antonymsTvW.setText("বিপরীত শব্দ");
+        }
         setToolbar(getLessonTitle);
 
         wordRV = findViewById(R.id.wordRV);
