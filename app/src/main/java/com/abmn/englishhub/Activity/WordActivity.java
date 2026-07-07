@@ -107,10 +107,10 @@ public class WordActivity extends AppCompatActivity {
         meaningTvW.setOnClickListener(this::meaningChange);
         meaningCloseIV.setOnClickListener(this::meaningChange);
 
-        wordTvW.setText("V1 / Word");
-        meaningTvW.setText("Meaning");
-        synonymsTvW.setText("V2 / Synonyms");
-        antonymsTvW.setText("V3 / Antonyms");
+        wordTvW.setText("শব্দ (V1)");
+        meaningTvW.setText("অর্থ");
+        synonymsTvW.setText("সমার্থক (V2/V3)");
+        antonymsTvW.setText("বিপরীত শব্দ");
         setToolbar(getLessonTitle);
 
         wordRV = findViewById(R.id.wordRV);
@@ -269,6 +269,7 @@ public class WordActivity extends AppCompatActivity {
             }
 
             Base.setVoiceSpeed(uConfig.getData(Constant.VOICE_SPEED));
+            adapter.refreshTtsSpeed();
         });
 
         builder.setNegativeButton("Cancel", null);

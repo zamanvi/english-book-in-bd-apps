@@ -21,7 +21,7 @@
             android:id="@+id/counterTV"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@color/indigo_deep"
+            android:background="@drawable/bg_counter_badge"
             android:gravity="center"
             android:textColor="@color/gold"
             android:textSize="12sp"
@@ -41,7 +41,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:ellipsize="end" />
 
             <TextView
@@ -57,7 +57,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="end">
@@ -67,7 +68,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/teal"
-                android:textSize="11sp" />
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/antonymsTV"
@@ -75,7 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textColor="@color/red_wrong"
-                android:textSize="11sp" />
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
         </LinearLayout>
 

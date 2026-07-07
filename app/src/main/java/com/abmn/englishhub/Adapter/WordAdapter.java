@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BlurMaskFilter;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -27,10 +26,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private final List<WordModel> wordList;
     private final Activity activity;
     private boolean isBWord = false, isBMeaning = false;
+    private TextToSpeechHelper ttsHelper;
 
     public WordAdapter(List<WordModel> wordList, Activity activity) {
         this.wordList = wordList;
         this.activity = activity;
+        UConfig uConfig = new UConfig(activity);
+        ttsHelper = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
+    }
+
+    public void refreshTtsSpeed() {
+        UConfig uConfig = new UConfig(activity);
+        ttsHelper = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -67,7 +74,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WordModel word = wordList.get(position);
-        holder.bind(word, wordList, position, isBWord, isBMeaning);
+        holder.bind(word, wordList, position, isBWord, isBMeaning, ttsHelper);
     }
 
     @Override
@@ -88,7 +95,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(WordModel model, List<WordModel> wordList, int position, boolean isBWord, boolean isBMeaning) {
+        public void bind(WordModel model, List<WordModel> wordList, int position, boolean isBWord, boolean isBMeaning, TextToSpeechHelper tts) {
             wordTV.setText(model.getWord());
             meaningTV.setText(model.getMeaning());
 
@@ -119,20 +126,17 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             }
             meaningTV.invalidate();
 
-            wordTV.setOnClickListener(v -> {
-                play(wordTV.getContext(), model.getWord(), wordTV);
-            });
-            synonymsTV.setOnClickListener(v -> play(synonymsTV.getContext(), model.getSynonyms(), synonymsTV));
-            antonymsTV.setOnClickListener(v -> play(antonymsTV.getContext(), model.getAntonyms(), antonymsTV));
+            wordTV.setOnClickListener(v -> play(wordTV.getContext(), model.getWord(), wordTV, tts));
+            synonymsTV.setOnClickListener(v -> play(synonymsTV.getContext(), model.getSynonyms(), synonymsTV, tts));
+            antonymsTV.setOnClickListener(v -> play(antonymsTV.getContext(), model.getAntonyms(), antonymsTV, tts));
         }
 
-        private void play(Context context, String word, TextView textView) {
-            UConfig uConfig = new UConfig(context);
-            TextToSpeechHelper ttsHelper = new TextToSpeechHelper(context, uConfig.getData(Constant.VOICE_SPEED));
+        private void play(Context context, String word, TextView textView, TextToSpeechHelper tts) {
+            if (word == null || word.isEmpty() || "null".equals(word) || "—".equals(word)) return;
             int defaultColor = textView.getCurrentTextColor();
-            textView.setTextColor(Color.parseColor("#5A69FF"));
+            textView.setTextColor(context.getResources().getColor(R.color.indigo, null));
             int estimatedDuration = word.split(" ").length * 500;
-            ttsHelper.speak(word);
+            tts.speak(word);
             new Handler(Looper.getMainLooper()).postDelayed(() -> textView.setTextColor(defaultColor), estimatedDuration);
         }
     }
