@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:text="Total XP"
                         android:textColor="@color/text_inactive"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -179,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:text="Streak"
                         android:textColor="@color/text_inactive"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -222,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:text="Rank"
                         android:textColor="@color/text_inactive"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -264,7 +264,7 @@
                         android:layout_height="wrap_content"
                         android:text="Lipto"
                         android:textColor="@color/text_inactive"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -315,11 +315,15 @@
                         tools:ignore="HardcodedText" />
                     <TextView
                         android:id="@+id/xpToNextTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
                         android:text="পরের level-এ যেতে আরও XP দরকার"
                         android:textColor="@color/text_inactive"
                         android:textSize="10sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
                 <ProgressBar
@@ -461,12 +465,12 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_bolt"
                         android:contentDescription="Quick Quiz"
-                        app:tint="#FFFFFF" />
+                        app:tint="@color/white" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Quick Quiz"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/white"
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp"
@@ -475,8 +479,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="নিজেকে যাচাই করো"
-                        android:textColor="#FFBBA0"
-                        android:textSize="8sp"
+                        android:textColor="@color/coral"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -506,12 +510,12 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_trophy"
                         android:contentDescription="Leaderboard"
-                        app:tint="#FFFFFF" />
+                        app:tint="@color/white" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Leaderboard"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/white"
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp"
@@ -520,8 +524,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="সেরা শিক্ষার্থীরা"
-                        android:textColor="#FFD9A0"
-                        android:textSize="8sp"
+                        android:textColor="@color/gold"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -573,7 +577,7 @@
                         android:layout_height="wrap_content"
                         android:text="গ্রুপ বানাও"
                         android:textColor="@color/text_inactive"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -616,7 +620,7 @@
                         android:layout_height="wrap_content"
                         android:text="বন্ধুকে চ্যালেঞ্জ করো"
                         android:textColor="@color/text_inactive"
-                        android:textSize="8sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="2dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
