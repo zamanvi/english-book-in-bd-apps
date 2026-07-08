@@ -64,8 +64,9 @@ public class LoginActivity extends AppCompatActivity {
         ApiConfig.postRequest(this, url, body, response -> {
             try {
                 JSONObject json = new JSONObject(response);
-                if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
-                    JSONObject data = json.optJSONObject(Constant.DATA);
+                JSONObject success = json.optJSONObject(Constant.SUCCESS);
+                if (success != null && success.optBoolean(Constant.STATUS, false)) {
+                    JSONObject data = success.optJSONObject(Constant.DATA);
                     if (data == null) { showError("Server error"); return; }
 
                     // Backend wraps user fields inside data.user
@@ -87,7 +88,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     goToMain();
                 } else {
-                    showError(json.optString(Constant.MESSAGE, "নাম বা পাসওয়ার্ড ভুল"));
+                    JSONObject errorObj = json.optJSONObject(Constant.ERROR);
+                    String msg = errorObj != null ? errorObj.optString(Constant.MESSAGE, "নাম বা পাসওয়ার্ড ভুল") : "নাম বা পাসওয়ার্ড ভুল";
+                    showError(msg);
                 }
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");

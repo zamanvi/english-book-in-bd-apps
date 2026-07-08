@@ -77,8 +77,9 @@ public class RegisterActivity extends AppCompatActivity {
         ApiConfig.postRequest(this, url, body, response -> {
             try {
                 JSONObject json = new JSONObject(response);
-                if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
-                    JSONObject data = json.optJSONObject(Constant.DATA);
+                JSONObject success = json.optJSONObject(Constant.SUCCESS);
+                if (success != null && success.optBoolean(Constant.STATUS, false)) {
+                    JSONObject data = success.optJSONObject(Constant.DATA);
                     if (data == null) { showError("Server error"); return; }
 
                     String token = data.optString("token", "");
@@ -90,7 +91,9 @@ public class RegisterActivity extends AppCompatActivity {
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     finish();
                 } else {
-                    showError(json.optString(Constant.MESSAGE, "একাউন্ট তৈরি ব্যর্থ হয়েছে"));
+                    JSONObject errorObj = json.optJSONObject(Constant.ERROR);
+                    String msg = errorObj != null ? errorObj.optString(Constant.MESSAGE, "একাউন্ট তৈরি ব্যর্থ হয়েছে") : "একাউন্ট তৈরি ব্যর্থ হয়েছে";
+                    showError(msg);
                 }
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");

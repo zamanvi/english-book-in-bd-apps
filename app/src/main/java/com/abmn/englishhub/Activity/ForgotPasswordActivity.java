@@ -79,14 +79,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ApiConfig.postRequest(this, url, body, response -> {
             try {
                 JSONObject json = new JSONObject(response);
-                if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
+                JSONObject success = json.optJSONObject(Constant.SUCCESS);
+                if (success != null && success.optBoolean(Constant.STATUS, false)) {
                     runOnUiThread(() -> {
                         step1Layout.setVisibility(View.GONE);
                         step2Layout.setVisibility(View.VISIBLE);
                         errorTV.setVisibility(View.GONE);
                     });
                 } else {
-                    showError(json.optString(Constant.MESSAGE, "Email পাঠাতে ব্যর্থ হয়েছে"));
+                    JSONObject errorObj = json.optJSONObject(Constant.ERROR);
+                    showError(errorObj != null ? errorObj.optString(Constant.MESSAGE, "Email পাঠাতে ব্যর্থ হয়েছে") : "Email পাঠাতে ব্যর্থ হয়েছে");
                 }
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
@@ -137,7 +139,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ApiConfig.postRequest(this, url, body, response -> {
             try {
                 JSONObject json = new JSONObject(response);
-                if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
+                JSONObject success = json.optJSONObject(Constant.SUCCESS);
+                if (success != null && success.optBoolean(Constant.STATUS, false)) {
                     runOnUiThread(() -> {
                         errorTV.setTextColor(getResources().getColor(R.color.green, null));
                         errorTV.setText("পাসওয়ার্ড পরিবর্তন হয়েছে! এখন লগইন করো।");
@@ -146,7 +149,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         resetBtn.postDelayed(this::finish, 2000);
                     });
                 } else {
-                    showError(json.optString(Constant.MESSAGE, "OTP ভুল বা মেয়াদ শেষ"));
+                    JSONObject errorObj = json.optJSONObject(Constant.ERROR);
+                    showError(errorObj != null ? errorObj.optString(Constant.MESSAGE, "OTP ভুল বা মেয়াদ শেষ") : "OTP ভুল বা মেয়াদ শেষ");
                 }
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
