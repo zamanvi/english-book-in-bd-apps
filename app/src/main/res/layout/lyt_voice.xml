@@ -24,12 +24,13 @@
         tools:ignore="UselessParent">
 
         <RadioButton
-            android:visibility="gone"
             android:id="@+id/radioSlower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="অনেক ধীরে"
             android:textColor="@color/text_primary"
+            android:textSize="15sp"
             tools:ignore="HardcodedText" />
 
         <RadioButton

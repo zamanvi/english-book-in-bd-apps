@@ -86,8 +86,18 @@ public class ChapterActivity extends AppCompatActivity {
                 JSONObject bookObject = new JSONObject(response);
                 JSONObject books = bookObject.getJSONObject("books");
                 JSONArray bookArray = books.getJSONArray(Constant.DATA);
-                JSONObject firstBook = bookArray.getJSONObject(0);
-                String slug = firstBook.getString("slug");
+
+                // Grammar/Speaking/Writing chapters are categorized under the
+                // "english-hub" book; other books (e.g. "master-english-book-part-i")
+                // only have legacy type="web" chapters and never match these filters.
+                String slug = "english-hub";
+                for (int i = 0; i < bookArray.length(); i++) {
+                    JSONObject book = bookArray.getJSONObject(i);
+                    if ("english-hub".equals(book.optString("slug"))) {
+                        slug = book.getString("slug");
+                        break;
+                    }
+                }
                 getData(slug, getType);
             } catch (Exception e) {
                 Log.e("ChapterActivity", "getBookData parse error", e);
