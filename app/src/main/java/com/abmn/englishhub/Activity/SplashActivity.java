@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -37,6 +39,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private Activity activity;
     private ProgressBar setProgressBar;
+    private final Handler timeoutHandler = new Handler(Looper.getMainLooper());
+    private boolean leftSplash = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,16 @@ public class SplashActivity extends AppCompatActivity {
             runOnUiThread(this::checkAppVersion);
         });
         thread.start();
+
+        // Safety net: never let the splash screen hang forever, no matter what
+        // goes wrong with the version-check network call (slow DNS, dead server,
+        // stalled connection, etc. can all outlast Volley's own timeout in practice).
+        timeoutHandler.postDelayed(() -> {
+            if (!leftSplash) {
+                Log.w("SplashActivity", "Version check took too long, continuing without it");
+                goToNext();
+            }
+        }, 10000);
     }
 
     private void checkAppVersion() {
@@ -119,6 +133,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void showUpdateDialog(String message) {
+        timeoutHandler.removeCallbacksAndMessages(null);
         new AlertDialog.Builder(activity)
                 .setTitle("Update Available")
                 .setMessage(message)
@@ -137,6 +152,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToNext() {
+        if (leftSplash) return;
+        leftSplash = true;
+        timeoutHandler.removeCallbacksAndMessages(null);
         handleNotificationIntent(getIntent());
     }
 
