@@ -1,11 +1,16 @@
 package com.abmn.englishhub.Activity;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
@@ -55,7 +60,29 @@ public class SplashActivity extends AppCompatActivity {
             uConfig.setBoolean(Constant.IS_SET_VOICE_SPEED, true);
         }
         setProgressBar = findViewById(R.id.setProgressBarId);
+        playEntranceAnimation();
         initialWork();
+    }
+
+    private void playEntranceAnimation() {
+        View centerBlock = findViewById(R.id.centerBlock);
+        View bottomBlock = findViewById(R.id.bottomBlock);
+
+        // center block: fade in + slide up
+        ObjectAnimator fadeCenter = ObjectAnimator.ofFloat(centerBlock, "alpha", 0f, 1f);
+        ObjectAnimator slideCenter = ObjectAnimator.ofFloat(centerBlock, "translationY", 60f, 0f);
+        fadeCenter.setDuration(700);
+        slideCenter.setDuration(700);
+        slideCenter.setInterpolator(new DecelerateInterpolator());
+
+        // bottom block: fade in slightly later
+        ObjectAnimator fadeBottom = ObjectAnimator.ofFloat(bottomBlock, "alpha", 0f, 1f);
+        fadeBottom.setDuration(500);
+        fadeBottom.setStartDelay(400);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(fadeCenter, slideCenter, fadeBottom);
+        set.start();
     }
 
     private void initialWork() {
