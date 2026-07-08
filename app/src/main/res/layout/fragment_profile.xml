@@ -69,22 +69,40 @@
                     android:layout_marginTop="14dp"
                     tools:ignore="HardcodedText" />
 
-                <!-- User ID (tap to copy — needed for battle challenges) -->
-                <TextView
+                <!-- User ID — tap to copy for battle challenge -->
+                <LinearLayout
                     android:id="@+id/profileUserIdTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ID: —"
-                    android:textColor="@color/text_inactive"
-                    android:textSize="11sp"
-                    android:fontFamily="monospace"
-                    android:layout_marginTop="4dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="3dp"
-                    android:background="@drawable/bg_pill_inactive"
-                    tools:ignore="HardcodedText" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:background="@drawable/bg_pill_inactive">
+
+                    <TextView
+                        android:id="@+id/profileUserIdText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ID: —"
+                        android:textColor="@color/teal"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:fontFamily="monospace"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  📋 কপি করো"
+                        android:textColor="@color/text_muted"
+                        android:textSize="11sp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
 
                 <!-- Level badge chip -->
                 <androidx.cardview.widget.CardView

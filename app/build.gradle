@@ -51,6 +51,7 @@ dependencies {
     implementation libs.gson
     implementation libs.volley
     implementation libs.recyclerview
+    implementation libs.swiperefreshlayout
     implementation libs.utility
     implementation libs.texttospeech
 
