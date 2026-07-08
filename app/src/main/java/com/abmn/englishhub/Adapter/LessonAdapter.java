@@ -60,8 +60,8 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
 
         public void bind(LessonModel model, Activity activity, String chapterType) {
             // use lesson's own type if set, otherwise fall back to chapter type
-            String lessonType = (model.getType() != null && !model.getType().isEmpty())
-                    ? model.getType() : chapterType;
+            String lessonType = (model.getChapter_type() != null && !model.getChapter_type().isEmpty())
+                    ? model.getChapter_type() : chapterType;
             rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
                     .putExtra(Constant.FROM, "" + model.getId())
                     .putExtra(Constant.FROM_TITLE, model.getTitle())
