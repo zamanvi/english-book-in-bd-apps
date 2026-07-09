@@ -9,7 +9,6 @@ import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -23,7 +22,6 @@ import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
-import com.abmn.englishhub.Helper.LevelHelper;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
 
@@ -41,10 +39,8 @@ public class HomeFragment extends Fragment {
     private CardView ttsBtn;
     private String currentWord = "";
 
-    // Stats
-    private TextView totalXpTV, streakCountTV, rankTV, streakTV, greetingNameTV, liptoBalanceTV;
-    private TextView levelLabelTV, levelTitleTV, xpToNextTV;
-    private ProgressBar levelProgressBar;
+    // Header
+    private TextView streakTV, greetingNameTV;
 
     // Continue learning
     private TextView lessonCountTV, continueLessonTV;
@@ -84,10 +80,6 @@ public class HomeFragment extends Fragment {
 
         greetingNameTV  = view.findViewById(R.id.greetingNameTV);
         streakTV        = view.findViewById(R.id.streakTV);
-        totalXpTV       = view.findViewById(R.id.totalXpTV);
-        streakCountTV   = view.findViewById(R.id.streakCountTV);
-        rankTV          = view.findViewById(R.id.rankTV);
-        liptoBalanceTV  = view.findViewById(R.id.liptoBalanceTV);
         wordOfDayTV     = view.findViewById(R.id.wordOfDayTV);
         wordMeaningTV   = view.findViewById(R.id.wordMeaningTV);
         ttsBtn          = view.findViewById(R.id.ttsBtn);
@@ -97,10 +89,6 @@ public class HomeFragment extends Fragment {
         leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
         groupBtn        = view.findViewById(R.id.groupBtn);
         battleBtn       = view.findViewById(R.id.battleBtn);
-        levelLabelTV    = view.findViewById(R.id.levelLabelTV);
-        levelTitleTV    = view.findViewById(R.id.levelTitleTV);
-        xpToNextTV      = view.findViewById(R.id.xpToNextTV);
-        levelProgressBar = view.findViewById(R.id.levelProgressBar);
 
         // Category cards
         view.findViewById(R.id.vocabularyLL).setOnClickListener(v ->
@@ -171,17 +159,8 @@ public class HomeFragment extends Fragment {
             greetingNameTV.setText("Hey, " + name + " 👋");
         }
 
-        int xp     = prefs.getInt(Constant.TOTAL_XP, 0);
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
-        int rank   = prefs.getInt(Constant.USER_RANK, 0);
-        int lipto  = prefs.getInt(Constant.LIPTO_BALANCE, 0);
-
-        totalXpTV.setText(String.valueOf(xp));
-        streakCountTV.setText("🔥 " + streak);
-        rankTV.setText(rank > 0 ? "#" + rank : "—");
         streakTV.setText("🔥 " + streak + " দিন");
-        liptoBalanceTV.setText(String.valueOf(lipto));
-        updateLevelUI(xp);
 
         // Refresh from server if logged in
         String token = uConfig.getData(Constant.TOKEN);
@@ -208,13 +187,8 @@ public class HomeFragment extends Fragment {
                         .putInt(Constant.USER_RANK, rank)
                         .apply();
 
-                if (activity != null) activity.runOnUiThread(() -> {
-                    totalXpTV.setText(String.valueOf(xp));
-                    streakCountTV.setText("🔥 " + streak);
-                    rankTV.setText(rank > 0 ? "#" + rank : "—");
-                    streakTV.setText("🔥 " + streak + " দিন");
-                    updateLevelUI(xp);
-                });
+                if (activity != null) activity.runOnUiThread(() ->
+                        streakTV.setText("🔥 " + streak + " দিন"));
             } catch (Exception ignored) {}
         }, error -> {});
     }
@@ -226,18 +200,8 @@ public class HomeFragment extends Fragment {
                 if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
                 int balance = json.optInt("balance", 0);
                 prefs.edit().putInt(Constant.LIPTO_BALANCE, balance).apply();
-                if (activity != null) activity.runOnUiThread(() ->
-                        liptoBalanceTV.setText(String.valueOf(balance)));
             } catch (Exception ignored) {}
         }, error -> {});
-    }
-
-    private void updateLevelUI(int xp) {
-        levelLabelTV.setText(LevelHelper.getLevelLabel(xp));
-        levelTitleTV.setText(" · " + LevelHelper.getLevelTitle(xp));
-        int toNext = LevelHelper.getXpToNextLevel(xp);
-        xpToNextTV.setText(toNext > 0 ? toNext + " XP to next" : "Max Level!");
-        levelProgressBar.setProgress(LevelHelper.getLevelProgressPercent(xp));
     }
 
     // ── Daily word ────────────────────────────────────────────────
