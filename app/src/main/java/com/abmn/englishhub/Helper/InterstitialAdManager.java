@@ -33,24 +33,6 @@ public class InterstitialAdManager {
             public void onAdLoaded(@NonNull InterstitialAd ad) {
                 interstitialAd = ad;
                 isAdLoading = false;
-
-                interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        interstitialAd = null;
-                    }
-
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                        interstitialAd = null;
-                    }
-
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        interstitialAd = null;
-                    }
-                });
-                show();
             }
 
             @Override
@@ -60,11 +42,26 @@ public class InterstitialAdManager {
         });
     }
 
-    private void show() {
-        if (interstitialAd != null) {
-            interstitialAd.show(activity);
-        } else {
-            loadInterstitialAd(); // Load if not ready
+    // Shows the ad only if it has already finished loading; otherwise runs
+    // onFinished immediately so navigation is never blocked waiting on an ad.
+    public void showOnExit(Runnable onFinished) {
+        if (interstitialAd == null) {
+            onFinished.run();
+            return;
         }
+        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                interstitialAd = null;
+                onFinished.run();
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                interstitialAd = null;
+                onFinished.run();
+            }
+        });
+        interstitialAd.show(activity);
     }
 }

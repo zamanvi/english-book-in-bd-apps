@@ -99,8 +99,17 @@ public class ItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+        onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (interstitialAdManager != null) {
+            interstitialAdManager.showOnExit(() -> super.onBackPressed());
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void callAds() {
