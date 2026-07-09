@@ -47,8 +47,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar levelProgressBar;
 
     // Continue learning
-    private TextView lessonCountTV, continueLessonTV, lessonProgressTV;
-    private ProgressBar lessonProgress;
+    private TextView lessonCountTV, continueLessonTV;
 
     // Quick actions
     private CardView quickQuizBtn, leaderboardBtn, groupBtn, battleBtn;
@@ -94,8 +93,6 @@ public class HomeFragment extends Fragment {
         ttsBtn          = view.findViewById(R.id.ttsBtn);
         lessonCountTV   = view.findViewById(R.id.lessonCountTV);
         continueLessonTV  = view.findViewById(R.id.continueLessonTV);
-        lessonProgress    = view.findViewById(R.id.lessonProgress);
-        lessonProgressTV  = view.findViewById(R.id.lessonProgressTV);
         quickQuizBtn    = view.findViewById(R.id.quickQuizBtn);
         leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
         groupBtn        = view.findViewById(R.id.groupBtn);
@@ -114,6 +111,8 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
         view.findViewById(R.id.writingAndReadingLL).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
+        view.findViewById(R.id.continueLearningCard).setOnClickListener(v ->
+                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
     }
 
     // ── Click listeners ──────────────────────────────────────────
@@ -284,55 +283,23 @@ public class HomeFragment extends Fragment {
 
                 int totalLessons = 0;
                 String firstChapterName = "";
-                int firstChapterId = 1;
 
                 for (int i = 0; i < chapters.length(); i++) {
                     JSONObject ch = chapters.getJSONObject(i);
                     totalLessons += ch.optInt("lesson_count", ch.optInt("lessons_count", 0));
                     if (i == 0) {
                         firstChapterName = ch.optString("title", ch.optString("name", ""));
-                        firstChapterId   = ch.optInt("id", 1);
                     }
                 }
 
                 final int total = totalLessons;
                 final String chapName = firstChapterName;
-                final int chapId = firstChapterId;
 
                 if (activity != null) activity.runOnUiThread(() -> {
                     lessonCountTV.setText(total + " lessons");
                     if (!chapName.isEmpty()) continueLessonTV.setText(chapName);
-                    loadLessonProgress(chapId, total);
                 });
 
-            } catch (Exception ignored) {}
-        }, error -> {});
-    }
-
-    private void loadLessonProgress(int chapterId, int totalLessons) {
-        // Fetch lessons in first chapter to estimate progress %
-        String url = Constant.GRAMMAR_LESSONS + chapterId;
-        ApiConfig.getRequest(activity, url, response -> {
-            try {
-                JSONObject json = new JSONObject(response);
-                JSONArray lessons = null;
-                if (json.has("data"))    lessons = json.getJSONArray("data");
-                else if (json.has("lessons")) lessons = json.getJSONArray("lessons");
-                if (lessons == null) return;
-
-                int chapterLessons = lessons.length();
-                // Simple heuristic: assume user has opened first chapter
-                // Real progress tracking would need local db; use 0 for now
-                SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-                int openedLessons = prefs.getInt("opened_lessons_" + chapterId, 0);
-                int pct = chapterLessons > 0
-                        ? Math.min(100, (openedLessons * 100) / chapterLessons)
-                        : 0;
-
-                if (activity != null) activity.runOnUiThread(() -> {
-                    lessonProgress.setProgress(pct);
-                    lessonProgressTV.setText(pct + "%");
-                });
             } catch (Exception ignored) {}
         }, error -> {});
     }

@@ -38,7 +38,6 @@ public class Constant {
 
     // Grammar API endpoints
     public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
-    public static final String GRAMMAR_LESSONS  = ROOT_API2 + "lessons/";
 
     //API path
     public static final String BOOK_API = ROOT_API + "book/index";
@@ -74,7 +73,6 @@ public class Constant {
     public static final String USER_RANK          = "user_rank";
     public static final String USER_NAME          = "user_name";
     public static final String LAST_PLAYED_DATE   = "last_played_date";
-    public static final String OPENED_LESSONS_PFX = "opened_lessons_";
 
     // Shared date format — used by ResultActivity + StreakReminderReceiver
     public static String todayString() {

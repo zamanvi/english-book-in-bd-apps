@@ -630,9 +630,13 @@
 
         <!-- ── Continue Learning card ─────────────────────────── -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/continueLearningCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="#00000000"
             app:cardCornerRadius="14dp"
             app:cardElevation="0dp">
@@ -687,47 +691,27 @@
                             app:tint="@color/indigo" />
                     </androidx.cardview.widget.CardView>
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/continueLessonTV"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp">
-
-                        <TextView
-                            android:id="@+id/continueLessonTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Essential Vocabulary"
-                            android:textColor="@color/text_primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:maxLines="1"
-                            android:ellipsize="end"
-                            tools:ignore="HardcodedText" />
-
-                        <ProgressBar
-                            android:id="@+id/lessonProgress"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="6dp"
-                            android:progressDrawable="@drawable/progress_bar_indigo"
-                            android:progress="45"
-                            android:max="100" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/lessonProgressTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="45%"
-                        android:textColor="@color/indigo"
-                        android:textSize="11sp"
+                        android:text="Essential Vocabulary"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
                         android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         tools:ignore="HardcodedText" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:contentDescription=""
+                        app:tint="@color/text_muted" />
 
                 </LinearLayout>
 
