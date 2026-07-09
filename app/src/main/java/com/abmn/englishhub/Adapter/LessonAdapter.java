@@ -15,7 +15,6 @@ import com.abmn.englishhub.Activity.WordActivity;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Model.LessonModel;
 import com.abmn.englishhub.R;
-import com.abmn.utility.UConfig;
 
 import java.util.List;
 

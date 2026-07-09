@@ -21,7 +21,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.abmn.englishhub.Activity.BookActivity;
 import com.abmn.englishhub.Activity.LoginActivity;
 import com.abmn.englishhub.Activity.SocialLinkActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
@@ -31,9 +30,7 @@ import com.abmn.englishhub.R;
 import android.widget.ProgressBar;
 import com.abmn.utility.UConfig;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 

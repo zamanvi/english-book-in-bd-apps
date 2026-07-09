@@ -3,7 +3,6 @@ package com.abmn.englishhub.Helper;
 public class Constant {
     //Base Url
     public static final String ROOT_DOMAIN = "https://red-rose-academy-backend-laravel-production.up.railway.app/";
-    public static final String ROOT_DOMAIN_FALLBACK = "https://backend.masterenglishbook.com/";
     public static final String API = "api/v2/app/";
     public static final String API2 = "api/";
     public static final String ROOT_API = ROOT_DOMAIN + API;
@@ -27,7 +26,6 @@ public class Constant {
     public static final String GROUP_JOIN          = ROOT_API_GAME_AUTH + "group/join";
     public static final String GROUP_MY            = ROOT_API_GAME_AUTH + "group/my";
     public static final String GROUP_LEADERBOARD   = ROOT_API_GAME_AUTH + "group/";  // + code + "/leaderboard"
-    public static final String GROUP_LEAVE         = ROOT_API_GAME_AUTH + "group/";  // + code + "/leave"
 
     // Notification endpoints
     public static final String NOTIF_TOKEN = ROOT_API_GAME_AUTH + "notification/token";
@@ -41,11 +39,9 @@ public class Constant {
     // Grammar API endpoints
     public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
     public static final String GRAMMAR_LESSONS  = ROOT_API2 + "lessons/";
-    public static final String GRAMMAR_WORDS    = ROOT_API2 + "words/";
 
     //API path
     public static final String BOOK_API = ROOT_API + "book/index";
-    public static final String CHAPTER_API = ROOT_API + "book/chapter/index";
     public static final String CHAPTER_API2 = ROOT_API + "book/chapter/index2";
     public static final String ITEM_API = ROOT_API + "book/item/index";
     public static final String ITEM_SHOW_API = ROOT_API + "book/item/show/";

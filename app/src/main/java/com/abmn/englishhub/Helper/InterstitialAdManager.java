@@ -1,6 +1,5 @@
 package com.abmn.englishhub.Helper;
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 

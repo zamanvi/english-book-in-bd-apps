@@ -36,7 +36,7 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         // Skip if already played today
         SharedPreferences prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         String lastPlayed = prefs.getString(Constant.LAST_PLAYED_DATE, "");
-        String today = todayString();
+        String today = Constant.todayString();
         if (today.equals(lastPlayed)) return;
 
         // Pick message by day-of-year so it cycles
@@ -119,12 +119,5 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         return PendingIntent.getBroadcast(
                 context, NOTIF_ID, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    }
-
-    private static String todayString() {
-        Calendar c = Calendar.getInstance();
-        return c.get(Calendar.YEAR) + "-"
-                + (c.get(Calendar.MONTH) + 1) + "-"
-                + c.get(Calendar.DAY_OF_MONTH);
     }
 }
