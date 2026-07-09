@@ -64,7 +64,6 @@ public class VocabularyActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Vocabulary");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         chapterRV = findViewById(R.id.chapterRV);
