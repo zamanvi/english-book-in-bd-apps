@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tablets (7"+, smallest width >= 600dp): wider side insets so
+         content reads as a centered column instead of stretching
+         edge-to-edge across the whole screen. -->
+    <dimen name="page_padding_horizontal">72dp</dimen>
+    <dimen name="page_padding_top">28dp</dimen>
+    <dimen name="page_padding_bottom">120dp</dimen>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Outer page inset. Overridden for tablets (values-sw600dp) so
+         content doesn't stretch edge-to-edge on large screens. -->
+    <dimen name="page_padding_horizontal">16dp</dimen>
+    <dimen name="page_padding_top">20dp</dimen>
+    <dimen name="page_padding_bottom">100dp</dimen>
+</resources>
