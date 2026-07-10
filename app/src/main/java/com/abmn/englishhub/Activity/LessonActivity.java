@@ -122,7 +122,7 @@ public class LessonActivity extends AppCompatActivity {
         if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
             interstitialAdId = this.getString(R.string.INTERSTITIAL_UNIT_ID_LOCAL);
         }else {
-            interstitialAdId = "" + R.string.INTERSTITIAL_UNIT_ID;
+            interstitialAdId = getString(R.string.INTERSTITIAL_UNIT_ID);
         }
         interstitialAdManager = new InterstitialAdManager(activity, interstitialAdId);
         interstitialAdManager.loadInterstitialAd();

@@ -165,13 +165,13 @@ public class HomeFragment extends Fragment {
         // Refresh from server if logged in
         String token = uConfig.getData(Constant.TOKEN);
         if (token != null && !token.isEmpty()) {
-            fetchStreakFromServer(prefs);
-            fetchLiptoBalance(prefs);
+            fetchStreakFromServer(prefs, token);
+            fetchLiptoBalance(prefs, token);
         }
     }
 
-    private void fetchStreakFromServer(SharedPreferences prefs) {
-        ApiConfig.getRequest(activity, Constant.GAME_STREAK, response -> {
+    private void fetchStreakFromServer(SharedPreferences prefs, String token) {
+        ApiConfig.getRequest(activity, Constant.GAME_STREAK, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
@@ -193,8 +193,8 @@ public class HomeFragment extends Fragment {
         }, error -> {});
     }
 
-    private void fetchLiptoBalance(SharedPreferences prefs) {
-        ApiConfig.getRequest(activity, Constant.GAME_LIPTO_BALANCE, response -> {
+    private void fetchLiptoBalance(SharedPreferences prefs, String token) {
+        ApiConfig.getRequest(activity, Constant.GAME_LIPTO_BALANCE, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;

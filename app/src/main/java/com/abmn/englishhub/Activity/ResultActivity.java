@@ -151,7 +151,7 @@ public class ResultActivity extends AppCompatActivity {
             body.put("lesson_id", lessonId);
         } catch (Exception ignored) {}
 
-        ApiConfig.postRequest(this, Constant.GAME_XP, body, response -> {
+        ApiConfig.postRequest(this, Constant.GAME_XP, body, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
@@ -180,7 +180,7 @@ public class ResultActivity extends AppCompatActivity {
         String token = uConfig.getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) return;
 
-        ApiConfig.postRequest(this, Constant.GAME_STREAK_UPDATE, new JSONObject(), response -> {
+        ApiConfig.postRequest(this, Constant.GAME_STREAK_UPDATE, new JSONObject(), token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
@@ -210,7 +210,7 @@ public class ResultActivity extends AppCompatActivity {
             body.put("description", "Quiz lesson #" + lessonId + " — " + correct + "/" + total + " correct");
         } catch (Exception ignored) {}
 
-        ApiConfig.postRequest(this, Constant.GAME_LIPTO_EARN, body, response -> {
+        ApiConfig.postRequest(this, Constant.GAME_LIPTO_EARN, body, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
@@ -239,7 +239,7 @@ public class ResultActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
 
         String url = Constant.BATTLE_BASE + battleId + "/submit";
-        ApiConfig.postRequest(this, url, body, response -> {
+        ApiConfig.postRequest(this, url, body, token, response -> {
             // Battle result submitted silently
         }, error -> {});
     }
