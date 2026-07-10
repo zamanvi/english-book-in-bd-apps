@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.abmn.englishhub.Activity.ItemDetailsActivity;
 import com.abmn.englishhub.Adapter.NoticeAdapter;
@@ -34,6 +36,9 @@ public class NoticeFragment extends Fragment {
 
     private Activity activity;
     private RecyclerView noticeRV;
+    private ProgressBar loadingPB;
+    private View emptyLL;
+    private TextView emptyTV;
     private List<NoticeModel> noticeList;
     private boolean isLoading = false;
     private int currentPage = 1;
@@ -55,6 +60,9 @@ public class NoticeFragment extends Fragment {
         activity = getActivity();
 
         noticeRV = view.findViewById(R.id.noticeRV);
+        loadingPB = view.findViewById(R.id.noticeLoadingPB);
+        emptyLL = view.findViewById(R.id.noticeEmptyLL);
+        emptyTV = view.findViewById(R.id.noticeEmptyTV);
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
         linearLayout.setReverseLayout(false);
@@ -90,7 +98,7 @@ public class NoticeFragment extends Fragment {
     }
     private void onClick(NoticeModel noticeModel) {
 
-        if (noticeModel.getSlug().equals("null")) {
+        if (!noticeModel.getSlug().equals("null")) {
             Intent intent = new Intent(activity, ItemDetailsActivity.class);
             intent.putExtra(Constant.FROM, noticeModel.getSlug());
             startActivity(intent);
@@ -111,7 +119,13 @@ public class NoticeFragment extends Fragment {
         String url = Constant.ROOT_API + "notices/grammar?page=" + page;
         String tag = "NoticeModel";
 
+        if (page == 1) {
+            loadingPB.setVisibility(View.VISIBLE);
+            emptyLL.setVisibility(View.GONE);
+        }
+
         ApiConfig.RequestToVolley((result, response, error) -> {
+            boolean failed = false;
             try {
                 if (result) {
                     JSONObject chaptersObject = new JSONObject(response).getJSONObject("notices");
@@ -132,11 +146,21 @@ public class NoticeFragment extends Fragment {
                         lastPage = chaptersObject.getInt("last_page");
                     }
                     Objects.requireNonNull(noticeRV.getAdapter()).notifyDataSetChanged();
+                } else {
+                    failed = true;
                 }
             } catch (Exception e) {
-                // ignored
+                failed = true;
             } finally {
                 isLoading = false;
+            }
+
+            if (page == 1) {
+                loadingPB.setVisibility(View.GONE);
+                if (noticeList.isEmpty()) {
+                    emptyTV.setText(failed ? "নোটিশ লোড করা যায়নি" : "কোনো নোটিশ নেই");
+                    emptyLL.setVisibility(View.VISIBLE);
+                }
             }
         }, Request.Method.GET, activity, url, new HashMap<>(), true);
     }
