@@ -73,6 +73,8 @@ public class Constant {
     public static final String USER_RANK          = "user_rank";
     public static final String USER_NAME          = "user_name";
     public static final String LAST_PLAYED_DATE   = "last_played_date";
+    public static final String LAST_CHAPTER_SLUG  = "last_chapter_slug";
+    public static final String LAST_CHAPTER_TITLE = "last_chapter_title";
 
     // Shared date format — used by ResultActivity + StreakReminderReceiver
     public static String todayString() {

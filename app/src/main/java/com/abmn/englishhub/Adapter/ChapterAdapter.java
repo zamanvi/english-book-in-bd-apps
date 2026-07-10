@@ -56,7 +56,9 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
 
         public void bind(ChapterModel model, Activity activity) {
             rootCV.setOnClickListener(v-> {
-                activity.startActivity(new Intent(activity, ItemActivity.class).putExtra(Constant.FROM, model.getSlug()));
+                activity.startActivity(new Intent(activity, ItemActivity.class)
+                        .putExtra(Constant.FROM, model.getSlug())
+                        .putExtra(Constant.FROM_TITLE, model.getTitle()));
             });
             titleTV.setText(model.getTitle());
         }

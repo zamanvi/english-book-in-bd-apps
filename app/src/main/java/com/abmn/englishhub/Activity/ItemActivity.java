@@ -2,6 +2,7 @@ package com.abmn.englishhub.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -81,6 +82,8 @@ public class ItemActivity extends AppCompatActivity {
         itemRV.setLayoutManager(linearLayout);
 
         String slug = getIntent().getStringExtra(Constant.FROM);
+        String title = getIntent().getStringExtra(Constant.FROM_TITLE);
+        rememberAsLastOpened(slug, title);
         getData(slug);
 
         CountDownTimer countDownTimer = new CountDownTimer(30000, 1000) {
@@ -95,6 +98,17 @@ public class ItemActivity extends AppCompatActivity {
             }
         };
         countDownTimer.start();
+    }
+
+    // Lets Home's "Continue Learning" card point at the chapter the user
+    // actually opened most recently, instead of always the first chapter.
+    private void rememberAsLastOpened(String slug, String title) {
+        if (slug == null || slug.isEmpty() || title == null || title.isEmpty()) return;
+        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .edit()
+                .putString(Constant.LAST_CHAPTER_SLUG, slug)
+                .putString(Constant.LAST_CHAPTER_TITLE, title)
+                .apply();
     }
 
     @Override

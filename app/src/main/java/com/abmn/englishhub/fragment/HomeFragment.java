@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.abmn.englishhub.Activity.BattleActivity;
 import com.abmn.englishhub.Activity.ChapterActivity;
 import com.abmn.englishhub.Activity.GroupActivity;
+import com.abmn.englishhub.Activity.ItemActivity;
 import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
@@ -99,8 +100,18 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
         view.findViewById(R.id.writingAndReadingLL).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
-        view.findViewById(R.id.continueLearningCard).setOnClickListener(v ->
-                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
+        view.findViewById(R.id.continueLearningCard).setOnClickListener(v -> {
+            SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+            String lastSlug = prefs.getString(Constant.LAST_CHAPTER_SLUG, null);
+            String lastTitle = prefs.getString(Constant.LAST_CHAPTER_TITLE, null);
+            if (lastSlug != null && lastTitle != null) {
+                startActivity(new Intent(activity, ItemActivity.class)
+                        .putExtra(Constant.FROM, lastSlug)
+                        .putExtra(Constant.FROM_TITLE, lastTitle));
+            } else {
+                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar"));
+            }
+        });
     }
 
     // ── Click listeners ──────────────────────────────────────────
@@ -232,7 +243,14 @@ public class HomeFragment extends Fragment {
     // ── Grammar progress (lesson count + continue learning) ───────
 
     private void loadGrammarProgress() {
-        // Fetch chapters to get total lesson count
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        String lastTitle = prefs.getString(Constant.LAST_CHAPTER_TITLE, null);
+        if (lastTitle != null && !lastTitle.isEmpty()) {
+            continueLessonTV.setText(lastTitle);
+        }
+
+        // Fetch chapters to get total lesson count, and (for users who
+        // haven't opened anything yet) a sensible default chapter name.
         ApiConfig.getRequest(activity, Constant.GRAMMAR_CHAPTERS, response -> {
             try {
                 JSONObject json = new JSONObject(response);
@@ -261,7 +279,7 @@ public class HomeFragment extends Fragment {
 
                 if (activity != null) activity.runOnUiThread(() -> {
                     lessonCountTV.setText(total + " lessons");
-                    if (!chapName.isEmpty()) continueLessonTV.setText(chapName);
+                    if (lastTitle == null && !chapName.isEmpty()) continueLessonTV.setText(chapName);
                 });
 
             } catch (Exception ignored) {}
