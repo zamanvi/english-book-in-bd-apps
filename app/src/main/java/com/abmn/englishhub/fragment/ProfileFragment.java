@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.LoginActivity;
@@ -126,7 +127,6 @@ public class ProfileFragment extends Fragment {
         row.removeAllViews();
 
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        String lastPlayed = prefs.getString(Constant.LAST_PLAYED_DATE, "");
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
 
         // Build which days in current Mon–Sun week are "played"
@@ -162,8 +162,8 @@ public class ProfileFragment extends Fragment {
             dayLabel.setTextSize(9);
             dayLabel.setGravity(android.view.Gravity.CENTER);
             dayLabel.setTextColor(isToday
-                    ? Color.parseColor("#8B7FFF")
-                    : Color.parseColor("#2E3060"));
+                    ? ContextCompat.getColor(activity, R.color.active_color)
+                    : ContextCompat.getColor(activity, R.color.inactive_color));
             LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -188,20 +188,20 @@ public class ProfileFragment extends Fragment {
             dotText.setTextSize(14);
 
             if (isPlayed) {
-                dot.setCardBackgroundColor(Color.parseColor("#00E8B8")); // teal
+                dot.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.green));
                 dotText.setText("✓");
-                dotText.setTextColor(Color.parseColor("#07081A"));
+                dotText.setTextColor(ContextCompat.getColor(activity, R.color.bg_deep));
             } else if (isToday) {
-                dot.setCardBackgroundColor(Color.parseColor("#8B7FFF")); // indigo
+                dot.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.active_color));
                 dotText.setText("•");
                 dotText.setTextColor(Color.WHITE);
             } else if (isFuture) {
-                dot.setCardBackgroundColor(Color.parseColor("#0F1030")); // stroke
+                dot.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.bg_stroke));
                 dotText.setText("");
             } else {
-                dot.setCardBackgroundColor(Color.parseColor("#0F1030")); // missed
+                dot.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.bg_stroke)); // missed
                 dotText.setText("✕");
-                dotText.setTextColor(Color.parseColor("#FF3F6C"));
+                dotText.setTextColor(ContextCompat.getColor(activity, R.color.red_wrong));
                 dotText.setTextSize(10);
             }
 
@@ -234,31 +234,9 @@ public class ProfileFragment extends Fragment {
             startActivity(Intent.createChooser(shareIntent, "Share via"));
         });
 
-        view.findViewById(R.id.menuUpdateCV).setOnClickListener(v -> {
-            try {
-                Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName());
-                activity.startActivity(new Intent(Intent.ACTION_VIEW, uri)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-        });
+        view.findViewById(R.id.menuUpdateCV).setOnClickListener(v -> openPlayStoreListing(activity));
 
-        view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> {
-            try {
-                Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName());
-                activity.startActivity(new Intent(Intent.ACTION_VIEW, uri)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-        });
+        view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> openPlayStoreListing(activity));
 
         view.findViewById(R.id.menuContactCV).setOnClickListener(v -> {
             new AlertDialog.Builder(activity)
@@ -276,5 +254,18 @@ public class ProfileFragment extends Fragment {
                     .setNegativeButton("বাতিল", null)
                     .show();
         });
+    }
+
+    private void openPlayStoreListing(Activity activity) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName());
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
     }
 }
