@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +21,15 @@ import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.Activity.WizardChapterActivity;
+import com.abmn.englishhub.Activity.WordActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
+import com.abmn.texttospeech.TextToSpeechHelper;
 import com.abmn.utility.UConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -51,10 +50,9 @@ public class HomeFragment extends Fragment {
     private CardView quickQuizBtn, leaderboardBtn, groupBtn, battleBtn;
 
     // TTS engine
-    private TextToSpeech tts;
-    private boolean ttsReady = false;
+    private TextToSpeechHelper tts;
 
-    // Last lesson id for Quick Quiz
+    // Last lesson id for Quick Quiz + Word of the Day
     private int lastLessonId = 1;
 
     @Override
@@ -113,6 +111,10 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar"));
             }
         });
+        view.findViewById(R.id.wordOfDayCard).setOnClickListener(v ->
+                startActivity(new Intent(activity, WordActivity.class)
+                        .putExtra(Constant.FROM, String.valueOf(lastLessonId))
+                        .putExtra(Constant.FROM_TITLE, "Word of the Day")));
     }
 
     // ── Click listeners ──────────────────────────────────────────
@@ -137,27 +139,13 @@ public class HomeFragment extends Fragment {
     // ── TTS ──────────────────────────────────────────────────────
 
     private void initTts() {
-        tts = new TextToSpeech(activity, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.US);
-                ttsReady = true;
-            }
-        });
+        UConfig uConfig = new UConfig(activity);
+        tts = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
     }
 
     private void speakWord() {
-        if (!ttsReady || currentWord.isEmpty()) return;
-        tts.speak(currentWord, TextToSpeech.QUEUE_FLUSH, null, "word_tts");
-    }
-
-    @Override
-    public void onDestroyView() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-            tts = null;
-        }
-        super.onDestroyView();
+        if (currentWord.isEmpty()) return;
+        tts.speak(currentWord);
     }
 
     // ── User stats ────────────────────────────────────────────────

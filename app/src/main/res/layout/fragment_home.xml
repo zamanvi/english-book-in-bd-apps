@@ -184,9 +184,13 @@
 
         <!-- ── Word of the Day card ───────────────────────────── -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/wordOfDayCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="#00000000"
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp">
@@ -272,6 +276,14 @@
                             android:contentDescription="শব্দ শোনো"
                             app:tint="@color/indigo" />
                     </androidx.cardview.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:contentDescription=""
+                        app:tint="@color/text_muted" />
 
                 </LinearLayout>
 
