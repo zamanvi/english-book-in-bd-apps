@@ -2,14 +2,19 @@ package com.abmn.englishhub.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -33,6 +38,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private WebView detailsWV;
     private Activity activity;
     private InterstitialAdManager interstitialAdManager;
+    private String currentDetailsHtml;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +120,40 @@ public class ItemDetailsActivity extends AppCompatActivity {
         interstitialAdManager.loadInterstitialAd();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.themeToggleId) {
+            toggleTheme();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isStorybookTheme() {
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        return Constant.CONTENT_THEME_STORYBOOK.equals(
+                prefs.getString(Constant.CONTENT_THEME, Constant.CONTENT_THEME_STORYBOOK));
+    }
+
+    private void toggleTheme() {
+        boolean next = !isStorybookTheme();
+        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .edit()
+                .putString(Constant.CONTENT_THEME, next ? Constant.CONTENT_THEME_STORYBOOK : Constant.CONTENT_THEME_APP)
+                .apply();
+        if (currentDetailsHtml != null) {
+            renderContent(currentDetailsHtml);
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private void getData(String slug) {
-
-        WebSettings webSettings = detailsWV.getSettings();
 
         ApiConfig.RequestToVolley((result, response, error) -> {
             if (result){
@@ -126,10 +162,71 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     String title = item.getString("title");
                     String details = item.getString("details");
                     titleTV.setText(title);
-                    detailsWV.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-                    detailsWV.setBackgroundColor(android.graphics.Color.parseColor("#07081A"));
+                    currentDetailsHtml = details;
+                    renderContent(details);
+                } catch (Exception e) {
+                    android.util.Log.e("ItemDetailsActivity", "parse error", e);
+                }
+            }else {
+                onSupportNavigateUp();
+            }
+        }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true);
+    }
 
-                    String darkCss = "<style>" +
+    @SuppressLint("SetJavaScriptEnabled")
+    private void renderContent(String details) {
+        WebSettings webSettings = detailsWV.getSettings();
+        boolean storybook = isStorybookTheme();
+
+        detailsWV.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        detailsWV.setBackgroundColor(android.graphics.Color.parseColor(storybook ? "#1E1808" : "#07081A"));
+
+        String css = storybook ? storybookCss() : darkCss();
+        String metaViewport = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>";
+        String htmlData = "<!DOCTYPE html><html><head>" + metaViewport + css + "</head><body>" + details + "</body></html>";
+        webSettings.setJavaScriptEnabled(true);
+        detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
+    }
+
+    private String storybookCss() {
+        return "<style>" +
+                "html,body{" +
+                "  background:#1E1808 !important;" +
+                "  color:#EEE7D8 !important;" +
+                "  font-family:Georgia,'Iowan Old Style','Noto Sans Bengali','Noto Sans',serif;" +
+                "  font-size:15.5px;" +
+                "  line-height:1.7;" +
+                "  padding:14px 16px 32px;" +
+                "  margin:0;" +
+                "  word-break:break-word;" +
+                "}" +
+                "*{box-sizing:border-box;}" +
+                "font{font-size:15.5px !important;font-family:inherit !important;color:inherit !important;}" +
+                "p,li,td,th,span,div,label,code,pre,blockquote{color:#EEE7D8 !important;background:transparent !important;}" +
+                "a{color:#9B7CD6 !important;}" +
+                "h1{color:#E8C374 !important;background:transparent !important;font-size:18px !important;font-weight:700;font-style:italic;margin:20px 0 6px;line-height:1.35;padding:0;}" +
+                "h2{color:#E8C374 !important;background:transparent !important;font-size:16px !important;font-weight:700;margin:18px 0 5px;line-height:1.35;padding:0 0 4px;border-bottom:1px solid #3A2E14;}" +
+                "h3{color:#E8C374 !important;background:transparent !important;font-size:15px !important;font-weight:700;margin:16px 0 4px;line-height:1.35;padding:0 0 3px;border-bottom:1px solid #2E2410;}" +
+                "h4,h5,h6{color:#D9A441 !important;background:transparent !important;font-size:15.5px !important;font-weight:700;margin:14px 0 4px;line-height:1.35;padding:0;}" +
+                "b,strong{color:#D9A441 !important;}" +
+                "i,em{color:#C3ADF0 !important;font-style:italic;}" +
+                "p{margin:0 0 8px;padding:0;}" +
+                "p:empty{display:none;}" +
+                ":first-child{margin-top:0;}" +
+                "br{content:'';display:block;margin:1px 0;}" +
+                "ul,ol{padding-left:16px;margin:4px 0 8px;}" +
+                "li{margin:4px 0;line-height:1.6;color:#EEE7D8 !important;}" +
+                "blockquote{border-left:3px solid #9B7CD6;background:#241A0C !important;margin:10px 0;padding:8px 12px;border-radius:0 6px 6px 0;color:#CFC8DE !important;}" +
+                "table{width:100% !important;border-collapse:collapse !important;margin:10px 0;font-size:14px;}" +
+                "th{background:#2A2010 !important;color:#E8C374 !important;padding:8px;border:1px solid #3A2E14 !important;text-align:left;}" +
+                "td{background:#1E1808 !important;color:#EEE7D8 !important;padding:8px;border:1px solid #3A2E14 !important;}" +
+                "code,pre{background:#241A0C !important;color:#9B7CD6 !important;padding:2px 6px;border-radius:4px;font-size:13px;}" +
+                "img{max-width:100% !important;height:auto !important;border-radius:6px;margin:6px 0;display:block;}" +
+                "</style>";
+    }
+
+    private String darkCss() {
+        return "<style>" +
                         /* ── Base ─────────────────────────────────────────── */
                         "html,body{" +
                         "  background:#07081A !important;" +
@@ -222,18 +319,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
                         /* ── Images ───────────────────────────────────────── */
                         "img{max-width:100% !important;height:auto !important;border-radius:6px;margin:6px 0;display:block;}" +
                         "</style>";
-
-                    String metaViewport = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>";
-                    String htmlData = "<!DOCTYPE html><html><head>" + metaViewport + darkCss + "</head><body>" + details + "</body></html>";
-                    webSettings.setJavaScriptEnabled(true);
-                    detailsWV.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
-                } catch (Exception e) {
-                    android.util.Log.e("ItemDetailsActivity", "parse error", e);
-                }
-            }else {
-                onSupportNavigateUp();
-            }
-        }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true);
     }
 }
 

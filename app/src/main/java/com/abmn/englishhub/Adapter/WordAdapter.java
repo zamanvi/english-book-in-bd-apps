@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abmn.englishhub.R;
@@ -26,6 +27,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private final List<WordModel> wordList;
     private final Activity activity;
     private boolean isBWord = false, isBMeaning = false;
+    private boolean storybook;
     private TextToSpeechHelper ttsHelper;
 
     public WordAdapter(List<WordModel> wordList, Activity activity) {
@@ -64,6 +66,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setStorybook(boolean storybook) {
+        this.storybook = storybook;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -74,7 +82,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WordModel word = wordList.get(position);
-        holder.bind(word, wordList, position, isBWord, isBMeaning, ttsHelper);
+        holder.bind(word, wordList, position, isBWord, isBMeaning, storybook, ttsHelper);
     }
 
     @Override
@@ -83,10 +91,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final CardView rootCV;
         private final TextView counterTV, wordTV, meaningTV, synonymsTV, antonymsTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rootCV = itemView.findViewById(R.id.rootCV);
             counterTV = itemView.findViewById(R.id.counterTV);
             wordTV = itemView.findViewById(R.id.wordTV);
             meaningTV = itemView.findViewById(R.id.meaningTV);
@@ -95,9 +105,14 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(WordModel model, List<WordModel> wordList, int position, boolean isBWord, boolean isBMeaning, TextToSpeechHelper tts) {
+        public void bind(WordModel model, List<WordModel> wordList, int position, boolean isBWord, boolean isBMeaning, boolean storybook, TextToSpeechHelper tts) {
             wordTV.setText(model.getWord());
             meaningTV.setText(model.getMeaning());
+
+            rootCV.setCardBackgroundColor(itemView.getResources().getColor(
+                    storybook ? R.color.storybook_card_bg : R.color.bg_elevated));
+            wordTV.setTextColor(itemView.getResources().getColor(
+                    storybook ? R.color.gold : R.color.text_primary));
 
             counterTV.setText("" + (position + 1));
 

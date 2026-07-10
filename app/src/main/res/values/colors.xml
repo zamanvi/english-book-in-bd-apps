@@ -7,6 +7,7 @@
     <color name="bg_elevated">#191B40</color>
     <color name="bg_active">#252860</color>
     <color name="bg_stroke">#0F1030</color>
+    <color name="storybook_card_bg">#1E1808</color>
 
     <!-- ── Brand colors ─────────────────────────────────────── -->
     <color name="indigo">#A78BFA</color>

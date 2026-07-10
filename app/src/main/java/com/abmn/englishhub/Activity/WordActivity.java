@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,6 +78,7 @@ public class WordActivity extends AppCompatActivity {
         define();
         wordList = new ArrayList<>();
         adapter = new WordAdapter(wordList, activity);
+        adapter.setStorybook(isStorybookTheme());
         wordRV.setAdapter(adapter);
         fetchData(currentPage);
     }
@@ -239,7 +242,26 @@ public class WordActivity extends AppCompatActivity {
             openVoiceControlPopUp();
             return true;
         }
+        if (item.getItemId() == R.id.themeToggleId) {
+            toggleTheme();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isStorybookTheme() {
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        return Constant.CONTENT_THEME_STORYBOOK.equals(
+                prefs.getString(Constant.CONTENT_THEME, Constant.CONTENT_THEME_STORYBOOK));
+    }
+
+    private void toggleTheme() {
+        boolean next = !isStorybookTheme();
+        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .edit()
+                .putString(Constant.CONTENT_THEME, next ? Constant.CONTENT_THEME_STORYBOOK : Constant.CONTENT_THEME_APP)
+                .apply();
+        adapter.setStorybook(next);
     }
 
     private void openVoiceControlPopUp() {

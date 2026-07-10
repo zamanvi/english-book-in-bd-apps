@@ -4,12 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/nav_voice_id"
-        android:title="setting"
-        android:icon="@drawable/voice"
-        app:showAsAction="always"
-        tools:ignore="HardcodedText" />
-    <item
         android:id="@+id/themeToggleId"
         android:title="Theme"
         android:icon="@drawable/ic_palette"
