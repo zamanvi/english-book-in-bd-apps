@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -35,7 +37,9 @@ import java.util.HashMap;
 public class ItemDetailsActivity extends AppCompatActivity {
 
     private TextView titleTV;
+    private CardView titleCV;
     private WebView detailsWV;
+    private ProgressBar loadingPB;
     private Activity activity;
     private InterstitialAdManager interstitialAdManager;
     private String currentDetailsHtml;
@@ -67,7 +71,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
         activity = this;
 
         titleTV = findViewById(R.id.titleTV);
+        titleCV = findViewById(R.id.titleCV);
         detailsWV = findViewById(R.id.detailsWV);
+        loadingPB = findViewById(R.id.loadingPB);
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
@@ -156,6 +162,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private void getData(String slug) {
 
         ApiConfig.RequestToVolley((result, response, error) -> {
+            loadingPB.setVisibility(View.GONE);
             if (result){
                 try {
                     JSONObject item = new JSONObject(response).getJSONObject("item");
@@ -179,7 +186,14 @@ public class ItemDetailsActivity extends AppCompatActivity {
         boolean storybook = isStorybookTheme();
 
         detailsWV.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        detailsWV.setBackgroundColor(android.graphics.Color.parseColor(storybook ? "#1E1808" : "#07081A"));
+        detailsWV.setBackgroundColor(android.graphics.Color.parseColor(storybook ? "#F7F1E1" : "#07081A"));
+
+        titleCV.setCardBackgroundColor(storybook
+                ? android.graphics.Color.parseColor("#EFE6CC")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.indigo_dim));
+        titleTV.setTextColor(storybook
+                ? android.graphics.Color.parseColor("#7A4A00")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.gold));
 
         String css = storybook ? storybookCss() : darkCss();
         String metaViewport = "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>";
@@ -191,8 +205,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private String storybookCss() {
         return "<style>" +
                 "html,body{" +
-                "  background:#1E1808 !important;" +
-                "  color:#EEE7D8 !important;" +
+                "  background:#F7F1E1 !important;" +
+                "  color:#241C10 !important;" +
                 "  font-family:Georgia,'Iowan Old Style','Noto Sans Bengali','Noto Sans',serif;" +
                 "  font-size:15.5px;" +
                 "  line-height:1.7;" +
@@ -202,25 +216,25 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 "}" +
                 "*{box-sizing:border-box;}" +
                 "font{font-size:15.5px !important;font-family:inherit !important;color:inherit !important;}" +
-                "p,li,td,th,span,div,label,code,pre,blockquote{color:#EEE7D8 !important;background:transparent !important;}" +
-                "a{color:#9B7CD6 !important;}" +
-                "h1{color:#E8C374 !important;background:transparent !important;font-size:18px !important;font-weight:700;font-style:italic;margin:20px 0 6px;line-height:1.35;padding:0;}" +
-                "h2{color:#E8C374 !important;background:transparent !important;font-size:16px !important;font-weight:700;margin:18px 0 5px;line-height:1.35;padding:0 0 4px;border-bottom:1px solid #3A2E14;}" +
-                "h3{color:#E8C374 !important;background:transparent !important;font-size:15px !important;font-weight:700;margin:16px 0 4px;line-height:1.35;padding:0 0 3px;border-bottom:1px solid #2E2410;}" +
-                "h4,h5,h6{color:#D9A441 !important;background:transparent !important;font-size:15.5px !important;font-weight:700;margin:14px 0 4px;line-height:1.35;padding:0;}" +
-                "b,strong{color:#D9A441 !important;}" +
-                "i,em{color:#C3ADF0 !important;font-style:italic;}" +
+                "p,li,td,th,span,div,label,code,pre,blockquote{color:#241C10 !important;background:transparent !important;}" +
+                "a{color:#6D3FC0 !important;}" +
+                "h1{color:#7A4A00 !important;background:transparent !important;font-size:18px !important;font-weight:700;font-style:italic;margin:20px 0 6px;line-height:1.35;padding:0;}" +
+                "h2{color:#7A4A00 !important;background:transparent !important;font-size:16px !important;font-weight:700;margin:18px 0 5px;line-height:1.35;padding:0 0 4px;border-bottom:1px solid #E1D6B8;}" +
+                "h3{color:#7A4A00 !important;background:transparent !important;font-size:15px !important;font-weight:700;margin:16px 0 4px;line-height:1.35;padding:0 0 3px;border-bottom:1px solid #E9E0C8;}" +
+                "h4,h5,h6{color:#8B5E00 !important;background:transparent !important;font-size:15.5px !important;font-weight:700;margin:14px 0 4px;line-height:1.35;padding:0;}" +
+                "b,strong{color:#8B5E00 !important;}" +
+                "i,em{color:#5B3D8F !important;font-style:italic;}" +
                 "p{margin:0 0 8px;padding:0;}" +
                 "p:empty{display:none;}" +
                 ":first-child{margin-top:0;}" +
                 "br{content:'';display:block;margin:1px 0;}" +
                 "ul,ol{padding-left:16px;margin:4px 0 8px;}" +
-                "li{margin:4px 0;line-height:1.6;color:#EEE7D8 !important;}" +
-                "blockquote{border-left:3px solid #9B7CD6;background:#241A0C !important;margin:10px 0;padding:8px 12px;border-radius:0 6px 6px 0;color:#CFC8DE !important;}" +
+                "li{margin:4px 0;line-height:1.6;color:#241C10 !important;}" +
+                "blockquote{border-left:3px solid #6D3FC0;background:#EFE6CC !important;margin:10px 0;padding:8px 12px;border-radius:0 6px 6px 0;color:#3A2E1A !important;}" +
                 "table{width:100% !important;border-collapse:collapse !important;margin:10px 0;font-size:14px;}" +
-                "th{background:#2A2010 !important;color:#E8C374 !important;padding:8px;border:1px solid #3A2E14 !important;text-align:left;}" +
-                "td{background:#1E1808 !important;color:#EEE7D8 !important;padding:8px;border:1px solid #3A2E14 !important;}" +
-                "code,pre{background:#241A0C !important;color:#9B7CD6 !important;padding:2px 6px;border-radius:4px;font-size:13px;}" +
+                "th{background:#EFE6CC !important;color:#7A4A00 !important;padding:8px;border:1px solid #E1D6B8 !important;text-align:left;}" +
+                "td{background:#F7F1E1 !important;color:#241C10 !important;padding:8px;border:1px solid #E1D6B8 !important;}" +
+                "code,pre{background:#EFE6CC !important;color:#6D3FC0 !important;padding:2px 6px;border-radius:4px;font-size:13px;}" +
                 "img{max-width:100% !important;height:auto !important;border-radius:6px;margin:6px 0;display:block;}" +
                 "</style>";
     }
