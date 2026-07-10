@@ -161,7 +161,7 @@
                         android:layout_weight="1"
                         android:text="Essential Vocabulary"
                         android:textColor="@color/text_primary"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:maxLines="1"
                         android:ellipsize="end"
@@ -242,7 +242,7 @@
                             android:layout_height="wrap_content"
                             android:text="Eloquent"
                             android:textColor="@color/text_primary"
-                            android:textSize="22sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             tools:ignore="HardcodedText" />
 
@@ -375,7 +375,7 @@
                         android:layout_height="wrap_content"
                         android:text="Vocabulary"
                         android:textColor="@color/indigo"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         tools:ignore="HardcodedText" />
@@ -420,7 +420,7 @@
                         android:layout_height="wrap_content"
                         android:text="Grammar"
                         android:textColor="@color/coral"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         tools:ignore="HardcodedText" />
@@ -474,7 +474,7 @@
                         android:layout_height="wrap_content"
                         android:text="Wizard"
                         android:textColor="@color/gold"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         tools:ignore="HardcodedText" />
@@ -517,16 +517,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Writing"
+                        android:text="Reading &amp; Writing"
                         android:textColor="@color/blue_accent"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         tools:ignore="HardcodedText" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reading &amp; Writing"
+                        android:text="পড়া ও লেখা শেখো"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"
@@ -573,7 +573,7 @@
                         android:layout_height="wrap_content"
                         android:text="Quick Quiz"
                         android:textColor="@color/white"
-                        android:textSize="11sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
                         tools:ignore="HardcodedText" />
@@ -618,7 +618,7 @@
                         android:layout_height="wrap_content"
                         android:text="Leaderboard"
                         android:textColor="@color/white"
-                        android:textSize="11sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
                         tools:ignore="HardcodedText" />
@@ -669,7 +669,7 @@
                         android:layout_height="wrap_content"
                         android:text="গ্রুপ"
                         android:textColor="@color/text_primary"
-                        android:textSize="11sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
                         tools:ignore="HardcodedText" />
@@ -712,7 +712,7 @@
                         android:layout_height="wrap_content"
                         android:text="১v১ যুদ্ধ"
                         android:textColor="@color/text_primary"
-                        android:textSize="11sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
                         tools:ignore="HardcodedText" />
