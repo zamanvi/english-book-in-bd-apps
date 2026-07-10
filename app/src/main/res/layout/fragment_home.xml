@@ -570,7 +570,7 @@
                         android:layout_height="wrap_content"
                         android:text="নিজেকে যাচাই করো"
                         android:textColor="@color/coral"
-                        android:textSize="9sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="1dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -615,7 +615,7 @@
                         android:layout_height="wrap_content"
                         android:text="সেরা শিক্ষার্থীরা"
                         android:textColor="@color/gold"
-                        android:textSize="9sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="1dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -666,7 +666,7 @@
                         android:layout_height="wrap_content"
                         android:text="গ্রুপ বানাও"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="1dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
@@ -709,7 +709,7 @@
                         android:layout_height="wrap_content"
                         android:text="বন্ধুকে চ্যালেঞ্জ করো"
                         android:textColor="@color/text_inactive"
-                        android:textSize="9sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="1dp"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
