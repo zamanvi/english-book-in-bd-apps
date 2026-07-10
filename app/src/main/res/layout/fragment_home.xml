@@ -433,7 +433,7 @@
             android:layout_marginBottom="16dp">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/dailyVocabularyLL"
+                android:id="@+id/wizardLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -450,18 +450,18 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:padding="16dp"
-                    android:background="@drawable/grad_speaking">
+                    android:background="@drawable/grad_wizard_tale">
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:src="@drawable/ic_mic"
-                        android:contentDescription="Speaking"
-                        app:tint="@color/teal" />
+                        android:src="@drawable/ic_sparkle"
+                        android:contentDescription="Wizard"
+                        app:tint="@color/gold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Speaking"
-                        android:textColor="@color/teal"
+                        android:text="Wizard"
+                        android:textColor="@color/gold"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
@@ -469,7 +469,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="প্রতিদিন অনুশীলন"
+                        android:text="১০টি অদ্ভুত সত্যি গল্প"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="4dp"

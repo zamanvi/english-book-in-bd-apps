@@ -42,6 +42,15 @@
             android:name=".Activity.ChapterActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.WizardChapterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.WizardLessonActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.WizardStoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.WordActivity"
             android:exported="false" />
         <activity

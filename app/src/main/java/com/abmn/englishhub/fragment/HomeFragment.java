@@ -21,6 +21,7 @@ import com.abmn.englishhub.Activity.ItemActivity;
 import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
+import com.abmn.englishhub.Activity.WizardChapterActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
@@ -96,8 +97,8 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(activity, VocabularyActivity.class)));
         view.findViewById(R.id.grammarLL).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
-        view.findViewById(R.id.dailyVocabularyLL).setOnClickListener(v ->
-                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "daily_vocabulary")));
+        view.findViewById(R.id.wizardLL).setOnClickListener(v ->
+                startActivity(new Intent(activity, WizardChapterActivity.class)));
         view.findViewById(R.id.writingAndReadingLL).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
         view.findViewById(R.id.continueLearningCard).setOnClickListener(v -> {
