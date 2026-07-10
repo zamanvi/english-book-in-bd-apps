@@ -2,12 +2,16 @@ package com.abmn.englishhub.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -58,7 +62,42 @@ public class WizardStoryActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        applyTheme();
         fetchStory();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_wizard_story, menu);
+        return true;
+    }
+
+    private String currentTheme() {
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        return prefs.getString(Constant.CONTENT_THEME, Constant.CONTENT_THEME_STORYBOOK);
+    }
+
+    private void toggleTheme() {
+        String next = currentTheme().equals(Constant.CONTENT_THEME_STORYBOOK)
+                ? Constant.CONTENT_THEME_APP : Constant.CONTENT_THEME_STORYBOOK;
+        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .edit().putString(Constant.CONTENT_THEME, next).apply();
+        applyTheme();
+        Toast.makeText(activity,
+                next.equals(Constant.CONTENT_THEME_STORYBOOK) ? "Storybook theme" : "App theme",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void applyTheme() {
+        LinearLayout taleCardBg = findViewById(R.id.taleCardBg);
+        TextView metaTV = findViewById(R.id.metaTV);
+        TextView hookTitleTV = findViewById(R.id.hookTitleTV);
+        boolean storybook = currentTheme().equals(Constant.CONTENT_THEME_STORYBOOK);
+
+        taleCardBg.setBackgroundResource(storybook ? R.drawable.grad_wizard_tale : R.drawable.grad_word_of_day);
+        int accent = getResources().getColor(storybook ? R.color.gold : R.color.indigo);
+        metaTV.setTextColor(accent);
+        hookTitleTV.setTextColor(accent);
     }
 
     @SuppressLint("SetTextI18n")
@@ -179,6 +218,10 @@ public class WizardStoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return true;
+        }
+        if (item.getItemId() == R.id.themeToggleId) {
+            toggleTheme();
             return true;
         }
         return super.onOptionsItemSelected(item);
