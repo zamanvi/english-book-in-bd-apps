@@ -44,6 +44,9 @@ public class Constant {
     public static final String CHAPTER_API2 = ROOT_API + "book/chapter/index2";
     public static final String ITEM_API = ROOT_API + "book/item/index";
     public static final String ITEM_SHOW_API = ROOT_API + "book/item/show/";
+    public static final String WIZARD_CHAPTERS = ROOT_API + "wizard/chapters";
+    public static final String WIZARD_STORIES = ROOT_API + "wizard/stories";
+    public static final String WIZARD_STORY_SHOW = ROOT_API + "wizard/story/";
     public static final String CHAPTERS = "chapters";
     public static final String LESSONS = "lessons";
     public static final String WORDS = "words";
@@ -58,6 +61,7 @@ public class Constant {
     public static final String FROM_TITLE = "abmn_from_title";
     public static final String FROM_TYPE = "abmn_from_type";
     public static final String FROM_ID = "abmn_from_id";
+    public static final String FROM_SUBTITLE = "abmn_from_subtitle";
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
     public static final String STATUS = "status";

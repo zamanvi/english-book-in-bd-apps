@@ -11,20 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abmn.englishhub.Activity.WizardStoryActivity;
+import com.abmn.englishhub.Activity.WizardLessonActivity;
 import com.abmn.englishhub.Helper.Constant;
-import com.abmn.englishhub.Model.WizardStoryListItemModel;
+import com.abmn.englishhub.Model.WizardChapterModel;
 import com.abmn.englishhub.R;
 
 import java.util.List;
 
-public class WizardLessonAdapter extends RecyclerView.Adapter<WizardLessonAdapter.ViewHolder> {
+public class WizardChapterAdapter extends RecyclerView.Adapter<WizardChapterAdapter.ViewHolder> {
 
-    private final List<WizardStoryListItemModel> storyList;
+    private final List<WizardChapterModel> chapterList;
     private final Activity activity;
 
-    public WizardLessonAdapter(List<WizardStoryListItemModel> storyList, Activity activity) {
-        this.storyList = storyList;
+    public WizardChapterAdapter(List<WizardChapterModel> chapterList, Activity activity) {
+        this.chapterList = chapterList;
         this.activity = activity;
     }
 
@@ -37,12 +37,12 @@ public class WizardLessonAdapter extends RecyclerView.Adapter<WizardLessonAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(storyList.get(position), activity);
+        holder.bind(chapterList.get(position), activity);
     }
 
     @Override
     public int getItemCount() {
-        return storyList.size();
+        return chapterList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -55,11 +55,13 @@ public class WizardLessonAdapter extends RecyclerView.Adapter<WizardLessonAdapte
             titleTV = itemView.findViewById(R.id.titleTV);
         }
 
-        public void bind(WizardStoryListItemModel model, Activity activity) {
+        public void bind(WizardChapterModel model, Activity activity) {
             rootCV.setOnClickListener(v -> activity.startActivity(
-                    new Intent(activity, WizardStoryActivity.class)
-                            .putExtra(Constant.FROM_ID, model.getId())));
-            titleTV.setText(model.getHookTitle());
+                    new Intent(activity, WizardLessonActivity.class)
+                            .putExtra(Constant.FROM_ID, model.getId())
+                            .putExtra(Constant.FROM_TITLE, model.getTitle())
+                            .putExtra(Constant.FROM_SUBTITLE, model.getSubtitle())));
+            titleTV.setText(model.getTitle());
         }
     }
 }

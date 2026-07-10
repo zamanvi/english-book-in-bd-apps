@@ -1,5 +1,6 @@
 package com.abmn.englishhub.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,11 +17,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
-import com.abmn.englishhub.Helper.WizardStoryData;
-import com.abmn.englishhub.Model.WizardStoryModel;
 import com.abmn.englishhub.R;
+import com.android.volley.Request;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 // Shows a single "ইতিহাসের অদ্ভুত পাতা" story: the English tale, its Bangla
@@ -30,6 +36,7 @@ import java.util.List;
 public class WizardStoryActivity extends AppCompatActivity {
 
     private Activity activity;
+    private int storyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,37 +50,68 @@ public class WizardStoryActivity extends AppCompatActivity {
         });
 
         activity = this;
-        int storyId = getIntent().getIntExtra(Constant.FROM_ID, 1);
-        WizardStoryModel story = findStory(storyId);
-        if (story != null) {
-            bindStory(story);
-        }
-    }
+        storyId = getIntent().getIntExtra(Constant.FROM_ID, 0);
 
-    private WizardStoryModel findStory(int id) {
-        for (WizardStoryModel s : WizardStoryData.getAll()) {
-            if (s.getId() == id) return s;
-        }
-        return null;
-    }
-
-    private void bindStory(WizardStoryModel story) {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(story.getHookTitle());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        ((TextView) findViewById(R.id.metaTV)).setText(story.getMeta());
-        ((TextView) findViewById(R.id.hookTitleTV)).setText(story.getHookTitle());
-        ((TextView) findViewById(R.id.banglaTitleTV)).setText(story.getBanglaTitle());
+        fetchStory();
+    }
 
-        addParagraphs(findViewById(R.id.englishContainer), story.getEnglishParagraphs(),
-                R.color.text_primary, 14.5f, 1.35f);
-        addParagraphs(findViewById(R.id.banglaContainer), story.getBanglaParagraphs(),
-                R.color.text_secondary, 14f, 1.5f);
-        addNotes(findViewById(R.id.notesContainer), story.getGrammarNotes());
+    @SuppressLint("SetTextI18n")
+    private void fetchStory() {
+        String url = Constant.WIZARD_STORY_SHOW + storyId;
+        ApiConfig.RequestToVolley((result, response, error) -> {
+            try {
+                if (result) {
+                    JSONObject story = new JSONObject(response).getJSONObject("story");
+
+                    String hookTitle = story.getString("hook_title");
+                    String meta = story.optString("meta", "");
+                    String banglaTitle = story.getString("bangla_title");
+                    List<String> englishParagraphs = toStringList(story.getJSONArray("english_paragraphs"));
+                    List<String> banglaParagraphs = toStringList(story.getJSONArray("bangla_paragraphs"));
+                    List<String[]> grammarNotes = toNoteList(story.optJSONArray("grammar_notes"));
+
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle(hookTitle);
+                    }
+                    ((TextView) findViewById(R.id.metaTV)).setText(meta);
+                    ((TextView) findViewById(R.id.hookTitleTV)).setText(hookTitle);
+                    ((TextView) findViewById(R.id.banglaTitleTV)).setText(banglaTitle);
+
+                    addParagraphs(findViewById(R.id.englishContainer), englishParagraphs,
+                            R.color.text_primary, 14.5f, 1.35f);
+                    addParagraphs(findViewById(R.id.banglaContainer), banglaParagraphs,
+                            R.color.text_secondary, 14f, 1.5f);
+                    addNotes(findViewById(R.id.notesContainer), grammarNotes);
+                }
+            } catch (Exception e) {
+                // ignored
+            }
+        }, Request.Method.GET, activity, url, new HashMap<>(), true);
+    }
+
+    private List<String> toStringList(JSONArray array) throws Exception {
+        List<String> list = new ArrayList<>();
+        if (array == null) return list;
+        for (int i = 0; i < array.length(); i++) {
+            list.add(array.getString(i));
+        }
+        return list;
+    }
+
+    private List<String[]> toNoteList(JSONArray array) throws Exception {
+        List<String[]> list = new ArrayList<>();
+        if (array == null) return list;
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject note = array.getJSONObject(i);
+            list.add(new String[]{note.optString("label", ""), note.optString("text", "")});
+        }
+        return list;
     }
 
     private void addParagraphs(LinearLayout container, List<String> paragraphs,

@@ -1,26 +1,42 @@
 package com.abmn.englishhub.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.abmn.englishhub.Adapter.WizardChapterAdapter;
+import com.abmn.englishhub.Helper.ApiConfig;
+import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Model.WizardChapterModel;
 import com.abmn.englishhub.R;
+import com.android.volley.Request;
 
-// Chapter list for the "Wizard" section. Currently holds a single chapter
-// ("ইতিহাসের অদ্ভুত পাতা"); built as a list screen (not a direct jump to
-// lessons) so more chapters can be added later without restructuring.
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+
+// Chapter list for the "Wizard" section, fetched from the backend so an
+// admin can add more chapters later without an app update.
 public class WizardChapterActivity extends AppCompatActivity {
+
+    private Activity activity;
+    private RecyclerView chapterRV;
+    private List<WizardChapterModel> chapterList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +49,7 @@ public class WizardChapterActivity extends AppCompatActivity {
             return insets;
         });
 
-        Activity activity = this;
+        activity = this;
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -41,10 +57,36 @@ public class WizardChapterActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        CardView chapterCard = findViewById(R.id.chapterCard);
-        ((TextView) chapterCard.findViewById(R.id.titleTV)).setText("ইতিহাসের অদ্ভুত পাতা");
-        chapterCard.setOnClickListener(v ->
-                activity.startActivity(new Intent(activity, WizardLessonActivity.class)));
+        chapterRV = findViewById(R.id.chapterRV);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
+        linearLayout.setOrientation(RecyclerView.VERTICAL);
+        chapterRV.setLayoutManager(linearLayout);
+
+        chapterList = new ArrayList<>();
+        chapterRV.setAdapter(new WizardChapterAdapter(chapterList, activity));
+        fetchChapters();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void fetchChapters() {
+        ApiConfig.RequestToVolley((result, response, error) -> {
+            try {
+                if (result) {
+                    JSONObject chaptersObject = new JSONObject(response).getJSONObject("chapters");
+                    JSONArray dataArray = chaptersObject.getJSONArray(Constant.DATA);
+                    for (int i = 0; i < dataArray.length(); i++) {
+                        JSONObject chapter = dataArray.getJSONObject(i);
+                        chapterList.add(new WizardChapterModel(
+                                chapter.getInt("id"),
+                                chapter.getString("title"),
+                                chapter.optString("subtitle", "")));
+                    }
+                    Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
+                }
+            } catch (Exception e) {
+                // ignored
+            }
+        }, Request.Method.GET, activity, Constant.WIZARD_CHAPTERS, new HashMap<>(), true);
     }
 
     @Override
