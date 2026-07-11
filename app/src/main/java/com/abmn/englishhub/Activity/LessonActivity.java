@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -37,6 +40,9 @@ public class LessonActivity extends AppCompatActivity {
     private Activity activity;
     private UConfig uConfig;
     private RecyclerView lessonRV;
+    private ProgressBar loadingPB;
+    private View emptyLL;
+    private TextView emptyTV;
     private List<LessonModel> lessonList;
     private boolean isLoading = false;
     private int currentPage = 1;
@@ -77,6 +83,9 @@ public class LessonActivity extends AppCompatActivity {
         setToolbar(getChapterTitle);
 
         lessonRV = findViewById(R.id.lessonRV);
+        loadingPB = findViewById(R.id.loadingPB);
+        emptyLL = findViewById(R.id.emptyLL);
+        emptyTV = findViewById(R.id.emptyTV);
 
         if (!uConfig.isConnected()){
             uConfig.isConnectedAlert("", "");
@@ -183,7 +192,13 @@ public class LessonActivity extends AppCompatActivity {
         String url = Constant.ROOT_API2 + Constant.LESSONS + "/" + getChapterId + "?page=" + page;
         String tag = "LessonActivity";
 
+        if (page == 1) {
+            loadingPB.setVisibility(View.VISIBLE);
+            emptyLL.setVisibility(View.GONE);
+        }
+
         ApiConfig.RequestToVolley((result, response, error) -> {
+            boolean failed = false;
             try {
                 if (result) {
                     JSONObject chaptersObject = new JSONObject(response).getJSONObject(Constant.LESSONS);
@@ -206,11 +221,21 @@ public class LessonActivity extends AppCompatActivity {
                         lastPage = chaptersObject.getInt("last_page");
                     }
                     Objects.requireNonNull(lessonRV.getAdapter()).notifyDataSetChanged();
+                } else {
+                    failed = true;
                 }
             } catch (Exception e) {
-                // ignored
+                failed = true;
             } finally {
                 isLoading = false;
+            }
+
+            if (page == 1) {
+                loadingPB.setVisibility(View.GONE);
+                if (lessonList.isEmpty()) {
+                    emptyTV.setText(failed ? "লেসন লোড করা যায়নি" : "কোনো লেসন নেই");
+                    emptyLL.setVisibility(View.VISIBLE);
+                }
             }
         }, Request.Method.GET, activity, url, new HashMap<>(), true);
     }

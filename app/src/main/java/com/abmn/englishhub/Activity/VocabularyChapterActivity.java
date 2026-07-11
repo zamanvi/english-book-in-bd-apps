@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -37,6 +40,9 @@ public class VocabularyChapterActivity extends AppCompatActivity {
     private Activity activity;
     private UConfig uConfig;
     private RecyclerView chapterRV;
+    private ProgressBar loadingPB;
+    private View emptyLL;
+    private TextView emptyTV;
     private List<WordChapterModel> chapterList;
     private boolean isLoading = false;
     private int currentPage = 1;
@@ -74,6 +80,9 @@ public class VocabularyChapterActivity extends AppCompatActivity {
             }
         }
         chapterRV = findViewById(R.id.chapterRV);
+        loadingPB = findViewById(R.id.loadingPB);
+        emptyLL = findViewById(R.id.emptyLL);
+        emptyTV = findViewById(R.id.emptyTV);
 
         if (!uConfig.isConnected()){
             uConfig.isConnectedAlert("", "");
@@ -173,7 +182,14 @@ public class VocabularyChapterActivity extends AppCompatActivity {
             url += "&type=" + categoryType;
         }
         String tag = "VocabularyChapterActivity";
+
+        if (page == 1) {
+            loadingPB.setVisibility(View.VISIBLE);
+            emptyLL.setVisibility(View.GONE);
+        }
+
         ApiConfig.RequestToVolley((result, response, error) -> {
+            boolean failed = false;
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 if (result) {
@@ -197,11 +213,21 @@ public class VocabularyChapterActivity extends AppCompatActivity {
                         lastPage = chaptersObject.getInt("last_page");
                     }
                     Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
+                } else {
+                    failed = true;
                 }
             } catch (Exception e) {
-                // ignored
+                failed = true;
             } finally {
                 isLoading = false;
+            }
+
+            if (page == 1) {
+                loadingPB.setVisibility(View.GONE);
+                if (chapterList.isEmpty()) {
+                    emptyTV.setText(failed ? "চ্যাপ্টার লোড করা যায়নি" : "কোনো চ্যাপ্টার নেই");
+                    emptyLL.setVisibility(View.VISIBLE);
+                }
             }
         }, Request.Method.GET, activity, url, new HashMap<>(), true);
     }

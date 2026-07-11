@@ -10,12 +10,54 @@
 
     <include layout="@layout/lyt_toolbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chapterRV"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="24dp"
-        android:clipToPadding="false" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chapterRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="24dp"
+            android:clipToPadding="false" />
+
+        <ProgressBar
+            android:id="@+id/loadingPB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/indigo" />
+
+        <LinearLayout
+            android:id="@+id/emptyLL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✨"
+                android:textSize="36sp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/emptyTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="কোনো গল্প নেই"
+                android:textColor="@color/text_muted"
+                android:textSize="13sp"
+                android:gravity="center"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

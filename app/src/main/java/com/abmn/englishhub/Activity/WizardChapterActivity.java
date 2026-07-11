@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -36,6 +39,9 @@ public class WizardChapterActivity extends AppCompatActivity {
 
     private Activity activity;
     private RecyclerView chapterRV;
+    private ProgressBar loadingPB;
+    private View emptyLL;
+    private TextView emptyTV;
     private List<WizardChapterModel> chapterList;
 
     @Override
@@ -58,18 +64,23 @@ public class WizardChapterActivity extends AppCompatActivity {
         }
 
         chapterRV = findViewById(R.id.chapterRV);
+        loadingPB = findViewById(R.id.loadingPB);
+        emptyLL = findViewById(R.id.emptyLL);
+        emptyTV = findViewById(R.id.emptyTV);
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
         linearLayout.setOrientation(RecyclerView.VERTICAL);
         chapterRV.setLayoutManager(linearLayout);
 
         chapterList = new ArrayList<>();
         chapterRV.setAdapter(new WizardChapterAdapter(chapterList, activity));
+        loadingPB.setVisibility(View.VISIBLE);
         fetchChapters();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private void fetchChapters() {
         ApiConfig.RequestToVolley((result, response, error) -> {
+            boolean failed = false;
             try {
                 if (result) {
                     JSONObject chaptersObject = new JSONObject(response).getJSONObject("chapters");
@@ -82,9 +93,17 @@ public class WizardChapterActivity extends AppCompatActivity {
                                 chapter.optString("subtitle", "")));
                     }
                     Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
+                } else {
+                    failed = true;
                 }
             } catch (Exception e) {
-                // ignored
+                failed = true;
+            }
+
+            loadingPB.setVisibility(View.GONE);
+            if (chapterList.isEmpty()) {
+                emptyTV.setText(failed ? "লোড করা যায়নি" : "কোনো গল্প নেই");
+                emptyLL.setVisibility(View.VISIBLE);
             }
         }, Request.Method.GET, activity, Constant.WIZARD_CHAPTERS, new HashMap<>(), true);
     }

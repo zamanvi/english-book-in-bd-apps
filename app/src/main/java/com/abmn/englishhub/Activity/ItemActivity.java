@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +44,9 @@ public class ItemActivity extends AppCompatActivity {
     private Activity activity;
     private List<ItemModel> itemList;
     private RecyclerView itemRV;
+    private ProgressBar loadingPB;
+    private View emptyLL;
+    private TextView emptyTV;
     private InterstitialAdManager interstitialAdManager;
 
     @Override
@@ -67,6 +73,9 @@ public class ItemActivity extends AppCompatActivity {
 
         activity = this;
         itemRV = findViewById(R.id.itemRV);
+        loadingPB = findViewById(R.id.loadingPB);
+        emptyLL = findViewById(R.id.emptyLL);
+        emptyTV = findViewById(R.id.emptyTV);
         itemList = new ArrayList<>();
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
@@ -84,6 +93,7 @@ public class ItemActivity extends AppCompatActivity {
         String slug = getIntent().getStringExtra(Constant.FROM);
         String title = getIntent().getStringExtra(Constant.FROM_TITLE);
         rememberAsLastOpened(slug, title);
+        loadingPB.setVisibility(View.VISIBLE);
         getData(slug);
 
         CountDownTimer countDownTimer = new CountDownTimer(30000, 1000) {
@@ -142,7 +152,10 @@ public class ItemActivity extends AppCompatActivity {
     private void getData(String data) {
 
         ApiConfig.RequestToVolley((result, response, error) -> {
-            if (!result || response == null || response.isEmpty()) return;
+            if (!result || response == null || response.isEmpty()) {
+                showEmpty(true);
+                return;
+            }
             try {
                 JSONObject itemsObject = new JSONObject(response);
                 JSONObject dataObject = itemsObject.getJSONObject("items");
@@ -168,10 +181,21 @@ public class ItemActivity extends AppCompatActivity {
                 itemRV.setAdapter(adapter);
                 Objects.requireNonNull(itemRV.getAdapter()).notifyDataSetChanged();
 
+                loadingPB.setVisibility(View.GONE);
+                if (itemList.isEmpty()) {
+                    showEmpty(false);
+                }
             } catch (JSONException e) {
                 android.util.Log.e("ItemActivity", "getData parse error", e);
+                showEmpty(true);
             }
         }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + data, new HashMap<>(), false);
+    }
+
+    private void showEmpty(boolean failed) {
+        loadingPB.setVisibility(View.GONE);
+        emptyTV.setText(failed ? "লোড করা যায়নি" : "কোনো item নেই");
+        emptyLL.setVisibility(View.VISIBLE);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

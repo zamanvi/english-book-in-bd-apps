@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +38,9 @@ public class ChapterActivity extends AppCompatActivity {
     private Activity activity;
     private List<ChapterModel> chapterList;
     private RecyclerView chapterRV;
+    private ProgressBar loadingPB;
+    private View emptyLL;
+    private TextView emptyTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +67,14 @@ public class ChapterActivity extends AppCompatActivity {
         }
 
         chapterRV = findViewById(R.id.chapterRV);
+        loadingPB = findViewById(R.id.loadingPB);
+        emptyLL = findViewById(R.id.emptyLL);
+        emptyTV = findViewById(R.id.emptyTV);
         chapterList = new ArrayList<>();
 
         String getType = getIntent().getStringExtra("type");
 
+        loadingPB.setVisibility(View.VISIBLE);
         getBookData(getType);
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
@@ -81,7 +91,10 @@ public class ChapterActivity extends AppCompatActivity {
 
     private void getBookData(String getType) {
         ApiConfig.RequestToVolley((result, response, error) -> {
-            if (!result || response == null || response.isEmpty()) return;
+            if (!result || response == null || response.isEmpty()) {
+                showEmpty(true);
+                return;
+            }
             try {
                 JSONObject bookObject = new JSONObject(response);
                 JSONObject books = bookObject.getJSONObject("books");
@@ -101,8 +114,15 @@ public class ChapterActivity extends AppCompatActivity {
                 getData(slug, getType);
             } catch (Exception e) {
                 Log.e("ChapterActivity", "getBookData parse error", e);
+                showEmpty(true);
             }
         }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
+    }
+
+    private void showEmpty(boolean failed) {
+        loadingPB.setVisibility(View.GONE);
+        emptyTV.setText(failed ? "চ্যাপ্টার লোড করা যায়নি" : "কোনো চ্যাপ্টার নেই");
+        emptyLL.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -112,7 +132,10 @@ public class ChapterActivity extends AppCompatActivity {
             url += "&type=" + getType;
         }
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
-            if (!chapterResult || chapterResponse == null || chapterResponse.isEmpty()) return;
+            if (!chapterResult || chapterResponse == null || chapterResponse.isEmpty()) {
+                showEmpty(true);
+                return;
+            }
             try {
                 JSONObject jsonObject = new JSONObject(chapterResponse);
                 JSONObject chapters = jsonObject.getJSONObject("chapters");
@@ -137,8 +160,13 @@ public class ChapterActivity extends AppCompatActivity {
                 chapterRV.setAdapter(adapter);
                 Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
 
+                loadingPB.setVisibility(View.GONE);
+                if (chapterList.isEmpty()) {
+                    showEmpty(false);
+                }
             } catch (Exception e) {
                 Log.e("ChapterActivity", "getData parse error", e);
+                showEmpty(true);
             }
         }, Request.Method.GET, activity, url, new HashMap<>(), false);
     }
