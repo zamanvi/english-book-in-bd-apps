@@ -131,9 +131,9 @@ public class WordActivity extends AppCompatActivity {
             synonymsTvW.setText("Verb 2");
             antonymsTvW.setText("Verb 3");
         } else {
-            wordTvW.setText("শব্দ (V1)");
+            wordTvW.setText("শব্দ");
             meaningTvW.setText("অর্থ");
-            synonymsTvW.setText("সমার্থক (V2/V3)");
+            synonymsTvW.setText("সমার্থক শব্দ");
             antonymsTvW.setText("বিপরীত শব্দ");
         }
         setToolbar(getLessonTitle);
@@ -402,8 +402,7 @@ public class WordActivity extends AppCompatActivity {
                         if (currentPage == 1) {
                             lastPage = chaptersObject.getInt("last_page");
                         }
-                        synonymsTvW.setVisibility(View.VISIBLE);
-                        antonymsTvW.setVisibility(View.VISIBLE);
+                        updateColumnHeaderVisibility();
                         Objects.requireNonNull(wordRV.getAdapter()).notifyDataSetChanged();
                     }
                 } catch (Exception e) {
@@ -415,6 +414,22 @@ public class WordActivity extends AppCompatActivity {
         } catch (Exception e) {
             // ignored
         }
+    }
+
+    // If not a single word in this lesson has a synonym/antonym value, the
+    // column header for it is dead weight - hide it instead of showing an
+    // empty label over a blank column.
+    private void updateColumnHeaderVisibility() {
+        boolean anySyn = false, anyAnt = false;
+        for (WordModel model : wordList) {
+            String syn = model.getSynonyms();
+            String ant = model.getAntonyms();
+            if (syn != null && !syn.isEmpty() && !"null".equals(syn)) anySyn = true;
+            if (ant != null && !ant.isEmpty() && !"null".equals(ant)) anyAnt = true;
+            if (anySyn && anyAnt) break;
+        }
+        synonymsTvW.setVisibility(anySyn ? View.VISIBLE : View.GONE);
+        antonymsTvW.setVisibility(anyAnt ? View.VISIBLE : View.GONE);
     }
 
     @Override
