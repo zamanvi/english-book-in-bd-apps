@@ -109,21 +109,36 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             wordTV.setText(model.getWord());
             meaningTV.setText(model.getMeaning());
 
-            rootCV.setCardBackgroundColor(itemView.getResources().getColor(
-                    storybook ? R.color.storybook_card_bg : R.color.bg_elevated));
-            wordTV.setTextColor(itemView.getResources().getColor(
-                    storybook ? R.color.gold : R.color.text_primary));
+            if (storybook) {
+                rootCV.setCardBackgroundColor(android.graphics.Color.parseColor("#F7F1E1"));
+                wordTV.setTextColor(android.graphics.Color.parseColor("#7A4A00"));
+                meaningTV.setTextColor(android.graphics.Color.parseColor("#3A2E1A"));
+                synonymsTV.setTextColor(android.graphics.Color.parseColor("#1F7A5C"));
+                antonymsTV.setTextColor(android.graphics.Color.parseColor("#B0203A"));
+            } else {
+                rootCV.setCardBackgroundColor(itemView.getResources().getColor(R.color.bg_elevated));
+                wordTV.setTextColor(itemView.getResources().getColor(R.color.text_primary));
+                meaningTV.setTextColor(itemView.getResources().getColor(R.color.text_secondary));
+                synonymsTV.setTextColor(itemView.getResources().getColor(R.color.teal));
+                antonymsTV.setTextColor(itemView.getResources().getColor(R.color.red_wrong));
+            }
 
             counterTV.setText("" + (position + 1));
 
+            String meaning = model.getMeaning();
             String syn = model.getSynonyms();
             String ant = model.getAntonyms();
 
-            synonymsTV.setVisibility(View.VISIBLE);
-            synonymsTV.setText((syn == null || "null".equals(syn)) ? "—" : syn);
+            boolean hasMeaning = meaning != null && !meaning.isEmpty() && !"null".equals(meaning);
+            meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
 
-            antonymsTV.setVisibility(View.VISIBLE);
-            antonymsTV.setText((ant == null || "null".equals(ant)) ? "—" : ant);
+            boolean hasSyn = syn != null && !syn.isEmpty() && !"null".equals(syn);
+            synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);
+            if (hasSyn) synonymsTV.setText(syn);
+
+            boolean hasAnt = ant != null && !ant.isEmpty() && !"null".equals(ant);
+            antonymsTV.setVisibility(hasAnt ? View.VISIBLE : View.GONE);
+            if (hasAnt) antonymsTV.setText(ant);
 
             if (isBWord) {
                 wordTV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

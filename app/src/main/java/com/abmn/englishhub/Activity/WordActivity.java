@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -58,6 +59,8 @@ public class WordActivity extends AppCompatActivity {
     private int lastPage = 1;
     private TextView synonymsTvW;
     private TextView antonymsTvW;
+    private TextView wordTvW, meaningTvW, counterTvW;
+    private CardView headerCV;
     private String getLessonId;
     private WordAdapter adapter;
     private ImageView wordCloseIV, meaningCloseIV;
@@ -81,6 +84,7 @@ public class WordActivity extends AppCompatActivity {
         adapter.setStorybook(isStorybookTheme());
         wordRV.setAdapter(adapter);
         fetchData(currentPage);
+        applyScreenTheme(isStorybookTheme());
     }
 
     @SuppressLint("SetTextI18n")
@@ -96,10 +100,12 @@ public class WordActivity extends AppCompatActivity {
 
         Base.setVoiceSpeed(uConfig.getData(Constant.VOICE_SPEED));
 
-        TextView wordTvW = findViewById(R.id.wordTvW);
-        TextView meaningTvW = findViewById(R.id.meaningTvW);
+        wordTvW = findViewById(R.id.wordTvW);
+        meaningTvW = findViewById(R.id.meaningTvW);
         synonymsTvW = findViewById(R.id.synonymsTvW);
         antonymsTvW = findViewById(R.id.antonymsTvW);
+        counterTvW = findViewById(R.id.counterTvW);
+        headerCV = findViewById(R.id.headerCV);
 
         wordCloseIV = findViewById(R.id.wordCloseIV);
         meaningCloseIV = findViewById(R.id.meaningCloseIV);
@@ -119,6 +125,11 @@ public class WordActivity extends AppCompatActivity {
             meaningTvW.setText("অর্থ");
             synonymsTvW.setText("📋 পরীক্ষা / বিষয়");
             antonymsTvW.setText("🔤 English Synonym");
+        } else if ("verb".equals(getLessonType)) {
+            wordTvW.setText("Verb 1");
+            meaningTvW.setText("অর্থ");
+            synonymsTvW.setText("Verb 2");
+            antonymsTvW.setText("Verb 3");
         } else {
             wordTvW.setText("শব্দ (V1)");
             meaningTvW.setText("অর্থ");
@@ -262,6 +273,39 @@ public class WordActivity extends AppCompatActivity {
                 .putString(Constant.CONTENT_THEME, next ? Constant.CONTENT_THEME_STORYBOOK : Constant.CONTENT_THEME_APP)
                 .apply();
         adapter.setStorybook(next);
+        applyScreenTheme(next);
+    }
+
+    private void applyScreenTheme(boolean storybook) {
+        findViewById(R.id.main).setBackgroundColor(android.graphics.Color.parseColor(
+                storybook ? "#F7F1E1" : "#07081A"));
+        headerCV.setCardBackgroundColor(storybook
+                ? android.graphics.Color.parseColor("#EFE6CC")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.bg_elevated));
+
+        int primaryColor = storybook
+                ? android.graphics.Color.parseColor("#241C10")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.text_primary);
+        int goldColor = storybook
+                ? android.graphics.Color.parseColor("#8B5E00")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.gold);
+        int synColor = storybook
+                ? android.graphics.Color.parseColor("#1F7A5C")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.teal);
+        int antColor = storybook
+                ? android.graphics.Color.parseColor("#B0203A")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.red_wrong);
+        int inactiveColor = storybook
+                ? android.graphics.Color.parseColor("#8A7A5C")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.text_inactive);
+
+        counterTvW.setTextColor(goldColor);
+        wordTvW.setTextColor(primaryColor);
+        meaningTvW.setTextColor(primaryColor);
+        synonymsTvW.setTextColor(synColor);
+        antonymsTvW.setTextColor(antColor);
+        wordCloseIV.setColorFilter(inactiveColor);
+        meaningCloseIV.setColorFilter(inactiveColor);
     }
 
     private void openVoiceControlPopUp() {

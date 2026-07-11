@@ -68,6 +68,9 @@
             android:name=".Activity.VocabularyActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.VocabularyChapterActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.ItemDetailsActivity"
             android:exported="false" />
         <activity

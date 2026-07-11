@@ -88,16 +88,90 @@ public class WizardStoryActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+    private boolean isStorybook() {
+        return currentTheme().equals(Constant.CONTENT_THEME_STORYBOOK);
+    }
+
+    private int paragraphColor(boolean isEnglish) {
+        boolean storybook = isStorybook();
+        if (isEnglish) {
+            return storybook ? android.graphics.Color.parseColor("#241C10")
+                    : getResources().getColor(R.color.text_primary);
+        }
+        return storybook ? android.graphics.Color.parseColor("#3A2E1A")
+                : getResources().getColor(R.color.text_secondary);
+    }
+
     private void applyTheme() {
         LinearLayout taleCardBg = findViewById(R.id.taleCardBg);
         TextView metaTV = findViewById(R.id.metaTV);
         TextView hookTitleTV = findViewById(R.id.hookTitleTV);
-        boolean storybook = currentTheme().equals(Constant.CONTENT_THEME_STORYBOOK);
+        androidx.cardview.widget.CardView translationCV = findViewById(R.id.translationCV);
+        TextView translationLabelTV = findViewById(R.id.translationLabelTV);
+        TextView banglaTitleTV = findViewById(R.id.banglaTitleTV);
+        boolean storybook = isStorybook();
 
-        taleCardBg.setBackgroundResource(storybook ? R.drawable.grad_wizard_tale : R.drawable.grad_word_of_day);
-        int accent = getResources().getColor(storybook ? R.color.gold : R.color.indigo);
-        metaTV.setTextColor(accent);
-        hookTitleTV.setTextColor(accent);
+        if (storybook) {
+            android.graphics.drawable.GradientDrawable taleShape = new android.graphics.drawable.GradientDrawable();
+            taleShape.setColor(android.graphics.Color.parseColor("#EFE6CC"));
+            taleShape.setCornerRadius(dp(16));
+            taleCardBg.setBackground(taleShape);
+            translationCV.setCardBackgroundColor(android.graphics.Color.parseColor("#EFE6CC"));
+            int accent = android.graphics.Color.parseColor("#7A4A00");
+            metaTV.setTextColor(accent);
+            hookTitleTV.setTextColor(accent);
+            int purpleAccent = android.graphics.Color.parseColor("#6D3FC0");
+            translationLabelTV.setTextColor(purpleAccent);
+            banglaTitleTV.setTextColor(android.graphics.Color.parseColor("#241C10"));
+        } else {
+            taleCardBg.setBackgroundResource(R.drawable.grad_word_of_day);
+            translationCV.setCardBackgroundColor(getResources().getColor(R.color.bg_elevated));
+            int accent = getResources().getColor(R.color.indigo);
+            metaTV.setTextColor(accent);
+            hookTitleTV.setTextColor(accent);
+            translationLabelTV.setTextColor(accent);
+            banglaTitleTV.setTextColor(getResources().getColor(R.color.text_primary));
+        }
+
+        findViewById(R.id.main).setBackgroundColor(android.graphics.Color.parseColor(
+                storybook ? "#F7F1E1" : "#07081A"));
+
+        retintExistingContent();
+    }
+
+    private void retintExistingContent() {
+        boolean storybook = isStorybook();
+
+        LinearLayout englishContainer = findViewById(R.id.englishContainer);
+        for (int i = 0; i < englishContainer.getChildCount(); i++) {
+            ((TextView) englishContainer.getChildAt(i)).setTextColor(paragraphColor(true));
+        }
+
+        LinearLayout banglaContainer = findViewById(R.id.banglaContainer);
+        for (int i = 0; i < banglaContainer.getChildCount(); i++) {
+            ((TextView) banglaContainer.getChildAt(i)).setTextColor(paragraphColor(false));
+        }
+
+        LinearLayout notesContainer = findViewById(R.id.notesContainer);
+        int noteBg = storybook ? android.graphics.Color.parseColor("#EFE6CC")
+                : getResources().getColor(R.color.indigo_dim);
+        int labelColor = storybook ? android.graphics.Color.parseColor("#6D3FC0")
+                : getResources().getColor(R.color.indigo);
+        int bodyColor = paragraphColor(false);
+        for (int i = 0; i < notesContainer.getChildCount(); i++) {
+            LinearLayout card = (LinearLayout) notesContainer.getChildAt(i);
+            card.setBackground(noteTipShape(noteBg));
+            ((TextView) card.getChildAt(0)).setTextColor(labelColor);
+            ((TextView) card.getChildAt(1)).setTextColor(bodyColor);
+        }
+    }
+
+    private android.graphics.drawable.GradientDrawable noteTipShape(int color) {
+        android.graphics.drawable.GradientDrawable shape = new android.graphics.drawable.GradientDrawable();
+        shape.setColor(color);
+        float r = dp(10);
+        shape.setCornerRadii(new float[]{0, 0, r, r, r, r, 0, 0});
+        return shape;
     }
 
     @SuppressLint("SetTextI18n")
@@ -123,9 +197,9 @@ public class WizardStoryActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.banglaTitleTV)).setText(banglaTitle);
 
                     addParagraphs(findViewById(R.id.englishContainer), englishParagraphs,
-                            R.color.text_primary, 14.5f, 1.35f);
+                            paragraphColor(true), 14.5f, 1.35f);
                     addParagraphs(findViewById(R.id.banglaContainer), banglaParagraphs,
-                            R.color.text_secondary, 14f, 1.5f);
+                            paragraphColor(false), 14f, 1.5f);
                     addNotes(findViewById(R.id.notesContainer), grammarNotes);
                 }
             } catch (Exception e) {
@@ -154,11 +228,11 @@ public class WizardStoryActivity extends AppCompatActivity {
     }
 
     private void addParagraphs(LinearLayout container, List<String> paragraphs,
-                                int colorRes, float sizeSp, float lineSpacingMultiplier) {
+                                int color, float sizeSp, float lineSpacingMultiplier) {
         for (int i = 0; i < paragraphs.size(); i++) {
             TextView tv = new TextView(activity);
             tv.setText(paragraphs.get(i));
-            tv.setTextColor(getResources().getColor(colorRes));
+            tv.setTextColor(color);
             tv.setTextSize(sizeSp);
             tv.setLineSpacing(0f, lineSpacingMultiplier);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -170,10 +244,17 @@ public class WizardStoryActivity extends AppCompatActivity {
     }
 
     private void addNotes(LinearLayout container, List<String[]> notes) {
+        boolean storybook = isStorybook();
+        int cardBg = storybook ? android.graphics.Color.parseColor("#EFE6CC")
+                : getResources().getColor(R.color.indigo_dim);
+        int labelColor = storybook ? android.graphics.Color.parseColor("#6D3FC0")
+                : getResources().getColor(R.color.indigo);
+        int bodyColor = paragraphColor(false);
+
         for (String[] note : notes) {
             LinearLayout card = new LinearLayout(activity);
             card.setOrientation(LinearLayout.VERTICAL);
-            card.setBackgroundResource(R.drawable.bg_wizard_tip);
+            card.setBackground(noteTipShape(cardBg));
             card.setPadding(dp(14), dp(12), dp(14), dp(12));
             LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -182,7 +263,7 @@ public class WizardStoryActivity extends AppCompatActivity {
 
             TextView label = new TextView(activity);
             label.setText(note[0]);
-            label.setTextColor(getResources().getColor(R.color.indigo));
+            label.setTextColor(labelColor);
             label.setTextSize(10f);
             label.setTypeface(null, Typeface.BOLD);
             label.setLetterSpacing(0.08f);
@@ -194,7 +275,7 @@ public class WizardStoryActivity extends AppCompatActivity {
 
             TextView body = new TextView(activity);
             body.setText(note[1]);
-            body.setTextColor(getResources().getColor(R.color.text_secondary));
+            body.setTextColor(bodyColor);
             body.setTextSize(12.5f);
             body.setLineSpacing(0f, 1.4f);
             card.addView(body);
