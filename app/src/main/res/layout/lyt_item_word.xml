@@ -85,6 +85,16 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/expandIV"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_arrow_right"
+            android:contentDescription=""
+            android:visibility="gone"
+            app:tint="@color/gold" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
