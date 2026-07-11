@@ -46,8 +46,8 @@
             android:id="@+id/noticeRV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingStart="@dimen/page_padding_horizontal"
+            android:paddingEnd="@dimen/page_padding_horizontal"
             android:paddingBottom="24dp"
             android:clipToPadding="false" />
 
