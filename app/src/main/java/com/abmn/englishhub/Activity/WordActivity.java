@@ -220,6 +220,20 @@ public class WordActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        allowMultilineTitle(toolbar);
+    }
+
+    private void allowMultilineTitle(Toolbar toolbar) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View child = toolbar.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView titleView = (TextView) child;
+                titleView.setSingleLine(false);
+                titleView.setMaxLines(2);
+                titleView.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                break;
+            }
+        }
     }
 
     @Override

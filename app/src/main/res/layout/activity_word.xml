@@ -12,17 +12,21 @@
     <include layout="@layout/lyt_toolbar"/>
 
     <!-- ── Column header row ─────────────────────────────────── -->
+    <!-- Structure mirrors lyt_item_word.xml exactly (32dp counter + 10dp gap +
+         two weight="1" blocks) so header labels stay pixel-aligned with the
+         word/meaning and synonym/antonym cells beneath them regardless of
+         text length. -->
     <androidx.cardview.widget.CardView
         android:id="@+id/headerCV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginStart="@dimen/page_padding_horizontal"
+        android:layout_marginEnd="@dimen/page_padding_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="4dp"
         app:cardBackgroundColor="@color/bg_elevated"
         app:cardCornerRadius="14dp"
-        app:cardElevation="2dp">
+        app:cardElevation="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,94 +45,105 @@
                 android:layout_height="wrap_content"
                 android:text="#"
                 android:textColor="@color/gold"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
-            <!-- Word column -->
+            <!-- Word + Meaning block (mirrors the stacked word/meaning cell) -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/wordCloseIV"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_eye_closed"
-                    android:contentDescription="@string/app_name"
-                    app:tint="@color/text_inactive" />
-
-                <TextView
-                    android:id="@+id/wordTvW"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:text="Word"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/wordCloseIV"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_eye_closed"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/text_inactive" />
+
+                    <TextView
+                        android:id="@+id/wordTvW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Word"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/meaningCloseIV"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_eye_closed"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/text_inactive" />
+
+                    <TextView
+                        android:id="@+id/meaningTvW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Meaning"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Meaning column -->
+            <!-- Synonym + Antonym block (mirrors the stacked, right-aligned cell) -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/meaningCloseIV"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_eye_closed"
-                    android:contentDescription="@string/app_name"
-                    app:tint="@color/text_inactive" />
+                android:orientation="vertical"
+                android:gravity="end">
 
                 <TextView
-                    android:id="@+id/meaningTvW"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:id="@+id/synonymsTvW"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="Meaning"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:text="Syn."
+                    android:textColor="@color/teal"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/antonymsTvW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="Ant."
+                    android:textColor="@color/red_wrong"
+                    android:textSize="13sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
             </LinearLayout>
-
-            <!-- Synonyms column -->
-            <TextView
-                android:id="@+id/synonymsTvW"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Syn."
-                android:textColor="@color/teal"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <!-- Antonyms column -->
-            <TextView
-                android:id="@+id/antonymsTvW"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ant."
-                android:textColor="@color/red_wrong"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -137,8 +152,6 @@
         android:id="@+id/wordRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
         android:paddingTop="4dp"
         android:clipToPadding="false" />
 
