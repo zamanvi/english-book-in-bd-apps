@@ -12,11 +12,11 @@
 
     <include layout="@layout/lyt_toolbar"/>
 
-    <!-- Navy header banner -->
+    <!-- Header banner -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/grad_word_of_day"
         android:paddingLeft="@dimen/page_padding_horizontal"
         android:paddingRight="@dimen/page_padding_horizontal"
         android:paddingTop="@dimen/page_padding_top"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="&#128279; Follow Us"
-            android:textColor="#9FA8DA"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:letterSpacing="0.05"
             tools:ignore="HardcodedText" />
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/social_media_text"
-            android:textColor="@color/white"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/facebookCV"
             android:layout_width="0dp"
-            android:layout_height="110dp"
+            android:layout_height="128dp"
             android:layout_weight="1"
             android:layout_margin="6dp"
             android:clickable="true"
@@ -92,6 +92,15 @@
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="কমিউনিটি ও আপডেট"
+                    android:textColor="@color/text_inactive"
+                    android:textSize="10sp"
+                    tools:ignore="HardcodedText" />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -100,7 +109,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/youtubeCV"
             android:layout_width="0dp"
-            android:layout_height="110dp"
+            android:layout_height="128dp"
             android:layout_weight="1"
             android:layout_margin="6dp"
             android:clickable="true"
@@ -133,6 +142,15 @@
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="ভিডিও পাঠ"
+                    android:textColor="@color/text_inactive"
+                    android:textSize="10sp"
                     tools:ignore="HardcodedText" />
 
             </LinearLayout>

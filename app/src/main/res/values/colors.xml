@@ -63,4 +63,11 @@
     <color name="green">#00E8B8</color>
     <color name="event_color">#33FFD438</color>
 
+    <!-- ── Profile menu row icon badges ──────────────────────── -->
+    <color name="icon_bg_update">#1A1756</color>
+    <color name="icon_bg_share">#4A2800</color>
+    <color name="icon_bg_review">#4A1200</color>
+    <color name="icon_bg_contact">#0A2B5E</color>
+    <color name="icon_bg_social">#0C2340</color>
+
 </resources>

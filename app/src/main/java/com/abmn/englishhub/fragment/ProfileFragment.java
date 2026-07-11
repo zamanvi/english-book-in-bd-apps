@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.LoginActivity;
 import com.abmn.englishhub.Activity.SocialLinkActivity;
-import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.LevelHelper;
 import com.abmn.englishhub.R;
@@ -219,19 +218,19 @@ public class ProfileFragment extends Fragment {
         Activity activity = getActivity();
         if (activity == null) return;
 
-        view.findViewById(R.id.menuVocabularyCV).setOnClickListener(v ->
-                startActivity(new Intent(activity, VocabularyActivity.class)));
-
         view.findViewById(R.id.menuSocialMediaCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, SocialLinkActivity.class)));
 
         view.findViewById(R.id.menuShareCV).setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            String shareMessage = getString(R.string.vocabulary_https_play_google_com_store_apps_details_id)
-                    + activity.getPackageName();
+            String shareMessage = "📚 আমি English Grammar Book অ্যাপ দিয়ে ইংরেজি শিখছি!\n\n"
+                    + "এখানে আছে ৫০০০+ শব্দ, সম্পূর্ণ গ্রামার কোর্স, quiz আর মজার সব গল্প।\n\n"
+                    + "তুমিও শেখা শুরু করো 👇\n"
+                    + "https://play.google.com/store/apps/details?id=" + activity.getPackageName()
+                    + "\n#EnglishGrammarBook #LearnEnglish";
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            startActivity(Intent.createChooser(shareIntent, "Share via"));
+            startActivity(Intent.createChooser(shareIntent, "শেয়ার করো"));
         });
 
         view.findViewById(R.id.menuUpdateCV).setOnClickListener(v -> openPlayStoreListing(activity));
