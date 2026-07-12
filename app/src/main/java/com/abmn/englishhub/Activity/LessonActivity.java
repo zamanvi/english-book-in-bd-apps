@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -50,6 +52,10 @@ public class LessonActivity extends AppCompatActivity {
     private String getChapterId;
     private String getChapterType;
     private InterstitialAdManager interstitialAdManager;
+    // Safety net: on a slow/congested backend response, don't leave the
+    // spinner spinning forever - show the retry state after a bounded wait.
+    private final Handler loadTimeoutHandler = new Handler(Looper.getMainLooper());
+    private static final long LOAD_TIMEOUT_MS = 12000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +73,7 @@ public class LessonActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
+        loadTimeoutHandler.removeCallbacksAndMessages(null);
         if (interstitialAdManager != null) {
             interstitialAdManager = null;
         }
@@ -209,9 +216,18 @@ public class LessonActivity extends AppCompatActivity {
         if (page == 1) {
             loadingPB.setVisibility(View.VISIBLE);
             emptyLL.setVisibility(View.GONE);
+            loadTimeoutHandler.removeCallbacksAndMessages(null);
+            loadTimeoutHandler.postDelayed(() -> {
+                if (loadingPB.getVisibility() == View.VISIBLE) {
+                    loadingPB.setVisibility(View.GONE);
+                    emptyTV.setText("লোড করতে বেশি সময় লাগছে, আবার চেষ্টা করুন");
+                    emptyLL.setVisibility(View.VISIBLE);
+                }
+            }, LOAD_TIMEOUT_MS);
         }
 
         ApiConfig.RequestToVolley((result, response, error) -> {
+            loadTimeoutHandler.removeCallbacksAndMessages(null);
             boolean failed = false;
             try {
                 if (result) {
