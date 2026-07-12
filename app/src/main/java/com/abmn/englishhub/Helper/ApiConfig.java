@@ -104,7 +104,7 @@ public class ApiConfig {
                 return super.parseNetworkResponse(response);
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(8000, 0, 0));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(8000, 1, 1.0f));
         queue.add(stringRequest);
     }
 

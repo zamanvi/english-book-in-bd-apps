@@ -73,6 +73,11 @@ public class Constant {
     public static final String IS_SET_VOICE_SPEED = "is_set_voice_speed";
     public static final String VOICE_SPEED = "voice_speed";
     public static final String IS_TEST_ADS = "is_test_ads";
+    public static final String LAST_VERSION_CHECK_TIME = "last_version_check_time";
+    public static final String CACHED_APP_VERSION = "cached_app_version";
+    public static final String GRAMMAR_PROGRESS_CACHE_TIME = "grammar_progress_cache_time";
+    public static final String GRAMMAR_PROGRESS_TOTAL_LESSONS = "grammar_progress_total_lessons";
+    public static final String GRAMMAR_PROGRESS_FIRST_CHAPTER = "grammar_progress_first_chapter";
 
     // Game / user prefs
     public static final String STREAK_DAYS        = "streak_days";

@@ -231,11 +231,26 @@ public class HomeFragment extends Fragment {
 
     // ── Grammar progress (lesson count + continue learning) ───────
 
+    // Chapter list barely changes; re-fetching it every time the user
+    // switches back to the Home tab is wasted network/parsing work.
+    private static final long GRAMMAR_PROGRESS_CACHE_TTL_MS = 30 * 60 * 1000L;
+
     private void loadGrammarProgress() {
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         String lastTitle = prefs.getString(Constant.LAST_CHAPTER_TITLE, null);
         if (lastTitle != null && !lastTitle.isEmpty()) {
             continueLessonTV.setText(lastTitle);
+        }
+
+        long cacheTime = prefs.getLong(Constant.GRAMMAR_PROGRESS_CACHE_TIME, 0);
+        if (System.currentTimeMillis() - cacheTime < GRAMMAR_PROGRESS_CACHE_TTL_MS) {
+            int cachedTotal = prefs.getInt(Constant.GRAMMAR_PROGRESS_TOTAL_LESSONS, -1);
+            String cachedChapterName = prefs.getString(Constant.GRAMMAR_PROGRESS_FIRST_CHAPTER, "");
+            if (cachedTotal >= 0) {
+                lessonCountTV.setText(cachedTotal + " lessons");
+                if (lastTitle == null && !cachedChapterName.isEmpty()) continueLessonTV.setText(cachedChapterName);
+                return;
+            }
         }
 
         // Fetch chapters to get total lesson count, and (for users who
@@ -265,6 +280,12 @@ public class HomeFragment extends Fragment {
 
                 final int total = totalLessons;
                 final String chapName = firstChapterName;
+
+                prefs.edit()
+                        .putInt(Constant.GRAMMAR_PROGRESS_TOTAL_LESSONS, total)
+                        .putString(Constant.GRAMMAR_PROGRESS_FIRST_CHAPTER, chapName)
+                        .putLong(Constant.GRAMMAR_PROGRESS_CACHE_TIME, System.currentTimeMillis())
+                        .apply();
 
                 if (activity != null) activity.runOnUiThread(() -> {
                     lessonCountTV.setText(total + " lessons");

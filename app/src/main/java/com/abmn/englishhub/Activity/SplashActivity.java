@@ -106,7 +106,31 @@ public class SplashActivity extends AppCompatActivity {
         }, 10000);
     }
 
+    // Skip the network round-trip if we already confirmed this exact app
+    // version is up to date within the last few hours - avoids blocking the
+    // splash screen on a version-check call on every single cold start.
+    private static final long VERSION_CHECK_TTL_MS = 6 * 60 * 60 * 1000L;
+
     private void checkAppVersion() {
+        UConfig uConfig = new UConfig(activity);
+        String currentVersion = BuildConfig.VERSION_NAME;
+        String cachedVersion = uConfig.getData(Constant.CACHED_APP_VERSION);
+        long lastCheck = 0;
+        try {
+            String lastCheckStr = uConfig.getData(Constant.LAST_VERSION_CHECK_TIME);
+            if (lastCheckStr != null && !lastCheckStr.isEmpty()) {
+                lastCheck = Long.parseLong(lastCheckStr);
+            }
+        } catch (NumberFormatException ignored) {
+        }
+
+        boolean recentlyConfirmedUpToDate = currentVersion.equals(cachedVersion)
+                && (System.currentTimeMillis() - lastCheck) < VERSION_CHECK_TTL_MS;
+        if (recentlyConfirmedUpToDate) {
+            goToNext();
+            return;
+        }
+
         String url = Constant.ROOT_API2 + "settings";
         ApiConfig.RequestToVolley((result, response, error) -> {
             if (result) {
@@ -114,11 +138,12 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject settings = new JSONObject(response).getJSONObject("settings");
                     String serverVersion = settings.optString("app_version", "");
                     String updateText = settings.optString("app_version_text", "A new update is available. Please update now.");
-                    String currentVersion = BuildConfig.VERSION_NAME;
 
                     if (!serverVersion.isEmpty() && !serverVersion.equals(currentVersion)) {
                         showUpdateDialog(updateText);
                     } else {
+                        uConfig.setData(Constant.CACHED_APP_VERSION, currentVersion);
+                        uConfig.setData(Constant.LAST_VERSION_CHECK_TIME, String.valueOf(System.currentTimeMillis()));
                         goToNext();
                     }
                 } catch (Exception e) {
