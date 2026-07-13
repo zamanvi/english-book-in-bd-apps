@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -44,6 +47,33 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private InterstitialAdManager interstitialAdManager;
     private String currentDetailsHtml;
 
+    // ── Reading-to-Lipto reward ────────────────────────────────────
+    // Active-reading time only accumulates while the user has interacted
+    // (touched/scrolled) within the last IDLE_PAUSE_MS - otherwise it pauses,
+    // so a screen left open in the background doesn't quietly rack up Lipto.
+    private final Handler readingTimerHandler = new Handler(Looper.getMainLooper());
+    private long lastInteractionMs = System.currentTimeMillis();
+    private long activeReadingMs = 0;
+    private static final long IDLE_PAUSE_MS = 3 * 60 * 1000;
+    private static final long MIN_ACTIVE_MS_TO_EARN = 30 * 1000;
+    private static final long MS_PER_LIPTO = 60 * 1000;
+
+    private final Runnable readingTicker = new Runnable() {
+        @Override
+        public void run() {
+            if (System.currentTimeMillis() - lastInteractionMs <= IDLE_PAUSE_MS) {
+                activeReadingMs += 1000;
+            }
+            readingTimerHandler.postDelayed(this, 1000);
+        }
+    };
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        lastInteractionMs = System.currentTimeMillis();
+        return super.dispatchTouchEvent(ev);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +89,53 @@ public class ItemDetailsActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        lastInteractionMs = System.currentTimeMillis();
+        readingTimerHandler.removeCallbacks(readingTicker);
+        readingTimerHandler.postDelayed(readingTicker, 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        readingTimerHandler.removeCallbacks(readingTicker);
+        claimReadingReward();
+    }
+
+    @Override
     public void onDestroy() {
+        readingTimerHandler.removeCallbacksAndMessages(null);
         if (interstitialAdManager != null) {
             interstitialAdManager = null;
         }
         super.onDestroy();
+    }
+
+    // Claims whatever active-reading time has accumulated since the last
+    // claim, then resets the counter - safe to call multiple times across
+    // app-switches within one continuous reading session (e.g. onPause fires
+    // on a brief backgrounding, then onResume keeps accumulating more).
+    private void claimReadingReward() {
+        if (activeReadingMs < MIN_ACTIVE_MS_TO_EARN) return;
+        int lipto = (int) (activeReadingMs / MS_PER_LIPTO);
+        if (lipto <= 0) return;
+
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        activeReadingMs = 0;
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("amount", lipto);
+            body.put("source", "reading");
+            body.put("description", "পড়ে Lipto অর্জন");
+        } catch (Exception ignored) {}
+
+        ApiConfig.postRequest(this, Constant.GAME_LIPTO_EARN, body, token,
+                response -> { /* silent - low-key reward, no interruption while reading */ },
+                error -> { /* silent - small session, not worth a retry mechanism */ });
     }
 
     private void define() {
