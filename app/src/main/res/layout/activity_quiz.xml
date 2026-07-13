@@ -184,13 +184,18 @@
     </LinearLayout>
 
     <!-- ── Question card ─────────────────────────────────────── -->
+    <!-- wrap_content (not 0dp/"spread") so the card sizes to its actual
+         content instead of stretching to fill all leftover space between
+         the timer row and the options - that stretch was making a 3-line
+         card look enormous with a wall of empty space around it. -->
     <androidx.cardview.widget.CardView
         android:id="@+id/questionCard"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
         android:minHeight="80dp"
         app:cardBackgroundColor="#00000000"
         app:cardCornerRadius="18dp"
@@ -199,14 +204,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/optionsContainer"
-        app:layout_constraintVertical_chainStyle="spread">
+        app:layout_constraintVertical_bias="0">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="24dp"
+            android:padding="22dp"
             android:background="@drawable/grad_word_of_day">
 
             <!-- Category label -->
