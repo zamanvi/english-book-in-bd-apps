@@ -66,6 +66,7 @@ public class Constant {
     public static final String FROM_TYPE = "abmn_from_type";
     public static final String FROM_ID = "abmn_from_id";
     public static final String FROM_SUBTITLE = "abmn_from_subtitle";
+    public static final String QUIZ_PICKER_MODE = "quiz_picker_mode";
     public static final String CONTENT_THEME = "content_theme";
     public static final String CONTENT_THEME_STORYBOOK = "storybook";
     public static final String CONTENT_THEME_APP = "app";

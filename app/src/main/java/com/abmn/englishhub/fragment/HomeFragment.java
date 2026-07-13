@@ -18,7 +18,6 @@ import com.abmn.englishhub.Activity.ChapterActivity;
 import com.abmn.englishhub.Activity.GroupActivity;
 import com.abmn.englishhub.Activity.ItemActivity;
 import com.abmn.englishhub.Activity.LeaderboardActivity;
-import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
 import com.abmn.englishhub.Activity.WizardChapterActivity;
 import com.abmn.englishhub.Activity.WordActivity;
@@ -120,9 +119,12 @@ public class HomeFragment extends Fragment {
     // ── Click listeners ──────────────────────────────────────────
 
     private void setupClickListeners() {
+        // Let the user pick which lesson to quiz on, instead of always
+        // silently defaulting to whatever lesson today's Word of the Day
+        // happens to belong to.
         quickQuizBtn.setOnClickListener(v ->
-                startActivity(new Intent(activity, QuizActivity.class)
-                        .putExtra("lesson_id", lastLessonId)));
+                startActivity(new Intent(activity, VocabularyActivity.class)
+                        .putExtra(Constant.QUIZ_PICKER_MODE, true)));
 
         leaderboardBtn.setOnClickListener(v ->
                 startActivity(new Intent(activity, LeaderboardActivity.class)));

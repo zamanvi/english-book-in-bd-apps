@@ -51,6 +51,7 @@ public class LessonActivity extends AppCompatActivity {
     private int lastPage = 1;
     private String getChapterId;
     private String getChapterType;
+    private boolean quizPickerMode;
     private InterstitialAdManager interstitialAdManager;
     // Safety net: on a slow/congested backend response, don't leave the
     // spinner spinning forever - show the retry state after a bounded wait.
@@ -86,6 +87,7 @@ public class LessonActivity extends AppCompatActivity {
         getChapterId = getIntent().getStringExtra(Constant.FROM);
         getChapterType = getIntent().getStringExtra(Constant.FROM_TYPE);
         if (getChapterType == null) getChapterType = "vocabulary";
+        quizPickerMode = getIntent().getBooleanExtra(Constant.QUIZ_PICKER_MODE, false);
         String getChapterTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
         setToolbar(getChapterTitle);
 
@@ -184,7 +186,7 @@ public class LessonActivity extends AppCompatActivity {
 
     private void loadInitialData() {
         lessonList = new ArrayList<>();
-        LessonAdapter adapter = new LessonAdapter(lessonList, activity, getChapterType);
+        LessonAdapter adapter = new LessonAdapter(lessonList, activity, getChapterType, quizPickerMode);
         lessonRV.setAdapter(adapter);
         fetchData(currentPage);
     }

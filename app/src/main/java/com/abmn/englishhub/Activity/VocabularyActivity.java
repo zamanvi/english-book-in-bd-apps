@@ -35,22 +35,28 @@ public class VocabularyActivity extends AppCompatActivity {
 
     private void define() {
         activity = this;
+        boolean quizPickerMode = getIntent().getBooleanExtra(Constant.QUIZ_PICKER_MODE, false);
+
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getString(R.string.app_name));
+            getSupportActionBar().setTitle(quizPickerMode
+                    ? "কুইজের জন্য বেছে নাও"
+                    : getString(R.string.app_name));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         findViewById(R.id.vocabularyCategoryCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, VocabularyChapterActivity.class)
                         .putExtra(Constant.FROM_TYPE, "vocabulary")
-                        .putExtra(Constant.FROM_TITLE, "Vocabulary")));
+                        .putExtra(Constant.FROM_TITLE, "Vocabulary")
+                        .putExtra(Constant.QUIZ_PICKER_MODE, quizPickerMode)));
 
         findViewById(R.id.verbCategoryCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, VocabularyChapterActivity.class)
                         .putExtra(Constant.FROM_TYPE, "verb")
-                        .putExtra(Constant.FROM_TITLE, "Verb")));
+                        .putExtra(Constant.FROM_TITLE, "Verb")
+                        .putExtra(Constant.QUIZ_PICKER_MODE, quizPickerMode)));
     }
 
     @Override

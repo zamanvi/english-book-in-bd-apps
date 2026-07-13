@@ -21,10 +21,16 @@ public class WordChapterAdapter extends RecyclerView.Adapter<WordChapterAdapter.
 
     private final List<WordChapterModel> chapterList;
     private final Activity activity;
+    private final boolean quizPickerMode;
 
     public WordChapterAdapter(List<WordChapterModel> chapterList, Activity activity) {
+        this(chapterList, activity, false);
+    }
+
+    public WordChapterAdapter(List<WordChapterModel> chapterList, Activity activity, boolean quizPickerMode) {
         this.chapterList = chapterList;
         this.activity = activity;
+        this.quizPickerMode = quizPickerMode;
     }
 
     @NonNull
@@ -37,7 +43,7 @@ public class WordChapterAdapter extends RecyclerView.Adapter<WordChapterAdapter.
     @Override
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         WordChapterModel model = chapterList.get(position);
-        holder.bind(model, activity);
+        holder.bind(model, activity, quizPickerMode);
     }
 
     @Override
@@ -55,11 +61,12 @@ public class WordChapterAdapter extends RecyclerView.Adapter<WordChapterAdapter.
             titleTV = itemView.findViewById(R.id.titleTV);
         }
 
-        public void bind(WordChapterModel model, Activity activity) {
+        public void bind(WordChapterModel model, Activity activity, boolean quizPickerMode) {
             rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, LessonActivity.class)
                     .putExtra(Constant.FROM, "" + model.getId())
                     .putExtra(Constant.FROM_TITLE, model.getTitle())
-                    .putExtra(Constant.FROM_TYPE, model.getType())));
+                    .putExtra(Constant.FROM_TYPE, model.getType())
+                    .putExtra(Constant.QUIZ_PICKER_MODE, quizPickerMode)));
             titleTV.setText(model.getTitle());
         }
     }

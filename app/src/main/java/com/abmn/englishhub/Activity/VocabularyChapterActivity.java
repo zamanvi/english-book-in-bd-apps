@@ -48,6 +48,7 @@ public class VocabularyChapterActivity extends AppCompatActivity {
     private int currentPage = 1;
     private int lastPage = 1;
     private String categoryType;
+    private boolean quizPickerMode;
     private InterstitialAdManager interstitialAdManager;
 
     @Override
@@ -70,6 +71,7 @@ public class VocabularyChapterActivity extends AppCompatActivity {
         uConfig = new UConfig(activity);
         categoryType = getIntent().getStringExtra(Constant.FROM_TYPE);
         String categoryTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
+        quizPickerMode = getIntent().getBooleanExtra(Constant.QUIZ_PICKER_MODE, false);
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
@@ -160,7 +162,7 @@ public class VocabularyChapterActivity extends AppCompatActivity {
 
     private void loadInitialData() {
         chapterList = new ArrayList<>();
-        WordChapterAdapter adapter = new WordChapterAdapter(chapterList, activity);
+        WordChapterAdapter adapter = new WordChapterAdapter(chapterList, activity, quizPickerMode);
         chapterRV.setAdapter(adapter);
         fetchData(currentPage);
     }

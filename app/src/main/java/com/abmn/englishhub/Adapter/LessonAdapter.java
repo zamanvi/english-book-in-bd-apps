@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abmn.englishhub.Activity.QuizActivity;
 import com.abmn.englishhub.Activity.WordActivity;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Model.LessonModel;
@@ -23,11 +24,17 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
     private final List<LessonModel> lessonList;
     private final Activity activity;
     private final String chapterType;
+    private final boolean quizPickerMode;
 
     public LessonAdapter(List<LessonModel> lessonList, Activity activity, String chapterType) {
+        this(lessonList, activity, chapterType, false);
+    }
+
+    public LessonAdapter(List<LessonModel> lessonList, Activity activity, String chapterType, boolean quizPickerMode) {
         this.lessonList = lessonList;
         this.activity = activity;
         this.chapterType = chapterType;
+        this.quizPickerMode = quizPickerMode;
     }
 
     @NonNull
@@ -40,7 +47,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
     @Override
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         LessonModel model = lessonList.get(position);
-        holder.bind(model, activity, chapterType);
+        holder.bind(model, activity, chapterType, quizPickerMode);
     }
 
     @Override
@@ -51,22 +58,40 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
         private final CardView rootCV;
         private final TextView titleTV;
         private final TextView premiumBadgeTV;
+        private final CardView quickQuizBtnCV;
 
         public BlogViewHolder(@NonNull View itemView) {
             super(itemView);
             rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
             premiumBadgeTV = itemView.findViewById(R.id.premiumBadgeTV);
+            quickQuizBtnCV = itemView.findViewById(R.id.quickQuizBtnCV);
         }
 
-        public void bind(LessonModel model, Activity activity, String chapterType) {
+        public void bind(LessonModel model, Activity activity, String chapterType, boolean quizPickerMode) {
             // use lesson's own type if set, otherwise fall back to chapter type
             String lessonType = (model.getChapter_type() != null && !model.getChapter_type().isEmpty())
                     ? model.getChapter_type() : chapterType;
-            rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
-                    .putExtra(Constant.FROM, "" + model.getId())
-                    .putExtra(Constant.FROM_TITLE, model.getTitle())
-                    .putExtra(Constant.FROM_TYPE, lessonType)));
+
+            if (quizPickerMode) {
+                // The whole row IS the picker action here - picking a lesson starts the quiz.
+                rootCV.setOnClickListener(v -> activity.startActivity(
+                        new Intent(activity, QuizActivity.class)
+                                .putExtra("lesson_id", model.getId())));
+                quickQuizBtnCV.setVisibility(View.GONE);
+            } else {
+                // Normal browsing: row opens the word list to read, but a quick
+                // action still lets you jump straight into a quiz on this lesson.
+                rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
+                        .putExtra(Constant.FROM, "" + model.getId())
+                        .putExtra(Constant.FROM_TITLE, model.getTitle())
+                        .putExtra(Constant.FROM_TYPE, lessonType)));
+                quickQuizBtnCV.setVisibility(View.VISIBLE);
+                quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
+                        new Intent(activity, QuizActivity.class)
+                                .putExtra("lesson_id", model.getId())));
+            }
+
             titleTV.setText(model.getTitle());
             premiumBadgeTV.setVisibility(model.isPremium() ? View.VISIBLE : View.GONE);
         }
