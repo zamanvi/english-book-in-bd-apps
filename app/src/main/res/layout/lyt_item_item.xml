@@ -38,6 +38,16 @@
             android:ellipsize="end"
             tools:ignore="HardcodedText" />
 
+        <TextView
+            android:id="@+id/premiumBadgeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="👑"
+            android:textSize="16sp"
+            android:visibility="gone"
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

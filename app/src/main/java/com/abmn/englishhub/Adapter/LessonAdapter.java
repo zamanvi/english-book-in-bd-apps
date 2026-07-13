@@ -50,11 +50,13 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
     static class BlogViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
         private final TextView titleTV;
+        private final TextView premiumBadgeTV;
 
         public BlogViewHolder(@NonNull View itemView) {
             super(itemView);
             rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
+            premiumBadgeTV = itemView.findViewById(R.id.premiumBadgeTV);
         }
 
         public void bind(LessonModel model, Activity activity, String chapterType) {
@@ -66,6 +68,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
                     .putExtra(Constant.FROM_TITLE, model.getTitle())
                     .putExtra(Constant.FROM_TYPE, lessonType)));
             titleTV.setText(model.getTitle());
+            premiumBadgeTV.setVisibility(model.isPremium() ? View.VISIBLE : View.GONE);
         }
     }
 }

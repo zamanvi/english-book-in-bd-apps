@@ -66,6 +66,9 @@ public class WordActivity extends AppCompatActivity {
     private ImageView wordCloseIV, meaningCloseIV;
     private Boolean isWordClose = false, isMeaningClose = false;
     private InterstitialAdManager interstitialAdManager;
+    private CardView unlockCardCV;
+    private TextView unlockSubTV, unlockErrorTV;
+    private com.google.android.material.button.MaterialButton unlockBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,12 @@ public class WordActivity extends AppCompatActivity {
 
         wordCloseIV = findViewById(R.id.wordCloseIV);
         meaningCloseIV = findViewById(R.id.meaningCloseIV);
+
+        unlockCardCV = findViewById(R.id.unlockCardCV);
+        unlockSubTV = findViewById(R.id.unlockSubTV);
+        unlockErrorTV = findViewById(R.id.unlockErrorTV);
+        unlockBtn = findViewById(R.id.unlockBtn);
+        unlockBtn.setOnClickListener(v -> unlockLesson());
 
         wordTvW.setOnClickListener(this::wordChange);
         wordCloseIV.setOnClickListener(this::wordChange);
@@ -371,6 +380,57 @@ public class WordActivity extends AppCompatActivity {
 
     }
 
+    // ── Premium unlock ────────────────────────────────────────────
+
+    private void updatePremiumUnlockUI(boolean isPremium, boolean unlocked, int lockedRemaining) {
+        if (isPremium && !unlocked) {
+            unlockSubTV.setText(lockedRemaining + " টি শব্দ লক করা আছে — সম্পূর্ণ লেসন আনলক করে সব দেখো");
+            unlockCardCV.setVisibility(View.VISIBLE);
+        } else {
+            unlockCardCV.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void unlockLesson() {
+        String token = uConfig.getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) {
+            showUnlockError("লগইন করো আগে");
+            return;
+        }
+
+        unlockBtn.setEnabled(false);
+        unlockErrorTV.setVisibility(View.GONE);
+        String url = Constant.PREMIUM_LESSON_UNLOCK + getLessonId + "/unlock";
+
+        ApiConfig.postRequest(activity, url, new JSONObject(), token, response -> runOnUiThread(() -> {
+            unlockCardCV.setVisibility(View.GONE);
+            wordList.clear();
+            currentPage = 1;
+            lastPage = 1;
+            fetchData(1);
+        }), error -> {
+            String message = "নেটওয়ার্ক সমস্যা";
+            if (error instanceof com.android.volley.VolleyError) {
+                com.android.volley.VolleyError ve = (com.android.volley.VolleyError) error;
+                if (ve.networkResponse != null && ve.networkResponse.data != null) {
+                    try {
+                        JSONObject err = new JSONObject(new String(ve.networkResponse.data));
+                        message = err.optString("message", message);
+                    } catch (Exception ignored) {}
+                }
+            }
+            final String finalMessage = message;
+            runOnUiThread(() -> showUnlockError(finalMessage));
+        });
+    }
+
+    private void showUnlockError(String msg) {
+        unlockBtn.setEnabled(true);
+        unlockErrorTV.setText(msg);
+        unlockErrorTV.setVisibility(View.VISIBLE);
+    }
+
     private void loadMoreData() {
         if (currentPage < lastPage) {
             isLoading = true;
@@ -389,7 +449,8 @@ public class WordActivity extends AppCompatActivity {
             ApiConfig.RequestToVolley((result, response, error) -> {
                 try {
                     if (result) {
-                        JSONObject chaptersObject = new JSONObject(response).getJSONObject(Constant.WORDS);
+                        JSONObject root = new JSONObject(response);
+                        JSONObject chaptersObject = root.getJSONObject(Constant.WORDS);
                         JSONArray dataArray = chaptersObject.getJSONArray(Constant.DATA);
 
                         for (int i = 0; i < dataArray.length(); i++) {
@@ -409,6 +470,10 @@ public class WordActivity extends AppCompatActivity {
                         }
                         if (currentPage == 1) {
                             lastPage = chaptersObject.getInt("last_page");
+                            boolean isPremium = root.optBoolean("is_premium", false);
+                            boolean unlocked = root.optBoolean("unlocked", true);
+                            int lockedRemaining = root.optInt("locked_remaining", 0);
+                            runOnUiThread(() -> updatePremiumUnlockUI(isPremium, unlocked, lockedRemaining));
                         }
                         updateColumnHeaderVisibility();
                         Objects.requireNonNull(wordRV.getAdapter()).notifyDataSetChanged();

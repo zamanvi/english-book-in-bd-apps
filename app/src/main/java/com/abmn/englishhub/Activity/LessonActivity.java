@@ -243,8 +243,9 @@ public class LessonActivity extends AppCompatActivity {
                         boolean status = lesson.getBoolean("status");
                         String created_at = lesson.getString("created_at");
                         String updated_at = lesson.getString("updated_at");
+                        boolean isPremium = lesson.optBoolean("is_premium", false);
 
-                        LessonModel model = new LessonModel(id, title, "", "", type, chapter_id, status, created_at, updated_at);
+                        LessonModel model = new LessonModel(id, title, "", "", type, chapter_id, status, created_at, updated_at, isPremium);
                         lessonList.add(model);
                     }
                     if (currentPage == 1) {

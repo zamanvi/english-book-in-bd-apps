@@ -36,6 +36,9 @@ public class Constant {
     public static final String BATTLE_HISTORY      = ROOT_API_GAME_AUTH + "battle/history";
     public static final String BATTLE_BASE         = ROOT_API_GAME_AUTH + "battle/";  // + id or id/submit
 
+    // Premium content unlock
+    public static final String PREMIUM_LESSON_UNLOCK = ROOT_API_GAME_AUTH + "premium/lesson/";  // + id + "/unlock"
+
     // Grammar API endpoints
     public static final String GRAMMAR_CHAPTERS = ROOT_API2 + "chapters";
 
