@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import androidx.core.content.ContextCompat;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
+import com.abmn.texttospeech.TextToSpeechHelper;
+import com.abmn.utility.UConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,7 +32,12 @@ import java.util.List;
 public class QuizActivity extends AppCompatActivity {
 
     // Views
-    private TextView questionNumberTV, questionTV, timerTV, xpCountTV;
+    private TextView questionNumberTV, questionTV, timerTV, xpCountTV, questionCategoryTV, questionHintTV;
+    private LinearLayout listeningPromptLL;
+    private CardView replayBtn, modeToggleBtn;
+    private ImageView modeToggleIV;
+    private TextToSpeechHelper ttsHelper;
+    private boolean isListeningMode = false;
     private TextView optionATV, optionBTV, optionCTV, optionDTV;
     private TextView labelA, labelB, labelC, labelD;
     private TextView feedbackTitleTV, feedbackDetailTV, feedbackIconTV, xpEarnedTV;
@@ -76,14 +84,23 @@ public class QuizActivity extends AppCompatActivity {
             toneGenerator = null;
         }
 
+        UConfig uConfig = new UConfig(this);
+        ttsHelper = new TextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
+
         bindViews();
         setupClickListeners();
         fetchQuiz();
     }
 
     private void bindViews() {
-        questionNumberTV = findViewById(R.id.questionNumberTV);
-        questionTV       = findViewById(R.id.questionTV);
+        questionNumberTV   = findViewById(R.id.questionNumberTV);
+        questionTV         = findViewById(R.id.questionTV);
+        questionCategoryTV = findViewById(R.id.questionCategoryTV);
+        questionHintTV     = findViewById(R.id.questionHintTV);
+        listeningPromptLL  = findViewById(R.id.listeningPromptLL);
+        replayBtn          = findViewById(R.id.replayBtn);
+        modeToggleBtn      = findViewById(R.id.modeToggleBtn);
+        modeToggleIV       = findViewById(R.id.modeToggleIV);
         timerTV          = findViewById(R.id.timerTV);
         xpCountTV        = findViewById(R.id.xpCountTV);
         timerBar         = findViewById(R.id.timerBar);
@@ -122,6 +139,8 @@ public class QuizActivity extends AppCompatActivity {
     private void setupClickListeners() {
         closeBtn.setOnClickListener(v -> finish());
         quizEmptyCloseBtn.setOnClickListener(v -> finish());
+        modeToggleBtn.setOnClickListener(v -> toggleListeningMode());
+        replayBtn.setOnClickListener(v -> speakCurrentWord());
 
         for (int i = 0; i < optionCards.length; i++) {
             final int idx = i;
@@ -197,7 +216,33 @@ public class QuizActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        applyModeVisibility();
         startTimer();
+    }
+
+    // ── Listening mode ───────────────────────────────────────────
+
+    private void toggleListeningMode() {
+        isListeningMode = !isListeningMode;
+        modeToggleIV.setColorFilter(ContextCompat.getColor(this,
+                isListeningMode ? R.color.indigo : R.color.text_secondary));
+        applyModeVisibility();
+        if (isListeningMode) speakCurrentWord();
+    }
+
+    private void applyModeVisibility() {
+        questionTV.setVisibility(isListeningMode ? View.GONE : View.VISIBLE);
+        listeningPromptLL.setVisibility(isListeningMode ? View.VISIBLE : View.GONE);
+        questionCategoryTV.setText(isListeningMode ? "LISTENING" : "VOCABULARY");
+        questionHintTV.setText(isListeningMode ? "অডিও শুনে সঠিক অর্থ বেছে নাও" : "সঠিক উত্তরটি বেছে নাও");
+    }
+
+    private void speakCurrentWord() {
+        if (currentIndex >= questions.size() || ttsHelper == null) return;
+        try {
+            String word = questions.get(currentIndex).getString("question");
+            ttsHelper.speak(word);
+        } catch (Exception ignored) {}
     }
 
     private void onOptionSelected(int selectedIdx) {
