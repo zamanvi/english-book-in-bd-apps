@@ -178,8 +178,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 rootCV.setOnClickListener(v -> onToggle.onToggle());
             } else {
                 expandIV.setVisibility(View.GONE);
-                wordTV.setMaxLines(2);
-                meaningTV.setMaxLines(2);
+                // Word and meaning now sit inline (side-by-side, 50/50 weight)
+                // instead of stacked, so each is capped to a single line.
+                wordTV.setMaxLines(1);
+                meaningTV.setMaxLines(1);
                 meaningTV.setEllipsize(android.text.TextUtils.TruncateAt.END);
                 meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                 synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);

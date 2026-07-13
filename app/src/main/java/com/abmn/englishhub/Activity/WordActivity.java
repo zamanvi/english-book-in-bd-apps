@@ -297,12 +297,6 @@ public class WordActivity extends AppCompatActivity {
                 ? android.graphics.Color.parseColor("#EFE6CC")
                 : androidx.core.content.ContextCompat.getColor(this, R.color.bg_elevated));
 
-        int primaryColor = storybook
-                ? android.graphics.Color.parseColor("#241C10")
-                : androidx.core.content.ContextCompat.getColor(this, R.color.text_primary);
-        int goldColor = storybook
-                ? android.graphics.Color.parseColor("#8B5E00")
-                : androidx.core.content.ContextCompat.getColor(this, R.color.gold);
         int synColor = storybook
                 ? android.graphics.Color.parseColor("#1F7A5C")
                 : androidx.core.content.ContextCompat.getColor(this, R.color.teal);
@@ -313,9 +307,9 @@ public class WordActivity extends AppCompatActivity {
                 ? android.graphics.Color.parseColor("#8A7A5C")
                 : androidx.core.content.ContextCompat.getColor(this, R.color.text_inactive);
 
-        counterTvW.setTextColor(goldColor);
-        wordTvW.setTextColor(primaryColor);
-        meaningTvW.setTextColor(primaryColor);
+        counterTvW.setTextColor(synColor);
+        wordTvW.setTextColor(inactiveColor);
+        meaningTvW.setTextColor(inactiveColor);
         synonymsTvW.setTextColor(synColor);
         antonymsTvW.setTextColor(antColor);
         wordCloseIV.setColorFilter(inactiveColor);

@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/page_padding_horizontal"
     android:layout_marginEnd="@dimen/page_padding_horizontal"
-    android:layout_marginBottom="6dp"
-    app:cardCornerRadius="12dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="14dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="@color/bg_elevated">
 
@@ -20,67 +20,85 @@
 
         <TextView
             android:id="@+id/counterTV"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:background="@drawable/bg_counter_badge"
             android:gravity="center"
-            android:textColor="@color/gold"
+            android:textColor="@color/teal"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium" />
 
+        <!-- Word + Meaning share this cell 50/50 (weight 1 each) so neither can
+             starve the other regardless of text length or screen width. -->
         <LinearLayout
+            android:id="@+id/wordMeaningRowLL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:layout_marginStart="10dp"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/wordTV"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:maxLines="2"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
                 android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/meaningTV"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
                 android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                android:maxLines="2"
+                android:textSize="12sp"
+                android:maxLines="1"
                 android:ellipsize="end" />
 
         </LinearLayout>
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/text_inactive" />
+
+        <!-- Verb2/Verb3 (or Synonym/Antonym) column - weighted (2 vs the word/
+             meaning cell's 3) so the ratio holds across screen widths instead
+             of a hardcoded dp column that breaks on very narrow/wide phones. -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="end">
+            android:gravity="start">
 
             <TextView
                 android:id="@+id/synonymsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/teal"
-                android:textSize="12sp"
-                android:maxLines="2"
+                android:textSize="11sp"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
                 android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/antonymsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/red_wrong"
-                android:textSize="12sp"
-                android:maxLines="2"
+                android:textSize="11sp"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
                 android:ellipsize="end" />
 
         </LinearLayout>
