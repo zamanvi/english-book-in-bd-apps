@@ -295,6 +295,9 @@
     </androidx.cardview.widget.CardView>
 
     <!-- ── MCQ options ────────────────────────────────────────── -->
+    <!-- Anchored to questionCard's bottom (not just bottomActionRow) so it
+         sits directly below the card instead of floating independently and
+         leaving a dead gap once the card became wrap_content-sized. -->
     <LinearLayout
         android:id="@+id/optionsContainer"
         android:layout_width="0dp"
@@ -303,7 +306,9 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/questionCard"
         app:layout_constraintBottom_toTopOf="@id/bottomActionRow"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
