@@ -57,6 +57,7 @@ public class Constant {
     public static final String TOKEN = "_token";
     public static final String PUBLIC_KEY_VALUE = "public_key=eyJpdiI6InB3bGtRS2NXT1pheEdDSi8zTjhpTWc9PSIsInZhbHVlIjoiRHBxdVMzaXVYRVFJb2dMNExSblUzeDVOQW5zV1I4WnIzZ1U5cmF0NjhHaG9iMU5WbXZYYnJ3Z0R4RXpPa3FZbEp5amRxL3dYN3d0VmhPRThadUZCamc9PSIsIm1hYyI6IjZjNDgyZjIwOGUxMzU0NjY5Zjg5ZmQ0OTJkZDEyN2RmMGM2NWMyNjNhMTRhZmZjYjRjMDc3ZjU0ZjY4ODJjNTciLCJ0YWciOiIifQ";
     public static final String CODE = "code";
+    public static final String GROUP_NAME = "group_name";
     public static final String FROM = "abmn_from";
     public static final String FROM_TITLE = "abmn_from_title";
     public static final String FROM_TYPE = "abmn_from_type";

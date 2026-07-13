@@ -30,6 +30,7 @@ public class ResultActivity extends AppCompatActivity {
     private ProgressBar scoreBar;
 
     private int correct, total, xpEarned, lessonId, battleId, timeSec;
+    private boolean submitFailureNotified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +78,7 @@ public class ResultActivity extends AppCompatActivity {
         xpEarnedBigTV.setText("+" + xpEarned);
 
         // Mark today as played — suppresses the 8pm streak reminder
-        String today = new java.text.SimpleDateFormat("yyyy-M-d", java.util.Locale.US)
-                .format(new java.util.Date());
+        String today = Constant.todayString();
         getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                 .edit().putString(Constant.LAST_PLAYED_DATE, today).apply();
 
@@ -138,6 +138,17 @@ public class ResultActivity extends AppCompatActivity {
         if (battleId > 0) submitBattleResult();
     }
 
+    // XP/streak/Lipto/battle submissions can fail independently and silently
+    // (network drop right after a quiz) with no retry - at minimum let the
+    // user know their result may not have saved, once per screen visit.
+    private void notifySubmitFailure() {
+        if (submitFailureNotified) return;
+        submitFailureNotified = true;
+        runOnUiThread(() -> android.widget.Toast.makeText(this,
+                "নেটওয়ার্ক সমস্যা — ফলাফল সেভ নাও হতে পারে",
+                android.widget.Toast.LENGTH_LONG).show());
+    }
+
     private void submitXp() {
         UConfig uConfig = new UConfig(this);
         String token = uConfig.getData(Constant.TOKEN);
@@ -145,7 +156,6 @@ public class ResultActivity extends AppCompatActivity {
 
         JSONObject body = new JSONObject();
         try {
-            int pct = total > 0 ? (correct * 100) / total : 0;
             body.put("score", correct);
             body.put("total", total);
             body.put("lesson_id", lessonId);
@@ -172,7 +182,7 @@ public class ResultActivity extends AppCompatActivity {
                     }
                 }
             } catch (Exception ignored) {}
-        }, error -> {});
+        }, error -> notifySubmitFailure());
     }
 
     private void updateStreak() {
@@ -193,9 +203,7 @@ public class ResultActivity extends AppCompatActivity {
                     runOnUiThread(() -> streakResultTV.setText("🔥 " + streak));
                 }
             } catch (Exception ignored) {}
-        }, error -> {
-            // Streak update failed silently — will retry next quiz
-        });
+        }, error -> notifySubmitFailure());
     }
 
     private void submitLipto() {
@@ -223,7 +231,7 @@ public class ResultActivity extends AppCompatActivity {
                     });
                 }
             } catch (Exception ignored) {}
-        }, error -> {});
+        }, error -> notifySubmitFailure());
     }
 
     private void submitBattleResult() {
@@ -241,7 +249,7 @@ public class ResultActivity extends AppCompatActivity {
         String url = Constant.BATTLE_BASE + battleId + "/submit";
         ApiConfig.postRequest(this, url, body, token, response -> {
             // Battle result submitted silently
-        }, error -> {});
+        }, error -> notifySubmitFailure());
     }
 
     // ── Buttons ──────────────────────────────────────────────────

@@ -37,6 +37,8 @@ public class QuizActivity extends AppCompatActivity {
     private LinearLayout feedbackStrip, progressDots, bottomActionRow;
     private com.google.android.material.button.MaterialButton nextBtn;
     private ProgressBar quizLoadingBar;
+    private LinearLayout quizEmptyLL;
+    private com.google.android.material.button.MaterialButton quizEmptyCloseBtn;
 
     // Quiz state
     private List<JSONObject> questions = new ArrayList<>();
@@ -85,6 +87,8 @@ public class QuizActivity extends AppCompatActivity {
         nextBtn          = findViewById(R.id.nextBtn);
         closeBtn         = findViewById(R.id.closeBtn);
         quizLoadingBar   = findViewById(R.id.quizLoadingBar);
+        quizEmptyLL      = findViewById(R.id.quizEmptyLL);
+        quizEmptyCloseBtn= findViewById(R.id.quizEmptyCloseBtn);
 
         optionA = findViewById(R.id.optionA);
         optionB = findViewById(R.id.optionB);
@@ -108,6 +112,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void setupClickListeners() {
         closeBtn.setOnClickListener(v -> finish());
+        quizEmptyCloseBtn.setOnClickListener(v -> finish());
 
         for (int i = 0; i < optionCards.length; i++) {
             final int idx = i;
@@ -143,6 +148,10 @@ public class QuizActivity extends AppCompatActivity {
                     }
                     runOnUiThread(() -> {
                         quizLoadingBar.setVisibility(View.GONE);
+                        if (questions.isEmpty()) {
+                            quizEmptyLL.setVisibility(View.VISIBLE);
+                            return;
+                        }
                         buildProgressDots();
                         quizStartMs = System.currentTimeMillis();
                         showQuestion(0);

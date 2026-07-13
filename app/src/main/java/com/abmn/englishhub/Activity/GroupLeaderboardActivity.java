@@ -2,6 +2,9 @@ package com.abmn.englishhub.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +27,8 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
 
     private TextView groupNameTV, groupCodeTV;
     private RecyclerView leaderboardRV;
+    private ProgressBar loadingPB;
+    private LinearLayout emptyLL;
     private final List<JSONObject> members = new ArrayList<>();
     private LeaderboardAdapter adapter;
     private String groupCode = "";
@@ -34,11 +39,13 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_leaderboard);
 
         groupCode = getIntent().getStringExtra(Constant.CODE);
-        String groupName = getIntent().getStringExtra("group_name");
+        String groupName = getIntent().getStringExtra(Constant.GROUP_NAME);
 
         groupNameTV = findViewById(R.id.groupNameTV);
         groupCodeTV = findViewById(R.id.groupCodeTV);
         leaderboardRV = findViewById(R.id.leaderboardRV);
+        loadingPB = findViewById(R.id.groupLbLoadingPB);
+        emptyLL = findViewById(R.id.groupLbEmptyLL);
 
         if (groupName != null) groupNameTV.setText(groupName);
         if (groupCode != null) groupCodeTV.setText("কোড: " + groupCode);
@@ -56,21 +63,39 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
 
     private void loadLeaderboard() {
         String token = new UConfig(this).getData(Constant.TOKEN);
-        if (token == null || token.isEmpty() || groupCode == null) return;
+        if (token == null || token.isEmpty() || groupCode == null) {
+            loadingPB.setVisibility(View.GONE);
+            emptyLL.setVisibility(View.VISIBLE);
+            return;
+        }
 
         String url = Constant.GROUP_LEADERBOARD + groupCode + "/leaderboard";
         ApiConfig.getRequest(this, url, token, response -> {
+            boolean failed = false;
             try {
                 JSONObject r = new JSONObject(response);
                 JSONArray arr = r.optJSONArray("members");
-                if (arr == null) return;
-                members.clear();
-                for (int i = 0; i < arr.length(); i++) {
-                    members.add(arr.getJSONObject(i));
+                if (arr == null) {
+                    failed = true;
+                } else {
+                    members.clear();
+                    for (int i = 0; i < arr.length(); i++) {
+                        members.add(arr.getJSONObject(i));
+                    }
                 }
-                runOnUiThread(() -> adapter.notifyDataSetChanged());
-            } catch (Exception ignored) {}
-        }, error -> {});
+            } catch (Exception e) {
+                failed = true;
+            }
+            boolean finalFailed = failed;
+            runOnUiThread(() -> {
+                loadingPB.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
+                emptyLL.setVisibility(!finalFailed && !members.isEmpty() ? View.GONE : View.VISIBLE);
+            });
+        }, error -> runOnUiThread(() -> {
+            loadingPB.setVisibility(View.GONE);
+            emptyLL.setVisibility(View.VISIBLE);
+        }));
     }
 
     private void shareCode() {

@@ -123,19 +123,31 @@ public class BattleActivity extends AppCompatActivity {
         if (oidStr.isEmpty()) { showError("বন্ধুর User ID দাও"); return; }
         if (selectedLessonId == 0) { showError("একটা Lesson বেছে নাও"); return; }
 
-        String token = new UConfig(this).getData(Constant.TOKEN);
+        UConfig uConfig = new UConfig(this);
+        String token = uConfig.getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) { showError("লগইন করো আগে"); return; }
+
+        int opponentId;
+        try {
+            opponentId = Integer.parseInt(oidStr);
+        } catch (Exception e) { showError("সঠিক User ID দাও"); return; }
+
+        String myUserId = uConfig.getData("user_id");
+        if (myUserId != null && String.valueOf(opponentId).equals(myUserId)) {
+            showError("নিজেকে চ্যালেঞ্জ করা যাবে না");
+            return;
+        }
 
         JSONObject body = new JSONObject();
         try {
-            body.put("opponent_id", Integer.parseInt(oidStr));
+            body.put("opponent_id", opponentId);
             body.put("lesson_id", selectedLessonId);
-        } catch (Exception e) { showError("সঠিক User ID দাও"); return; }
+        } catch (Exception ignored) {}
 
         ApiConfig.postRequest(this, Constant.BATTLE_CHALLENGE, body, token, response -> {
             try {
                 JSONObject r = new JSONObject(response);
-                if ("success".equals(r.optString("status"))) {
+                if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
                     showError("");
                     runOnUiThread(() -> {
                         opponentIdET.setText("");

@@ -40,7 +40,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     // List
     private RecyclerView leaderboardRV;
     private ProgressBar loadingBar;
-    private LeaderboardAdapter adapter;
+    private GlobalLeaderboardAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void setupList() {
-        adapter = new LeaderboardAdapter(this);
+        adapter = new GlobalLeaderboardAdapter(this);
         leaderboardRV.setLayoutManager(new LinearLayoutManager(this));
         leaderboardRV.setAdapter(adapter);
     }
@@ -154,13 +154,16 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     // ── Adapter ──────────────────────────────────────────────────
-
-    static class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.VH> {
+    // Named distinctly from Adapter/LeaderboardAdapter.java (used by
+    // GroupLeaderboardActivity, reads "xp") since this one is the global
+    // leaderboard and reads a different field ("points") - same simple name
+    // on both was causing confusion during review.
+    static class GlobalLeaderboardAdapter extends RecyclerView.Adapter<GlobalLeaderboardAdapter.VH> {
 
         private final Context context;
         private final List<JSONObject> data = new ArrayList<>();
 
-        LeaderboardAdapter(Context context) { this.context = context; }
+        GlobalLeaderboardAdapter(Context context) { this.context = context; }
 
         void setData(List<JSONObject> items) {
             data.clear();

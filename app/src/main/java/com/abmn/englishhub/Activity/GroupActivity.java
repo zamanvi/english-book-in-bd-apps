@@ -115,7 +115,7 @@ public class GroupActivity extends AppCompatActivity {
         ApiConfig.postRequest(this, Constant.GROUP_CREATE, body, token, response -> {
             try {
                 JSONObject r = new JSONObject(response);
-                if ("success".equals(r.optString("status"))) {
+                if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
                     groupNameET.setText("");
                     groupList.add(0, r.getJSONObject("group"));
                     adapter.notifyItemInserted(0);
@@ -137,7 +137,7 @@ public class GroupActivity extends AppCompatActivity {
         ApiConfig.postRequest(this, Constant.GROUP_JOIN, body, token, response -> {
             try {
                 JSONObject r = new JSONObject(response);
-                if ("success".equals(r.optString("status"))) {
+                if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
                     groupCodeET.setText("");
                     JSONObject g = r.getJSONObject("group");
                     boolean found = false;

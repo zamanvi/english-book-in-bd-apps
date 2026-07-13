@@ -48,7 +48,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             h.card.setOnClickListener(v -> {
                 Intent i = new Intent(activity, GroupLeaderboardActivity.class);
                 i.putExtra(Constant.CODE, code);
-                i.putExtra("group_name", g.optString("name", ""));
+                i.putExtra(Constant.GROUP_NAME, g.optString("name", ""));
                 activity.startActivity(i);
             });
         } catch (Exception ignored) {}
