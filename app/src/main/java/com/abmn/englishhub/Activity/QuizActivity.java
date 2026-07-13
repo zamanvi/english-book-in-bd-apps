@@ -2,6 +2,8 @@ package com.abmn.englishhub.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -47,6 +49,7 @@ public class QuizActivity extends AppCompatActivity {
     private int correctCount = 0;
     private boolean answered = false;
     private CountDownTimer countDownTimer;
+    private ToneGenerator toneGenerator;
     private int lessonId = 1;
     private int battleId = 0;  // 0 = normal quiz, >0 = part of a battle
     private long quizStartMs = 0;
@@ -66,6 +69,12 @@ public class QuizActivity extends AppCompatActivity {
 
         lessonId = getIntent().getIntExtra("lesson_id", 1);
         battleId = getIntent().getIntExtra("battle_id", 0);
+
+        try {
+            toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        } catch (RuntimeException e) {
+            toneGenerator = null;
+        }
 
         bindViews();
         setupClickListeners();
@@ -234,6 +243,7 @@ public class QuizActivity extends AppCompatActivity {
     // ── Feedback states ──────────────────────────────────────────
 
     private void showCorrectFeedback(int idx, String explanation) {
+        playTone(ToneGenerator.TONE_PROP_ACK);
         // Green teal on correct card
         optionCards[idx].setCardBackgroundColor(Color.parseColor("#1400E8B8")); // teal_dim
         optionLabels[idx].setTextColor(Color.parseColor("#00E8B8"));
@@ -251,6 +261,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void showWrongFeedback(int selectedIdx, int correctIdx, String explanation) {
+        playTone(ToneGenerator.TONE_PROP_NACK);
         // Red on wrong card
         optionCards[selectedIdx].setCardBackgroundColor(Color.parseColor("#14FF3F6C")); // red_dim
         optionLabels[selectedIdx].setTextColor(Color.parseColor("#FF3F6C"));
@@ -275,6 +286,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void showTimedOutFeedback(int correctIdx) {
+        playTone(ToneGenerator.TONE_PROP_NACK);
         optionCards[correctIdx].setCardBackgroundColor(Color.parseColor("#1400E8B8"));
         optionLabels[correctIdx].setTextColor(Color.parseColor("#00E8B8"));
         optionLabels[correctIdx].setBackgroundResource(R.drawable.option_label_correct);
@@ -372,6 +384,13 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
+    private void playTone(int tone) {
+        if (toneGenerator == null) return;
+        try {
+            toneGenerator.startTone(tone, 150);
+        } catch (Exception ignored) {}
+    }
+
     private int totalTimeSec() {
         if (quizStartMs == 0) return 0;
         return (int) ((System.currentTimeMillis() - quizStartMs) / 1000);
@@ -403,5 +422,9 @@ public class QuizActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (countDownTimer != null) countDownTimer.cancel();
+        if (toneGenerator != null) {
+            toneGenerator.release();
+            toneGenerator = null;
+        }
     }
 }
