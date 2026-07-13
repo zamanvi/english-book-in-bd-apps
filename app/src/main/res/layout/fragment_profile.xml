@@ -326,11 +326,15 @@
         <!-- Lipto balance banner                                  -->
         <!-- ══════════════════════════════════════════════════════ -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/liptoBannerCV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/page_padding_horizontal"
             android:layout_marginEnd="@dimen/page_padding_horizontal"
             android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="@color/teal_dim"
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp">

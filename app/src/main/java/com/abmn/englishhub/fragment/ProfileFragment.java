@@ -104,6 +104,8 @@ public class ProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.profileStreakTV)).setText(String.valueOf(streak));
         ((TextView) view.findViewById(R.id.profileRankTV)).setText(rank > 0 ? "#" + rank : "—");
         ((TextView) view.findViewById(R.id.profileLiptoTV)).setText(String.valueOf(lipto));
+        view.findViewById(R.id.liptoBannerCV).setOnClickListener(v ->
+                startActivity(new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
 
         // Level progress bar
         ((TextView) view.findViewById(R.id.profileLevelLabelTV)).setText(LevelHelper.getLevelLabel(xp));

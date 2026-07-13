@@ -107,6 +107,9 @@
             android:name=".Activity.LeaderboardActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.LiptoPassbookActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity
