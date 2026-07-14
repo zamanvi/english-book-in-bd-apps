@@ -103,7 +103,6 @@ public class WordActivity extends AppCompatActivity {
         getLessonId = getIntent().getStringExtra(Constant.FROM);
         String getLessonTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
         String getLessonType = getIntent().getStringExtra(Constant.FROM_TYPE);
-        setToolbar("Vocabulary: " + getLessonTitle);
 
         Base.setVoiceSpeed(uConfig.getData(Constant.VOICE_SPEED));
 
@@ -246,7 +245,7 @@ public class WordActivity extends AppCompatActivity {
             if (child instanceof TextView) {
                 TextView titleView = (TextView) child;
                 titleView.setSingleLine(false);
-                titleView.setMaxLines(2);
+                titleView.setMaxLines(3);
                 titleView.setEllipsize(android.text.TextUtils.TruncateAt.END);
                 break;
             }

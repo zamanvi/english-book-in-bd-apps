@@ -188,7 +188,16 @@ public class QuizActivity extends AppCompatActivity {
             } catch (Exception e) {
                 runOnUiThread(() -> quizLoadingBar.setVisibility(View.GONE));
             }
-        }, error -> runOnUiThread(() -> quizLoadingBar.setVisibility(View.GONE)));
+        }, error -> runOnUiThread(() -> {
+            quizLoadingBar.setVisibility(View.GONE);
+            // Most commonly a locked Premium lesson (server now blocks quiz
+            // on those too) - surface the real reason instead of a blank screen.
+            String message = error.getMessage();
+            android.widget.Toast.makeText(this,
+                    message != null ? message : "কুইজ লোড করা যায়নি",
+                    android.widget.Toast.LENGTH_LONG).show();
+            finish();
+        }));
     }
 
     // ── Question display ─────────────────────────────────────────

@@ -86,10 +86,18 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
                         .putExtra(Constant.FROM, "" + model.getId())
                         .putExtra(Constant.FROM_TITLE, model.getTitle())
                         .putExtra(Constant.FROM_TYPE, lessonType)));
-                quickQuizBtnCV.setVisibility(View.VISIBLE);
-                quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
-                        new Intent(activity, QuizActivity.class)
-                                .putExtra("lesson_id", model.getId())));
+                // Premium+locked lessons now get blocked server-side anyway,
+                // but there's no point offering a shortcut that just dead-ends
+                // in an error toast - send those users through Word list to
+                // unlock first instead.
+                if (model.isPremium()) {
+                    quickQuizBtnCV.setVisibility(View.GONE);
+                } else {
+                    quickQuizBtnCV.setVisibility(View.VISIBLE);
+                    quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
+                            new Intent(activity, QuizActivity.class)
+                                    .putExtra("lesson_id", model.getId())));
+                }
             }
 
             titleTV.setText(model.getTitle());

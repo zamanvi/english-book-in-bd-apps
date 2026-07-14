@@ -64,6 +64,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/columnDividerV"
             android:layout_width="1dp"
             android:layout_height="26dp"
             android:layout_marginStart="10dp"
@@ -72,8 +73,13 @@
 
         <!-- Verb2/Verb3 (or Synonym/Antonym) column - weighted (2 vs the word/
              meaning cell's 3) so the ratio holds across screen widths instead
-             of a hardcoded dp column that breaks on very narrow/wide phones. -->
+             of a hardcoded dp column that breaks on very narrow/wide phones.
+             Whole cell (+ the divider above) collapses to GONE when a lesson
+             has no synonym/antonym data at all, so word/meaning can use the
+             full row width instead of leaving 40% blank next to a stray
+             divider line. -->
         <LinearLayout
+            android:id="@+id/synAntCellLL"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"

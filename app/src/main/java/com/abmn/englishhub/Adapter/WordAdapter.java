@@ -114,6 +114,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         private final CardView rootCV;
         private final TextView counterTV, wordTV, meaningTV, synonymsTV, antonymsTV;
         private final ImageView expandIV;
+        private final View columnDividerV;
+        private final View synAntCellLL;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,6 +126,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             synonymsTV = itemView.findViewById(R.id.synonymsTV);
             antonymsTV = itemView.findViewById(R.id.antonymsTV);
             expandIV = itemView.findViewById(R.id.expandIV);
+            columnDividerV = itemView.findViewById(R.id.columnDividerV);
+            synAntCellLL = itemView.findViewById(R.id.synAntCellLL);
         }
 
         @SuppressLint("SetTextI18n")
@@ -164,6 +168,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 expandIV.setVisibility(View.VISIBLE);
                 expandIV.setRotation(expanded ? 90f : 0f);
                 wordTV.setMaxLines(expanded ? 2 : 1);
+                boolean showSynAntCell = expanded && (hasSyn || hasAnt);
                 if (expanded) {
                     meaningTV.setMaxLines(Integer.MAX_VALUE);
                     meaningTV.setEllipsize(null);
@@ -175,6 +180,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                     synonymsTV.setVisibility(View.GONE);
                     antonymsTV.setVisibility(View.GONE);
                 }
+                columnDividerV.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
+                synAntCellLL.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
                 rootCV.setOnClickListener(v -> onToggle.onToggle());
             } else {
                 expandIV.setVisibility(View.GONE);
@@ -186,6 +193,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                 synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);
                 antonymsTV.setVisibility(hasAnt ? View.VISIBLE : View.GONE);
+                // No synonym/antonym data at all for this word - collapse the
+                // whole right-hand cell (and its divider) instead of leaving
+                // ~40% of the row blank next to an orphaned divider line.
+                boolean showSynAntCell = hasSyn || hasAnt;
+                columnDividerV.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
+                synAntCellLL.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
                 rootCV.setOnClickListener(null);
                 rootCV.setClickable(false);
             }
