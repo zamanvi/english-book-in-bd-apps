@@ -61,16 +61,40 @@ public class ProfileFragment extends Fragment {
         UConfig uConfig = new UConfig(activity);
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
 
-        // Show login prompt if not logged in
+        // Guest vs logged-in: swap the whole hero block instead of just the
+        // name text - a guest seeing "0 XP / 0 Days / 0 Rank" everywhere
+        // below reads like a bug, not "you're not logged in". Hide those
+        // rows entirely and replace the hero content with a real CTA.
         String token = uConfig.getData(Constant.TOKEN);
-        TextView nameTV = view.findViewById(R.id.profileNameTV);
-        if (token == null || token.isEmpty()) {
-            nameTV.setText("লগইন করোনি");
-            nameTV.setOnClickListener(v ->
+        boolean loggedIn = token != null && !token.isEmpty();
+
+        TextView avatarTV = view.findViewById(R.id.profileAvatarTV);
+        View loggedInInfoLL = view.findViewById(R.id.loggedInInfoLL);
+        View guestAccountCtaLL = view.findViewById(R.id.guestAccountCtaLL);
+        View statsRowLL = view.findViewById(R.id.statsRowLL);
+        View streakCalendarCV = view.findViewById(R.id.streakCalendarCV);
+
+        if (!loggedIn) {
+            avatarTV.setText("🔐");
+            loggedInInfoLL.setVisibility(android.view.View.GONE);
+            guestAccountCtaLL.setVisibility(android.view.View.VISIBLE);
+            statsRowLL.setVisibility(android.view.View.GONE);
+            streakCalendarCV.setVisibility(android.view.View.GONE);
+            view.findViewById(R.id.liptoBannerCV).setVisibility(android.view.View.GONE);
+            view.findViewById(R.id.guestCtaBtn).setOnClickListener(v ->
                     startActivity(new Intent(activity, LoginActivity.class)));
-        } else {
-            view.findViewById(R.id.menuLogoutCV).setVisibility(android.view.View.VISIBLE);
+            return;
         }
+
+        avatarTV.setText("👤");
+        loggedInInfoLL.setVisibility(android.view.View.VISIBLE);
+        guestAccountCtaLL.setVisibility(android.view.View.GONE);
+        statsRowLL.setVisibility(android.view.View.VISIBLE);
+        streakCalendarCV.setVisibility(android.view.View.VISIBLE);
+        view.findViewById(R.id.liptoBannerCV).setVisibility(android.view.View.VISIBLE);
+        view.findViewById(R.id.menuLogoutCV).setVisibility(android.view.View.VISIBLE);
+
+        TextView nameTV = view.findViewById(R.id.profileNameTV);
 
         // Name
         String name = uConfig.getData("name");
