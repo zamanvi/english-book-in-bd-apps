@@ -105,15 +105,36 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         verifyOtpBtn.setText("যাচাই হচ্ছে...");
         errorTV.setVisibility(View.GONE);
 
-        // We store otp+email locally and proceed to step 3
-        // Actual verify happens on password reset
-        runOnUiThread(() -> {
-            step2Layout.setVisibility(View.GONE);
-            step3Layout.setVisibility(View.VISIBLE);
-            // store OTP in tag for use in step 3
-            resetBtn.setTag(otp);
-            errorTV.setVisibility(View.GONE);
-        });
+        String url = Constant.ROOT_API + "verify-otp";
+        JSONObject body = new JSONObject();
+        try {
+            body.put("email", userEmail);
+            body.put("otp", otp);
+        } catch (Exception ignored) {}
+
+        ApiConfig.postRequest(this, url, body, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                JSONObject success = json.optJSONObject(Constant.SUCCESS);
+                if (success != null && success.optBoolean(Constant.STATUS, false)) {
+                    runOnUiThread(() -> {
+                        step2Layout.setVisibility(View.GONE);
+                        step3Layout.setVisibility(View.VISIBLE);
+                        // OTP already confirmed correct here - carried forward
+                        // only so confirm_password_verify() can consume it.
+                        resetBtn.setTag(otp);
+                        errorTV.setVisibility(View.GONE);
+                        verifyOtpBtn.setEnabled(true);
+                        verifyOtpBtn.setText("যাচাই করো");
+                    });
+                } else {
+                    JSONObject errorObj = json.optJSONObject(Constant.ERROR);
+                    showError(errorObj != null ? errorObj.optString(Constant.MESSAGE, "OTP ভুল বা মেয়াদ শেষ") : "OTP ভুল বা মেয়াদ শেষ");
+                }
+            } catch (Exception e) {
+                showError("সংযোগ ব্যর্থ হয়েছে");
+            }
+        }, error -> showError("সংযোগ ব্যর্থ হয়েছে"));
     }
 
     private void attemptReset() {

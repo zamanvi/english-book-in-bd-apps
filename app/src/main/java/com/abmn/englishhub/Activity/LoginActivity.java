@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordET.getText() != null ? passwordET.getText().toString() : "";
 
         if (name.isEmpty() || password.isEmpty()) {
-            showError("নাম এবং পাসওয়ার্ড দিন");
+            showError("নাম/Email এবং পাসওয়ার্ড দিন");
             return;
         }
 

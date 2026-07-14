@@ -68,6 +68,8 @@ public class ProfileFragment extends Fragment {
             nameTV.setText("লগইন করোনি");
             nameTV.setOnClickListener(v ->
                     startActivity(new Intent(activity, LoginActivity.class)));
+        } else {
+            view.findViewById(R.id.menuLogoutCV).setVisibility(android.view.View.VISIBLE);
         }
 
         // Name
@@ -239,6 +241,14 @@ public class ProfileFragment extends Fragment {
 
         view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> openPlayStoreListing(activity));
 
+        view.findViewById(R.id.menuLogoutCV).setOnClickListener(v ->
+                new AlertDialog.Builder(activity)
+                        .setTitle("লগআউট করবে?")
+                        .setMessage("তোমার account থেকে বের হয়ে যাবে।")
+                        .setPositiveButton("লগআউট করো", (dialog, which) -> performLogout(activity))
+                        .setNegativeButton("বাতিল", null)
+                        .show());
+
         view.findViewById(R.id.menuContactCV).setOnClickListener(v -> {
             new AlertDialog.Builder(activity)
                     .setTitle("যোগাযোগ করো")
@@ -255,6 +265,35 @@ public class ProfileFragment extends Fragment {
                     .setNegativeButton("বাতিল", null)
                     .show();
         });
+    }
+
+    // Best-effort server-side token revoke, then always clear local session
+    // state - a network failure here shouldn't trap the user in a "logged
+    // in" app that no longer has a working token.
+    private void performLogout(Activity activity) {
+        UConfig uConfig = new UConfig(activity);
+        String token = uConfig.getData(Constant.TOKEN);
+
+        if (token != null && !token.isEmpty()) {
+            com.abmn.englishhub.Helper.ApiConfig.getRequest(
+                    activity, Constant.ROOT_API + "logout", token,
+                    response -> {}, error -> {});
+        }
+
+        uConfig.setData(Constant.TOKEN, "");
+        uConfig.setData("name", "");
+
+        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).edit()
+                .remove("user_id")
+                .remove(Constant.TOTAL_XP)
+                .remove(Constant.STREAK_DAYS)
+                .remove(Constant.USER_RANK)
+                .remove(Constant.LIPTO_BALANCE)
+                .apply();
+
+        Intent intent = new Intent(activity, com.abmn.englishhub.Activity.MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void openPlayStoreListing(Activity activity) {
