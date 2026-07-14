@@ -437,7 +437,12 @@ public class WordActivity extends AppCompatActivity {
             fetchData(1);
         }), error -> {
             String message = error.getMessage();
-            final String finalMessage = message != null ? message : "নেটওয়ার্ক সমস্যা";
+            // The backend's raw "Insufficient Lipto balance" is English and
+            // dead-ends the user - point them toward the two ways to actually
+            // get more Lipto instead.
+            final String finalMessage = (message != null && message.toLowerCase().contains("insufficient"))
+                    ? "💎 Lipto কম আছে? ফ্রি লেসন পড়ে অথবা বন্ধুর থেকে Lipto নিয়ে জমাও!"
+                    : (message != null ? message : "নেটওয়ার্ক সমস্যা");
             runOnUiThread(() -> showUnlockError(finalMessage));
         });
     }
