@@ -62,6 +62,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView synonymsTvW;
     private TextView antonymsTvW;
     private TextView wordTvW, meaningTvW, counterTvW;
+    private TextView lessonTitleTV;
     private CardView headerCV;
     private View headerDividerV, headerSynAntLL;
     private String getLessonId;
@@ -249,7 +250,7 @@ public class WordActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        TextView lessonTitleTV = findViewById(R.id.lessonTitleTV);
+        lessonTitleTV = findViewById(R.id.lessonTitleTV);
         lessonTitleTV.setText(title);
     }
 
@@ -310,6 +311,9 @@ public class WordActivity extends AppCompatActivity {
     private void applyScreenTheme(boolean storybook) {
         findViewById(R.id.main).setBackgroundColor(android.graphics.Color.parseColor(
                 storybook ? "#F7F1E1" : "#07081A"));
+        lessonTitleTV.setTextColor(storybook
+                ? android.graphics.Color.parseColor("#3A2E1A")
+                : androidx.core.content.ContextCompat.getColor(this, R.color.text_primary));
         headerCV.setCardBackgroundColor(storybook
                 ? android.graphics.Color.parseColor("#EFE6CC")
                 : androidx.core.content.ContextCompat.getColor(this, R.color.bg_elevated));

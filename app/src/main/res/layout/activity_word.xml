@@ -71,7 +71,11 @@
                 android:fontFamily="sans-serif-medium"
                 tools:ignore="HardcodedText" />
 
-            <!-- Word + Meaning block (mirrors the inline word/meaning cell) -->
+            <!-- Word + Meaning block - split into two equal-weight halves so
+                 the labels line up with the actual word/meaning columns below
+                 (lyt_item_word.xml splits wordTV/meaningTV 50/50 the same way;
+                 previously this was one un-split row so both labels sat
+                 bunched at the left instead of tracking the columns). -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -80,48 +84,66 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <ImageView
-                    android:id="@+id/wordCloseIV"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_eye_closed"
-                    android:contentDescription="@string/app_name"
-                    app:tint="@color/text_inactive" />
-
-                <TextView
-                    android:id="@+id/wordTvW"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Word"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.02"
-                    android:textColor="@color/text_inactive"
-                    android:textSize="12sp"
-                    android:fontFamily="sans-serif-medium"
-                    tools:ignore="HardcodedText" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <ImageView
-                    android:id="@+id/meaningCloseIV"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_eye_closed"
-                    android:contentDescription="@string/app_name"
-                    app:tint="@color/text_inactive" />
+                    <ImageView
+                        android:id="@+id/wordCloseIV"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_eye_closed"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/text_inactive" />
 
-                <TextView
-                    android:id="@+id/meaningTvW"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/wordTvW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Word"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.02"
+                        android:textColor="@color/text_inactive"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-medium"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Meaning"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.02"
-                    android:textColor="@color/text_inactive"
-                    android:textSize="12sp"
-                    android:fontFamily="sans-serif-medium"
-                    tools:ignore="HardcodedText" />
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/meaningCloseIV"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_eye_closed"
+                        android:contentDescription="@string/app_name"
+                        app:tint="@color/text_inactive" />
+
+                    <TextView
+                        android:id="@+id/meaningTvW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Meaning"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.02"
+                        android:textColor="@color/text_inactive"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-medium"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
