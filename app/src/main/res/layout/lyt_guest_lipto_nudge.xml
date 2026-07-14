@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/guestNudgeCV"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layout_margin="12dp"
+    android:visibility="gone"
+    app:cardBackgroundColor="@color/bg_elevated"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="6dp"
+    tools:visibility="visible">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                app:cardBackgroundColor="@color/indigo_dim"
+                app:cardCornerRadius="23dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="💎"
+                    android:textSize="22sp"
+                    tools:ignore="HardcodedText" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/guestNudgeTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Account খুলে সময় দিলে 💎 Lipto Point পাবে"
+                android:textColor="@color/text_primary"
+                android:textSize="14.5sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="এটা দিয়ে Premium লেসন আনলক করা যায়"
+                android:textColor="@color/text_secondary"
+                android:textSize="12.5sp"
+                tools:ignore="HardcodedText" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/coral_dim"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="🎁 বন্ধুর সাথে Lipto শেয়ারও করা যাবে"
+                    android:textColor="@color/coral"
+                    android:textSize="11.5sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/guestNudgeBtn"
+                style="@style/btn_primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="Account খুলো  →"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/guestNudgeCloseTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:padding="14dp"
+            android:text="✕"
+            android:textColor="@color/indigo"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>

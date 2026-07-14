@@ -235,6 +235,9 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- Guest nudge card - shown only to logged-out users on a Free lesson -->
+        <include layout="@layout/lyt_guest_lipto_nudge" />
+
     </FrameLayout>
 
 </LinearLayout>

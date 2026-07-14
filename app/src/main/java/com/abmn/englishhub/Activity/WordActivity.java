@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abmn.englishhub.Adapter.WordAdapter;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.GuestNudgeHelper;
 import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.WordModel;
 import com.abmn.texttospeech.Base;
@@ -69,6 +70,9 @@ public class WordActivity extends AppCompatActivity {
     private CardView unlockCardCV;
     private TextView unlockSubTV, unlockErrorTV;
     private com.google.android.material.button.MaterialButton unlockBtn;
+    private CardView guestNudgeCV;
+    private TextView guestNudgeCloseTV;
+    private com.google.android.material.button.MaterialButton guestNudgeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +122,10 @@ public class WordActivity extends AppCompatActivity {
         unlockErrorTV = findViewById(R.id.unlockErrorTV);
         unlockBtn = findViewById(R.id.unlockBtn);
         unlockBtn.setOnClickListener(v -> unlockLesson());
+
+        guestNudgeCV = findViewById(R.id.guestNudgeCV);
+        guestNudgeCloseTV = findViewById(R.id.guestNudgeCloseTV);
+        guestNudgeBtn = findViewById(R.id.guestNudgeBtn);
 
         wordTvW.setOnClickListener(this::wordChange);
         wordCloseIV.setOnClickListener(this::wordChange);
@@ -388,6 +396,17 @@ public class WordActivity extends AppCompatActivity {
             unlockCardCV.setVisibility(View.VISIBLE);
         } else {
             unlockCardCV.setVisibility(View.GONE);
+            maybeShowGuestNudge();
+        }
+    }
+
+    // Only offered on content that's actually readable right now (Free, or
+    // Premium-and-already-unlocked) - a locked Premium lesson shows the
+    // unlock card instead, not this.
+    private void maybeShowGuestNudge() {
+        String token = uConfig.getData(Constant.TOKEN);
+        if (GuestNudgeHelper.shouldShow(activity, token)) {
+            GuestNudgeHelper.show(activity, guestNudgeCV, guestNudgeCloseTV, guestNudgeBtn);
         }
     }
 

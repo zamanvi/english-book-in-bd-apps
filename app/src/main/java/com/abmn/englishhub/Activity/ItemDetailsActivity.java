@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.GuestNudgeHelper;
 import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
@@ -46,6 +47,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private Activity activity;
     private InterstitialAdManager interstitialAdManager;
     private String currentDetailsHtml;
+    private CardView guestNudgeCV;
+    private TextView guestNudgeCloseTV;
+    private com.google.android.material.button.MaterialButton guestNudgeBtn;
+    private boolean guestNudgeShownThisSession = false;
 
     // ── Reading-to-Lipto reward ────────────────────────────────────
     // Active-reading time only accumulates while the user has interacted
@@ -63,10 +68,24 @@ public class ItemDetailsActivity extends AppCompatActivity {
         public void run() {
             if (System.currentTimeMillis() - lastInteractionMs <= IDLE_PAUSE_MS) {
                 activeReadingMs += 1000;
+                if (!guestNudgeShownThisSession && activeReadingMs >= MIN_ACTIVE_MS_TO_EARN) {
+                    maybeShowGuestNudge();
+                }
             }
             readingTimerHandler.postDelayed(this, 1000);
         }
     };
+
+    // Free content (this is Book/article reading, never Premium) is a good
+    // moment to nudge a logged-out reader toward creating an account - but
+    // only once they've actually engaged with the page for a bit.
+    private void maybeShowGuestNudge() {
+        guestNudgeShownThisSession = true;
+        String token = new UConfig(activity).getData(Constant.TOKEN);
+        if (GuestNudgeHelper.shouldShow(activity, token)) {
+            GuestNudgeHelper.show(activity, guestNudgeCV, guestNudgeCloseTV, guestNudgeBtn);
+        }
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -146,6 +165,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
         titleCV = findViewById(R.id.titleCV);
         detailsWV = findViewById(R.id.detailsWV);
         loadingPB = findViewById(R.id.loadingPB);
+
+        guestNudgeCV = findViewById(R.id.guestNudgeCV);
+        guestNudgeCloseTV = findViewById(R.id.guestNudgeCloseTV);
+        guestNudgeBtn = findViewById(R.id.guestNudgeBtn);
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);

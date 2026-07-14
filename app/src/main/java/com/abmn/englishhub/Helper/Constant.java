@@ -83,6 +83,7 @@ public class Constant {
     public static final String GRAMMAR_PROGRESS_CACHE_TIME = "grammar_progress_cache_time";
     public static final String GRAMMAR_PROGRESS_TOTAL_LESSONS = "grammar_progress_total_lessons";
     public static final String GRAMMAR_PROGRESS_FIRST_CHAPTER = "grammar_progress_first_chapter";
+    public static final String GUEST_NUDGE_LAST_SHOWN_DATE = "guest_nudge_last_shown_date";
 
     // Game / user prefs
     public static final String STREAK_DAYS        = "streak_days";
