@@ -132,8 +132,11 @@ public class BattleActivity extends AppCompatActivity {
             opponentId = Integer.parseInt(oidStr);
         } catch (Exception e) { showError("সঠিক User ID দাও"); return; }
 
-        String myUserId = uConfig.getData("user_id");
-        if (myUserId != null && String.valueOf(opponentId).equals(myUserId)) {
+        // user_id is written to the "app_prefs" SharedPreferences file (see
+        // LoginActivity/RegisterActivity/ProfileFragment) — UConfig has its own,
+        // separate store, so reading it via uConfig.getData("user_id") never matches.
+        int myUserId = getSharedPreferences("app_prefs", MODE_PRIVATE).getInt("user_id", 0);
+        if (myUserId > 0 && opponentId == myUserId) {
             showError("নিজেকে চ্যালেঞ্জ করা যাবে না");
             return;
         }
@@ -166,7 +169,10 @@ public class BattleActivity extends AppCompatActivity {
                     showError(r.optString("message", "সমস্যা হয়েছে"));
                 }
             } catch (Exception e) { showError("সমস্যা হয়েছে"); }
-        }, error -> showError("নেটওয়ার্ক সমস্যা"));
+        }, error -> {
+            String message = error.getMessage();
+            showError(message != null ? message : "নেটওয়ার্ক সমস্যা");
+        });
     }
 
     private void loadPending() {

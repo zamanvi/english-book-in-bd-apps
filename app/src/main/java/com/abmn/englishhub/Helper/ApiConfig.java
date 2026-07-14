@@ -151,7 +151,25 @@ public class ApiConfig {
 
         StringRequest req = new StringRequest(method, finalUrl,
                 response -> { if (onSuccess != null) onSuccess.onSuccess(response); },
-                error -> { if (onError != null) onError.onError(error); }) {
+                error -> {
+                    if (onError == null) return;
+                    // Volley routes any non-2xx response (validation errors, 409 conflicts,
+                    // etc.) here instead of onSuccess, even though the backend usually sends
+                    // a well-formed JSON body with a real message. Surface that message
+                    // instead of a bare VolleyError whose getMessage() is null.
+                    String message = null;
+                    if (error.networkResponse != null && error.networkResponse.data != null) {
+                        try {
+                            JSONObject errBody = new JSONObject(new String(error.networkResponse.data));
+                            if (errBody.has("message")) {
+                                message = errBody.getString("message");
+                            } else if (errBody.has(Constant.ERROR)) {
+                                message = errBody.getJSONObject(Constant.ERROR).optString(Constant.MESSAGE, null);
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                    onError.onError(message != null ? new Exception(message, error) : error);
+                }) {
 
             @Override
             public Map<String, String> getHeaders() {
