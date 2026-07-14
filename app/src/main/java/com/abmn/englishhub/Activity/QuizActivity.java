@@ -164,7 +164,12 @@ public class QuizActivity extends AppCompatActivity {
     private void fetchQuiz() {
         quizLoadingBar.setVisibility(View.VISIBLE);
         String url = Constant.GAME_QUIZ + lessonId + "?count=" + TOTAL_QUESTIONS;
-        ApiConfig.getRequest(this, url, response -> {
+        // This is a public (no-login-required) endpoint, but the server now
+        // needs to know WHO's asking to tell a locked Premium lesson apart
+        // from one this exact user already unlocked - send the token when
+        // we have one; guests simply get treated as not-unlocked.
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        ApiConfig.getRequest(this, url, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {

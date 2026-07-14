@@ -149,6 +149,34 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Quiz entry point for an unlocked Premium lesson - the lesson-list's
+         own quiz shortcut is hidden for all Premium rows (no way to tell
+         locked from unlocked there), so unlocked users need this instead. -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/takeQuizBtnCV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/indigo_dim"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        tools:visibility="visible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="⚡ পুরো লেসনে কুইজ দাও"
+            android:textColor="@color/indigo"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+    </androidx.cardview.widget.CardView>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

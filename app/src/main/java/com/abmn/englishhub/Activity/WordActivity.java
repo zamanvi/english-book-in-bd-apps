@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -73,6 +74,7 @@ public class WordActivity extends AppCompatActivity {
     private CardView guestNudgeCV;
     private TextView guestNudgeCloseTV;
     private com.google.android.material.button.MaterialButton guestNudgeBtn;
+    private CardView takeQuizBtnCV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,14 @@ public class WordActivity extends AppCompatActivity {
         guestNudgeCV = findViewById(R.id.guestNudgeCV);
         guestNudgeCloseTV = findViewById(R.id.guestNudgeCloseTV);
         guestNudgeBtn = findViewById(R.id.guestNudgeBtn);
+
+        takeQuizBtnCV = findViewById(R.id.takeQuizBtnCV);
+        takeQuizBtnCV.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(activity, QuizActivity.class)
+                        .putExtra("lesson_id", Integer.parseInt(getLessonId)));
+            } catch (NumberFormatException ignored) {}
+        });
 
         wordTvW.setOnClickListener(this::wordChange);
         wordCloseIV.setOnClickListener(this::wordChange);
@@ -397,6 +407,9 @@ public class WordActivity extends AppCompatActivity {
             unlockCardCV.setVisibility(View.GONE);
             maybeShowGuestNudge();
         }
+        // Free lessons already get a quiz shortcut from the lesson list -
+        // this is only needed for a Premium lesson once it's actually unlocked.
+        takeQuizBtnCV.setVisibility(isPremium && unlocked ? View.VISIBLE : View.GONE);
     }
 
     // Only offered on content that's actually readable right now (Free, or
