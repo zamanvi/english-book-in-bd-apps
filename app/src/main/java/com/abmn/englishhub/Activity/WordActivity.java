@@ -410,17 +410,8 @@ public class WordActivity extends AppCompatActivity {
             lastPage = 1;
             fetchData(1);
         }), error -> {
-            String message = "নেটওয়ার্ক সমস্যা";
-            if (error instanceof com.android.volley.VolleyError) {
-                com.android.volley.VolleyError ve = (com.android.volley.VolleyError) error;
-                if (ve.networkResponse != null && ve.networkResponse.data != null) {
-                    try {
-                        JSONObject err = new JSONObject(new String(ve.networkResponse.data));
-                        message = err.optString("message", message);
-                    } catch (Exception ignored) {}
-                }
-            }
-            final String finalMessage = message;
+            String message = error.getMessage();
+            final String finalMessage = message != null ? message : "নেটওয়ার্ক সমস্যা";
             runOnUiThread(() -> showUnlockError(finalMessage));
         });
     }
