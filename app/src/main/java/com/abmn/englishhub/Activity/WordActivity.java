@@ -63,6 +63,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView antonymsTvW;
     private TextView wordTvW, meaningTvW, counterTvW;
     private CardView headerCV;
+    private View headerDividerV, headerSynAntLL;
     private String getLessonId;
     private WordAdapter adapter;
     private ImageView wordCloseIV, meaningCloseIV;
@@ -113,6 +114,8 @@ public class WordActivity extends AppCompatActivity {
         synonymsTvW = findViewById(R.id.synonymsTvW);
         antonymsTvW = findViewById(R.id.antonymsTvW);
         counterTvW = findViewById(R.id.counterTvW);
+        headerDividerV = findViewById(R.id.headerDividerV);
+        headerSynAntLL = findViewById(R.id.headerSynAntLL);
         headerCV = findViewById(R.id.headerCV);
 
         wordCloseIV = findViewById(R.id.wordCloseIV);
@@ -243,23 +246,11 @@ public class WordActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        allowMultilineTitle(toolbar);
-    }
-
-    private void allowMultilineTitle(Toolbar toolbar) {
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            View child = toolbar.getChildAt(i);
-            if (child instanceof TextView) {
-                TextView titleView = (TextView) child;
-                titleView.setSingleLine(false);
-                titleView.setMaxLines(3);
-                titleView.setEllipsize(android.text.TextUtils.TruncateAt.END);
-                break;
-            }
-        }
+        TextView lessonTitleTV = findViewById(R.id.lessonTitleTV);
+        lessonTitleTV.setText(title);
     }
 
     @Override
@@ -525,6 +516,13 @@ public class WordActivity extends AppCompatActivity {
         }
         synonymsTvW.setVisibility(anySyn ? View.VISIBLE : View.GONE);
         antonymsTvW.setVisibility(anyAnt ? View.VISIBLE : View.GONE);
+
+        // Same collapse as the data rows below it (WordAdapter) - otherwise
+        // the header keeps reserving the old column width + divider, so its
+        // labels sit narrower than the full-width word/meaning cells beneath.
+        boolean showSynAntCell = anySyn || anyAnt;
+        headerDividerV.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
+        headerSynAntLL.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
     }
 
     @Override
