@@ -47,16 +47,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
         private final TextView titleTV;
+        private final View quickQuizBtnCV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootCV = itemView.findViewById(R.id.rootCV);
             titleTV = itemView.findViewById(R.id.titleTV);
+            quickQuizBtnCV = itemView.findViewById(R.id.quickQuizBtnCV);
         }
 
         public void bind(ItemModel model, Activity activity) {
             rootCV.setOnClickListener(v-> activity.startActivity(new Intent(activity, ItemDetailsActivity.class).putExtra(Constant.FROM, model.getSlug())));
             titleTV.setText(model.getTitle());
+            // Book articles (Grammar/Reading&Writing/Speaking) have no Lesson/Word
+            // data behind them, so there's nothing for Quick Quiz to run on here -
+            // only LessonAdapter's Vocabulary/Verb rows wire this button up.
+            quickQuizBtnCV.setVisibility(View.GONE);
         }
     }
 }
