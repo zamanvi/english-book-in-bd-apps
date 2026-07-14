@@ -82,10 +82,19 @@ public class RegisterActivity extends AppCompatActivity {
                     JSONObject data = success.optJSONObject(Constant.DATA);
                     if (data == null) { showError("Server error"); return; }
 
+                    // Backend wraps user fields inside data.user (same shape as login)
+                    JSONObject userObj = data.optJSONObject("user");
                     String token = data.optString("token", "");
+                    int userId = userObj != null ? userObj.optInt("id", 0) : 0;
+
                     UConfig uConfig = new UConfig(this);
                     uConfig.setData(Constant.TOKEN, token);
                     uConfig.setData("name", name);
+
+                    if (userId > 0) {
+                        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                .edit().putInt("user_id", userId).apply();
+                    }
 
                     startActivity(new Intent(this, MainActivity.class)
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
