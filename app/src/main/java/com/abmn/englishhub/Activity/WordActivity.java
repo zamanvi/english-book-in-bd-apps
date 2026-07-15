@@ -77,6 +77,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView guestNudgeCloseTV;
     private com.google.android.material.button.MaterialButton guestNudgeBtn;
     private CardView takeQuizBtnCV;
+    private View wordEmptyLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,8 @@ public class WordActivity extends AppCompatActivity {
         guestNudgeCV = findViewById(R.id.guestNudgeCV);
         guestNudgeCloseTV = findViewById(R.id.guestNudgeCloseTV);
         guestNudgeBtn = findViewById(R.id.guestNudgeBtn);
+
+        wordEmptyLL = findViewById(R.id.wordEmptyLL);
 
         takeQuizBtnCV = findViewById(R.id.takeQuizBtnCV);
         takeQuizBtnCV.setOnClickListener(v -> {
@@ -496,6 +499,13 @@ public class WordActivity extends AppCompatActivity {
                             boolean unlocked = root.optBoolean("unlocked", true);
                             int lockedRemaining = root.optInt("locked_remaining", 0);
                             runOnUiThread(() -> updatePremiumUnlockUI(isPremium, unlocked, lockedRemaining));
+                            // A locked Premium lesson already explains itself via the
+                            // unlock card - only show the "no words" empty state for
+                            // content that's genuinely supposed to be readable now.
+                            boolean readableNow = !(isPremium && !unlocked);
+                            boolean isEmpty = wordList.isEmpty();
+                            runOnUiThread(() -> wordEmptyLL.setVisibility(
+                                    readableNow && isEmpty ? View.VISIBLE : View.GONE));
                         }
                         updateColumnHeaderVisibility();
                         Objects.requireNonNull(wordRV.getAdapter()).notifyDataSetChanged();
