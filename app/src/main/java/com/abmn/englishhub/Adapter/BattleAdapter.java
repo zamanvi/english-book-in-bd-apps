@@ -42,15 +42,14 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         JSONObject b = battles.get(position);
 
-        // Who is the "other" person?
-        String opponent = b.optJSONObject("opponent") != null
-                ? b.optJSONObject("opponent").optString("name", "?")
+        // "challenger"/"opponent" are raw DB roles - whichever one isn't me
+        // depends on whether I sent or received this challenge, so always
+        // read the server's already-perspective-adjusted "other" field
+        // instead of guessing from those two.
+        String other = b.optJSONObject("other") != null
+                ? b.optJSONObject("other").optString("name", "?")
                 : "?";
-        String challenger = b.optJSONObject("challenger") != null
-                ? b.optJSONObject("challenger").optString("name", "?")
-                : "?";
-        // Show the other player — "opponent" field perspective
-        h.opponentTV.setText(opponent.equals("?") ? challenger : opponent);
+        h.opponentTV.setText(other);
 
         String status = b.optString("status", "pending");
         String result = b.optString("result", "");
