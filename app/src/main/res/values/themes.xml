@@ -21,9 +21,19 @@
         <item name="android:textColorHint">@color/text_inactive</item>
         <item name="android:fontFamily">@font/poppins</item>
         <item name="fontFamily">@font/poppins</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuDark</item>
+        <item name="popupMenuStyle">@style/OverflowMenuDark</item>
     </style>
 
     <style name="Theme.Library" parent="Base.Theme.Library" />
+
+    <!-- Toolbar overflow / PopupMenu default to the Light-theme's own white
+         popup background; since android:textColor is overridden light-on-dark
+         above for the rest of the app, that left overflow menu items
+         rendering white text on the default white popup (invisible). -->
+    <style name="OverflowMenuDark" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/bg_elevated</item>
+    </style>
 
     <style name="listCard" parent="Theme.Library">
         <item name="android:layout_marginTop">6dp</item>

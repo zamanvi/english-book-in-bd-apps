@@ -650,7 +650,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/bg_card"
+                app:cardBackgroundColor="#00000000"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
@@ -658,7 +658,8 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="14dp">
+                    android:padding="14dp"
+                    android:background="@drawable/grad_group">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -668,7 +669,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="গ্রুপ"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/teal"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
@@ -677,7 +678,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="গ্রুপ বানাও"
-                        android:textColor="@color/text_inactive"
+                        android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="1dp"
                         tools:ignore="HardcodedText" />
@@ -693,7 +694,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/bg_card"
+                app:cardBackgroundColor="#00000000"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <LinearLayout
@@ -701,7 +702,8 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="14dp">
+                    android:padding="14dp"
+                    android:background="@drawable/grad_battle">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -711,7 +713,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="১v১ যুদ্ধ"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/crimson"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
@@ -720,7 +722,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="বন্ধুকে চ্যালেঞ্জ করো"
-                        android:textColor="@color/text_inactive"
+                        android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         android:layout_marginTop="1dp"
                         tools:ignore="HardcodedText" />
