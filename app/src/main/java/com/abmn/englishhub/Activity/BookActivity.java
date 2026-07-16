@@ -57,7 +57,7 @@ public class BookActivity extends AppCompatActivity {
         if (uConfig.getBoolean(Constant.IS_TEST_ADS)){
             bannerAdId = this.getString(R.string.BANNER_UNIT_ID_LOCAL);
         }else {
-            bannerAdId = "" + R.string.BANNER_UNIT_ID;
+            bannerAdId = this.getString(R.string.BANNER_UNIT_ID);
         }
         FrameLayout adContainer = findViewById(R.id.banner_ad_container);
         BannerAdManager.loadBannerAd(this, adContainer, bannerAdId);
