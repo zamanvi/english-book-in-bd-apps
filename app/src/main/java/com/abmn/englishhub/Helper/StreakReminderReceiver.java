@@ -101,12 +101,9 @@ public class StreakReminderReceiver extends BroadcastReceiver {
             fireAt.add(Calendar.DAY_OF_YEAR, 1);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !am.canScheduleExactAlarms()) {
-            // Fallback to inexact — still fires within ~15 min of target
-            am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, fireAt.getTimeInMillis(), pi);
-        } else {
-            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, fireAt.getTimeInMillis(), pi);
-        }
+        // Inexact is intentional: avoids the SCHEDULE_EXACT_ALARM permission and
+        // Play Console's exact-alarm justification review; still fires within ~15 min of target.
+        am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, fireAt.getTimeInMillis(), pi);
     }
 
     public static void cancel(Context context) {
