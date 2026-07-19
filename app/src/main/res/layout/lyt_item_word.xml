@@ -25,7 +25,7 @@
             android:background="@drawable/bg_counter_badge"
             android:gravity="center"
             android:textColor="@color/teal"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_caption"
             android:fontFamily="sans-serif-medium" />
 
         <!-- Word + Meaning share this cell 50/50 (weight 1 each) so neither can
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/text_primary"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_body_secondary"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
                 android:ellipsize="end" />
@@ -57,7 +57,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_body_secondary"
                 android:maxLines="1"
                 android:ellipsize="end" />
 
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/teal"
-                android:textSize="11sp"
+                android:textSize="@dimen/text_size_caption"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
                 android:ellipsize="end" />
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/red_wrong"
-                android:textSize="11sp"
+                android:textSize="@dimen/text_size_caption"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
                 android:ellipsize="end" />

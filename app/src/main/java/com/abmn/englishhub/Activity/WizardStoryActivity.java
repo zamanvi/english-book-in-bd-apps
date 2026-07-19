@@ -197,9 +197,9 @@ public class WizardStoryActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.banglaTitleTV)).setText(banglaTitle);
 
                     addParagraphs(findViewById(R.id.englishContainer), englishParagraphs,
-                            paragraphColor(true), 14.5f, 1.35f);
+                            paragraphColor(true), 15f, 1.35f);
                     addParagraphs(findViewById(R.id.banglaContainer), banglaParagraphs,
-                            paragraphColor(false), 14f, 1.5f);
+                            paragraphColor(false), 15f, 1.5f);
                     addNotes(findViewById(R.id.notesContainer), grammarNotes);
                 }
             } catch (Exception e) {
@@ -264,7 +264,7 @@ public class WizardStoryActivity extends AppCompatActivity {
             TextView label = new TextView(activity);
             label.setText(note[0]);
             label.setTextColor(labelColor);
-            label.setTextSize(10f);
+            label.setTextSize(11f);
             label.setTypeface(null, Typeface.BOLD);
             label.setLetterSpacing(0.08f);
             LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(
@@ -276,7 +276,7 @@ public class WizardStoryActivity extends AppCompatActivity {
             TextView body = new TextView(activity);
             body.setText(note[1]);
             body.setTextColor(bodyColor);
-            body.setTextSize(12.5f);
+            body.setTextSize(14f);
             body.setLineSpacing(0f, 1.4f);
             card.addView(body);
 

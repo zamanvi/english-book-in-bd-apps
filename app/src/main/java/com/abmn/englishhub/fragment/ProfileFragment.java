@@ -186,7 +186,7 @@ public class ProfileFragment extends Fragment {
             // Day label (M T W T F S S)
             TextView dayLabel = new TextView(activity);
             dayLabel.setText(DAY_LABELS[i]);
-            dayLabel.setTextSize(9);
+            dayLabel.setTextSize(10);
             dayLabel.setGravity(android.view.Gravity.CENTER);
             dayLabel.setTextColor(isToday
                     ? ContextCompat.getColor(activity, R.color.active_color)

@@ -5,4 +5,16 @@
     <dimen name="page_padding_horizontal">16dp</dimen>
     <dimen name="page_padding_top">20dp</dimen>
     <dimen name="page_padding_bottom">100dp</dimen>
+
+    <!-- Shared content type scale. Use these instead of one-off sp values
+         so equivalent text roles (a list row title, a reading paragraph,
+         a column label...) stay the same size everywhere they appear. -->
+    <dimen name="text_size_title">20sp</dimen>          <!-- screen/question-level headers -->
+    <dimen name="text_size_subtitle">18sp</dimen>        <!-- section/story titles -->
+    <dimen name="text_size_row_title">16sp</dimen>       <!-- chapter/lesson/item list row titles -->
+    <dimen name="text_size_body">15sp</dimen>            <!-- reading paragraph body text -->
+    <dimen name="text_size_body_secondary">14sp</dimen>  <!-- word/meaning text, quiz options, notes -->
+    <dimen name="text_size_label">12sp</dimen>           <!-- column headers, badges, pills -->
+    <dimen name="text_size_caption">11sp</dimen>         <!-- counters, syn/ant, small meta -->
+    <dimen name="text_size_micro">10sp</dimen>           <!-- tiny meta captions -->
 </resources>

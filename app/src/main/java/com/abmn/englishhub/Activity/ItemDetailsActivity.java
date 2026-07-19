@@ -316,7 +316,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 "h1{color:#7A4A00 !important;background:transparent !important;font-size:18px !important;font-weight:700;font-style:italic;margin:20px 0 6px;line-height:1.35;padding:0;}" +
                 "h2{color:#7A4A00 !important;background:transparent !important;font-size:16px !important;font-weight:700;margin:18px 0 5px;line-height:1.35;padding:0 0 4px;border-bottom:1px solid #E1D6B8;}" +
                 "h3{color:#7A4A00 !important;background:transparent !important;font-size:15px !important;font-weight:700;margin:16px 0 4px;line-height:1.35;padding:0 0 3px;border-bottom:1px solid #E9E0C8;}" +
-                "h4,h5,h6{color:#8B5E00 !important;background:transparent !important;font-size:15.5px !important;font-weight:700;margin:14px 0 4px;line-height:1.35;padding:0;}" +
+                "h4,h5,h6{color:#8B5E00 !important;background:transparent !important;font-size:14.5px !important;font-weight:700;margin:14px 0 4px;line-height:1.35;padding:0;}" +
                 "b,strong{color:#8B5E00 !important;}" +
                 "i,em{color:#5B3D8F !important;font-style:italic;}" +
                 "p{margin:0 0 8px;padding:0;}" +
@@ -393,7 +393,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                         "h4,h5,h6{" +
                         "  color:#FBBF24 !important;" +
                         "  background:transparent !important;" +
-                        "  font-size:15.5px !important;" +
+                        "  font-size:14.5px !important;" +
                         "  font-weight:700;" +
                         "  margin:14px 0 4px;" +
                         "  line-height:1.35;" +

@@ -25,7 +25,7 @@
         android:layout_marginTop="8dp"
         android:text="Lesson title"
         android:textColor="@color/text_primary"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_size_body"
         android:fontFamily="sans-serif-medium"
         android:lineSpacingExtra="2dp"
         android:maxLines="2"
@@ -67,7 +67,7 @@
                 android:gravity="center"
                 android:text="#"
                 android:textColor="@color/teal"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_label"
                 android:fontFamily="sans-serif-medium"
                 tools:ignore="HardcodedText" />
 
@@ -108,7 +108,7 @@
                         android:textAllCaps="true"
                         android:letterSpacing="0.02"
                         android:textColor="@color/text_inactive"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_label"
                         android:fontFamily="sans-serif-medium"
                         tools:ignore="HardcodedText" />
 
@@ -139,7 +139,7 @@
                         android:textAllCaps="true"
                         android:letterSpacing="0.02"
                         android:textColor="@color/text_inactive"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_label"
                         android:fontFamily="sans-serif-medium"
                         tools:ignore="HardcodedText" />
 
@@ -172,7 +172,7 @@
                     android:textAllCaps="true"
                     android:letterSpacing="0.02"
                     android:textColor="@color/teal"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_size_label"
                     android:fontFamily="sans-serif-medium"
                     tools:ignore="HardcodedText" />
 
@@ -185,7 +185,7 @@
                     android:textAllCaps="true"
                     android:letterSpacing="0.02"
                     android:textColor="@color/red_wrong"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_size_label"
                     android:fontFamily="sans-serif-medium"
                     tools:ignore="HardcodedText" />
 
@@ -217,7 +217,7 @@
             android:paddingBottom="8dp"
             android:text="⚡ পুরো লেসনে কুইজ দাও"
             android:textColor="@color/indigo"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_label"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
     </androidx.cardview.widget.CardView>
@@ -263,7 +263,7 @@
                 android:layout_height="wrap_content"
                 android:text="এই লেসনে এখনো কোনো শব্দ যোগ করা হয়নি"
                 android:textColor="@color/text_muted"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_body_secondary"
                 android:gravity="center"
                 tools:ignore="HardcodedText" />
 
@@ -302,7 +302,7 @@
                     android:layout_marginTop="8dp"
                     android:text="আরও শব্দ লক করা আছে"
                     android:textColor="@color/text_primary"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/text_size_body"
                     android:textStyle="bold"
                     android:gravity="center"
                     tools:ignore="HardcodedText" />
@@ -314,7 +314,7 @@
                     android:layout_marginTop="4dp"
                     android:text="সম্পূর্ণ লেসন আনলক করে সব শব্দ দেখো"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_label"
                     android:gravity="center"
                     tools:ignore="HardcodedText" />
 
@@ -324,7 +324,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/red_wrong"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_size_label"
                     android:gravity="center"
                     android:visibility="gone"
                     tools:ignore="HardcodedText" />
