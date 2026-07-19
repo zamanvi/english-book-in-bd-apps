@@ -6,9 +6,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +33,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
+import com.abmn.texttospeech.TextToSpeechHelper;
+import com.abmn.utility.UConfig;
 import com.android.volley.Request;
 
 import org.json.JSONArray;
@@ -41,6 +52,8 @@ public class WizardStoryActivity extends AppCompatActivity {
 
     private Activity activity;
     private int storyId;
+    private TextToSpeechHelper ttsHelper;
+    private List<String[]> vocabularyData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +68,8 @@ public class WizardStoryActivity extends AppCompatActivity {
 
         activity = this;
         storyId = getIntent().getIntExtra(Constant.FROM_ID, 0);
+        UConfig uConfig = new UConfig(this);
+        ttsHelper = new TextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
@@ -64,6 +79,8 @@ public class WizardStoryActivity extends AppCompatActivity {
 
         applyTheme();
         fetchStory();
+
+        findViewById(R.id.playAllBtn).setOnClickListener(v -> playAllVocabulary());
     }
 
     @Override
@@ -137,6 +154,92 @@ public class WizardStoryActivity extends AppCompatActivity {
                 storybook ? "#F7F1E1" : "#07081A"));
 
         retintExistingContent();
+        applyVocabularyTheme();
+    }
+
+    private int vocabAccentColor() {
+        return isStorybook() ? android.graphics.Color.parseColor("#0F6E56")
+                : getResources().getColor(R.color.teal);
+    }
+
+    // Shared with the "meaning" line in the vocabulary card, so a word looks the
+    // same whether you spot it in the passage or in the list below it.
+    private int vocabHighlightColor() {
+        return isStorybook() ? android.graphics.Color.parseColor("#9B2C5E")
+                : getResources().getColor(R.color.pink_accent);
+    }
+
+    private CharSequence highlightVocabWords(String text, List<String[]> vocabulary, int highlightColor) {
+        SpannableString spannable = new SpannableString(text);
+        for (String[] entry : vocabulary) {
+            String word = entry[0];
+            if (word == null || word.isEmpty()) continue;
+            java.util.regex.Matcher matcher = java.util.regex.Pattern
+                    .compile("\\b" + java.util.regex.Pattern.quote(word) + "\\b", java.util.regex.Pattern.CASE_INSENSITIVE)
+                    .matcher(text);
+            while (matcher.find()) {
+                spannable.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new ForegroundColorSpan(highlightColor), matcher.start(), matcher.end(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+        return spannable;
+    }
+
+    // Bangla has no single "word" field to match against - only the short
+    // "meaning" gloss, which is often a different inflection than what actually
+    // appears in the flowing translation (e.g. meaning "গ্রাস করেছিল" vs passage
+    // "গ্রাস করে নেয়"). So this only lights up meanings that happen to appear
+    // verbatim as a substring - a quieter, honest subset rather than forcing
+    // matches that aren't really there.
+    //
+    // Color only, no StyleSpan(BOLD): the app's theme font (Poppins) has no
+    // Bengali glyphs, so Bangla already renders through a system fallback font.
+    // Forcing bold on top of that fallback makes Android synthesize a fake bold
+    // weight per-glyph, which is what actually breaks conjunct clusters
+    // (যুক্তাক্ষর) into disconnected pieces - a real font, not just an
+    // isolated one-off.
+    private CharSequence highlightBanglaMeanings(String text, List<String[]> vocabulary, int highlightColor) {
+        SpannableString spannable = new SpannableString(text);
+        for (String[] entry : vocabulary) {
+            String meaning = entry[2];
+            if (meaning == null || meaning.isEmpty()) continue;
+            for (String term : meaning.split(",")) {
+                term = term.trim();
+                if (term.isEmpty()) continue;
+                int searchFrom = 0;
+                int idx;
+                while ((idx = text.indexOf(term, searchFrom)) >= 0) {
+                    spannable.setSpan(new ForegroundColorSpan(highlightColor), idx, idx + term.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    searchFrom = idx + term.length();
+                }
+            }
+        }
+        return spannable;
+    }
+
+    private void applyVocabularyTheme() {
+        boolean storybook = isStorybook();
+        int accent = vocabAccentColor();
+
+        androidx.cardview.widget.CardView vocabularyCV = findViewById(R.id.vocabularyCV);
+        vocabularyCV.setCardBackgroundColor(storybook
+                ? android.graphics.Color.parseColor("#EFE6CC")
+                : getResources().getColor(R.color.bg_card));
+
+        ((TextView) findViewById(R.id.vocabEyebrowTV)).setTextColor(accent);
+
+        LinearLayout playAllBtn = findViewById(R.id.playAllBtn);
+        playAllBtn.setBackground(dimShape(accent, false));
+        ((ImageView) findViewById(R.id.playAllIcon)).setColorFilter(accent);
+        ((TextView) playAllBtn.getChildAt(1)).setTextColor(accent);
+
+        LinearLayout vocabularyContainer = findViewById(R.id.vocabularyContainer);
+        vocabularyContainer.removeAllViews();
+        addVocabulary(vocabularyContainer, vocabularyData);
+        vocabularyCV.setVisibility(vocabularyData.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     private void retintExistingContent() {
@@ -188,6 +291,7 @@ public class WizardStoryActivity extends AppCompatActivity {
                     List<String> englishParagraphs = toStringList(story.getJSONArray("english_paragraphs"));
                     List<String> banglaParagraphs = toStringList(story.getJSONArray("bangla_paragraphs"));
                     List<String[]> grammarNotes = toNoteList(story.optJSONArray("grammar_notes"));
+                    vocabularyData = toVocabList(story.optJSONArray("vocabulary"));
 
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(hookTitle);
@@ -197,10 +301,11 @@ public class WizardStoryActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.banglaTitleTV)).setText(banglaTitle);
 
                     addParagraphs(findViewById(R.id.englishContainer), englishParagraphs,
-                            paragraphColor(true), 15f, 1.35f);
+                            paragraphColor(true), 15f, 1.35f, vocabularyData, false);
                     addParagraphs(findViewById(R.id.banglaContainer), banglaParagraphs,
-                            paragraphColor(false), 15f, 1.5f);
+                            paragraphColor(false), 15f, 1.5f, vocabularyData, true);
                     addNotes(findViewById(R.id.notesContainer), grammarNotes);
+                    applyVocabularyTheme();
                 }
             } catch (Exception e) {
                 // ignored
@@ -228,10 +333,19 @@ public class WizardStoryActivity extends AppCompatActivity {
     }
 
     private void addParagraphs(LinearLayout container, List<String> paragraphs,
-                                int color, float sizeSp, float lineSpacingMultiplier) {
+                                int color, float sizeSp, float lineSpacingMultiplier,
+                                List<String[]> highlightVocabulary, boolean banglaMode) {
+        int highlightColor = vocabHighlightColor();
         for (int i = 0; i < paragraphs.size(); i++) {
             TextView tv = new TextView(activity);
-            tv.setText(paragraphs.get(i));
+            if (highlightVocabulary != null && !highlightVocabulary.isEmpty()) {
+                CharSequence highlighted = banglaMode
+                        ? highlightBanglaMeanings(paragraphs.get(i), highlightVocabulary, highlightColor)
+                        : highlightVocabWords(paragraphs.get(i), highlightVocabulary, highlightColor);
+                tv.setText(highlighted);
+            } else {
+                tv.setText(paragraphs.get(i));
+            }
             tv.setTextColor(color);
             tv.setTextSize(sizeSp);
             tv.setLineSpacing(0f, lineSpacingMultiplier);
@@ -241,6 +355,157 @@ public class WizardStoryActivity extends AppCompatActivity {
             tv.setLayoutParams(lp);
             container.addView(tv);
         }
+    }
+
+    private List<String[]> toVocabList(JSONArray array) throws Exception {
+        List<String[]> list = new ArrayList<>();
+        if (array == null) return list;
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject v = array.getJSONObject(i);
+            list.add(new String[]{
+                    v.optString("word", ""), v.optString("phonetic", ""),
+                    v.optString("meaning", ""), v.optString("pos", ""),
+            });
+        }
+        return list;
+    }
+
+    private void addVocabulary(LinearLayout container, List<String[]> vocabulary) {
+        boolean storybook = isStorybook();
+        int accent = vocabAccentColor();
+        int rowBg = storybook ? android.graphics.Color.parseColor("#E5D9B0")
+                : getResources().getColor(R.color.bg_elevated);
+        int wordColor = paragraphColor(true);
+        int phoneticColor = storybook ? android.graphics.Color.parseColor("#6B5A3A")
+                : getResources().getColor(R.color.text_muted);
+        int meaningColor = vocabHighlightColor();
+
+        for (String[] entry : vocabulary) {
+            String word = entry[0];
+            String phonetic = entry[1];
+            String meaning = entry[2];
+            String pos = entry[3];
+
+            LinearLayout row = new LinearLayout(activity);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setGravity(Gravity.CENTER_VERTICAL);
+            row.setBackground(roundedShape(rowBg, dp(12)));
+            row.setPadding(dp(12), dp(10), dp(12), dp(10));
+            LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            rowLp.bottomMargin = dp(8);
+            row.setLayoutParams(rowLp);
+
+            TextView badge = new TextView(activity);
+            badge.setText(pos);
+            badge.setTextColor(accent);
+            badge.setTextSize(10f);
+            badge.setTypeface(null, Typeface.BOLD);
+            badge.setGravity(Gravity.CENTER);
+            badge.setBackground(dimShape(accent, dp(6)));
+            LinearLayout.LayoutParams badgeLp = new LinearLayout.LayoutParams(dp(22), dp(22));
+            badgeLp.setMarginEnd(dp(10));
+            badge.setLayoutParams(badgeLp);
+            row.addView(badge);
+
+            LinearLayout textCol = new LinearLayout(activity);
+            textCol.setOrientation(LinearLayout.VERTICAL);
+            textCol.setLayoutParams(new LinearLayout.LayoutParams(
+                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+            LinearLayout wordRow = new LinearLayout(activity);
+            wordRow.setOrientation(LinearLayout.HORIZONTAL);
+            wordRow.setGravity(Gravity.CENTER_VERTICAL);
+
+            TextView wordTV = new TextView(activity);
+            wordTV.setText(word);
+            wordTV.setTextColor(wordColor);
+            wordTV.setTextSize(14f);
+            wordTV.setTypeface(null, Typeface.BOLD);
+            wordRow.addView(wordTV);
+
+            if (phonetic != null && !phonetic.isEmpty()) {
+                TextView phoneticTV = new TextView(activity);
+                phoneticTV.setText(" (" + phonetic + ")");
+                phoneticTV.setTextColor(phoneticColor);
+                phoneticTV.setTextSize(12f);
+                wordRow.addView(phoneticTV);
+            }
+            textCol.addView(wordRow);
+
+            TextView meaningTV = new TextView(activity);
+            meaningTV.setText(meaning);
+            meaningTV.setTextColor(meaningColor);
+            meaningTV.setTextSize(12f);
+            LinearLayout.LayoutParams meaningLp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            meaningLp.topMargin = dp(2);
+            meaningTV.setLayoutParams(meaningLp);
+            textCol.addView(meaningTV);
+
+            row.addView(textCol);
+
+            ImageView playBtn = new ImageView(activity);
+            playBtn.setImageResource(R.drawable.ic_volume_up);
+            playBtn.setColorFilter(accent);
+            playBtn.setBackground(dimShape(accent, true));
+            playBtn.setPadding(dp(7), dp(7), dp(7), dp(7));
+            playBtn.setContentDescription(word + " উচ্চারণ শোনো");
+            LinearLayout.LayoutParams playLp = new LinearLayout.LayoutParams(dp(32), dp(32));
+            playLp.setMarginStart(dp(8));
+            playBtn.setLayoutParams(playLp);
+            playBtn.setClickable(true);
+            playBtn.setFocusable(true);
+            playBtn.setOnClickListener(v -> speakWord(word));
+            row.addView(playBtn);
+
+            container.addView(row);
+        }
+    }
+
+    private void speakWord(String word) {
+        if (ttsHelper == null || word == null || word.isEmpty()) return;
+        ttsHelper.speak(word);
+    }
+
+    private void playAllVocabulary() {
+        if (ttsHelper == null || vocabularyData.isEmpty()) return;
+        Handler handler = new Handler(Looper.getMainLooper());
+        long delay = 0;
+        for (String[] entry : vocabularyData) {
+            String word = entry[0];
+            handler.postDelayed(() -> speakWord(word), delay);
+            int wordCount = Math.max(1, word.split(" ").length);
+            delay += wordCount * 600L + 400L;
+        }
+    }
+
+    private android.graphics.drawable.GradientDrawable roundedShape(int color, int radiusPx) {
+        android.graphics.drawable.GradientDrawable shape = new android.graphics.drawable.GradientDrawable();
+        shape.setColor(color);
+        shape.setCornerRadius(radiusPx);
+        return shape;
+    }
+
+    private android.graphics.drawable.GradientDrawable dimShape(int accentColor, boolean oval) {
+        android.graphics.drawable.GradientDrawable shape = new android.graphics.drawable.GradientDrawable();
+        shape.setColor((0x33 << 24) | (accentColor & 0x00FFFFFF));
+        if (oval) {
+            shape.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+        } else {
+            shape.setCornerRadius(dp(20));
+        }
+        return shape;
+    }
+
+    // Rounded-square variant (small corner radius) for the POS badge, which needs
+    // to fit both single-letter (N/V) and 3-letter (ADJ) labels without clipping
+    // the way a full oval would.
+    private android.graphics.drawable.GradientDrawable dimShape(int accentColor, int cornerRadiusPx) {
+        android.graphics.drawable.GradientDrawable shape = new android.graphics.drawable.GradientDrawable();
+        shape.setColor((0x33 << 24) | (accentColor & 0x00FFFFFF));
+        shape.setCornerRadius(cornerRadiusPx);
+        return shape;
     }
 
     private void addNotes(LinearLayout container, List<String[]> notes) {
@@ -265,7 +530,6 @@ public class WizardStoryActivity extends AppCompatActivity {
             label.setText(note[0]);
             label.setTextColor(labelColor);
             label.setTextSize(11f);
-            label.setTypeface(null, Typeface.BOLD);
             label.setLetterSpacing(0.08f);
             LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
