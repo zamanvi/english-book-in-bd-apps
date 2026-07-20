@@ -200,6 +200,17 @@ public class WizardStoryActivity extends AppCompatActivity {
     // weight per-glyph, which is what actually breaks conjunct clusters
     // (যুক্তাক্ষর) into disconnected pieces - a real font, not just an
     // isolated one-off.
+    //
+    // The match itself is snapped out to whole-word boundaries before spanning:
+    // "বন্দর" inside "বন্দরের" would otherwise end the color span mid-word,
+    // right before the trailing "ের" - a span boundary cutting through a single
+    // word visibly breaks it (e.g. "বন্দরে র" instead of "বন্দরের"). Extending
+    // to the full word means either the whole inflected word gets colored or
+    // none of it, never a cut in the middle.
+    private boolean isBengaliWordChar(char c) {
+        return (c >= 'ঀ' && c <= '৿') || c == '‌' || c == '‍';
+    }
+
     private CharSequence highlightBanglaMeanings(String text, List<String[]> vocabulary, int highlightColor) {
         SpannableString spannable = new SpannableString(text);
         for (String[] entry : vocabulary) {
@@ -211,9 +222,13 @@ public class WizardStoryActivity extends AppCompatActivity {
                 int searchFrom = 0;
                 int idx;
                 while ((idx = text.indexOf(term, searchFrom)) >= 0) {
-                    spannable.setSpan(new ForegroundColorSpan(highlightColor), idx, idx + term.length(),
+                    int start = idx;
+                    int end = idx + term.length();
+                    while (start > 0 && isBengaliWordChar(text.charAt(start - 1))) start--;
+                    while (end < text.length() && isBengaliWordChar(text.charAt(end))) end++;
+                    spannable.setSpan(new ForegroundColorSpan(highlightColor), start, end,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    searchFrom = idx + term.length();
+                    searchFrom = end;
                 }
             }
         }
