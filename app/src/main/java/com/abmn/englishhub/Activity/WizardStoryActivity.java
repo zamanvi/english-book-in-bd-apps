@@ -74,6 +74,7 @@ public class WizardStoryActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("উইজার্ড");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -308,9 +309,6 @@ public class WizardStoryActivity extends AppCompatActivity {
                     List<String[]> grammarNotes = toNoteList(story.optJSONArray("grammar_notes"));
                     vocabularyData = toVocabList(story.optJSONArray("vocabulary"));
 
-                    if (getSupportActionBar() != null) {
-                        getSupportActionBar().setTitle(hookTitle);
-                    }
                     ((TextView) findViewById(R.id.metaTV)).setText(meta);
                     ((TextView) findViewById(R.id.hookTitleTV)).setText(hookTitle);
                     ((TextView) findViewById(R.id.banglaTitleTV)).setText(banglaTitle);
