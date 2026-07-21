@@ -82,7 +82,7 @@ public class BookActivity extends AppCompatActivity {
         callIB.setOnClickListener(view -> makePhoneCall());
         whatsappIB.setOnClickListener(view -> openWhatsApp());
 
-        facebookIB.setOnClickListener(view -> openInChrome("https://www.facebook.com/share/1HscyY4viN/?mibextid=wwXIfr"));
+        facebookIB.setOnClickListener(view -> openInChrome("https://www.facebook.com/bdlearnify/"));
         youtubeIB.setOnClickListener(view -> openInChrome("https://youtu.be/a2qazWNSiW0?si=Wc_O7rI6rZ2-ckyA"));
     }
 

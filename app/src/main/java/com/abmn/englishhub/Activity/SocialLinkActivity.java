@@ -40,7 +40,7 @@ public class SocialLinkActivity extends AppCompatActivity {
         ImageView facebookIV = findViewById(R.id.facebookIV);
         ImageView youtubeIV = findViewById(R.id.youtubeIV);
 
-        facebookIV.setOnClickListener(v -> openInChrome("https://www.facebook.com/share/16sxVY2qMF/?mibextid=wwXIfr"));
+        facebookIV.setOnClickListener(v -> openInChrome("https://www.facebook.com/bdlearnify/"));
         youtubeIV.setOnClickListener(v -> openInChrome("https://youtu.be/DquLb3cQwCQ?si=oDNVMjMfbXpV0xSB"));
     }
 
