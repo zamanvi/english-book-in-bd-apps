@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.OfflineCache;
 import com.abmn.englishhub.R;
 import com.abmn.texttospeech.TextToSpeechHelper;
 import com.abmn.utility.UConfig;
@@ -27,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
@@ -163,12 +165,17 @@ public class QuizActivity extends AppCompatActivity {
 
     private void fetchQuiz() {
         quizLoadingBar.setVisibility(View.VISIBLE);
+        UConfig uConfig = new UConfig(this);
+        if (!uConfig.isConnected()) {
+            buildOfflineQuiz();
+            return;
+        }
         String url = Constant.GAME_QUIZ + lessonId + "?count=" + TOTAL_QUESTIONS;
         // This is a public (no-login-required) endpoint, but the server now
         // needs to know WHO's asking to tell a locked Premium lesson apart
         // from one this exact user already unlocked - send the token when
         // we have one; guests simply get treated as not-unlocked.
-        String token = new UConfig(this).getData(Constant.TOKEN);
+        String token = uConfig.getData(Constant.TOKEN);
         ApiConfig.getRequest(this, url, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
@@ -194,15 +201,104 @@ public class QuizActivity extends AppCompatActivity {
                 runOnUiThread(() -> quizLoadingBar.setVisibility(View.GONE));
             }
         }, error -> runOnUiThread(() -> {
-            quizLoadingBar.setVisibility(View.GONE);
-            // Most commonly a locked Premium lesson (server now blocks quiz
-            // on those too) - surface the real reason instead of a blank screen.
             String message = error.getMessage();
-            android.widget.Toast.makeText(this,
-                    message != null ? message : "কুইজ লোড করা যায়নি",
-                    android.widget.Toast.LENGTH_LONG).show();
+            if (message == null) {
+                // No parseable server error body - a genuine connectivity
+                // failure (mid-air disconnect after the isConnected() check
+                // above passed), not a real business-rule rejection. Fall
+                // back to a locally-generated quiz instead of a dead end.
+                buildOfflineQuiz();
+                return;
+            }
+            // A real message was parsed from the server's error response
+            // (e.g. a locked Premium lesson) - surface it, don't silently
+            // bypass it with an offline quiz built from cached word data.
+            quizLoadingBar.setVisibility(View.GONE);
+            android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_LONG).show();
             finish();
         }));
+    }
+
+    // Builds a quiz the same way the server does (GameController::quiz) -
+    // random word sample, random wrong-answer distractors, shuffled options -
+    // but from the word list already cached on-device by WordActivity, so a
+    // lesson viewed once online can still be quizzed with no connection.
+    private void buildOfflineQuiz() {
+        List<JSONObject> allWords = new ArrayList<>();
+        int page = 1;
+        while (true) {
+            String cached = OfflineCache.load(this, "vocab_words_" + lessonId + "_p" + page);
+            if (cached == null) break;
+            try {
+                JSONObject root = new JSONObject(cached);
+                JSONArray dataArray = root.getJSONObject(Constant.WORDS).getJSONArray(Constant.DATA);
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject w = dataArray.getJSONObject(i);
+                    if (w.optBoolean("status", true)) {
+                        allWords.add(w);
+                    }
+                }
+            } catch (Exception e) {
+                break;
+            }
+            page++;
+        }
+
+        runOnUiThread(() -> {
+            quizLoadingBar.setVisibility(View.GONE);
+            if (allWords.isEmpty()) {
+                quizEmptyLL.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            List<String> allMeanings = new ArrayList<>();
+            for (JSONObject w : allWords) {
+                allMeanings.add(w.optString("meaning", ""));
+            }
+
+            List<JSONObject> shuffled = new ArrayList<>(allWords);
+            Collections.shuffle(shuffled);
+            int count = Math.min(TOTAL_QUESTIONS, shuffled.size());
+
+            questions.clear();
+            for (int qi = 0; qi < count; qi++) {
+                JSONObject w = shuffled.get(qi);
+                String word = w.optString("word", "");
+                String meaning = w.optString("meaning", "");
+                String synonyms = w.optString("synonyms", "");
+
+                List<String> wrongPool = new ArrayList<>(allMeanings);
+                wrongPool.remove(meaning);
+                Collections.shuffle(wrongPool);
+
+                List<String> options = new ArrayList<>();
+                options.add(meaning);
+                for (int i = 0; i < 3; i++) {
+                    options.add(i < wrongPool.size() ? wrongPool.get(i) : "N/A");
+                }
+                Collections.shuffle(options);
+                int correctIndex = options.indexOf(meaning);
+
+                try {
+                    JSONObject q = new JSONObject();
+                    q.put("question", word);
+                    q.put("correct_index", correctIndex);
+                    JSONArray optArr = new JSONArray();
+                    for (String o : options) optArr.put(o);
+                    q.put("options", optArr);
+                    q.put("explanation", synonyms == null ? "" : synonyms);
+                    questions.add(q);
+                } catch (Exception ignored) {}
+            }
+
+            if (questions.isEmpty()) {
+                quizEmptyLL.setVisibility(View.VISIBLE);
+                return;
+            }
+            buildProgressDots();
+            quizStartMs = System.currentTimeMillis();
+            showQuestion(0);
+        });
     }
 
     // ── Question display ─────────────────────────────────────────
