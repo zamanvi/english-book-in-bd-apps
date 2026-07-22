@@ -256,6 +256,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     @SuppressLint("SetJavaScriptEnabled")
     private void getData(String slug) {
 
+        String cacheKey = "item_details_" + slug;
         ApiConfig.RequestToVolley((result, response, error) -> {
             loadingPB.setVisibility(View.GONE);
             if (result){
@@ -272,7 +273,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
             }else {
                 onSupportNavigateUp();
             }
-        }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true);
+        }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true, cacheKey);
     }
 
     @SuppressLint("SetJavaScriptEnabled")

@@ -173,9 +173,9 @@ public class WordActivity extends AppCompatActivity {
 
         wordRV = findViewById(R.id.wordRV);
 
-        if (!uConfig.isConnected()){
-            uConfig.isConnectedAlert("", "");
-        }
+        // No unconditional "no internet" check here - fetchData() below goes
+        // through ApiConfig, which serves cached content silently when
+        // offline and only alerts if there's truly nothing cached to show.
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
         linearLayout.setReverseLayout(false);
@@ -470,6 +470,7 @@ public class WordActivity extends AppCompatActivity {
     private void fetchData(int page) {
         String url = Constant.ROOT_API2 + Constant.WORDS + "/" + getLessonId + "?page=" + page;
         String tag = "WordActivity";
+        String cacheKey = "vocab_words_" + getLessonId + "_p" + page;
         try {
             ApiConfig.RequestToVolley((result, response, error) -> {
                 try {
@@ -515,7 +516,7 @@ public class WordActivity extends AppCompatActivity {
                 } finally {
                     isLoading = false;
                 }
-            }, Request.Method.GET, activity, url, new HashMap<>(), true);
+            }, Request.Method.GET, activity, url, new HashMap<>(), true, cacheKey);
         } catch (Exception e) {
             // ignored
         }

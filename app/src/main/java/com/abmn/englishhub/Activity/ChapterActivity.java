@@ -116,7 +116,7 @@ public class ChapterActivity extends AppCompatActivity {
                 Log.e("ChapterActivity", "getBookData parse error", e);
                 showEmpty(true);
             }
-        }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false);
+        }, Request.Method.GET, activity, Constant.BOOK_API, new HashMap<>(), false, "book_english_hub");
     }
 
     private void showEmpty(boolean failed) {
@@ -131,6 +131,7 @@ public class ChapterActivity extends AppCompatActivity {
         if (getType != null && !getType.isEmpty()) {
             url += "&type=" + getType;
         }
+        String cacheKey = "chapters_" + (getType != null && !getType.isEmpty() ? getType : "all");
         ApiConfig.RequestToVolley((chapterResult, chapterResponse, chapterError) -> {
             if (!chapterResult || chapterResponse == null || chapterResponse.isEmpty()) {
                 showEmpty(true);
@@ -168,7 +169,7 @@ public class ChapterActivity extends AppCompatActivity {
                 Log.e("ChapterActivity", "getData parse error", e);
                 showEmpty(true);
             }
-        }, Request.Method.GET, activity, url, new HashMap<>(), false);
+        }, Request.Method.GET, activity, url, new HashMap<>(), false, cacheKey);
     }
 
 }

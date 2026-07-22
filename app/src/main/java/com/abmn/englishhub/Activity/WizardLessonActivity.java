@@ -77,6 +77,7 @@ public class WizardLessonActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void fetchStories() {
         String url = Constant.WIZARD_STORIES + "?chapter_id=" + chapterId;
+        String cacheKey = "wizard_stories_" + chapterId;
         ApiConfig.RequestToVolley((result, response, error) -> {
             try {
                 if (result) {
@@ -93,7 +94,7 @@ public class WizardLessonActivity extends AppCompatActivity {
             } catch (Exception e) {
                 // ignored
             }
-        }, Request.Method.GET, activity, url, new HashMap<>(), true);
+        }, Request.Method.GET, activity, url, new HashMap<>(), true, cacheKey);
     }
 
     @Override

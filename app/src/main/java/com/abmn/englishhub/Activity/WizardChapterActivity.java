@@ -105,7 +105,7 @@ public class WizardChapterActivity extends AppCompatActivity {
                 emptyTV.setText(failed ? "লোড করা যায়নি" : "কোনো গল্প নেই");
                 emptyLL.setVisibility(View.VISIBLE);
             }
-        }, Request.Method.GET, activity, Constant.WIZARD_CHAPTERS, new HashMap<>(), true);
+        }, Request.Method.GET, activity, Constant.WIZARD_CHAPTERS, new HashMap<>(), true, "wizard_chapters");
     }
 
     @Override

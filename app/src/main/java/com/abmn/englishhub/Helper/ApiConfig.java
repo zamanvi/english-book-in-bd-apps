@@ -32,9 +32,23 @@ public class ApiConfig {
     }
 
     public static void RequestToVolley(VolleyCallback result, int method, Activity activity, String url, Map<String, String> params, boolean isProgress) {
+        RequestToVolley(result, method, activity, url, params, isProgress, null);
+    }
+
+    // cacheKey non-null opts a call into offline caching: served from disk when
+    // there's no connection or the request fails, and refreshed on every
+    // successful response. Existing callers are unaffected (see overload above).
+    public static void RequestToVolley(VolleyCallback result, int method, Activity activity, String url, Map<String, String> params, boolean isProgress, String cacheKey) {
         UConfig uConfig = new UConfig(activity);
         if (!uConfig.isConnected()){
-            uConfig.isConnectedAlert("", "");
+            if (cacheKey != null) {
+                String cached = OfflineCache.load(activity, cacheKey);
+                if (cached != null) {
+                    result.onResponse(true, cached, "");
+                    return;
+                }
+            }
+            uConfig.isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
         }
         ProgressDisplay progressDisplay = new ProgressDisplay(activity);
         if (isProgress)
@@ -58,6 +72,9 @@ public class ApiConfig {
                         JSONObject success = new JSONObject(response).getJSONObject(Constant.SUCCESS);
                         if (success.getBoolean(Constant.STATUS)){
                             JSONObject data = success.getJSONObject(Constant.DATA);
+                            if (cacheKey != null) {
+                                OfflineCache.save(activity, cacheKey, String.valueOf(data));
+                            }
                             result.onResponse(true, String.valueOf(data), "");
                         }else {
                             JSONObject jsonObject = new JSONObject(response);
@@ -75,6 +92,13 @@ public class ApiConfig {
                 },
                 error -> {
                     progressDisplay.hideProgress();
+                    if (cacheKey != null) {
+                        String cached = OfflineCache.load(activity, cacheKey);
+                        if (cached != null) {
+                            result.onResponse(true, cached, "");
+                            return;
+                        }
+                    }
                     NetworkResponse networkResponse = error.networkResponse;
                     if (networkResponse != null && networkResponse.data != null) {
                         String errorResponse = new String(networkResponse.data);

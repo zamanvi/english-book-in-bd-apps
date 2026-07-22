@@ -151,6 +151,7 @@ public class ItemActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void getData(String data) {
 
+        String cacheKey = "items_" + data;
         ApiConfig.RequestToVolley((result, response, error) -> {
             if (!result || response == null || response.isEmpty()) {
                 showEmpty(true);
@@ -189,7 +190,7 @@ public class ItemActivity extends AppCompatActivity {
                 android.util.Log.e("ItemActivity", "getData parse error", e);
                 showEmpty(true);
             }
-        }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + data, new HashMap<>(), false);
+        }, Request.Method.GET, activity, Constant.ITEM_API + "?chapter_slug=" + data, new HashMap<>(), false, cacheKey);
     }
 
     private void showEmpty(boolean failed) {

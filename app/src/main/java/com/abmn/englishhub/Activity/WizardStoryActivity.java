@@ -296,6 +296,7 @@ public class WizardStoryActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void fetchStory() {
         String url = Constant.WIZARD_STORY_SHOW + storyId;
+        String cacheKey = "wizard_story_" + storyId;
         ApiConfig.RequestToVolley((result, response, error) -> {
             try {
                 if (result) {
@@ -323,7 +324,7 @@ public class WizardStoryActivity extends AppCompatActivity {
             } catch (Exception e) {
                 // ignored
             }
-        }, Request.Method.GET, activity, url, new HashMap<>(), true);
+        }, Request.Method.GET, activity, url, new HashMap<>(), true, cacheKey);
     }
 
     private List<String> toStringList(JSONArray array) throws Exception {

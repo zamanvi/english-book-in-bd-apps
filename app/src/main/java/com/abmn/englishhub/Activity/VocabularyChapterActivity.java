@@ -86,9 +86,9 @@ public class VocabularyChapterActivity extends AppCompatActivity {
         emptyLL = findViewById(R.id.emptyLL);
         emptyTV = findViewById(R.id.emptyTV);
 
-        if (!uConfig.isConnected()){
-            uConfig.isConnectedAlert("", "");
-        }
+        // No unconditional "no internet" check here - fetchData() below goes
+        // through ApiConfig, which serves cached content silently when
+        // offline and only alerts if there's truly nothing cached to show.
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(activity);
         linearLayout.setReverseLayout(false);
@@ -184,6 +184,7 @@ public class VocabularyChapterActivity extends AppCompatActivity {
             url += "&type=" + categoryType;
         }
         String tag = "VocabularyChapterActivity";
+        String cacheKey = "vocab_chapters_" + (categoryType != null && !categoryType.isEmpty() ? categoryType : "all") + "_p" + page;
 
         if (page == 1) {
             loadingPB.setVisibility(View.VISIBLE);
@@ -231,7 +232,7 @@ public class VocabularyChapterActivity extends AppCompatActivity {
                     emptyLL.setVisibility(View.VISIBLE);
                 }
             }
-        }, Request.Method.GET, activity, url, new HashMap<>(), true);
+        }, Request.Method.GET, activity, url, new HashMap<>(), true, cacheKey);
     }
 
     @Override
