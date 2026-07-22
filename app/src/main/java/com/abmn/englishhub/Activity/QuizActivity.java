@@ -224,13 +224,37 @@ public class QuizActivity extends AppCompatActivity {
     // but from the word list already cached on-device by WordActivity, so a
     // lesson viewed once online can still be quizzed with no connection.
     private void buildOfflineQuiz() {
+        // Battles are live two-player matches - a locally-generated quiz
+        // whose result can never reach the server would just waste the
+        // player's time and leave the battle unresolved, so battles stay
+        // online-only.
+        if (battleId > 0) {
+            runOnUiThread(() -> {
+                quizLoadingBar.setVisibility(View.GONE);
+                android.widget.Toast.makeText(this,
+                        "যুদ্ধ খেলতে ইন্টারনেট সংযোগ প্রয়োজন",
+                        android.widget.Toast.LENGTH_LONG).show();
+                finish();
+            });
+            return;
+        }
+
         List<JSONObject> allWords = new ArrayList<>();
+        boolean lockedPremium = false;
         int page = 1;
         while (true) {
             String cached = OfflineCache.load(this, "vocab_words_" + lessonId + "_p" + page);
             if (cached == null) break;
             try {
                 JSONObject root = new JSONObject(cached);
+                // A locked Premium lesson's cache only holds the free teaser
+                // words - the server refuses to quiz those lessons online, so
+                // the offline path must refuse too instead of quietly building
+                // a quiz around the paywall.
+                if (root.optBoolean("is_premium", false) && !root.optBoolean("unlocked", true)) {
+                    lockedPremium = true;
+                    break;
+                }
                 JSONArray dataArray = root.getJSONObject(Constant.WORDS).getJSONArray(Constant.DATA);
                 for (int i = 0; i < dataArray.length(); i++) {
                     JSONObject w = dataArray.getJSONObject(i);
@@ -242,6 +266,17 @@ public class QuizActivity extends AppCompatActivity {
                 break;
             }
             page++;
+        }
+
+        if (lockedPremium) {
+            runOnUiThread(() -> {
+                quizLoadingBar.setVisibility(View.GONE);
+                android.widget.Toast.makeText(this,
+                        "🔒 প্রিমিয়াম লেসন — কুইজ খেলতে আগে আনলক করো",
+                        android.widget.Toast.LENGTH_LONG).show();
+                finish();
+            });
+            return;
         }
 
         runOnUiThread(() -> {
