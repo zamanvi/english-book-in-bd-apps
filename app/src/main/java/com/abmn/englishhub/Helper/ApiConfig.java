@@ -221,4 +221,68 @@ public class ApiConfig {
         req.setRetryPolicy(new DefaultRetryPolicy(15000, 1, 1.0f));
         queue.add(req);
     }
+
+    // ── Multipart file upload — Volley has no built-in multipart support,
+    // so this one goes straight over HttpURLConnection on a background thread. ──
+    public static void uploadFile(String url, String token, java.io.File file, String fieldName,
+                                   SimpleCallback onSuccess, ErrorCallback onError) {
+        new Thread(() -> {
+            String boundary = "Boundary-" + System.currentTimeMillis();
+            java.net.HttpURLConnection conn = null;
+            try {
+                conn = (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
+                conn.setDoOutput(true);
+                conn.setUseCaches(false);
+                conn.setRequestMethod("POST");
+                conn.setConnectTimeout(20000);
+                conn.setReadTimeout(20000);
+                conn.setRequestProperty("x-api-key", "app");
+                conn.setRequestProperty(Constant.AUTHORIZATION, Constant.BEARER + token);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+                try (java.io.DataOutputStream out = new java.io.DataOutputStream(conn.getOutputStream())) {
+                    out.writeBytes("--" + boundary + "\r\n");
+                    out.writeBytes("Content-Disposition: form-data; name=\"" + fieldName
+                            + "\"; filename=\"" + file.getName() + "\"\r\n");
+                    out.writeBytes("Content-Type: image/jpeg\r\n\r\n");
+                    try (java.io.FileInputStream fis = new java.io.FileInputStream(file)) {
+                        byte[] buffer = new byte[4096];
+                        int len;
+                        while ((len = fis.read(buffer)) != -1) out.write(buffer, 0, len);
+                    }
+                    out.writeBytes("\r\n--" + boundary + "--\r\n");
+                }
+
+                int code = conn.getResponseCode();
+                java.io.InputStream is = (code >= 200 && code < 300) ? conn.getInputStream() : conn.getErrorStream();
+                String response = readFully(is);
+
+                postToMain(() -> {
+                    if (code >= 200 && code < 300) {
+                        if (onSuccess != null) onSuccess.onSuccess(response);
+                    } else if (onError != null) {
+                        onError.onError(new Exception(response));
+                    }
+                });
+            } catch (Exception e) {
+                postToMain(() -> { if (onError != null) onError.onError(e); });
+            } finally {
+                if (conn != null) conn.disconnect();
+            }
+        }).start();
+    }
+
+    private static String readFully(java.io.InputStream is) throws java.io.IOException {
+        if (is == null) return "";
+        java.io.ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int len;
+        while ((len = is.read(buffer)) != -1) bos.write(buffer, 0, len);
+        return bos.toString("UTF-8");
+    }
+
+    private static void postToMain(Runnable r) {
+        new android.os.Handler(android.os.Looper.getMainLooper()).post(r);
+    }
 }

@@ -19,6 +19,10 @@
     <color name="teal_dim">#2234D399</color>
     <color name="gold">#FBBF24</color>
     <color name="gold_dim">#22FBBF24</color>
+    <color name="bronze">#C88A4D</color>
+    <color name="bronze_dim">#22C88A4D</color>
+    <color name="silver">#C7CEDB</color>
+    <color name="silver_dim">#22C7CEDB</color>
     <color name="red_wrong">#F43F5E</color>
     <color name="red_wrong_dim">#22F43F5E</color>
     <color name="crimson">#E11D48</color>

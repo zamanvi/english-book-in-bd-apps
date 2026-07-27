@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         activity = getActivity();
+        applyHomeTheme(view);
         bindViews(view);
         initTts();
         setupClickListeners();
@@ -65,6 +66,14 @@ public class HomeFragment extends Fragment {
         loadDailyWord();
         loadGrammarProgress();
         return view;
+    }
+
+    // ── Theme ─────────────────────────────────────────────────────
+
+    private void applyHomeTheme(View root) {
+        if (activity == null) return;
+        int index = com.abmn.englishhub.Helper.ThemePrefs.getHomePalette(activity);
+        root.setBackgroundColor(com.abmn.englishhub.Helper.ThemePrefs.getPalette(index).background);
     }
 
     // ── View binding ─────────────────────────────────────────────

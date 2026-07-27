@@ -7,34 +7,60 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.LoginActivity;
 import com.abmn.englishhub.Activity.SocialLinkActivity;
+import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.LevelHelper;
 import com.abmn.englishhub.R;
 import android.widget.ProgressBar;
 import com.abmn.utility.UConfig;
+import com.bumptech.glide.Glide;
+import com.yalantis.ucrop.UCrop;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.Calendar;
 
 public class ProfileFragment extends Fragment {
 
     private static final String[] DAY_LABELS = {"M", "T", "W", "T", "F", "S", "S"};
+
+    private File pendingAvatarFile;
+
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickAvatarLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                if (uri != null) launchAvatarCrop(uri);
+            });
+
+    private final ActivityResultLauncher<Intent> cropAvatarLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && pendingAvatarFile != null) {
+                    uploadAvatar(pendingAvatarFile);
+                }
+            });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +69,7 @@ public class ProfileFragment extends Fragment {
             loadStats(view);
             buildWeekCalendar(view);
             wireMenuItems(view);
+            bindAvatarPicker(view);
             return view;
         } catch (Throwable t) {
             android.widget.Toast.makeText(getContext(),
@@ -50,6 +77,111 @@ public class ProfileFragment extends Fragment {
                 android.widget.Toast.LENGTH_LONG).show();
             return new android.view.View(getContext());
         }
+    }
+
+    // ── Lipto tier badge + progress ring ──────────────────────────
+
+    private void bindLiptoTier(View view, Activity activity, int lipto) {
+        String tierName = com.abmn.englishhub.Helper.LiptoTierHelper.getTierName(lipto);
+        String emoji    = com.abmn.englishhub.Helper.LiptoTierHelper.getTierEmoji(lipto);
+        int tierColor    = com.abmn.englishhub.Helper.LiptoTierHelper.getTierColor(activity, lipto);
+        int progress     = com.abmn.englishhub.Helper.LiptoTierHelper.getProgressPercent(lipto);
+        int nextThreshold = com.abmn.englishhub.Helper.LiptoTierHelper.getNextThreshold(lipto);
+        String nextTierName = com.abmn.englishhub.Helper.LiptoTierHelper.getNextTierName(lipto);
+
+        ((TextView) view.findViewById(R.id.liptoTierEmojiTV)).setText(emoji);
+        ((TextView) view.findViewById(R.id.liptoTierNameTV)).setText(tierName + " Tier");
+
+        TextView progressTV = view.findViewById(R.id.liptoTierProgressTV);
+        if (nextThreshold == -1) {
+            progressTV.setText("সর্বোচ্চ ধাপে পৌঁছে গেছো! 🏆");
+        } else {
+            progressTV.setText("পরবর্তী ধাপ: " + nextTierName + " (" + nextThreshold + " Lipto)");
+        }
+
+        com.google.android.material.progressindicator.CircularProgressIndicator cpi =
+                view.findViewById(R.id.liptoTierProgressCPI);
+        cpi.setIndicatorColor(tierColor);
+        cpi.setProgress(progress);
+    }
+
+    // ── Avatar upload ──────────────────────────────────────────────
+
+    private void bindAvatarPicker(View view) {
+        Activity activity = getActivity();
+        if (activity == null) return;
+
+        View.OnClickListener launchPicker = v -> pickAvatarLauncher.launch(
+                new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
+
+        view.findViewById(R.id.profileAvatarEditBtn).setOnClickListener(launchPicker);
+    }
+
+    private void launchAvatarCrop(Uri sourceUri) {
+        Activity activity = getActivity();
+        if (activity == null) return;
+
+        pendingAvatarFile = new File(activity.getCacheDir(), "avatar_" + System.currentTimeMillis() + ".jpg");
+        Uri destUri = FileProvider.getUriForFile(activity,
+                activity.getPackageName() + ".fileprovider", pendingAvatarFile);
+
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+        options.setCompressionQuality(80);
+        options.setToolbarColor(ContextCompat.getColor(activity, R.color.bg_card));
+        options.setStatusBarColor(ContextCompat.getColor(activity, R.color.bg_deep));
+        options.setToolbarWidgetColor(ContextCompat.getColor(activity, R.color.text_primary));
+        options.setActiveControlsWidgetColor(ContextCompat.getColor(activity, R.color.indigo));
+        options.setToolbarTitle("প্রোফাইল ছবি ক্রপ করো");
+        options.setHideBottomControls(true);
+
+        Intent cropIntent = UCrop.of(sourceUri, destUri)
+                .withAspectRatio(1, 1)
+                // Small on purpose - this is just a circular avatar, never
+                // shown larger than a thumbnail, so there's no reason to let
+                // the upload balloon in size or slow the app down.
+                .withMaxResultSize(512, 512)
+                .withOptions(options)
+                .getIntent(activity);
+        cropAvatarLauncher.launch(cropIntent);
+    }
+
+    private void uploadAvatar(File file) {
+        Activity activity = getActivity();
+        if (activity == null) return;
+        String token = new UConfig(activity).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        Toast.makeText(activity, "আপলোড হচ্ছে...", Toast.LENGTH_SHORT).show();
+
+        ApiConfig.uploadFile(Constant.PROFILE_PHOTO_UPLOAD, token, file, "photo", response -> {
+            try {
+                JSONObject r = new JSONObject(response);
+                if ("success".equals(r.optString("status"))) {
+                    String photoUrl = r.optString("profile_photo", "");
+                    activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                            .edit().putString("profile_photo", photoUrl).apply();
+                    Toast.makeText(activity, "✅ প্রোফাইল ছবি পরিবর্তন হয়েছে!", Toast.LENGTH_SHORT).show();
+                    loadAvatarImage(getView(), photoUrl);
+                } else {
+                    Toast.makeText(activity, "ছবি আপলোড করা যায়নি", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                Toast.makeText(activity, "ছবি আপলোড করা যায়নি", Toast.LENGTH_SHORT).show();
+            }
+        }, error -> Toast.makeText(activity, "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করো", Toast.LENGTH_SHORT).show());
+    }
+
+    private void loadAvatarImage(View view, String url) {
+        if (view == null || url == null || url.isEmpty()) return;
+        ImageView iv = view.findViewById(R.id.profileAvatarIV);
+        TextView emoji = view.findViewById(R.id.profileAvatarTV);
+        if (iv == null || emoji == null) return;
+        Glide.with(view).load(url).into(iv);
+        iv.setVisibility(View.VISIBLE);
+        emoji.setVisibility(View.GONE);
     }
 
     // ── Stats ────────────────────────────────────────────────────
@@ -81,6 +213,8 @@ public class ProfileFragment extends Fragment {
             statsRowLL.setVisibility(android.view.View.GONE);
             streakCalendarCV.setVisibility(android.view.View.GONE);
             view.findViewById(R.id.liptoBannerCV).setVisibility(android.view.View.GONE);
+            view.findViewById(R.id.liptoTierCV).setVisibility(android.view.View.GONE);
+            view.findViewById(R.id.profileAvatarEditBtn).setVisibility(android.view.View.GONE);
             view.findViewById(R.id.guestCtaBtn).setOnClickListener(v ->
                     startActivity(new Intent(activity, LoginActivity.class)));
             return;
@@ -92,6 +226,8 @@ public class ProfileFragment extends Fragment {
         statsRowLL.setVisibility(android.view.View.VISIBLE);
         streakCalendarCV.setVisibility(android.view.View.VISIBLE);
         view.findViewById(R.id.liptoBannerCV).setVisibility(android.view.View.VISIBLE);
+        view.findViewById(R.id.liptoTierCV).setVisibility(android.view.View.VISIBLE);
+        view.findViewById(R.id.profileAvatarEditBtn).setVisibility(android.view.View.VISIBLE);
         view.findViewById(R.id.menuLogoutCV).setVisibility(android.view.View.VISIBLE);
 
         TextView nameTV = view.findViewById(R.id.profileNameTV);
@@ -120,6 +256,13 @@ public class ProfileFragment extends Fragment {
             userIdLayout.setVisibility(android.view.View.GONE);
         }
 
+        // Friend Code — tap to copy, share with friends for Lipto gifting
+        // Also loads/caches the profile photo (same fallback fetch covers both).
+        bindFriendCode(view, prefs, activity);
+
+        String cachedPhoto = prefs.getString("profile_photo", "");
+        if (!cachedPhoto.isEmpty()) loadAvatarImage(view, cachedPhoto);
+
         // XP / Streak / Rank / Lipto
         int xp     = prefs.getInt(Constant.TOTAL_XP, 0);
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
@@ -132,6 +275,8 @@ public class ProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.profileLiptoTV)).setText(String.valueOf(lipto));
         view.findViewById(R.id.liptoBannerCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
+
+        bindLiptoTier(view, activity, lipto);
 
         // Level progress bar
         ((TextView) view.findViewById(R.id.profileLevelLabelTV)).setText(LevelHelper.getLevelLabel(xp));
@@ -263,6 +408,8 @@ public class ProfileFragment extends Fragment {
 
         view.findViewById(R.id.menuUpdateCV).setOnClickListener(v -> openPlayStoreListing(activity));
 
+        view.findViewById(R.id.menuThemeCV).setOnClickListener(v -> openThemePicker(activity));
+
         view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> openPlayStoreListing(activity));
 
         view.findViewById(R.id.menuLogoutCV).setOnClickListener(v ->
@@ -331,5 +478,79 @@ public class ProfileFragment extends Fragment {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, uri)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
+    }
+
+    private void openThemePicker(Activity activity) {
+        String[] names = com.abmn.englishhub.Helper.ThemePrefs.paletteNames();
+        int current = com.abmn.englishhub.Helper.ThemePrefs.getHomePalette(activity);
+        new AlertDialog.Builder(activity)
+                .setTitle("হোম পেইজের থিম বেছে নাও")
+                .setSingleChoiceItems(names, current, (dialog, which) -> {
+                    com.abmn.englishhub.Helper.ThemePrefs.setHomePalette(activity, which);
+                    dialog.dismiss();
+                    Toast.makeText(activity, "থিম পরিবর্তন হয়েছে — Home এ ফিরে গেলে দেখতে পাবে", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("বাতিল", null)
+                .show();
+    }
+
+    // Older installs that logged in before friend_code/profile_photo existed
+    // won't have them cached locally yet (only saved on fresh Login/Register
+    // responses) - fall back to Sanctum's bare GET /user route to pick both
+    // up in one call and cache them.
+    private void bindFriendCode(View view, SharedPreferences prefs, Activity activity) {
+        if (activity == null) return;
+        View codeLayout = view.findViewById(R.id.profileFriendCodeTV);
+        TextView codeText = view.findViewById(R.id.profileFriendCodeText);
+
+        boolean hasCode  = !prefs.getString("friend_code", "").isEmpty();
+        boolean hasPhoto = !prefs.getString("profile_photo", "").isEmpty();
+
+        if (hasCode) {
+            showFriendCode(codeLayout, codeText, prefs.getString("friend_code", ""), activity);
+        }
+        if (hasCode && hasPhoto) return;
+
+        String token = new UConfig(activity).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        String url = Constant.ROOT_DOMAIN + Constant.API2 + "user";
+        ApiConfig.getRequest(activity, url, token, response -> {
+            try {
+                JSONObject user = new JSONObject(response);
+                String code = user.optString("friend_code", "");
+
+                // profile_photo is a computed accessor that ALWAYS returns a URL
+                // (falls back to a default placeholder asset when the user has no
+                // custom photo) - profile_photo_path is the raw column, only
+                // non-null once a real photo has actually been uploaded. Must gate
+                // on that, or every user with no avatar would start fetching and
+                // showing the generic default placeholder image over the network
+                // instead of the current zero-network emoji fallback.
+                boolean hasRealPhoto = user.has("profile_photo_path") && !user.isNull("profile_photo_path");
+                String photo = hasRealPhoto ? user.optString("profile_photo", "") : "";
+
+                SharedPreferences.Editor editor = activity
+                        .getSharedPreferences("app_prefs", Context.MODE_PRIVATE).edit();
+                if (!code.isEmpty()) editor.putString("friend_code", code);
+                if (!photo.isEmpty()) editor.putString("profile_photo", photo);
+                editor.apply();
+
+                activity.runOnUiThread(() -> {
+                    if (!code.isEmpty()) showFriendCode(codeLayout, codeText, code, activity);
+                    if (!photo.isEmpty()) loadAvatarImage(getView(), photo);
+                });
+            } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    private void showFriendCode(View layout, TextView text, String code, Activity activity) {
+        text.setText("Code: " + code);
+        layout.setVisibility(View.VISIBLE);
+        layout.setOnClickListener(v -> {
+            ClipboardManager cm = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(ClipData.newPlainText("friend_code", code));
+            Toast.makeText(activity, "✅ Friend Code কপি হয়েছে!", Toast.LENGTH_SHORT).show();
+        });
     }
 }

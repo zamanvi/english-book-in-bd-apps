@@ -1,11 +1,14 @@
 package com.abmn.englishhub.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +33,7 @@ public class LiptoPassbookActivity extends AppCompatActivity {
     private LinearLayout emptyLL;
     private final List<JSONObject> transactions = new ArrayList<>();
     private LiptoTransactionAdapter adapter;
+    private ActivityResultLauncher<Intent> transferLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,13 @@ public class LiptoPassbookActivity extends AppCompatActivity {
         adapter = new LiptoTransactionAdapter(transactions);
         txnRV.setLayoutManager(new LinearLayoutManager(this));
         txnRV.setAdapter(adapter);
+
+        transferLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> loadPassbook());
+
+        findViewById(R.id.sendToFriendBtn).setOnClickListener(v ->
+                transferLauncher.launch(new Intent(this, LiptoTransferActivity.class)));
 
         loadPassbook();
     }

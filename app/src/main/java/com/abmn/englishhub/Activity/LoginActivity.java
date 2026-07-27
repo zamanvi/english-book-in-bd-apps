@@ -1,6 +1,7 @@
 package com.abmn.englishhub.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn   = findViewById(R.id.loginBtn);
 
         loginBtn.setOnClickListener(v -> attemptLogin());
+
+        findViewById(R.id.closeBtn).setOnClickListener(v -> finish());
 
         findViewById(R.id.goToRegisterTV).setOnClickListener(v ->
             startActivity(new Intent(this, RegisterActivity.class)));
@@ -74,14 +77,17 @@ public class LoginActivity extends AppCompatActivity {
                     String token = data.optString("token", "");
                     String userName = userObj != null ? userObj.optString("name", name) : name;
                     int userId = userObj != null ? userObj.optInt("id", 0) : 0;
+                    String friendCode = userObj != null ? userObj.optString("friend_code", "") : "";
 
                     UConfig uConfig = new UConfig(this);
                     uConfig.setData(Constant.TOKEN, token);
                     uConfig.setData("name", userName);
 
                     if (userId > 0) {
-                        getSharedPreferences("app_prefs", MODE_PRIVATE)
-                                .edit().putInt("user_id", userId).apply();
+                        SharedPreferences.Editor editor = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                .edit().putInt("user_id", userId);
+                        if (!friendCode.isEmpty()) editor.putString("friend_code", friendCode);
+                        editor.apply();
                     }
 
                     com.abmn.englishhub.Helper.FcmService.saveTokenToBackend(this);

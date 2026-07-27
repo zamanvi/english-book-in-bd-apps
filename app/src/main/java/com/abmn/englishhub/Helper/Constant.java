@@ -17,9 +17,14 @@ public class Constant {
     public static final String GAME_XP            = ROOT_API_GAME_AUTH + "xp";
     public static final String GAME_STREAK        = ROOT_API_GAME_AUTH + "streak";
     public static final String GAME_STREAK_UPDATE = ROOT_API_GAME_AUTH + "streak/update";
-    public static final String GAME_LIPTO_BALANCE  = ROOT_API_GAME_AUTH + "lipto/balance";
-    public static final String GAME_LIPTO_EARN     = ROOT_API_GAME_AUTH + "lipto/earn";
-    public static final String GAME_LIPTO_SPEND    = ROOT_API_GAME_AUTH + "lipto/spend";
+    public static final String GAME_LIPTO_BALANCE      = ROOT_API_GAME_AUTH + "lipto/balance";
+    public static final String GAME_LIPTO_EARN         = ROOT_API_GAME_AUTH + "lipto/earn";
+    public static final String GAME_LIPTO_SPEND        = ROOT_API_GAME_AUTH + "lipto/spend";
+    public static final String GAME_LIPTO_TRANSFER     = ROOT_API_GAME_AUTH + "lipto/transfer";
+    public static final String GAME_LIPTO_FIND_FRIEND  = ROOT_API_GAME_AUTH + "lipto/find-friend";
+
+    // Profile endpoints
+    public static final String PROFILE_PHOTO_UPLOAD = ROOT_DOMAIN + API2 + "app/profile/photo";
 
     // Group / Room endpoints
     public static final String GROUP_CREATE        = ROOT_API_GAME_AUTH + "group/create";

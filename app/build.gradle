@@ -77,6 +77,8 @@ dependencies {
     implementation libs.swiperefreshlayout
     implementation libs.utility
     implementation libs.texttospeech
+    implementation libs.ucrop
+    implementation libs.glide
 
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.messaging

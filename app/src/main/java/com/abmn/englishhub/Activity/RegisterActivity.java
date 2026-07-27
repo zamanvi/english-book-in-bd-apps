@@ -36,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerBtn.setOnClickListener(v -> attemptRegister());
         findViewById(R.id.goToLoginTV).setOnClickListener(v -> finish());
+        findViewById(R.id.closeBtn).setOnClickListener(v -> finish());
     }
 
     private void attemptRegister() {
@@ -86,14 +87,17 @@ public class RegisterActivity extends AppCompatActivity {
                     JSONObject userObj = data.optJSONObject("user");
                     String token = data.optString("token", "");
                     int userId = userObj != null ? userObj.optInt("id", 0) : 0;
+                    String friendCode = userObj != null ? userObj.optString("friend_code", "") : "";
 
                     UConfig uConfig = new UConfig(this);
                     uConfig.setData(Constant.TOKEN, token);
                     uConfig.setData("name", name);
 
                     if (userId > 0) {
-                        getSharedPreferences("app_prefs", MODE_PRIVATE)
-                                .edit().putInt("user_id", userId).apply();
+                        android.content.SharedPreferences.Editor editor = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                .edit().putInt("user_id", userId);
+                        if (!friendCode.isEmpty()) editor.putString("friend_code", friendCode);
+                        editor.apply();
                     }
 
                     startActivity(new Intent(this, MainActivity.class)
