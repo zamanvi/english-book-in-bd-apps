@@ -44,9 +44,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         ttsHelper = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshTtsSpeed() {
         UConfig uConfig = new UConfig(activity);
         ttsHelper = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
+        notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
