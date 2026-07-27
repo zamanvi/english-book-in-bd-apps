@@ -119,6 +119,12 @@
             android:name=".Activity.BattleActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.CreateChallengeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.JoinByCodeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.LeaderboardActivity"
             android:exported="false" />
         <activity

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -55,6 +56,12 @@ public class BattleActivity extends AppCompatActivity {
             return;
         }
 
+        // This whole section is online-only - warn once up front instead of
+        // letting every list silently fail one by one.
+        if (!new UConfig(this).isConnected()) {
+            new UConfig(this).isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
+        }
+
         setContentView(R.layout.activity_battle);
 
         opponentIdET     = findViewById(R.id.opponentIdET);
@@ -71,6 +78,17 @@ public class BattleActivity extends AppCompatActivity {
         swipeRefresh.setProgressBackgroundColorSchemeColor(0xFF0C0E26);
 
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
+
+        View customizeBtn = findViewById(R.id.customizeChallengeBtn);
+        if (customizeBtn != null) {
+            customizeBtn.setOnClickListener(v ->
+                    startActivity(new Intent(this, CreateChallengeActivity.class)));
+        }
+        View joinCodeBtn = findViewById(R.id.joinByCodeBtn);
+        if (joinCodeBtn != null) {
+            joinCodeBtn.setOnClickListener(v ->
+                    startActivity(new Intent(this, JoinByCodeActivity.class)));
+        }
 
         pendingAdapter = new BattleAdapter(pendingBattles, this::openBattle);
         pendingRV.setLayoutManager(new LinearLayoutManager(this));
@@ -90,6 +108,85 @@ public class BattleActivity extends AppCompatActivity {
         loadLessons();
         loadPending();
         loadHistory();
+
+        handleDeepLinkBattle(getIntent());
+    }
+
+    // Fixes the notification-tap bug: FcmService/SplashActivity both launch
+    // this Activity with a "battle_id" extra when a challenge push is tapped,
+    // but that extra was never read - the user had to manually hunt through
+    // pendingRV. Now it's read and routed straight to the right screen/state.
+    private void handleDeepLinkBattle(Intent intent) {
+        int battleId = intent != null ? intent.getIntExtra("battle_id", 0) : 0;
+        if (battleId <= 0) return;
+
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        if (!new UConfig(this).isConnected()) {
+            new UConfig(this).isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
+            return;
+        }
+
+        ApiConfig.getRequest(this, Constant.BATTLE_BASE + battleId, token, response -> {
+            try {
+                JSONObject r = new JSONObject(response);
+                if (!Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
+                    runOnUiThread(() -> Toast.makeText(this, "😕 এই battle খুঁজে পাওয়া যায়নি", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+                JSONObject battle = r.optJSONObject("battle");
+                if (battle == null) return;
+
+                String status   = battle.optString("status", "");
+                int lessonId    = battle.optInt("lesson_id", 0);
+                int questionCnt = battle.optInt("question_count", 10);
+                int lives       = battle.optInt("lives", 0);
+                JSONArray wordIdsArr = battle.optJSONArray("question_word_ids");
+
+                runOnUiThread(() -> {
+                    if ("challenger_done".equals(status) || isMyTurnInMultiBattle(battle)) {
+                        Intent qi = new Intent(this, QuizActivity.class);
+                        qi.putExtra("lesson_id", lessonId);
+                        qi.putExtra("battle_id", battleId);
+                        qi.putExtra("question_count", questionCnt);
+                        qi.putExtra("lives", lives);
+                        if (wordIdsArr != null && wordIdsArr.length() > 0) {
+                            qi.putExtra("word_ids", joinIntArray(wordIdsArr));
+                        }
+                        startActivity(qi);
+                    } else if ("completed".equals(status)) {
+                        Toast.makeText(this, "🏁 এই battle শেষ হয়ে গেছে — নিচে ফলাফল দেখো", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "⏳ এখনো তোমার পালা আসেনি, একটু অপেক্ষা করো", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (Exception ignored) {}
+        }, error -> runOnUiThread(() ->
+                Toast.makeText(this, "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করো", Toast.LENGTH_SHORT).show()));
+    }
+
+    // "participants" only exists on new-shape (customize) battles; legacy
+    // 2-player battles are handled by the "challenger_done" check above.
+    private boolean isMyTurnInMultiBattle(JSONObject battle) {
+        JSONArray participants = battle.optJSONArray("participants");
+        if (participants == null) return false;
+        for (int i = 0; i < participants.length(); i++) {
+            JSONObject p = participants.optJSONObject(i);
+            if (p != null && p.optBoolean("is_me", false)) {
+                return !"submitted".equals(p.optString("status", ""));
+            }
+        }
+        return false;
+    }
+
+    private String joinIntArray(JSONArray arr) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < arr.length(); i++) {
+            if (sb.length() > 0) sb.append(",");
+            sb.append(arr.optInt(i));
+        }
+        return sb.toString();
     }
 
     private void loadLessons() {
@@ -126,6 +223,11 @@ public class BattleActivity extends AppCompatActivity {
         UConfig uConfig = new UConfig(this);
         String token = uConfig.getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) { showError("লগইন করো আগে"); return; }
+
+        if (!uConfig.isConnected()) {
+            uConfig.isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
+            return;
+        }
 
         int opponentId;
         try {

@@ -183,6 +183,23 @@
 
     </LinearLayout>
 
+    <!-- ── Lives (hearts) row — only shown when this quiz has a lives cap.
+         GONE by default so it takes zero space and doesn't disturb the
+         normal (no-lives) layout at all. ──────────────────────── -->
+    <LinearLayout
+        android:id="@+id/heartsRowLL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="2dp"
+        android:paddingBottom="6dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/timerRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+
     <!-- ── Question card ─────────────────────────────────────── -->
     <!-- wrap_content (not 0dp/"spread") so the card sizes to its actual
          content instead of stretching to fill all leftover space between
@@ -200,7 +217,7 @@
         app:cardBackgroundColor="#00000000"
         app:cardCornerRadius="18dp"
         app:cardElevation="0dp"
-        app:layout_constraintTop_toBottomOf="@id/timerRow"
+        app:layout_constraintTop_toBottomOf="@id/heartsRowLL"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/optionsContainer"

@@ -64,6 +64,18 @@ public class QuizActivity extends AppCompatActivity {
     private int battleId = 0;  // 0 = normal quiz, >0 = part of a battle
     private long quizStartMs = 0;
 
+    // Customize-battle extras — all optional, default to legacy behavior
+    // when absent so old callers (plain lesson practice, legacy 1v1 battle)
+    // are completely unaffected.
+    private int questionCount = TOTAL_QUESTIONS;
+    private String wordIdsExtra = null;
+    private int maxLives = 0;       // 0 = unlimited (today's behavior)
+    private int livesRemaining = 0;
+    private LinearLayout heartsRowLL;
+
+    private android.media.SoundPool soundPool;
+    private int soundCorrectId, soundWrongId;
+
     // Option card references in array for easy iteration
     private CardView[] optionCards;
     private TextView[] optionLabels;
@@ -79,19 +91,101 @@ public class QuizActivity extends AppCompatActivity {
 
         lessonId = getIntent().getIntExtra("lesson_id", 1);
         battleId = getIntent().getIntExtra("battle_id", 0);
+        questionCount = getIntent().getIntExtra("question_count", TOTAL_QUESTIONS);
+        if (questionCount <= 0) questionCount = TOTAL_QUESTIONS;
+        wordIdsExtra = getIntent().getStringExtra("word_ids");
+        maxLives = getIntent().getIntExtra("lives", 0);
+        livesRemaining = maxLives;
 
         try {
             toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
         } catch (RuntimeException e) {
             toneGenerator = null;
         }
+        setupSoundPool();
 
         UConfig uConfig = new UConfig(this);
         ttsHelper = new TextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
 
         bindViews();
         setupClickListeners();
+        setupHearts();
         fetchQuiz();
+    }
+
+    // Sound assets aren't bundled yet (no res/raw/ folder exists in this repo
+    // today) - look the resource up by name at runtime so the build/app keep
+    // working with silent no-ops until real audio files are dropped into
+    // res/raw/ (expected names: correct, wrong).
+    private void setupSoundPool() {
+        try {
+            android.media.AudioAttributes attrs = new android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_GAME)
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            soundPool = new android.media.SoundPool.Builder()
+                    .setMaxStreams(2)
+                    .setAudioAttributes(attrs)
+                    .build();
+            soundCorrectId = loadSoundIfExists("correct");
+            soundWrongId   = loadSoundIfExists("wrong");
+        } catch (Exception e) {
+            soundPool = null;
+        }
+    }
+
+    private int loadSoundIfExists(String rawName) {
+        if (soundPool == null) return 0;
+        int resId = getResources().getIdentifier(rawName, "raw", getPackageName());
+        return resId != 0 ? soundPool.load(this, resId, 1) : 0;
+    }
+
+    private void playSound(int soundId) {
+        if (soundPool != null && soundId != 0) {
+            try { soundPool.play(soundId, 1f, 1f, 1, 0, 1f); } catch (Exception ignored) {}
+        }
+    }
+
+    // Duolingo-style hearts row - only built/shown when this battle has a
+    // lives cap. Left entirely hidden (heartsRowLL stays GONE, zero layout
+    // impact) for every existing non-lives quiz/battle.
+    private void setupHearts() {
+        if (maxLives <= 0 || heartsRowLL == null) return;
+        heartsRowLL.setVisibility(View.VISIBLE);
+        heartsRowLL.removeAllViews();
+        int marginPx = (int) (3 * getResources().getDisplayMetrics().density);
+        for (int i = 0; i < maxLives; i++) {
+            TextView heart = new TextView(this);
+            heart.setText("❤️");
+            heart.setTextSize(18);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(marginPx, 0, marginPx, 0);
+            heart.setLayoutParams(lp);
+            heartsRowLL.addView(heart);
+        }
+    }
+
+    private void loseLife() {
+        if (maxLives <= 0 || livesRemaining <= 0 || heartsRowLL == null) return;
+        livesRemaining--;
+        View heart = heartsRowLL.getChildAt(livesRemaining);
+        if (heart instanceof TextView) {
+            TextView heartTV = (TextView) heart;
+            heartTV.setText("🖤");
+            android.animation.ValueAnimator anim = android.animation.ValueAnimator.ofFloat(1f, 0.4f);
+            anim.setDuration(300);
+            anim.addUpdateListener(a -> {
+                float v = (float) a.getAnimatedValue();
+                heartTV.setAlpha(v);
+                heartTV.setScaleX(1f + (1f - v));
+                heartTV.setScaleY(1f + (1f - v));
+            });
+            anim.start();
+        }
+        if (livesRemaining <= 0) {
+            android.widget.Toast.makeText(this, "💔 লাইফ শেষ! দেখো কেমন করলে...", android.widget.Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void bindViews() {
@@ -117,6 +211,7 @@ public class QuizActivity extends AppCompatActivity {
         quizLoadingBar   = findViewById(R.id.quizLoadingBar);
         quizEmptyLL      = findViewById(R.id.quizEmptyLL);
         quizEmptyCloseBtn= findViewById(R.id.quizEmptyCloseBtn);
+        heartsRowLL      = findViewById(R.id.heartsRowLL);
 
         optionA = findViewById(R.id.optionA);
         optionB = findViewById(R.id.optionB);
@@ -153,7 +248,11 @@ public class QuizActivity extends AppCompatActivity {
 
         nextBtn.setOnClickListener(v -> {
             currentIndex++;
-            if (currentIndex < questions.size()) {
+            if (maxLives > 0 && livesRemaining <= 0) {
+                // Lives exhausted - stop here instead of asking more
+                // questions than the player can still afford to get wrong.
+                goToResult();
+            } else if (currentIndex < questions.size()) {
                 showQuestion(currentIndex);
             } else {
                 goToResult();
@@ -170,7 +269,10 @@ public class QuizActivity extends AppCompatActivity {
             buildOfflineQuiz();
             return;
         }
-        String url = Constant.GAME_QUIZ + lessonId + "?count=" + TOTAL_QUESTIONS;
+        String url = Constant.GAME_QUIZ + lessonId + "?count=" + questionCount;
+        if (wordIdsExtra != null && !wordIdsExtra.isEmpty()) {
+            url += "&word_ids=" + wordIdsExtra;
+        }
         // This is a public (no-login-required) endpoint, but the server now
         // needs to know WHO's asking to tell a locked Premium lesson apart
         // from one this exact user already unlocked - send the token when
@@ -293,7 +395,7 @@ public class QuizActivity extends AppCompatActivity {
 
             List<JSONObject> shuffled = new ArrayList<>(allWords);
             Collections.shuffle(shuffled);
-            int count = Math.min(TOTAL_QUESTIONS, shuffled.size());
+            int count = Math.min(questionCount, shuffled.size());
 
             questions.clear();
             for (int qi = 0; qi < count; qi++) {
@@ -415,7 +517,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         nextBtn.setVisibility(View.VISIBLE);
-        nextBtn.setText(currentIndex + 1 >= questions.size() ? "See Results 🏆" : "Next →");
+        nextBtn.setText(isLastActionableQuestion() ? "See Results 🏆" : "Next →");
     }
 
     private void onTimerExpired() {
@@ -427,13 +529,21 @@ public class QuizActivity extends AppCompatActivity {
             markProgressDot(currentIndex, false);
         } catch (Exception ignored) {}
         nextBtn.setVisibility(View.VISIBLE);
-        nextBtn.setText(currentIndex + 1 >= questions.size() ? "See Results 🏆" : "Next →");
+        nextBtn.setText(isLastActionableQuestion() ? "See Results 🏆" : "Next →");
+    }
+
+    // True when this is the last question the player will see - either
+    // because it's genuinely the last one, or because a lives cap just hit 0.
+    private boolean isLastActionableQuestion() {
+        if (maxLives > 0 && livesRemaining <= 0) return true;
+        return currentIndex + 1 >= questions.size();
     }
 
     // ── Feedback states ──────────────────────────────────────────
 
     private void showCorrectFeedback(int idx, String explanation) {
         playTone(ToneGenerator.TONE_PROP_ACK);
+        playSound(soundCorrectId);
         // Green teal on correct card
         optionCards[idx].setCardBackgroundColor(Color.parseColor("#1400E8B8")); // teal_dim
         optionLabels[idx].setTextColor(Color.parseColor("#00E8B8"));
@@ -452,6 +562,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private void showWrongFeedback(int selectedIdx, int correctIdx, String explanation) {
         playTone(ToneGenerator.TONE_PROP_NACK);
+        playSound(soundWrongId);
+        loseLife();
         // Red on wrong card
         optionCards[selectedIdx].setCardBackgroundColor(Color.parseColor("#14FF3F6C")); // red_dim
         optionLabels[selectedIdx].setTextColor(Color.parseColor("#FF3F6C"));
@@ -477,6 +589,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private void showTimedOutFeedback(int correctIdx) {
         playTone(ToneGenerator.TONE_PROP_NACK);
+        playSound(soundWrongId);
+        loseLife();
         optionCards[correctIdx].setCardBackgroundColor(Color.parseColor("#1400E8B8"));
         optionLabels[correctIdx].setTextColor(Color.parseColor("#00E8B8"));
         optionLabels[correctIdx].setBackgroundResource(R.drawable.option_label_correct);
@@ -526,7 +640,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void buildProgressDots() {
         progressDots.removeAllViews();
-        int size = Math.min(questions.size(), TOTAL_QUESTIONS);
+        int size = Math.min(questions.size(), questionCount);
         int dotPx = (int) (8 * getResources().getDisplayMetrics().density);
         int marginPx = (int) (3 * getResources().getDisplayMetrics().density);
 
@@ -588,9 +702,14 @@ public class QuizActivity extends AppCompatActivity {
 
     private void goToResult() {
         if (countDownTimer != null) countDownTimer.cancel();
+        // Normally the full question set; if a lives cap ended the run
+        // early, currentIndex already reflects how many were actually
+        // attempted (incremented once per question before this is called).
+        int attempted = Math.min(currentIndex, questions.size());
+        if (attempted <= 0) attempted = questions.size();
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("correct", correctCount);
-        intent.putExtra("total", questions.size());
+        intent.putExtra("total", attempted);
         intent.putExtra("xp", totalXpEarned);
         intent.putExtra("lesson_id", lessonId);
         intent.putExtra("battle_id", battleId);
@@ -615,6 +734,10 @@ public class QuizActivity extends AppCompatActivity {
         if (toneGenerator != null) {
             toneGenerator.release();
             toneGenerator = null;
+        }
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
         }
     }
 }

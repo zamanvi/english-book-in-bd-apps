@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -18,7 +19,10 @@ import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -28,6 +32,9 @@ public class ResultActivity extends AppCompatActivity {
     private TextView newRankTV, liptoEarnedTV;
     private CardView rankCard, liptoEarnedCard;
     private ProgressBar scoreBar;
+
+    private CardView battleResultCV;
+    private TextView battleResultTitleTV, battleResultDetailTV;
 
     private int correct, total, xpEarned, lessonId, battleId, timeSec;
     private boolean submitFailureNotified = false;
@@ -66,6 +73,9 @@ public class ResultActivity extends AppCompatActivity {
         scoreBar         = findViewById(R.id.scoreBar);
         liptoEarnedTV    = findViewById(R.id.liptoEarnedTV);
         liptoEarnedCard  = findViewById(R.id.liptoEarnedCard);
+        battleResultCV       = findViewById(R.id.battleResultCV);
+        battleResultTitleTV  = findViewById(R.id.battleResultTitleTV);
+        battleResultDetailTV = findViewById(R.id.battleResultDetailTV);
     }
 
     private void populateStatic() {
@@ -248,8 +258,73 @@ public class ResultActivity extends AppCompatActivity {
 
         String url = Constant.BATTLE_BASE + battleId + "/submit";
         ApiConfig.postRequest(this, url, body, token, response -> {
-            // Battle result submitted silently
+            try {
+                JSONObject r = new JSONObject(response);
+                if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
+                    JSONObject battle = r.optJSONObject("battle");
+                    if (battle != null) runOnUiThread(() -> renderBattleResult(battle));
+                }
+            } catch (Exception ignored) {}
         }, error -> notifySubmitFailure());
+    }
+
+    // Was previously silent - a player got no immediate win/loss/draw
+    // feedback here, only much later in BattleActivity's history list.
+    // Reuses the same win/loss/draw color palette as BattleAdapter so the
+    // two screens read as one consistent system.
+    private void renderBattleResult(JSONObject battle) {
+        String status = battle.optString("status", "");
+        String result = battle.optString("result", "");
+        JSONArray participants = battle.optJSONArray("participants");
+
+        battleResultCV.setVisibility(View.VISIBLE);
+
+        if (!"completed".equals(status)) {
+            battleResultTitleTV.setText("⏳ অন্যরা এখনও খেলেনি");
+            battleResultTitleTV.setTextColor(Color.parseColor("#7A84B8"));
+            battleResultDetailTV.setText("সবাই খেলা শেষ করলে ফলাফল জানতে পারবে");
+            return;
+        }
+
+        int titleColor;
+        switch (result) {
+            case "win":
+                battleResultTitleTV.setText("🎉 তুমি জিতেছ!");
+                titleColor = Color.parseColor("#4ade80");
+                break;
+            case "loss":
+                battleResultTitleTV.setText("😔 এবার হেরেছ");
+                titleColor = Color.parseColor("#f87171");
+                break;
+            default:
+                battleResultTitleTV.setText("🤝 ড্র হয়েছে!");
+                titleColor = Color.parseColor("#facc15");
+        }
+        battleResultTitleTV.setTextColor(titleColor);
+
+        if (participants != null && participants.length() > 2) {
+            // Multi-player - show a ranked "name: score" list instead of a
+            // single "my - their" line.
+            java.util.List<JSONObject> sorted = new ArrayList<>();
+            for (int i = 0; i < participants.length(); i++) {
+                JSONObject p = participants.optJSONObject(i);
+                if (p != null) sorted.add(p);
+            }
+            sorted.sort((a, b) -> b.optInt("score", 0) - a.optInt("score", 0));
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < sorted.size(); i++) {
+                JSONObject p = sorted.get(i);
+                if (i > 0) sb.append("\n");
+                String name = p.optBoolean("is_me", false) ? "তুমি" : p.optString("name", "বন্ধু");
+                sb.append(i + 1).append(". ").append(name).append(" — ").append(p.optInt("score", 0));
+            }
+            battleResultDetailTV.setText(sb.toString());
+        } else {
+            int myScore = battle.optInt("my_score", correct);
+            int theirScore = battle.optInt("their_score", -1);
+            battleResultDetailTV.setText(myScore + " - " + (theirScore >= 0 ? theirScore : "?"));
+        }
     }
 
     // ── Buttons ──────────────────────────────────────────────────

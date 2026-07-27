@@ -37,6 +37,9 @@ public class Constant {
 
     // Battle endpoints
     public static final String BATTLE_CHALLENGE    = ROOT_API_GAME_AUTH + "battle/challenge";
+    public static final String BATTLE_CREATE       = ROOT_API_GAME_AUTH + "battle/create";
+    public static final String BATTLE_RESOLVE_CODE = ROOT_API_GAME_AUTH + "battle/resolve-code";
+    public static final String BATTLE_JOIN         = ROOT_API_GAME_AUTH + "battle/join";
     public static final String BATTLE_PENDING      = ROOT_API_GAME_AUTH + "battle/pending";
     public static final String BATTLE_HISTORY      = ROOT_API_GAME_AUTH + "battle/history";
     public static final String BATTLE_BASE         = ROOT_API_GAME_AUTH + "battle/";  // + id or id/submit

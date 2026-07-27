@@ -185,6 +185,35 @@
                     android:layout_marginTop="8dp"
                     tools:ignore="HardcodedText" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:weightSum="2">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/customizeChallengeBtn"
+                        style="@style/btn_outline"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:textSize="12sp"
+                        android:text="🎮 কাস্টমাইজ করে চ্যালেঞ্জ"
+                        tools:ignore="HardcodedText" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/joinByCodeBtn"
+                        style="@style/btn_outline"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:textSize="12sp"
+                        android:text="🔑 কোড দিয়ে যোগ দাও"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
