@@ -57,6 +57,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         verifyOtpBtn.setOnClickListener(v -> attemptVerifyOtp());
         resetBtn.setOnClickListener(v -> attemptReset());
         findViewById(R.id.forgotBackTV).setOnClickListener(v -> finish());
+        findViewById(R.id.closeBtn).setOnClickListener(v -> finish());
     }
 
     private void attemptSendOtp() {

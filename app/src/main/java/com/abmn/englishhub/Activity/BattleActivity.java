@@ -107,7 +107,7 @@ public class BattleActivity extends AppCompatActivity {
                 }
                 runOnUiThread(() -> {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                            android.R.layout.simple_dropdown_item_1line, lessonNames);
+                            R.layout.item_dropdown_text, lessonNames);
                     lessonDropdown.setAdapter(adapter);
                     lessonDropdown.setOnItemClickListener((parent, view, position, id) ->
                             selectedLessonId = lessonIds.get(position));
