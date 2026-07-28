@@ -35,6 +35,9 @@ public class QuizActivity extends AppCompatActivity {
 
     // Views
     private TextView questionNumberTV, questionTV, timerTV, xpCountTV, questionCategoryTV, questionHintTV;
+    private LinearLayout comboLL;
+    private TextView comboCountTV;
+    private int comboCount = 0;
     private LinearLayout listeningPromptLL;
     private CardView replayBtn, modeToggleBtn;
     private ImageView modeToggleIV;
@@ -209,6 +212,8 @@ public class QuizActivity extends AppCompatActivity {
         modeToggleIV       = findViewById(R.id.modeToggleIV);
         timerTV          = findViewById(R.id.timerTV);
         xpCountTV        = findViewById(R.id.xpCountTV);
+        comboLL          = findViewById(R.id.comboLL);
+        comboCountTV     = findViewById(R.id.comboCountTV);
         timerBar         = findViewById(R.id.timerBar);
         progressDots     = findViewById(R.id.progressDots);
         feedbackStrip    = findViewById(R.id.feedbackStrip);
@@ -532,8 +537,12 @@ public class QuizActivity extends AppCompatActivity {
             if (isCorrect) {
                 correctCount++;
                 totalXpEarned++;
+                comboCount++;
+                updateCombo();
                 showCorrectFeedback(selectedIdx, q.optString("explanation", ""));
             } else {
+                comboCount = 0;
+                updateCombo();
                 showWrongFeedback(selectedIdx, correctIdx, q.optString("explanation", ""));
             }
 
@@ -551,6 +560,8 @@ public class QuizActivity extends AppCompatActivity {
     private void onTimerExpired() {
         if (answered) return;
         answered = true;
+        comboCount = 0;
+        updateCombo();
         try {
             int correctIdx = questions.get(currentIndex).getInt("correct_index");
             showTimedOutFeedback(correctIdx);
@@ -713,6 +724,26 @@ public class QuizActivity extends AppCompatActivity {
             optionLabels[i].setBackgroundResource(OPTION_LABEL_RES[i]);
             optionLabels[i].setTextColor(OPTION_LABEL_TXT[i]);
             optionTexts[i].setTextColor(OPTION_TEXT_CLR[i]);
+        }
+    }
+
+    // Shows/hides the 🔥 combo badge — only surfaces once the streak is
+    // actually worth celebrating (≥2), and pops back out silently on a miss
+    // rather than showing "x0", which would just read as another loss cue
+    // stacked on top of the wrong-answer feedback already on screen.
+    private void updateCombo() {
+        if (comboCount >= 2) {
+            comboCountTV.setText("🔥 x" + comboCount);
+            if (comboLL.getVisibility() != View.VISIBLE) {
+                comboLL.setVisibility(View.VISIBLE);
+            }
+            comboLL.setScaleX(1f);
+            comboLL.setScaleY(1f);
+            comboLL.animate().scaleX(1.18f).scaleY(1.18f).setDuration(120)
+                    .withEndAction(() -> comboLL.animate().scaleX(1f).scaleY(1f).setDuration(120).start())
+                    .start();
+        } else {
+            comboLL.setVisibility(View.GONE);
         }
     }
 

@@ -142,10 +142,8 @@ public class LevelMapActivity extends AppCompatActivity {
         }
 
         if (round == 4) {
-            // TODO: launch the dedicated Round 4 writing screen once built —
-            // QuizActivity's MCQ UI can't render buildWritingQuestions()'s
-            // prompt/expected_answer payload shape.
-            Toast.makeText(this, "✍️ Writing round শীঘ্রই আসছে!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, WritingActivity.class)
+                    .putExtra("lesson_id", lessonId));
             return;
         }
 

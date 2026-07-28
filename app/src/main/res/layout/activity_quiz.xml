@@ -86,6 +86,36 @@
 
         </LinearLayout>
 
+        <!-- Combo streak badge — hidden until the player has ≥2 correct in a
+             row (see QuizActivity#updateCombo). Separate pill from the XP
+             badge so its pop-in animation doesn't disturb the XP number. -->
+        <LinearLayout
+            android:id="@+id/comboLL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_teal_pill"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginStart="6dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/comboCountTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔥 x3"
+                android:textColor="@color/teal"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
         <!-- Listening-mode toggle -->
         <androidx.cardview.widget.CardView
             android:id="@+id/modeToggleBtn"
