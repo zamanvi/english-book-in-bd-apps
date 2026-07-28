@@ -105,7 +105,16 @@ public class LevelMapActivity extends AppCompatActivity {
             } finally {
                 runOnUiThread(() -> loadingBar.setVisibility(View.GONE));
             }
-        }, error -> runOnUiThread(() -> loadingBar.setVisibility(View.GONE)));
+        }, error -> runOnUiThread(() -> {
+            loadingBar.setVisibility(View.GONE);
+            // A locked Premium lesson (403 from levelMap()) - don't leave the
+            // map rendered with every round looking playable when it isn't.
+            String message = error.getMessage();
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }));
     }
 
     private void applyRoundState(int index, String status, int stars) {
