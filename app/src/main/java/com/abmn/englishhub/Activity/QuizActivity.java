@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.MistakeNotebook;
 import com.abmn.englishhub.Helper.OfflineCache;
 import com.abmn.englishhub.R;
 import com.abmn.texttospeech.TextToSpeechHelper;
@@ -154,9 +155,15 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void playSound(int soundId) {
+        if (!soundEnabled()) return;
         if (soundPool != null && soundId != 0) {
             try { soundPool.play(soundId, 1f, 1f, 1, 0, 1f); } catch (Exception ignored) {}
         }
+    }
+
+    // Shared mute toggle, set from LevelMapActivity's speaker icon.
+    private boolean soundEnabled() {
+        return getSharedPreferences("app_prefs", MODE_PRIVATE).getBoolean(Constant.SOUND_ENABLED, true);
     }
 
     // Duolingo-style hearts row - only built/shown when this battle has a
@@ -603,6 +610,7 @@ public class QuizActivity extends AppCompatActivity {
         playTone(ToneGenerator.TONE_PROP_NACK);
         playSound(soundWrongId);
         loseLife();
+        recordMistake(correctIdx);
         // Red on wrong card
         optionCards[selectedIdx].setCardBackgroundColor(Color.parseColor("#14FF3F6C")); // red_dim
         optionLabels[selectedIdx].setTextColor(Color.parseColor("#FF3F6C"));
@@ -630,6 +638,7 @@ public class QuizActivity extends AppCompatActivity {
         playTone(ToneGenerator.TONE_PROP_NACK);
         playSound(soundWrongId);
         loseLife();
+        recordMistake(correctIdx);
         optionCards[correctIdx].setCardBackgroundColor(Color.parseColor("#1400E8B8"));
         optionLabels[correctIdx].setTextColor(Color.parseColor("#00E8B8"));
         optionLabels[correctIdx].setBackgroundResource(R.drawable.option_label_correct);
@@ -710,6 +719,28 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
+    // Saves the word this question was actually testing into the local
+    // Mistake Notebook, always as (english word, bangla meaning) regardless
+    // of which side of the question the English happened to be on.
+    // "direction" (round-based reading/listening rounds) decides which side
+    // is English: bn_to_en/meaning_to_listen put English in the options;
+    // everything else (legacy MCQ, en_to_bn, listen_to_meaning) puts it in
+    // question/speak_text.
+    private void recordMistake(int correctIdx) {
+        try {
+            JSONObject q = questions.get(currentIndex);
+            String direction = q.optString("direction", "");
+            String questionSide = q.optString("speak_text", "");
+            if (questionSide.isEmpty()) questionSide = q.optString("question", "");
+            String optionSide = q.getJSONArray("options").getString(correctIdx);
+
+            boolean englishInOptions = "bn_to_en".equals(direction) || "meaning_to_listen".equals(direction);
+            String word    = englishInOptions ? optionSide : questionSide;
+            String meaning = englishInOptions ? questionSide : optionSide;
+            MistakeNotebook.add(this, word, meaning);
+        } catch (Exception ignored) {}
+    }
+
     // ── Helpers ───────────────────────────────────────────────────
 
     // Per-option colors for Option C design: purple / blue / amber / pink
@@ -748,7 +779,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void playTone(int tone) {
-        if (toneGenerator == null) return;
+        if (!soundEnabled() || toneGenerator == null) return;
         try {
             toneGenerator.startTone(tone, 150);
         } catch (Exception ignored) {}

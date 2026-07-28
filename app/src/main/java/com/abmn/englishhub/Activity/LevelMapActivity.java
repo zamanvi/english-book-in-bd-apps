@@ -1,12 +1,16 @@
 package com.abmn.englishhub.Activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
@@ -50,6 +54,9 @@ public class LevelMapActivity extends AppCompatActivity {
         lessonId = getIntent().getIntExtra("lesson_id", 1);
         loadingBar = findViewById(R.id.levelMapLoadingBar);
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
+        findViewById(R.id.mistakeNotebookBtn).setOnClickListener(v ->
+                startActivity(new Intent(this, MistakeNotebookActivity.class)));
+        setupSoundToggle();
 
         roundRoots[0] = findViewById(R.id.round1Include);
         roundRoots[1] = findViewById(R.id.round2Include);
@@ -125,6 +132,29 @@ public class LevelMapActivity extends AppCompatActivity {
                     starsTV.setText("");
                     roundRoots[index].setAlpha(0.55f);
             }
+        });
+    }
+
+    // Global mute for Quick Quiz sound effects (correct/wrong tones, combo
+    // whoosh) — checked by QuizActivity/WritingActivity via the same
+    // "app_prefs"/SOUND_ENABLED key before every playTone()/playSound()
+    // call, so toggling it here affects every round immediately.
+    private void setupSoundToggle() {
+        CardView btn = findViewById(R.id.soundToggleBtn);
+        ImageView icon = findViewById(R.id.soundToggleIV);
+        SharedPreferences prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+
+        Runnable render = () -> {
+            boolean enabled = prefs.getBoolean(Constant.SOUND_ENABLED, true);
+            icon.setImageAlpha(enabled ? 255 : 100);
+            icon.setColorFilter(ContextCompat.getColor(this, enabled ? R.color.indigo : R.color.text_inactive));
+        };
+        render.run();
+
+        btn.setOnClickListener(v -> {
+            boolean current = prefs.getBoolean(Constant.SOUND_ENABLED, true);
+            prefs.edit().putBoolean(Constant.SOUND_ENABLED, !current).apply();
+            render.run();
         });
     }
 

@@ -29,7 +29,7 @@ public class ResultActivity extends AppCompatActivity {
     private TextView resultEmojiTV, resultGradeTV, resultSubtitleTV;
     private TextView correctCountTV, totalCountTV, scorePercentTV;
     private TextView xpEarnedBigTV, streakResultTV, accuracyTV;
-    private TextView newRankTV, liptoEarnedTV;
+    private TextView newRankTV, liptoEarnedTV, liptoIconTV, liptoLabelTV;
     private CardView rankCard, liptoEarnedCard;
     private ProgressBar scoreBar;
 
@@ -86,6 +86,8 @@ public class ResultActivity extends AppCompatActivity {
         scoreBar         = findViewById(R.id.scoreBar);
         liptoEarnedTV    = findViewById(R.id.liptoEarnedTV);
         liptoEarnedCard  = findViewById(R.id.liptoEarnedCard);
+        liptoIconTV      = findViewById(R.id.liptoIconTV);
+        liptoLabelTV     = findViewById(R.id.liptoLabelTV);
         battleResultCV       = findViewById(R.id.battleResultCV);
         battleResultTitleTV  = findViewById(R.id.battleResultTitleTV);
         battleResultDetailTV = findViewById(R.id.battleResultDetailTV);
@@ -170,6 +172,22 @@ public class ResultActivity extends AppCompatActivity {
         return sb.toString();
     }
 
+    // 🎁 mystery-box "unwrap" moment — pop-in with overshoot rather than a
+    // plain fade, so a surprise reward actually feels like a surprise.
+    private void revealMysteryBox() {
+        liptoEarnedCard.setVisibility(View.VISIBLE);
+        liptoEarnedCard.setAlpha(0f);
+        liptoEarnedCard.setScaleX(0.6f);
+        liptoEarnedCard.setScaleY(0.6f);
+        liptoEarnedCard.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(420)
+                .setInterpolator(new android.view.animation.OvershootInterpolator(2.2f))
+                .start();
+    }
+
     // ── API calls ────────────────────────────────────────────────
 
     // Round-based flow's single atomic call — replaces submitXp() +
@@ -212,9 +230,13 @@ public class ResultActivity extends AppCompatActivity {
                     streakResultTV.setText("🔥 " + streak);
                     if (box != null && liptoWon > 0) {
                         String tier = box.optString("tier", "common");
-                        String icon = "epic".equals(tier) ? "🌟" : "rare".equals(tier) ? "💎" : "🪙";
-                        liptoEarnedTV.setText(icon + " +" + liptoWon);
-                        liptoEarnedCard.setVisibility(View.VISIBLE);
+                        String tierLabel = "epic".equals(tier) ? "জ্যাকপট! এক্সক্লুসিভ মিস্ট্রি বক্স"
+                                : "rare".equals(tier) ? "বিরল মিস্ট্রি বক্স"
+                                : "মিস্ট্রি বক্স থেকে";
+                        liptoIconTV.setText("epic".equals(tier) ? "🌟" : "rare".equals(tier) ? "💎" : "🪙");
+                        liptoLabelTV.setText(tierLabel);
+                        liptoEarnedTV.setText("+" + liptoWon);
+                        revealMysteryBox();
                     }
                 });
             } catch (Exception ignored) {}

@@ -97,6 +97,7 @@ public class Constant {
     public static final String GUEST_NUDGE_LAST_SHOWN_DATE = "guest_nudge_last_shown_date";
 
     // Game / user prefs
+    public static final String SOUND_ENABLED      = "quiz_sound_enabled"; // Quick Quiz SFX mute toggle, default true
     public static final String STREAK_DAYS        = "streak_days";
     public static final String TOTAL_XP           = "total_xp";
     public static final String LIPTO_BALANCE      = "lipto_balance";

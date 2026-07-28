@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.MistakeNotebook;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
 import com.google.android.material.button.MaterialButton;
@@ -108,14 +109,20 @@ public class WritingActivity extends AppCompatActivity {
     }
 
     private void playSound(int soundId) {
+        if (!soundEnabled()) return;
         if (soundPool != null && soundId != 0) {
             try { soundPool.play(soundId, 1f, 1f, 1, 0, 1f); } catch (Exception ignored) {}
         }
     }
 
     private void playTone(int tone) {
-        if (toneGenerator == null) return;
+        if (!soundEnabled() || toneGenerator == null) return;
         try { toneGenerator.startTone(tone, 150); } catch (Exception ignored) {}
+    }
+
+    // Shared mute toggle, set from LevelMapActivity's speaker icon.
+    private boolean soundEnabled() {
+        return getSharedPreferences("app_prefs", MODE_PRIVATE).getBoolean(Constant.SOUND_ENABLED, true);
     }
 
     private void bindViews() {
@@ -283,10 +290,12 @@ public class WritingActivity extends AppCompatActivity {
         if (answered) return;
         answered = true;
         answerET.setEnabled(false);
-        String expected = questions.get(currentIndex).optString("expected_answer", "");
+        JSONObject q = questions.get(currentIndex);
+        String expected = q.optString("expected_answer", "");
         comboCount = 0;
         updateCombo();
         loseLife();
+        recordMistake(q);
         playTone(ToneGenerator.TONE_PROP_NACK);
         playSound(soundWrongId);
         markProgressDot(currentIndex, false);
@@ -320,6 +329,7 @@ public class WritingActivity extends AppCompatActivity {
         updateCombo();
         loseLife();
         markProgressDot(currentIndex, false);
+        recordMistake(questions.get(currentIndex));
 
         if (nearMiss) {
             playTone(ToneGenerator.TONE_PROP_NACK);
@@ -330,6 +340,20 @@ public class WritingActivity extends AppCompatActivity {
             playSound(soundWrongId);
             showFeedback(false, false, "✕", "ভুল হয়েছে", "সঠিক উত্তর: " + expected, "#FF3F6C", R.drawable.bg_red_pill);
         }
+    }
+
+    // Always stores as (english word, bangla meaning) regardless of which
+    // direction this question asked, so the notebook reads consistently
+    // whether the miss came from Writing, MCQ, Reading, or Listening.
+    private void recordMistake(JSONObject q) {
+        try {
+            boolean bnToEn = "bn_to_en".equals(q.optString("direction", ""));
+            String prompt = q.optString("prompt", "");
+            String expected = q.optString("expected_answer", "");
+            String word    = bnToEn ? expected : prompt;
+            String meaning = bnToEn ? prompt : expected;
+            MistakeNotebook.add(this, word, meaning);
+        } catch (Exception ignored) {}
     }
 
     private static String normalize(String s) {
