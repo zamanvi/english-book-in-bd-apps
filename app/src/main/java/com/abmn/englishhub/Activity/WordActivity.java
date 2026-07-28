@@ -138,7 +138,7 @@ public class WordActivity extends AppCompatActivity {
         takeQuizBtnCV = findViewById(R.id.takeQuizBtnCV);
         takeQuizBtnCV.setOnClickListener(v -> {
             try {
-                startActivity(new Intent(activity, QuizActivity.class)
+                startActivity(new Intent(activity, LevelMapActivity.class)
                         .putExtra("lesson_id", Integer.parseInt(getLessonId)));
             } catch (NumberFormatException ignored) {}
         });

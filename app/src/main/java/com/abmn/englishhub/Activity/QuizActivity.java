@@ -73,6 +73,12 @@ public class QuizActivity extends AppCompatActivity {
     private int livesRemaining = 0;
     private LinearLayout heartsRowLL;
 
+    // Round-based Quick Quiz (level-map flow) — round 0 means "legacy quiz",
+    // any lesson practice or battle started the old way. round 1-3 means
+    // this run came from LevelMapActivity and must submit through the
+    // atomic round/submit endpoint instead of the old xp/streak/lipto calls.
+    private int round = 0;
+
     private android.media.SoundPool soundPool;
     private int soundCorrectId, soundWrongId;
 
@@ -95,6 +101,10 @@ public class QuizActivity extends AppCompatActivity {
         if (questionCount <= 0) questionCount = TOTAL_QUESTIONS;
         wordIdsExtra = getIntent().getStringExtra("word_ids");
         maxLives = getIntent().getIntExtra("lives", 0);
+        round = getIntent().getIntExtra("round", 0);
+        if (round > 0 && maxLives <= 0) {
+            maxLives = 3; // round-based flow is always hearts-gated
+        }
         livesRemaining = maxLives;
 
         try {
@@ -269,9 +279,17 @@ public class QuizActivity extends AppCompatActivity {
             buildOfflineQuiz();
             return;
         }
-        String url = Constant.GAME_QUIZ + lessonId + "?count=" + questionCount;
-        if (wordIdsExtra != null && !wordIdsExtra.isEmpty()) {
-            url += "&word_ids=" + wordIdsExtra;
+        String url;
+        if (round > 0) {
+            // Round 2/3 question shapes (reading select / listening select)
+            // aren't reproducible from the plain word cache, so the round
+            // flow is online-only, same reasoning as battles below.
+            url = Constant.GAME_ROUND_QUIZ + lessonId + "/" + round;
+        } else {
+            url = Constant.GAME_QUIZ + lessonId + "?count=" + questionCount;
+            if (wordIdsExtra != null && !wordIdsExtra.isEmpty()) {
+                url += "&word_ids=" + wordIdsExtra;
+            }
         }
         // This is a public (no-login-required) endpoint, but the server now
         // needs to know WHO's asking to tell a locked Premium lesson apart
@@ -282,7 +300,13 @@ public class QuizActivity extends AppCompatActivity {
             try {
                 JSONObject json = new JSONObject(response);
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
-                    JSONArray data = json.optJSONArray(Constant.DATA);
+                    JSONArray data;
+                    if (round > 0) {
+                        JSONObject payload = json.optJSONObject(Constant.DATA);
+                        data = payload != null ? payload.optJSONArray("questions") : null;
+                    } else {
+                        data = json.optJSONArray(Constant.DATA);
+                    }
                     if (data == null) return;
                     questions.clear();
                     for (int i = 0; i < data.length(); i++) {
@@ -304,7 +328,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         }, error -> runOnUiThread(() -> {
             String message = error.getMessage();
-            if (message == null) {
+            if (message == null && round <= 0) {
                 // No parseable server error body - a genuine connectivity
                 // failure (mid-air disconnect after the isConnected() check
                 // above passed), not a real business-rule rejection. Fall
@@ -316,7 +340,9 @@ public class QuizActivity extends AppCompatActivity {
             // (e.g. a locked Premium lesson) - surface it, don't silently
             // bypass it with an offline quiz built from cached word data.
             quizLoadingBar.setVisibility(View.GONE);
-            android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_LONG).show();
+            android.widget.Toast.makeText(this,
+                    message != null ? message : "নেটওয়ার্ক সমস্যা — আবার চেষ্টা করো",
+                    android.widget.Toast.LENGTH_LONG).show();
             finish();
         }));
     }
@@ -329,12 +355,14 @@ public class QuizActivity extends AppCompatActivity {
         // Battles are live two-player matches - a locally-generated quiz
         // whose result can never reach the server would just waste the
         // player's time and leave the battle unresolved, so battles stay
-        // online-only.
-        if (battleId > 0) {
+        // online-only. Round-based Quick Quiz is the same story: reading
+        // (round 2) and listening (round 3) question shapes aren't
+        // reproducible from the plain cached word list.
+        if (battleId > 0 || round > 0) {
             runOnUiThread(() -> {
                 quizLoadingBar.setVisibility(View.GONE);
                 android.widget.Toast.makeText(this,
-                        "যুদ্ধ খেলতে ইন্টারনেট সংযোগ প্রয়োজন",
+                        "এই কুইজ খেলতে ইন্টারনেট সংযোগ প্রয়োজন",
                         android.widget.Toast.LENGTH_LONG).show();
                 finish();
             });
@@ -714,6 +742,10 @@ public class QuizActivity extends AppCompatActivity {
         intent.putExtra("lesson_id", lessonId);
         intent.putExtra("battle_id", battleId);
         intent.putExtra("time_sec", totalTimeSec());
+        if (round > 0) {
+            intent.putExtra("round", round);
+            intent.putExtra("hearts_lost", maxLives - livesRemaining);
+        }
         startActivity(intent);
         finish();
     }

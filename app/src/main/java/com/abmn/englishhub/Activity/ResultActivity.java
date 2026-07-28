@@ -39,6 +39,12 @@ public class ResultActivity extends AppCompatActivity {
     private int correct, total, xpEarned, lessonId, battleId, timeSec;
     private boolean submitFailureNotified = false;
 
+    // Round-based Quick Quiz (level-map flow) — round 0 means the legacy
+    // single-round quiz, which keeps its existing xp/streak/lipto/battle
+    // submit path untouched below.
+    private int round, heartsLost;
+    private boolean roundPassed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +56,18 @@ public class ResultActivity extends AppCompatActivity {
         lessonId = getIntent().getIntExtra("lesson_id", 1);
         battleId = getIntent().getIntExtra("battle_id", 0);
         timeSec  = getIntent().getIntExtra("time_sec", 0);
+        round      = getIntent().getIntExtra("round", 0);
+        heartsLost = getIntent().getIntExtra("hearts_lost", 0);
+        roundPassed = heartsLost < 3;
 
         bindViews();
         populateStatic();
         animateScore();
-        submitXpAndStreak();
+        if (round > 0) {
+            submitRoundResult();
+        } else {
+            submitXpAndStreak();
+        }
         setupButtons();
     }
 
@@ -92,8 +105,20 @@ public class ResultActivity extends AppCompatActivity {
         getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                 .edit().putString(Constant.LAST_PLAYED_DATE, today).apply();
 
-        // Grade + emoji based on score
-        if (pct >= 90) {
+        if (round > 0) {
+            // Round-based flow: pass/fail comes from hearts, not score — see
+            // the design brief's "hearts subsumes score threshold" rule.
+            int stars = heartsLost == 0 ? 3 : heartsLost == 1 ? 2 : 1;
+            if (roundPassed) {
+                resultEmojiTV.setText(repeat("⭐", stars));
+                resultGradeTV.setText("রাউন্ড " + round + " ক্লিয়ার! 🏆");
+                resultSubtitleTV.setText(stars == 3 ? "পারফেক্ট! কোনো হার্ট হারাওনি!" : "দারুণ! পরের রাউন্ড খুলে গেছে।");
+            } else {
+                resultEmojiTV.setText("💔");
+                resultGradeTV.setText("আরেকটু চেষ্টা করা লাগবে");
+                resultSubtitleTV.setText("আরেকবার ট্রাই করো, তুমি পারবে!");
+            }
+        } else if (pct >= 90) {
             resultEmojiTV.setText("🏆");
             resultGradeTV.setText("অসাধারণ!");
             resultSubtitleTV.setText("তুমি আজ দারুণ করেছ! একদম perfect! 🔥");
@@ -139,7 +164,62 @@ public class ResultActivity extends AppCompatActivity {
         xpAnim.start();
     }
 
+    private static String repeat(String s, int times) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < times; i++) sb.append(s);
+        return sb.toString();
+    }
+
     // ── API calls ────────────────────────────────────────────────
+
+    // Round-based flow's single atomic call — replaces submitXp() +
+    // updateStreak() + submitLipto() with one request that updates XP,
+    // Lipto (incl. mystery box), streak, stars, and next-round unlock
+    // together server-side (see GameController::submitRound).
+    private void submitRoundResult() {
+        UConfig uConfig = new UConfig(this);
+        String token = uConfig.getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("lesson_id", lessonId);
+            body.put("round", round);
+            body.put("score", correct);
+            body.put("total", total);
+            body.put("hearts_lost", heartsLost);
+        } catch (Exception ignored) {}
+
+        ApiConfig.postRequest(this, Constant.GAME_ROUND_SUBMIT, body, token, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
+                JSONObject data = json.optJSONObject(Constant.DATA);
+                if (data == null) return;
+
+                int totalXp   = data.optInt("total_xp", 0);
+                int streak    = data.optInt("streak_days", 0);
+                int liptoWon  = data.optInt("lipto_earned", 0);
+                JSONObject box = data.optJSONObject("mystery_box");
+
+                getSharedPreferences("app_prefs", MODE_PRIVATE)
+                        .edit()
+                        .putInt(Constant.TOTAL_XP, totalXp)
+                        .putInt(Constant.STREAK_DAYS, streak)
+                        .apply();
+
+                runOnUiThread(() -> {
+                    streakResultTV.setText("🔥 " + streak);
+                    if (box != null && liptoWon > 0) {
+                        String tier = box.optString("tier", "common");
+                        String icon = "epic".equals(tier) ? "🌟" : "rare".equals(tier) ? "💎" : "🪙";
+                        liptoEarnedTV.setText(icon + " +" + liptoWon);
+                        liptoEarnedCard.setVisibility(View.VISIBLE);
+                    }
+                });
+            } catch (Exception ignored) {}
+        }, error -> notifySubmitFailure());
+    }
 
     private void submitXpAndStreak() {
         submitXp();
@@ -331,9 +411,22 @@ public class ResultActivity extends AppCompatActivity {
 
     private void setupButtons() {
         findViewById(R.id.playAgainBtn).setOnClickListener(v -> {
-            Intent intent = new Intent(this, QuizActivity.class);
-            intent.putExtra("lesson_id", lessonId);
-            startActivity(intent);
+            if (round > 0) {
+                // Passed → the level map is the next natural stop (it shows
+                // the newly-unlocked round); failed → retry this same round,
+                // per the "only this round resets" rule, not the whole game.
+                if (roundPassed) {
+                    startActivity(new Intent(this, LevelMapActivity.class)
+                            .putExtra("lesson_id", lessonId));
+                } else {
+                    startActivity(new Intent(this, QuizActivity.class)
+                            .putExtra("lesson_id", lessonId)
+                            .putExtra("round", round));
+                }
+            } else {
+                startActivity(new Intent(this, QuizActivity.class)
+                        .putExtra("lesson_id", lessonId));
+            }
             finish();
         });
 

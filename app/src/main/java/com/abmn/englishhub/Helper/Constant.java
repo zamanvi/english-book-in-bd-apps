@@ -13,10 +13,13 @@ public class Constant {
     // Game API endpoints
     public static final String GAME_DAILY_WORD    = ROOT_API_GAME      + "daily-word";
     public static final String GAME_QUIZ          = ROOT_API_GAME      + "quiz/";
+    public static final String GAME_ROUND_QUIZ    = ROOT_API_GAME      + "round-quiz/";  // + lessonId + "/" + round
     public static final String GAME_LEADERBOARD   = ROOT_API_GAME      + "leaderboard";
     public static final String GAME_XP            = ROOT_API_GAME_AUTH + "xp";
     public static final String GAME_STREAK        = ROOT_API_GAME_AUTH + "streak";
     public static final String GAME_STREAK_UPDATE = ROOT_API_GAME_AUTH + "streak/update";
+    public static final String GAME_LEVEL_MAP     = ROOT_API_GAME_AUTH + "level-map/";  // + lessonId
+    public static final String GAME_ROUND_SUBMIT  = ROOT_API_GAME_AUTH + "round/submit";
     public static final String GAME_LIPTO_BALANCE      = ROOT_API_GAME_AUTH + "lipto/balance";
     public static final String GAME_LIPTO_EARN         = ROOT_API_GAME_AUTH + "lipto/earn";
     public static final String GAME_LIPTO_SPEND        = ROOT_API_GAME_AUTH + "lipto/spend";

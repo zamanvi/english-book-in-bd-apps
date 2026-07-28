@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abmn.englishhub.Activity.QuizActivity;
+import com.abmn.englishhub.Activity.LevelMapActivity;
 import com.abmn.englishhub.Activity.WordActivity;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Model.LessonModel;
@@ -74,14 +74,15 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
                     ? model.getChapter_type() : chapterType;
 
             if (quizPickerMode) {
-                // The whole row IS the picker action here - picking a lesson starts the quiz.
+                // The whole row IS the picker action here - picking a lesson
+                // opens the round-based Quick Quiz level map for it.
                 rootCV.setOnClickListener(v -> activity.startActivity(
-                        new Intent(activity, QuizActivity.class)
+                        new Intent(activity, LevelMapActivity.class)
                                 .putExtra("lesson_id", model.getId())));
                 quickQuizBtnCV.setVisibility(View.GONE);
             } else {
                 // Normal browsing: row opens the word list to read, but a quick
-                // action still lets you jump straight into a quiz on this lesson.
+                // action still lets you jump straight into the level map for this lesson.
                 rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
                         .putExtra(Constant.FROM, "" + model.getId())
                         .putExtra(Constant.FROM_TITLE, model.getTitle())
@@ -95,7 +96,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
                 } else {
                     quickQuizBtnCV.setVisibility(View.VISIBLE);
                     quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
-                            new Intent(activity, QuizActivity.class)
+                            new Intent(activity, LevelMapActivity.class)
                                     .putExtra("lesson_id", model.getId())));
                 }
             }
