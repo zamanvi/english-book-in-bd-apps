@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.BattleActivity;
 import com.abmn.englishhub.Activity.ChapterActivity;
-import com.abmn.englishhub.Activity.GroupActivity;
 import com.abmn.englishhub.Activity.ItemActivity;
 import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
@@ -138,8 +137,12 @@ public class HomeFragment extends Fragment {
         leaderboardBtn.setOnClickListener(v ->
                 startActivity(new Intent(activity, LeaderboardActivity.class)));
 
+        // Group is being reworked into a proper Tournament feature - the tile
+        // stays visible under its new name, but is a "coming soon" stub for
+        // now rather than opening the old standing-leaderboard screens.
         groupBtn.setOnClickListener(v ->
-                startActivity(new Intent(activity, GroupActivity.class)));
+                android.widget.Toast.makeText(activity, "🏆 টুর্নামেন্ট শীঘ্রই আসছে!",
+                        android.widget.Toast.LENGTH_SHORT).show());
 
         battleBtn.setOnClickListener(v ->
                 startActivity(new Intent(activity, BattleActivity.class)));

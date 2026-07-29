@@ -73,32 +73,25 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
             String lessonType = (model.getChapter_type() != null && !model.getChapter_type().isEmpty())
                     ? model.getChapter_type() : chapterType;
 
-            if (quizPickerMode) {
-                // The whole row IS the picker action here - picking a lesson
-                // opens the round-based Quick Quiz level map for it.
-                rootCV.setOnClickListener(v -> activity.startActivity(
-                        new Intent(activity, LevelMapActivity.class)
-                                .putExtra("lesson_id", model.getId())));
+            // Row always opens the word list to read, and a quick action
+            // still lets you jump straight into the level map for this lesson -
+            // even when reached via the "Quick Quiz" home shortcut, so picking
+            // a lesson there doesn't cut off the ability to read it first.
+            rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
+                    .putExtra(Constant.FROM, "" + model.getId())
+                    .putExtra(Constant.FROM_TITLE, model.getTitle())
+                    .putExtra(Constant.FROM_TYPE, lessonType)));
+            // Premium+locked lessons now get blocked server-side anyway,
+            // but there's no point offering a shortcut that just dead-ends
+            // in an error toast - send those users through Word list to
+            // unlock first instead.
+            if (model.isPremium()) {
                 quickQuizBtnCV.setVisibility(View.GONE);
             } else {
-                // Normal browsing: row opens the word list to read, but a quick
-                // action still lets you jump straight into the level map for this lesson.
-                rootCV.setOnClickListener(v -> activity.startActivity(new Intent(activity, WordActivity.class)
-                        .putExtra(Constant.FROM, "" + model.getId())
-                        .putExtra(Constant.FROM_TITLE, model.getTitle())
-                        .putExtra(Constant.FROM_TYPE, lessonType)));
-                // Premium+locked lessons now get blocked server-side anyway,
-                // but there's no point offering a shortcut that just dead-ends
-                // in an error toast - send those users through Word list to
-                // unlock first instead.
-                if (model.isPremium()) {
-                    quickQuizBtnCV.setVisibility(View.GONE);
-                } else {
-                    quickQuizBtnCV.setVisibility(View.VISIBLE);
-                    quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
-                            new Intent(activity, LevelMapActivity.class)
-                                    .putExtra("lesson_id", model.getId())));
-                }
+                quickQuizBtnCV.setVisibility(View.VISIBLE);
+                quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
+                        new Intent(activity, LevelMapActivity.class)
+                                .putExtra("lesson_id", model.getId())));
             }
 
             titleTV.setText(model.getTitle());

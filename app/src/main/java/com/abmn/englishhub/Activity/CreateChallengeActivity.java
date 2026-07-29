@@ -37,7 +37,7 @@ public class CreateChallengeActivity extends AppCompatActivity {
     private AutoCompleteTextView lessonDropdown, questionCountDropdown;
     private TextInputLayout customCountLayout;
     private TextInputEditText customCountET, livesET, friendCodeET;
-    private MaterialButton addFriendBtn, createBtn, shareCodeBtn, startPlayingBtn;
+    private MaterialButton addFriendBtn, createBtn, shareCodeBtn, startPlayingBtn, modeLiveBtn;
     private TextView addFriendErrorTV, createErrorTV, inviteCodeTV;
     private LinearLayout invitedFriendsLL;
     private androidx.cardview.widget.CardView successCV;
@@ -95,8 +95,12 @@ public class CreateChallengeActivity extends AppCompatActivity {
         invitedFriendsLL       = findViewById(R.id.invitedFriendsLL);
         successCV              = findViewById(R.id.successCV);
         allowCodeJoinSwitch    = findViewById(R.id.allowCodeJoinSwitch);
+        modeLiveBtn            = findViewById(R.id.modeLiveBtn);
 
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
+        modeLiveBtn.setOnClickListener(v -> Toast.makeText(this,
+                "🚀 লাইভ মোড শীঘ্রই আসছে! এখন শুধু 'একে একে খেলবে' মোডে খেলা যাচ্ছে",
+                Toast.LENGTH_LONG).show());
 
         setupQuestionCountDropdown();
         loadLessons();
