@@ -292,7 +292,34 @@ public class WordActivity extends AppCompatActivity {
             toggleTheme();
             return true;
         }
+        if (item.getItemId() == R.id.shareLessonId) {
+            shareLesson();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Lets a friend see the chapter title and a few sample words before
+    // installing - same share pattern as ProfileFragment's generic app
+    // share, but built around this specific lesson's content.
+    private void shareLesson() {
+        String title = lessonTitleTV.getText() != null ? lessonTitleTV.getText().toString() : "";
+        StringBuilder wordsPreview = new StringBuilder();
+        int sampleCount = Math.min(5, wordList.size());
+        for (int i = 0; i < sampleCount; i++) {
+            if (wordsPreview.length() > 0) wordsPreview.append(", ");
+            wordsPreview.append(wordList.get(i).getWord());
+        }
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String shareMessage = "📚 \"" + title + "\" চ্যাপ্টারটা দেখো!\n\n"
+                + (wordsPreview.length() > 0 ? "কিছু শব্দ: " + wordsPreview + "...\n\n" : "")
+                + "পুরো চ্যাপ্টার আর কুইজ খেলতে English Grammar Book অ্যাপ নামাও 👇\n"
+                + "https://play.google.com/store/apps/details?id=" + activity.getPackageName()
+                + "\n#EnglishGrammarBook #LearnEnglish";
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+        startActivity(Intent.createChooser(shareIntent, "শেয়ার করো"));
     }
 
     private boolean isStorybookTheme() {

@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/shareLessonId"
+        android:title="Share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="always"
+        tools:ignore="HardcodedText" />
+    <item
         android:id="@+id/nav_voice_id"
         android:title="setting"
         android:icon="@drawable/voice"
