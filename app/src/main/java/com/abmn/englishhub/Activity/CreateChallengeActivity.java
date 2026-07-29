@@ -2,6 +2,8 @@ package com.abmn.englishhub.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -49,6 +51,8 @@ public class CreateChallengeActivity extends AppCompatActivity {
     // friendCode -> {id, name}
     private final Map<Integer, String> invitees = new LinkedHashMap<>();
 
+    private ToneGenerator toneGenerator;
+
     private String createdInviteCode = null;
     private int createdBattleId = 0;
     private int createdLessonId = 0;
@@ -65,6 +69,12 @@ public class CreateChallengeActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
+        }
+
+        try {
+            toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        } catch (RuntimeException e) {
+            toneGenerator = null;
         }
 
         setContentView(R.layout.activity_create_challenge);
@@ -90,6 +100,9 @@ public class CreateChallengeActivity extends AppCompatActivity {
 
         setupQuestionCountDropdown();
         loadLessons();
+        lessonDropdown.setOnClickListener(v -> {
+            if (lessonNames.isEmpty()) loadLessons();
+        });
 
         addFriendBtn.setOnClickListener(v -> addFriend());
         createBtn.setOnClickListener(v -> createChallenge());
@@ -124,7 +137,13 @@ public class CreateChallengeActivity extends AppCompatActivity {
     private void loadLessons() {
         String url = Constant.ROOT_API2 + "lessons";
         ApiConfig.RequestToVolley((result, response, error) -> {
-            if (!result) return;
+            if (!result) {
+                runOnUiThread(() -> {
+                    lessonDropdown.setText("লোড ব্যর্থ — আবার চেষ্টা করতে ট্যাপ করো", false);
+                    Toast.makeText(this, "লেসন লোড করা যায়নি, ইন্টারনেট চেক করো", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
             try {
                 JSONArray arr = new JSONObject(response).optJSONArray("lessons");
                 if (arr == null) return;
@@ -287,6 +306,7 @@ public class CreateChallengeActivity extends AppCompatActivity {
                 createdLives = finalLives != null ? finalLives : 0;
                 JSONArray wordIdsArr = r.optJSONArray("question_word_ids");
                 createdWordIds = wordIdsArr != null ? joinIntArray(wordIdsArr) : "";
+                playTone(ToneGenerator.TONE_PROP_ACK);
 
                 runOnUiThread(() -> {
                     resetCreateBtn();
@@ -369,5 +389,24 @@ public class CreateChallengeActivity extends AppCompatActivity {
                 createErrorTV.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    // Same mute toggle QuizActivity's sound effects respect.
+    private void playTone(int tone) {
+        boolean soundEnabled = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getBoolean(Constant.SOUND_ENABLED, true);
+        if (!soundEnabled || toneGenerator == null) return;
+        try {
+            toneGenerator.startTone(tone, 200);
+        } catch (Exception ignored) {}
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (toneGenerator != null) {
+            toneGenerator.release();
+            toneGenerator = null;
+        }
     }
 }

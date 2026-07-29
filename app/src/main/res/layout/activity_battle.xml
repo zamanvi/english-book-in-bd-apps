@@ -127,7 +127,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="বন্ধুর User ID (Profile থেকে কপি করো)"
+                    android:hint="বন্ধুর Friend Code (Profile থেকে কপি করো)"
                     android:layout_marginBottom="12dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/bg_active"
@@ -137,10 +137,10 @@
                     app:boxCornerRadiusBottomEnd="12dp"
                     app:hintTextColor="@color/text_muted">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/opponentIdET"
+                        android:id="@+id/friendCodeET"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="textCapCharacters"
                         android:textColor="@color/text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -243,7 +243,7 @@
             android:id="@+id/pendingEmptyTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="কোনো pending challenge নেই"
+            android:text="🎉 কোনো challenge বাকি নেই, সব ক্লিয়ার!"
             android:textColor="@color/text_inactive"
             android:textSize="13sp"
             android:gravity="center"
@@ -279,7 +279,7 @@
             android:id="@+id/historyEmptyTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="এখনো কোনো battle করোনি"
+            android:text="এখনো কোনো battle খেলোনি — আজই প্রথমটা শুরু করো! ⚔️"
             android:textColor="@color/text_inactive"
             android:textSize="13sp"
             android:gravity="center"

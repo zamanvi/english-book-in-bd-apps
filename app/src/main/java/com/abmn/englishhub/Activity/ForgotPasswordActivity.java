@@ -94,7 +94,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
             }
-        }, error -> showError("সংযোগ ব্যর্থ হয়েছে"));
+        }, error -> showError(error.getMessage() != null ? error.getMessage() : "সংযোগ ব্যর্থ হয়েছে"));
     }
 
     private void attemptVerifyOtp() {
@@ -135,7 +135,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
             }
-        }, error -> showError("সংযোগ ব্যর্থ হয়েছে"));
+        }, error -> showError(error.getMessage() != null ? error.getMessage() : "সংযোগ ব্যর্থ হয়েছে"));
     }
 
     private void attemptReset() {
@@ -165,6 +165,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if (success != null && success.optBoolean(Constant.STATUS, false)) {
                     runOnUiThread(() -> {
                         errorTV.setTextColor(getResources().getColor(R.color.green, null));
+                        errorTV.setBackgroundResource(R.drawable.bg_success_banner);
                         errorTV.setText("পাসওয়ার্ড পরিবর্তন হয়েছে! এখন লগইন করো।");
                         errorTV.setVisibility(View.VISIBLE);
                         resetBtn.setEnabled(false);
@@ -177,13 +178,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
             }
-        }, error -> showError("সংযোগ ব্যর্থ হয়েছে"));
+        }, error -> showError(error.getMessage() != null ? error.getMessage() : "সংযোগ ব্যর্থ হয়েছে"));
     }
 
     private void showError(String msg) {
         runOnUiThread(() -> {
-            errorTV.setTextColor(getResources().getColor(R.color.coral, null));
-            errorTV.setText(msg);
+            errorTV.setTextColor(getResources().getColor(R.color.red_wrong, null));
+            errorTV.setBackgroundResource(R.drawable.bg_error_banner);
+            errorTV.setText("⚠️ " + msg);
             errorTV.setVisibility(View.VISIBLE);
             sendOtpBtn.setEnabled(true);
             sendOtpBtn.setText("OTP পাঠাও");

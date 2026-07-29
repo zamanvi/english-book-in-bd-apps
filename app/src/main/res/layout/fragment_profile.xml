@@ -111,42 +111,7 @@
                         android:layout_marginTop="14dp"
                         tools:ignore="HardcodedText" />
 
-                    <!-- User ID — tap to copy for battle challenge -->
-                    <LinearLayout
-                        android:id="@+id/profileUserIdTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:paddingTop="6dp"
-                        android:paddingBottom="6dp"
-                        android:background="@drawable/bg_pill_inactive">
-
-                        <TextView
-                            android:id="@+id/profileUserIdText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ID: —"
-                            android:textColor="@color/teal"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            android:fontFamily="monospace"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="  📋 কপি করো"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp"
-                            tools:ignore="HardcodedText" />
-
-                    </LinearLayout>
-
-                    <!-- Friend Code — tap to copy, share with friends for Lipto gifting -->
+                    <!-- Friend Code — tap to copy; used for both battle challenges and Lipto gifting -->
                     <LinearLayout
                         android:id="@+id/profileFriendCodeTV"
                         android:layout_width="wrap_content"

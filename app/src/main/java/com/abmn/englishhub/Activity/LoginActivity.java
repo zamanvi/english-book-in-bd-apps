@@ -101,12 +101,12 @@ public class LoginActivity extends AppCompatActivity {
             } catch (Exception e) {
                 showError("সংযোগ ব্যর্থ হয়েছে");
             }
-        }, error -> showError("সংযোগ ব্যর্থ হয়েছে"));
+        }, error -> showError(error.getMessage() != null ? error.getMessage() : "সংযোগ ব্যর্থ হয়েছে"));
     }
 
     private void showError(String msg) {
         runOnUiThread(() -> {
-            errorTV.setText(msg);
+            errorTV.setText("⚠️ " + msg);
             errorTV.setVisibility(View.VISIBLE);
             loginBtn.setEnabled(true);
             loginBtn.setText("লগইন করো");

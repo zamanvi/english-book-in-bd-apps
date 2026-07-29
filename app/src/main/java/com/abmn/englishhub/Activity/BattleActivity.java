@@ -1,6 +1,8 @@
 package com.abmn.englishhub.Activity;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,12 +31,14 @@ import java.util.List;
 
 public class BattleActivity extends AppCompatActivity {
 
-    private TextInputEditText opponentIdET;
+    private TextInputEditText friendCodeET;
     private AutoCompleteTextView lessonDropdown;
     private MaterialButton challengeBtn;
     private TextView challengeErrorTV, pendingEmptyTV, historyEmptyTV;
     private RecyclerView pendingRV, historyRV;
     private SwipeRefreshLayout swipeRefresh;
+
+    private ToneGenerator toneGenerator;
 
     private final List<JSONObject> pendingBattles = new ArrayList<>();
     private final List<JSONObject> historyBattles = new ArrayList<>();
@@ -62,9 +66,15 @@ public class BattleActivity extends AppCompatActivity {
             new UConfig(this).isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
         }
 
+        try {
+            toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        } catch (RuntimeException e) {
+            toneGenerator = null;
+        }
+
         setContentView(R.layout.activity_battle);
 
-        opponentIdET     = findViewById(R.id.opponentIdET);
+        friendCodeET     = findViewById(R.id.friendCodeET);
         lessonDropdown   = findViewById(R.id.lessonDropdown);
         challengeBtn     = findViewById(R.id.challengeBtn);
         challengeErrorTV = findViewById(R.id.challengeErrorTV);
@@ -99,6 +109,9 @@ public class BattleActivity extends AppCompatActivity {
         historyRV.setAdapter(historyAdapter);
 
         challengeBtn.setOnClickListener(v -> sendChallenge());
+        lessonDropdown.setOnClickListener(v -> {
+            if (lessonNames.isEmpty()) loadLessons();
+        });
 
         swipeRefresh.setOnRefreshListener(() -> {
             loadPending();
@@ -192,7 +205,13 @@ public class BattleActivity extends AppCompatActivity {
     private void loadLessons() {
         String url = Constant.ROOT_API2 + "lessons";
         ApiConfig.RequestToVolley((result, response, error) -> {
-            if (!result) return;
+            if (!result) {
+                runOnUiThread(() -> {
+                    lessonDropdown.setText("লোড ব্যর্থ — আবার চেষ্টা করতে ট্যাপ করো", false);
+                    android.widget.Toast.makeText(this, "লেসন লোড করা যায়নি, ইন্টারনেট চেক করো", android.widget.Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
             try {
                 JSONArray arr = new JSONObject(response).optJSONArray("lessons");
                 if (arr == null) return;
@@ -215,9 +234,9 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     private void sendChallenge() {
-        String oidStr = opponentIdET.getText() != null ? opponentIdET.getText().toString().trim() : "";
+        String code = friendCodeET.getText() != null ? friendCodeET.getText().toString().trim() : "";
 
-        if (oidStr.isEmpty()) { showError("বন্ধুর User ID দাও"); return; }
+        if (code.isEmpty()) { showError("বন্ধুর Friend Code দাও"); return; }
         if (selectedLessonId == 0) { showError("একটা Lesson বেছে নাও"); return; }
 
         UConfig uConfig = new UConfig(this);
@@ -229,20 +248,43 @@ public class BattleActivity extends AppCompatActivity {
             return;
         }
 
-        int opponentId;
-        try {
-            opponentId = Integer.parseInt(oidStr);
-        } catch (Exception e) { showError("সঠিক User ID দাও"); return; }
+        showError("");
+        challengeBtn.setEnabled(false);
 
-        // user_id is written to the "app_prefs" SharedPreferences file (see
-        // LoginActivity/RegisterActivity/ProfileFragment) — UConfig has its own,
-        // separate store, so reading it via uConfig.getData("user_id") never matches.
-        int myUserId = getSharedPreferences("app_prefs", MODE_PRIVATE).getInt("user_id", 0);
-        if (myUserId > 0 && opponentId == myUserId) {
-            showError("নিজেকে চ্যালেঞ্জ করা যাবে না");
-            return;
-        }
+        // Resolve the friend code to a user id first, same lookup used by
+        // LiptoTransferActivity/CreateChallengeActivity, then send the challenge.
+        String url = Constant.GAME_LIPTO_FIND_FRIEND + "?code=" + code;
+        ApiConfig.getRequest(this, url, token, findResponse -> {
+            try {
+                JSONObject r = new JSONObject(findResponse);
+                if (!Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
+                    runOnUiThread(() -> challengeBtn.setEnabled(true));
+                    showError(r.optString("message", "খুঁজে পাওয়া যায়নি"));
+                    return;
+                }
+                JSONObject user = r.optJSONObject("user");
+                if (user == null) {
+                    runOnUiThread(() -> challengeBtn.setEnabled(true));
+                    showError("খুঁজে পাওয়া যায়নি");
+                    return;
+                }
+                if (user.optBoolean("is_self", false)) {
+                    runOnUiThread(() -> challengeBtn.setEnabled(true));
+                    showError("নিজেকে চ্যালেঞ্জ করা যাবে না");
+                    return;
+                }
+                submitChallenge(user.optInt("id", 0), token);
+            } catch (Exception e) {
+                runOnUiThread(() -> challengeBtn.setEnabled(true));
+                showError("সমস্যা হয়েছে");
+            }
+        }, error -> {
+            runOnUiThread(() -> challengeBtn.setEnabled(true));
+            showError("খুঁজে পাওয়া যায়নি");
+        });
+    }
 
+    private void submitChallenge(int opponentId, String token) {
         JSONObject body = new JSONObject();
         try {
             body.put("opponent_id", opponentId);
@@ -250,12 +292,14 @@ public class BattleActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
 
         ApiConfig.postRequest(this, Constant.BATTLE_CHALLENGE, body, token, response -> {
+            runOnUiThread(() -> challengeBtn.setEnabled(true));
             try {
                 JSONObject r = new JSONObject(response);
                 if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
                     showError("");
+                    playTone(ToneGenerator.TONE_PROP_ACK);
                     runOnUiThread(() -> {
-                        opponentIdET.setText("");
+                        friendCodeET.setText("");
                         lessonDropdown.setText("", false);
                         selectedLessonId = 0;
                         // Go play the quiz
@@ -272,6 +316,7 @@ public class BattleActivity extends AppCompatActivity {
                 }
             } catch (Exception e) { showError("সমস্যা হয়েছে"); }
         }, error -> {
+            runOnUiThread(() -> challengeBtn.setEnabled(true));
             String message = error.getMessage();
             showError(message != null ? message : "নেটওয়ার্ক সমস্যা");
         });
@@ -339,5 +384,24 @@ public class BattleActivity extends AppCompatActivity {
                 challengeErrorTV.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    // Same mute toggle QuizActivity's sound effects respect.
+    private void playTone(int tone) {
+        boolean soundEnabled = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getBoolean(Constant.SOUND_ENABLED, true);
+        if (!soundEnabled || toneGenerator == null) return;
+        try {
+            toneGenerator.startTone(tone, 200);
+        } catch (Exception ignored) {}
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (toneGenerator != null) {
+            toneGenerator.release();
+            toneGenerator = null;
+        }
     }
 }

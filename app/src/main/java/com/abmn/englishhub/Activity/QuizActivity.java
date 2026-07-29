@@ -204,7 +204,10 @@ public class QuizActivity extends AppCompatActivity {
             anim.start();
         }
         if (livesRemaining <= 0) {
-            android.widget.Toast.makeText(this, "💔 লাইফ শেষ! দেখো কেমন করলে...", android.widget.Toast.LENGTH_SHORT).show();
+            String msg = battleId > 0
+                    ? "💔 তুমি আউট! বাকিদের ফলাফলের অপেক্ষা করো ⏳"
+                    : "💔 লাইফ শেষ! দেখো কেমন করলে...";
+            android.widget.Toast.makeText(this, msg, android.widget.Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -807,6 +810,8 @@ public class QuizActivity extends AppCompatActivity {
         if (round > 0) {
             intent.putExtra("round", round);
             intent.putExtra("hearts_lost", maxLives - livesRemaining);
+        } else if (battleId > 0 && maxLives > 0) {
+            intent.putExtra("lives_remaining", livesRemaining);
         }
         startActivity(intent);
         finish();

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -39,6 +41,11 @@ public class ResultActivity extends AppCompatActivity {
     private int correct, total, xpEarned, lessonId, battleId, timeSec;
     private boolean submitFailureNotified = false;
 
+    // -1 = this battle had no lives cap (unlimited attempts, nothing to report)
+    private int livesRemaining;
+
+    private ToneGenerator toneGenerator;
+
     // Round-based Quick Quiz (level-map flow) — round 0 means the legacy
     // single-round quiz, which keeps its existing xp/streak/lipto/battle
     // submit path untouched below.
@@ -59,6 +66,13 @@ public class ResultActivity extends AppCompatActivity {
         round      = getIntent().getIntExtra("round", 0);
         heartsLost = getIntent().getIntExtra("hearts_lost", 0);
         roundPassed = heartsLost < 3;
+        livesRemaining = getIntent().getIntExtra("lives_remaining", -1);
+
+        try {
+            toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        } catch (RuntimeException e) {
+            toneGenerator = null;
+        }
 
         bindViews();
         populateStatic();
@@ -356,6 +370,7 @@ public class ResultActivity extends AppCompatActivity {
             body.put("score", correct);
             body.put("total", total);
             body.put("time_sec", timeSec);
+            if (livesRemaining >= 0) body.put("lives_remaining", livesRemaining);
         } catch (Exception ignored) {}
 
         String url = Constant.BATTLE_BASE + battleId + "/submit";
@@ -389,20 +404,28 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         int titleColor;
+        int bannerColor;
         switch (result) {
             case "win":
                 battleResultTitleTV.setText("🎉 তুমি জিতেছ!");
                 titleColor = Color.parseColor("#4ade80");
+                bannerColor = Color.parseColor("#2234D399"); // teal_dim
+                playTone(ToneGenerator.TONE_PROP_ACK);
                 break;
             case "loss":
                 battleResultTitleTV.setText("😔 এবার হেরেছ");
                 titleColor = Color.parseColor("#f87171");
+                bannerColor = Color.parseColor("#22F43F5E"); // red_wrong_dim
+                playTone(ToneGenerator.TONE_PROP_NACK);
                 break;
             default:
                 battleResultTitleTV.setText("🤝 ড্র হয়েছে!");
                 titleColor = Color.parseColor("#facc15");
+                bannerColor = Color.parseColor("#22FBBF24"); // gold_dim
+                playTone(ToneGenerator.TONE_PROP_BEEP);
         }
         battleResultTitleTV.setTextColor(titleColor);
+        battleResultCV.setCardBackgroundColor(bannerColor);
 
         if (participants != null && participants.length() > 2) {
             // Multi-player - show a ranked "name: score" list instead of a
@@ -420,6 +443,7 @@ public class ResultActivity extends AppCompatActivity {
                 if (i > 0) sb.append("\n");
                 String name = p.optBoolean("is_me", false) ? "তুমি" : p.optString("name", "বন্ধু");
                 sb.append(i + 1).append(". ").append(name).append(" — ").append(p.optInt("score", 0));
+                if (p.optInt("lives_remaining", -1) == 0) sb.append(" 💔 আউট");
             }
             battleResultDetailTV.setText(sb.toString());
         } else {
@@ -491,5 +515,25 @@ public class ResultActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
         finish();
+    }
+
+    // Same mute toggle QuizActivity's sound effects respect (LevelMapActivity's
+    // speaker icon), so battle-result cues don't play when the user muted quiz sfx.
+    private void playTone(int tone) {
+        boolean soundEnabled = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getBoolean(Constant.SOUND_ENABLED, true);
+        if (!soundEnabled || toneGenerator == null) return;
+        try {
+            toneGenerator.startTone(tone, 200);
+        } catch (Exception ignored) {}
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (toneGenerator != null) {
+            toneGenerator.release();
+            toneGenerator = null;
+        }
     }
 }

@@ -241,22 +241,7 @@ public class ProfileFragment extends Fragment {
             levelTV.setText(LevelHelper.getLevelTitle(xp));
         }
 
-        // User ID — tap to copy (needed to challenge in battle)
-        android.view.View userIdLayout = view.findViewById(R.id.profileUserIdTV);
-        TextView userIdText = view.findViewById(R.id.profileUserIdText);
-        int userId = prefs.getInt("user_id", 0);
-        if (userId > 0) {
-            userIdText.setText("ID: " + userId);
-            userIdLayout.setOnClickListener(v -> {
-                ClipboardManager cm = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(ClipData.newPlainText("user_id", String.valueOf(userId)));
-                Toast.makeText(activity, "✅ ID " + userId + " কপি হয়েছে!", Toast.LENGTH_SHORT).show();
-            });
-        } else {
-            userIdLayout.setVisibility(android.view.View.GONE);
-        }
-
-        // Friend Code — tap to copy, share with friends for Lipto gifting
+        // Friend Code — tap to copy; used for both battle challenges and Lipto gifting
         // Also loads/caches the profile photo (same fallback fetch covers both).
         bindFriendCode(view, prefs, activity);
 
