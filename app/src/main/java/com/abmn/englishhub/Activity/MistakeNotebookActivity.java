@@ -71,6 +71,12 @@ public class MistakeNotebookActivity extends AppCompatActivity {
         mistakeRV.setVisibility(entries.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (ttsHelper != null) ttsHelper.shutdown();
+    }
+
     interface OnSpeak {
         void speak(String word);
     }

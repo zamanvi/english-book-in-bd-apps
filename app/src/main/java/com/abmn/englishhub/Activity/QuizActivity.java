@@ -493,8 +493,17 @@ public class QuizActivity extends AppCompatActivity {
 
         try {
             JSONObject q = questions.get(index);
+
+            // Round 3 (Listening)'s "listen_to_meaning" half sends the
+            // question text as JSON null on purpose - the word must be
+            // heard, not read (the real word lives in speak_text instead).
+            // getString("question") would throw on that null; detect the
+            // shape up front and reuse the existing manual "listen mode" UI
+            // (listeningPromptLL/replay button) instead of a dedicated one.
+            isListeningMode = q.isNull("question");
+
             questionNumberTV.setText("প্রশ্ন " + (index + 1) + " / " + questions.size());
-            questionTV.setText(q.getString("question"));
+            questionTV.setText(isListeningMode ? "" : q.getString("question"));
 
             JSONArray opts = q.getJSONArray("options");
             for (int i = 0; i < opts.length() && i < 4; i++) {
@@ -507,6 +516,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         applyModeVisibility();
+        if (isListeningMode) speakCurrentWord();
         startTimer();
     }
 
@@ -530,8 +540,16 @@ public class QuizActivity extends AppCompatActivity {
     private void speakCurrentWord() {
         if (currentIndex >= questions.size() || ttsHelper == null) return;
         try {
-            String word = questions.get(currentIndex).getString("question");
-            ttsHelper.speak(word);
+            // speak_text (when present) is the actual word to pronounce -
+            // round 3 puts the Bangla meaning in "question" for the
+            // meaning_to_listen half and null for listen_to_meaning, neither
+            // of which is ever the right thing to speak. Legacy/non-round
+            // questions have no speak_text at all, so this falls back to
+            // "question" for them exactly as before.
+            JSONObject q = questions.get(currentIndex);
+            String word = q.optString("speak_text", "");
+            if (word.isEmpty()) word = q.optString("question", "");
+            if (!word.isEmpty()) ttsHelper.speak(word);
         } catch (Exception ignored) {}
     }
 
@@ -543,6 +561,15 @@ public class QuizActivity extends AppCompatActivity {
             JSONObject q = questions.get(currentIndex);
             int correctIdx = q.getInt("correct_index");
             boolean isCorrect = (selectedIdx == correctIdx);
+
+            // Round 3's "meaning_to_listen" half shows the Bangla meaning as
+            // text and expects the tapped English option to be heard, not
+            // just read - this was designed server-side (see
+            // QuizQuestionBuilder::buildListeningQuestions) but never wired
+            // on the client before.
+            if (ttsHelper != null && "meaning_to_listen".equals(q.optString("direction", ""))) {
+                try { ttsHelper.speak(q.getJSONArray("options").getString(selectedIdx)); } catch (Exception ignored) {}
+            }
 
             if (isCorrect) {
                 correctCount++;
@@ -691,7 +718,11 @@ public class QuizActivity extends AppCompatActivity {
 
     private void buildProgressDots() {
         progressDots.removeAllViews();
-        int size = Math.min(questions.size(), questionCount);
+        // Always match the real fetched set, not the requested count - round
+        // 2 (Reading) alone returns 20 questions while questionCount defaults
+        // to 10, which used to cap this at 10 dots and leave the back half
+        // of every Round 2 attempt with no correct/wrong dot feedback.
+        int size = questions.size();
         int dotPx = (int) (8 * getResources().getDisplayMetrics().density);
         int marginPx = (int) (3 * getResources().getDisplayMetrics().density);
 
@@ -838,5 +869,6 @@ public class QuizActivity extends AppCompatActivity {
             soundPool.release();
             soundPool = null;
         }
+        if (ttsHelper != null) ttsHelper.shutdown();
     }
 }

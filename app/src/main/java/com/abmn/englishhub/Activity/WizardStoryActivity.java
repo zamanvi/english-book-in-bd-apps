@@ -585,4 +585,10 @@ public class WizardStoryActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (ttsHelper != null) ttsHelper.shutdown();
+    }
 }

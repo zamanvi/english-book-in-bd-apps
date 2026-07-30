@@ -309,4 +309,10 @@ public class HomeFragment extends Fragment {
             } catch (Exception ignored) {}
         }, error -> {});
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (tts != null) tts.shutdown();
+    }
 }

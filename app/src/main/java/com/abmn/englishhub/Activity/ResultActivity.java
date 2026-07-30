@@ -464,6 +464,12 @@ public class ResultActivity extends AppCompatActivity {
                 if (roundPassed) {
                     startActivity(new Intent(this, LevelMapActivity.class)
                             .putExtra("lesson_id", lessonId));
+                } else if (round == 4) {
+                    // Round 4 (Writing) has its own dedicated typed-answer
+                    // Activity - QuizActivity can't render its question
+                    // shape (no options/correct_index, just prompt/expected_answer).
+                    startActivity(new Intent(this, WritingActivity.class)
+                            .putExtra("lesson_id", lessonId));
                 } else {
                     startActivity(new Intent(this, QuizActivity.class)
                             .putExtra("lesson_id", lessonId)

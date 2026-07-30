@@ -24,8 +24,8 @@ import org.json.JSONObject;
 // Entry point for the round-based Quick Quiz (Round 1 MCQ → Round 2 Reading →
 // Round 3 Listening → Round 4 Writing). Shows lock/unlock/passed state and
 // star rating per round, fetched from GameController::levelMap. Rounds 1-3
-// launch QuizActivity in round mode; Round 4 launches a dedicated writing
-// screen (not yet built - shows a "coming soon" toast until then).
+// launch QuizActivity in round mode; Round 4 launches the dedicated
+// WritingActivity (typed-answer, not multiple choice).
 public class LevelMapActivity extends AppCompatActivity {
 
     private static final String[] ROUND_ICONS  = {"🎯", "📖", "🎧", "✍️"};
@@ -113,6 +113,12 @@ public class LevelMapActivity extends AppCompatActivity {
             if (message != null) {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                 finish();
+            } else {
+                // Genuine connectivity failure, not a business-rule rejection
+                // - previously silent, leaving every round stuck showing
+                // "locked" with no explanation at all.
+                Toast.makeText(this, "ইন্টারনেট সংযোগ সমস্যা — আবার চেষ্টা করো",
+                        Toast.LENGTH_LONG).show();
             }
         }));
     }
