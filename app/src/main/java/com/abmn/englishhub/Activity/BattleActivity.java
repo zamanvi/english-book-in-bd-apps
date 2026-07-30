@@ -1,12 +1,8 @@
 package com.abmn.englishhub.Activity;
 
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +16,6 @@ import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,23 +25,13 @@ import java.util.List;
 
 public class BattleActivity extends AppCompatActivity {
 
-    private TextInputEditText friendCodeET;
-    private AutoCompleteTextView lessonDropdown;
-    private MaterialButton challengeBtn;
-    private TextView challengeErrorTV, pendingEmptyTV, historyEmptyTV;
+    private TextView pendingEmptyTV, historyEmptyTV;
     private RecyclerView pendingRV, historyRV;
     private SwipeRefreshLayout swipeRefresh;
-
-    private ToneGenerator toneGenerator;
 
     private final List<JSONObject> pendingBattles = new ArrayList<>();
     private final List<JSONObject> historyBattles = new ArrayList<>();
     private BattleAdapter pendingAdapter, historyAdapter;
-
-    // lesson list for dropdown
-    private final List<String> lessonNames = new ArrayList<>();
-    private final List<Integer> lessonIds   = new ArrayList<>();
-    private int selectedLessonId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +50,8 @@ public class BattleActivity extends AppCompatActivity {
             new UConfig(this).isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
         }
 
-        try {
-            toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
-        } catch (RuntimeException e) {
-            toneGenerator = null;
-        }
-
         setContentView(R.layout.activity_battle);
 
-        friendCodeET     = findViewById(R.id.friendCodeET);
-        lessonDropdown   = findViewById(R.id.lessonDropdown);
-        challengeBtn     = findViewById(R.id.challengeBtn);
-        challengeErrorTV = findViewById(R.id.challengeErrorTV);
         pendingRV        = findViewById(R.id.pendingRV);
         historyRV        = findViewById(R.id.historyRV);
         pendingEmptyTV   = findViewById(R.id.pendingEmptyTV);
@@ -108,17 +82,11 @@ public class BattleActivity extends AppCompatActivity {
         historyRV.setLayoutManager(new LinearLayoutManager(this));
         historyRV.setAdapter(historyAdapter);
 
-        challengeBtn.setOnClickListener(v -> sendChallenge());
-        lessonDropdown.setOnClickListener(v -> {
-            if (lessonNames.isEmpty()) loadLessons();
-        });
-
         swipeRefresh.setOnRefreshListener(() -> {
             loadPending();
             loadHistory();
         });
 
-        loadLessons();
         loadPending();
         loadHistory();
 
@@ -202,126 +170,6 @@ public class BattleActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private void loadLessons() {
-        String url = Constant.ROOT_API2 + "lessons";
-        ApiConfig.RequestToVolley((result, response, error) -> {
-            if (!result) {
-                runOnUiThread(() -> {
-                    lessonDropdown.setText("লোড ব্যর্থ — আবার চেষ্টা করতে ট্যাপ করো", false);
-                    android.widget.Toast.makeText(this, "লেসন লোড করা যায়নি, ইন্টারনেট চেক করো", android.widget.Toast.LENGTH_SHORT).show();
-                });
-                return;
-            }
-            try {
-                JSONArray arr = new JSONObject(response).optJSONArray("lessons");
-                if (arr == null) return;
-                lessonNames.clear(); lessonIds.clear();
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject l = arr.getJSONObject(i);
-                    lessonNames.add(l.optString("title", "Lesson " + l.optInt("id")));
-                    lessonIds.add(l.optInt("id"));
-                }
-                runOnUiThread(() -> {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                            R.layout.item_dropdown_text, lessonNames);
-                    lessonDropdown.setAdapter(adapter);
-                    lessonDropdown.setOnItemClickListener((parent, view, position, id) ->
-                            selectedLessonId = lessonIds.get(position));
-                    if (!lessonNames.isEmpty()) lessonDropdown.setText("", false);
-                });
-            } catch (Exception ignored) {}
-        }, com.android.volley.Request.Method.GET, this, url, new java.util.HashMap<>(), false);
-    }
-
-    private void sendChallenge() {
-        String code = friendCodeET.getText() != null ? friendCodeET.getText().toString().trim() : "";
-
-        if (code.isEmpty()) { showError("বন্ধুর Friend Code দাও"); return; }
-        if (selectedLessonId == 0) { showError("একটা Lesson বেছে নাও"); return; }
-
-        UConfig uConfig = new UConfig(this);
-        String token = uConfig.getData(Constant.TOKEN);
-        if (token == null || token.isEmpty()) { showError("লগইন করো আগে"); return; }
-
-        if (!uConfig.isConnected()) {
-            uConfig.isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
-            return;
-        }
-
-        showError("");
-        challengeBtn.setEnabled(false);
-
-        // Resolve the friend code to a user id first, same lookup used by
-        // LiptoTransferActivity/CreateChallengeActivity, then send the challenge.
-        String url = Constant.GAME_LIPTO_FIND_FRIEND + "?code=" + code;
-        ApiConfig.getRequest(this, url, token, findResponse -> {
-            try {
-                JSONObject r = new JSONObject(findResponse);
-                if (!Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
-                    runOnUiThread(() -> challengeBtn.setEnabled(true));
-                    showError(r.optString("message", "খুঁজে পাওয়া যায়নি"));
-                    return;
-                }
-                JSONObject user = r.optJSONObject("user");
-                if (user == null) {
-                    runOnUiThread(() -> challengeBtn.setEnabled(true));
-                    showError("খুঁজে পাওয়া যায়নি");
-                    return;
-                }
-                if (user.optBoolean("is_self", false)) {
-                    runOnUiThread(() -> challengeBtn.setEnabled(true));
-                    showError("নিজেকে চ্যালেঞ্জ করা যাবে না");
-                    return;
-                }
-                submitChallenge(user.optInt("id", 0), token);
-            } catch (Exception e) {
-                runOnUiThread(() -> challengeBtn.setEnabled(true));
-                showError("সমস্যা হয়েছে");
-            }
-        }, error -> {
-            runOnUiThread(() -> challengeBtn.setEnabled(true));
-            showError("খুঁজে পাওয়া যায়নি");
-        });
-    }
-
-    private void submitChallenge(int opponentId, String token) {
-        JSONObject body = new JSONObject();
-        try {
-            body.put("opponent_id", opponentId);
-            body.put("lesson_id", selectedLessonId);
-        } catch (Exception ignored) {}
-
-        ApiConfig.postRequest(this, Constant.BATTLE_CHALLENGE, body, token, response -> {
-            runOnUiThread(() -> challengeBtn.setEnabled(true));
-            try {
-                JSONObject r = new JSONObject(response);
-                if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
-                    showError("");
-                    playTone(ToneGenerator.TONE_PROP_ACK);
-                    runOnUiThread(() -> {
-                        friendCodeET.setText("");
-                        lessonDropdown.setText("", false);
-                        selectedLessonId = 0;
-                        // Go play the quiz
-                        int battleId = r.optInt("battle_id", 0);
-                        int lessonId = r.optInt("lesson_id", 0);
-                        // Open QuizActivity with lesson, pass battleId for later submit
-                        Intent intent = new Intent(this, QuizActivity.class);
-                        intent.putExtra("lesson_id", lessonId);
-                        intent.putExtra("battle_id", battleId);
-                        startActivity(intent);
-                    });
-                } else {
-                    showError(r.optString("message", "সমস্যা হয়েছে"));
-                }
-            } catch (Exception e) { showError("সমস্যা হয়েছে"); }
-        }, error -> {
-            runOnUiThread(() -> challengeBtn.setEnabled(true));
-            String message = error.getMessage();
-            showError(message != null ? message : "নেটওয়ার্ক সমস্যা");
-        });
-    }
-
     private void loadPending() {
         String token = new UConfig(this).getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) return;
@@ -373,35 +221,5 @@ public class BattleActivity extends AppCompatActivity {
             startActivity(intent);
         }
         // else already completed - could show result detail screen (future enhancement)
-    }
-
-    private void showError(String msg) {
-        runOnUiThread(() -> {
-            if (msg.isEmpty()) {
-                challengeErrorTV.setVisibility(View.GONE);
-            } else {
-                challengeErrorTV.setText(msg);
-                challengeErrorTV.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    // Same mute toggle QuizActivity's sound effects respect.
-    private void playTone(int tone) {
-        boolean soundEnabled = getSharedPreferences("app_prefs", MODE_PRIVATE)
-                .getBoolean(Constant.SOUND_ENABLED, true);
-        if (!soundEnabled || toneGenerator == null) return;
-        try {
-            toneGenerator.startTone(tone, 200);
-        } catch (Exception ignored) {}
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (toneGenerator != null) {
-            toneGenerator.release();
-            toneGenerator = null;
-        }
     }
 }

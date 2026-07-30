@@ -130,48 +130,54 @@
                         android:textColor="@color/text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Mode -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="মোড বেছে নাও"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.10"
-                    android:layout_marginBottom="10dp"
-                    tools:ignore="HardcodedText" />
-
+                <!-- Mode - only one mode ships today, so this is a single info
+                     row instead of a 50/50 toggle competing for space with a
+                     button that does nothing. Live mode chip stays tappable
+                     so curious taps still get the "coming soon" toast. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="20dp"
-                    android:weightSum="2">
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/modeAsyncBtn"
-                        style="@style/btn_primary"
+                    <TextView
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_height="46dp"
-                        android:layout_marginEnd="6dp"
-                        android:textSize="12sp"
-                        android:text="⏳ একে একে খেলবে"
+                        android:text="⏳ একে একে খেলবে মোডে খেলা হবে"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
                         tools:ignore="HardcodedText" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/modeLiveBtn"
-                        style="@style/btn_outline"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="46dp"
-                        android:layout_marginStart="6dp"
-                        android:textSize="12sp"
-                        android:text="🔴 লাইভ (শীঘ্রই আসছে 🚀)"
+                    <TextView
+                        android:id="@+id/modeLiveBadgeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_pill_inactive"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="🔴 লাইভ শীঘ্রই"
+                        android:textColor="@color/text_muted"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:clickable="true"
+                        android:focusable="true"
                         tools:ignore="HardcodedText" />
 
                 </LinearLayout>
+
+                <!-- Divider - separates "what am I playing" (lesson, count,
+                     lives, mode above) from "who's playing" (friends,
+                     sharing below), the two things this screen actually
+                     controls. -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/bg_elevated"
+                    android:layout_marginBottom="20dp" />
 
                 <!-- Invite friends -->
                 <TextView

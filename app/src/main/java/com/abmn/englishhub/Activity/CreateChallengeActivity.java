@@ -37,8 +37,8 @@ public class CreateChallengeActivity extends AppCompatActivity {
     private AutoCompleteTextView lessonDropdown, questionCountDropdown;
     private TextInputLayout customCountLayout;
     private TextInputEditText customCountET, livesET, friendCodeET;
-    private MaterialButton addFriendBtn, createBtn, shareCodeBtn, startPlayingBtn, modeLiveBtn;
-    private TextView addFriendErrorTV, createErrorTV, inviteCodeTV, allowCodeJoinHintTV, maxPlayersTV;
+    private MaterialButton addFriendBtn, createBtn, shareCodeBtn, startPlayingBtn;
+    private TextView addFriendErrorTV, createErrorTV, inviteCodeTV, allowCodeJoinHintTV, maxPlayersTV, modeLiveBadgeTV;
     private LinearLayout invitedFriendsLL;
     private androidx.cardview.widget.CardView successCV;
     private SwitchCompat allowCodeJoinSwitch;
@@ -97,10 +97,10 @@ public class CreateChallengeActivity extends AppCompatActivity {
         allowCodeJoinSwitch    = findViewById(R.id.allowCodeJoinSwitch);
         allowCodeJoinHintTV    = findViewById(R.id.allowCodeJoinHintTV);
         maxPlayersTV           = findViewById(R.id.maxPlayersTV);
-        modeLiveBtn            = findViewById(R.id.modeLiveBtn);
+        modeLiveBadgeTV        = findViewById(R.id.modeLiveBadgeTV);
 
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
-        modeLiveBtn.setOnClickListener(v -> Toast.makeText(this,
+        modeLiveBadgeTV.setOnClickListener(v -> Toast.makeText(this,
                 "🚀 লাইভ মোড শীঘ্রই আসছে! এখন শুধু 'একে একে খেলবে' মোডে খেলা যাচ্ছে",
                 Toast.LENGTH_LONG).show());
 

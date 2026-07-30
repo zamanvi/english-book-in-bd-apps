@@ -116,7 +116,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="চ্যালেঞ্জ পাঠাও"
+                    android:text="নতুন ব্যাটল শুরু করো"
                     android:textColor="@color/text_muted"
                     android:textSize="11sp"
                     android:textStyle="bold"
@@ -124,95 +124,22 @@
                     android:layout_marginBottom="16dp"
                     tools:ignore="HardcodedText" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="বন্ধুর Friend Code (Profile থেকে কপি করো)"
-                    android:layout_marginBottom="12dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/friendCodeET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textCapCharacters"
-                        android:textColor="@color/text_primary" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Lesson dropdown -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/lessonDropdownLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Lesson বেছে নাও"
-                    android:layout_marginBottom="16dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted">
-                    <AutoCompleteTextView
-                        android:id="@+id/lessonDropdown"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:textColor="@color/text_primary"
-                        android:text="লোড হচ্ছে..."
-                        tools:ignore="HardcodedText" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <!-- Single clear entry point (opens CreateChallengeActivity,
+                     which already covers a quick single-friend challenge via
+                     its own optional invite section - no need for a second,
+                     more limited inline form duplicating the same action). -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/customizeChallengeBtn"
+                    style="@style/btn_primary"
+                    android:text="⚔️ নতুন চ্যালেঞ্জ পাঠাও"
+                    tools:ignore="HardcodedText" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/challengeBtn"
-                    style="@style/btn_primary"
-                    android:text="⚔️ চ্যালেঞ্জ পাঠাও"
+                    android:id="@+id/joinByCodeBtn"
+                    style="@style/btn_outline"
+                    android:layout_marginTop="10dp"
+                    android:text="🔑 কোড দিয়ে যোগ দাও"
                     tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/challengeErrorTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/red_wrong"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    android:layout_marginTop="8dp"
-                    tools:ignore="HardcodedText" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:weightSum="2">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/customizeChallengeBtn"
-                        style="@style/btn_outline"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:textSize="12sp"
-                        android:text="🎮 কাস্টমাইজ করে চ্যালেঞ্জ"
-                        tools:ignore="HardcodedText" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/joinByCodeBtn"
-                        style="@style/btn_outline"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:textSize="12sp"
-                        android:text="🔑 কোড দিয়ে যোগ দাও"
-                        tools:ignore="HardcodedText" />
-
-                </LinearLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
