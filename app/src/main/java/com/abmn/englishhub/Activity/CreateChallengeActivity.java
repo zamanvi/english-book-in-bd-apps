@@ -38,7 +38,7 @@ public class CreateChallengeActivity extends AppCompatActivity {
     private TextInputLayout customCountLayout;
     private TextInputEditText customCountET, livesET, friendCodeET;
     private MaterialButton addFriendBtn, createBtn, shareCodeBtn, startPlayingBtn, modeLiveBtn;
-    private TextView addFriendErrorTV, createErrorTV, inviteCodeTV;
+    private TextView addFriendErrorTV, createErrorTV, inviteCodeTV, allowCodeJoinHintTV, maxPlayersTV;
     private LinearLayout invitedFriendsLL;
     private androidx.cardview.widget.CardView successCV;
     private SwitchCompat allowCodeJoinSwitch;
@@ -95,6 +95,8 @@ public class CreateChallengeActivity extends AppCompatActivity {
         invitedFriendsLL       = findViewById(R.id.invitedFriendsLL);
         successCV              = findViewById(R.id.successCV);
         allowCodeJoinSwitch    = findViewById(R.id.allowCodeJoinSwitch);
+        allowCodeJoinHintTV    = findViewById(R.id.allowCodeJoinHintTV);
+        maxPlayersTV           = findViewById(R.id.maxPlayersTV);
         modeLiveBtn            = findViewById(R.id.modeLiveBtn);
 
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
@@ -112,6 +114,9 @@ public class CreateChallengeActivity extends AppCompatActivity {
         createBtn.setOnClickListener(v -> createChallenge());
         shareCodeBtn.setOnClickListener(v -> shareCode());
         startPlayingBtn.setOnClickListener(v -> startPlaying());
+
+        allowCodeJoinSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateMaxPlayersHint());
+        updateAllowCodeJoinGuard();
     }
 
     private void setupQuestionCountDropdown() {
@@ -182,8 +187,10 @@ public class CreateChallengeActivity extends AppCompatActivity {
         }
 
         showAddFriendError("");
+        addFriendBtn.setEnabled(false);
         String url = Constant.GAME_LIPTO_FIND_FRIEND + "?code=" + code;
         ApiConfig.getRequest(this, url, token, response -> {
+            runOnUiThread(() -> addFriendBtn.setEnabled(true));
             try {
                 JSONObject r = new JSONObject(response);
                 if (!Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
@@ -211,7 +218,10 @@ public class CreateChallengeActivity extends AppCompatActivity {
             } catch (Exception e) {
                 showAddFriendError("সমস্যা হয়েছে");
             }
-        }, error -> showAddFriendError("খুঁজে পাওয়া যায়নি"));
+        }, error -> {
+            runOnUiThread(() -> addFriendBtn.setEnabled(true));
+            showAddFriendError("খুঁজে পাওয়া যায়নি");
+        });
     }
 
     private void renderInvitees() {
@@ -243,6 +253,34 @@ public class CreateChallengeActivity extends AppCompatActivity {
             row.addView(nameTV);
             row.addView(removeTV);
             invitedFriendsLL.addView(row);
+        }
+        updateAllowCodeJoinGuard();
+    }
+
+    // A code is only ever generated when it will actually be joinable
+    // (server mirrors this: allow_code_join OFF + no invitees would
+    // otherwise produce a code locked to max_participants=1, i.e. a
+    // permanent dead end). So once the invitee list is empty, force the
+    // switch on and lock it - the user simply can't create that broken
+    // combination from this screen.
+    private void updateAllowCodeJoinGuard() {
+        boolean noFriends = invitees.isEmpty();
+        if (noFriends) {
+            allowCodeJoinSwitch.setChecked(true);
+        }
+        allowCodeJoinSwitch.setEnabled(!noFriends);
+        allowCodeJoinHintTV.setVisibility(noFriends ? View.VISIBLE : View.GONE);
+        updateMaxPlayersHint();
+    }
+
+    private void updateMaxPlayersHint() {
+        boolean codeJoinOpen = invitees.isEmpty() || allowCodeJoinSwitch.isChecked();
+        maxPlayersTV.setVisibility(View.VISIBLE);
+        if (codeJoinOpen) {
+            maxPlayersTV.setText("👥 কোড দিয়ে যেকেউ যোগ দিতে পারবে (আনলিমিটেড)");
+        } else {
+            int max = invitees.size() + 1;
+            maxPlayersTV.setText("👥 সর্বোচ্চ " + max + " জন খেলতে পারবে (তুমি + " + invitees.size() + " বন্ধু)");
         }
     }
 
@@ -312,20 +350,28 @@ public class CreateChallengeActivity extends AppCompatActivity {
                 createdWordIds = wordIdsArr != null ? joinIntArray(wordIdsArr) : "";
                 playTone(ToneGenerator.TONE_PROP_ACK);
 
+                boolean hasCode = createdInviteCode != null && !createdInviteCode.isEmpty();
+
                 runOnUiThread(() -> {
-                    resetCreateBtn();
                     createBtn.setEnabled(false);
                     createBtn.setText("✅ তৈরি হয়েছে");
-                    successCV.setVisibility(View.VISIBLE);
-                    if (createdInviteCode != null && !createdInviteCode.isEmpty()) {
+
+                    if (hasCode) {
+                        // A shareable code exists - stay on screen so the
+                        // user can copy/share it before jumping into the
+                        // (timed) quiz themselves.
+                        successCV.setVisibility(View.VISIBLE);
                         inviteCodeTV.setText(createdInviteCode);
                         inviteCodeTV.setVisibility(View.VISIBLE);
                         shareCodeBtn.setVisibility(View.VISIBLE);
+                        Toast.makeText(this, "🎉 চ্যালেঞ্জ রেডি! কোড শেয়ার করো বা এখনই খেলা শুরু করো", Toast.LENGTH_LONG).show();
                     } else {
-                        inviteCodeTV.setVisibility(View.GONE);
-                        shareCodeBtn.setVisibility(View.GONE);
+                        // Invite-only challenge with no shareable code -
+                        // nothing to show/share, so skip the extra tap and
+                        // go straight into the quiz.
+                        Toast.makeText(this, "🎉 চ্যালেঞ্জ তৈরি হয়েছে! বন্ধুদের নোটিফিকেশন পাঠানো হয়েছে, খেলা শুরু হচ্ছে...", Toast.LENGTH_SHORT).show();
+                        startPlaying();
                     }
-                    Toast.makeText(this, "🎉 চ্যালেঞ্জ রেডি! এখন খেলা শুরু করো", Toast.LENGTH_LONG).show();
                 });
             } catch (Exception e) {
                 runOnUiThread(this::resetCreateBtn);

@@ -47,7 +47,11 @@ public class FcmService extends FirebaseMessagingService {
             case "battle":
                 String battleIdStr = remoteMessage.getData().get("battle_id");
                 intent = new Intent(this, BattleActivity.class);
-                if (battleIdStr != null) intent.putExtra("battle_id", Integer.parseInt(battleIdStr));
+                if (battleIdStr != null) {
+                    try {
+                        intent.putExtra("battle_id", Integer.parseInt(battleIdStr));
+                    } catch (NumberFormatException ignored) { /* malformed payload - open BattleActivity with no id */ }
+                }
                 notifId = 2002;
                 break;
             case "item":
