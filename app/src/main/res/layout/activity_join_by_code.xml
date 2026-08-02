@@ -71,8 +71,8 @@
                     android:hint="চ্যালেঞ্জ কোড"
                     android:layout_marginBottom="12dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:hintTextColor="@color/text_muted">
+                    app:boxStrokeColor="@color/edittext_stroke_color"
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/codeET"
                         android:layout_width="match_parent"

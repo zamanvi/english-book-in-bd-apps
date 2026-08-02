@@ -261,12 +261,12 @@
             android:layout_height="wrap_content"
             android:hint="তোমার উত্তর লেখো..."
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/bg_active"
+            app:boxStrokeColor="@color/edittext_stroke_color"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusBottomEnd="12dp"
-            app:hintTextColor="@color/text_muted">
+            app:hintTextColor="@color/edittext_hint_color">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/answerET"

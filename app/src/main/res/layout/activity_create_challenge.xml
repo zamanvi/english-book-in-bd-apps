@@ -64,8 +64,8 @@
                     android:hint="Lesson বেছে নাও"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:hintTextColor="@color/text_muted">
+                    app:boxStrokeColor="@color/edittext_stroke_color"
+                    app:hintTextColor="@color/edittext_hint_color">
                     <AutoCompleteTextView
                         android:id="@+id/lessonDropdown"
                         android:layout_width="match_parent"
@@ -83,8 +83,8 @@
                     android:hint="কয়টা প্রশ্ন খেলবে?"
                     android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:hintTextColor="@color/text_muted">
+                    app:boxStrokeColor="@color/edittext_stroke_color"
+                    app:hintTextColor="@color/edittext_hint_color">
                     <AutoCompleteTextView
                         android:id="@+id/questionCountDropdown"
                         android:layout_width="match_parent"
@@ -103,8 +103,8 @@
                     android:layout_marginBottom="16dp"
                     android:visibility="gone"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:hintTextColor="@color/text_muted">
+                    app:boxStrokeColor="@color/edittext_stroke_color"
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/customCountET"
                         android:layout_width="match_parent"
@@ -120,8 +120,8 @@
                     android:hint="❤️ Lives (ঐচ্ছিক, ১-৫০ - ভুল উত্তরের সহনশীলতা)"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:hintTextColor="@color/text_muted">
+                    app:boxStrokeColor="@color/edittext_stroke_color"
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/livesET"
                         android:layout_width="match_parent"
@@ -196,8 +196,8 @@
                     android:layout_height="wrap_content"
                     android:hint="বন্ধুর Friend Code"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
-                    app:hintTextColor="@color/text_muted">
+                    app:boxStrokeColor="@color/edittext_stroke_color"
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/friendCodeET"
                         android:layout_width="match_parent"

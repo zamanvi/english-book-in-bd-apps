@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fixes inputs rendering as borderless/invisible boxes: bg_active used to be
+     passed as a flat color, which Material only applies to the focused stroke,
+     leaving the resting state to fall back to a near-invisible theme default
+     against our dark cards. This gives every state a clearly visible color. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/colorPrimary" android:state_focused="true" />
+    <item android:color="@color/text_muted" />
+</selector>

@@ -115,12 +115,12 @@
                     android:hint="গ্রুপের নাম লেখো (যেমন: আমার ক্লাস)"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
+                    app:boxStrokeColor="@color/edittext_stroke_color"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted">
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/groupNameET"
                         android:layout_width="match_parent"
@@ -168,12 +168,12 @@
                     android:hint="8 অক্ষরের কোড লেখো (বন্ধু শেয়ার করেছে)"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
+                    app:boxStrokeColor="@color/edittext_stroke_color"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted">
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/groupCodeET"
                         android:layout_width="match_parent"

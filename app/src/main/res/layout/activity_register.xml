@@ -90,12 +90,12 @@
                     android:hint="তোমার নাম লিখো"
                     android:layout_marginBottom="14dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
+                    app:boxStrokeColor="@color/edittext_stroke_color"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted">
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registerNameET"
                         android:layout_width="match_parent"
@@ -114,12 +114,12 @@
                     android:hint="পাসওয়ার্ড দাও (কমপক্ষে ৬ অক্ষর)"
                     android:layout_marginBottom="14dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
+                    app:boxStrokeColor="@color/edittext_stroke_color"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted"
+                    app:hintTextColor="@color/edittext_hint_color"
                     app:passwordToggleEnabled="true">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registerPasswordET"
@@ -139,12 +139,12 @@
                     android:hint="আবার পাসওয়ার্ড দাও"
                     android:layout_marginBottom="14dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
+                    app:boxStrokeColor="@color/edittext_stroke_color"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted"
+                    app:hintTextColor="@color/edittext_hint_color"
                     app:passwordToggleEnabled="true">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registerConfirmPasswordET"
@@ -174,12 +174,12 @@
                     android:hint="Email address"
                     android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/bg_active"
+                    app:boxStrokeColor="@color/edittext_stroke_color"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
-                    app:hintTextColor="@color/text_muted">
+                    app:hintTextColor="@color/edittext_hint_color">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registerEmailET"
                         android:layout_width="match_parent"

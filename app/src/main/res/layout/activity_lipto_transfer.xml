@@ -131,12 +131,12 @@
                         android:layout_marginEnd="10dp"
                         android:hint="বন্ধুর Friend Code"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="@color/bg_active"
+                        app:boxStrokeColor="@color/edittext_stroke_color"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusBottomEnd="12dp"
-                        app:hintTextColor="@color/text_muted">
+                        app:hintTextColor="@color/edittext_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/friendCodeET"
                             android:layout_width="match_parent"
@@ -218,12 +218,12 @@
                         android:hint="Lipto পরিমাণ (দৈনিক সর্বোচ্চ ১০০)"
                         android:layout_marginBottom="12dp"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="@color/bg_active"
+                        app:boxStrokeColor="@color/edittext_stroke_color"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusBottomEnd="12dp"
-                        app:hintTextColor="@color/text_muted">
+                        app:hintTextColor="@color/edittext_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/transferAmountET"
                             android:layout_width="match_parent"
