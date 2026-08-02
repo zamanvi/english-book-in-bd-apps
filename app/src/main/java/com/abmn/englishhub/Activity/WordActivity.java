@@ -36,7 +36,6 @@ import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.GuestNudgeHelper;
 import com.abmn.englishhub.Helper.InterstitialAdManager;
 import com.abmn.englishhub.Model.WordModel;
-import com.abmn.texttospeech.Base;
 import com.abmn.utility.UConfig;
 
 import org.json.JSONArray;
@@ -108,8 +107,6 @@ public class WordActivity extends AppCompatActivity {
         getLessonId = getIntent().getStringExtra(Constant.FROM);
         String getLessonTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
         String getLessonType = getIntent().getStringExtra(Constant.FROM_TYPE);
-
-        Base.setVoiceSpeed(uConfig.getData(Constant.VOICE_SPEED));
 
         wordTvW = findViewById(R.id.wordTvW);
         meaningTvW = findViewById(R.id.meaningTvW);
@@ -413,7 +410,6 @@ public class WordActivity extends AppCompatActivity {
                 uConfig.setData(Constant.VOICE_SPEED, "faster");
             }
 
-            Base.setVoiceSpeed(uConfig.getData(Constant.VOICE_SPEED));
             adapter.refreshTtsSpeed();
         });
 

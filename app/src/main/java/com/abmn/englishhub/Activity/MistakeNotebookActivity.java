@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.MistakeNotebook;
+import com.abmn.englishhub.Helper.AppTextToSpeechHelper;
 import com.abmn.englishhub.R;
-import com.abmn.texttospeech.TextToSpeechHelper;
 import com.abmn.utility.UConfig;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class MistakeNotebookActivity extends AppCompatActivity {
     private RecyclerView mistakeRV;
     private View emptyLL;
     private MistakeAdapter adapter;
-    private TextToSpeechHelper ttsHelper;
+    private AppTextToSpeechHelper ttsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class MistakeNotebookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mistake_notebook);
 
         UConfig uConfig = new UConfig(this);
-        ttsHelper = new TextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
+        ttsHelper = new AppTextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
 
         mistakeRV = findViewById(R.id.mistakeRV);
         emptyLL   = findViewById(R.id.mistakeEmptyLL);

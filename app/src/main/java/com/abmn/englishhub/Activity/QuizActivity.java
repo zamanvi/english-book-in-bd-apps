@@ -21,8 +21,8 @@ import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.MistakeNotebook;
 import com.abmn.englishhub.Helper.OfflineCache;
+import com.abmn.englishhub.Helper.AppTextToSpeechHelper;
 import com.abmn.englishhub.R;
-import com.abmn.texttospeech.TextToSpeechHelper;
 import com.abmn.utility.UConfig;
 
 import org.json.JSONArray;
@@ -42,7 +42,7 @@ public class QuizActivity extends AppCompatActivity {
     private LinearLayout listeningPromptLL;
     private CardView replayBtn, modeToggleBtn;
     private ImageView modeToggleIV;
-    private TextToSpeechHelper ttsHelper;
+    private AppTextToSpeechHelper ttsHelper;
     private boolean isListeningMode = false;
     private TextView optionATV, optionBTV, optionCTV, optionDTV;
     private TextView labelA, labelB, labelC, labelD;
@@ -119,7 +119,7 @@ public class QuizActivity extends AppCompatActivity {
         setupSoundPool();
 
         UConfig uConfig = new UConfig(this);
-        ttsHelper = new TextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
+        ttsHelper = new AppTextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
 
         bindViews();
         setupClickListeners();

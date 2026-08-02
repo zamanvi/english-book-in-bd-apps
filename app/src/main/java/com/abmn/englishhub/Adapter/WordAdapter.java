@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abmn.englishhub.R;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Model.WordModel;
-import com.abmn.texttospeech.TextToSpeechHelper;
+import com.abmn.englishhub.Helper.AppTextToSpeechHelper;
 import com.abmn.utility.UConfig;
 
 import java.util.HashSet;
@@ -35,19 +35,19 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private boolean isBWord = false, isBMeaning = false;
     private boolean storybook;
     private final Set<Integer> expandedNotePositions = new HashSet<>();
-    private TextToSpeechHelper ttsHelper;
+    private AppTextToSpeechHelper ttsHelper;
 
     public WordAdapter(List<WordModel> wordList, Activity activity) {
         this.wordList = wordList;
         this.activity = activity;
         UConfig uConfig = new UConfig(activity);
-        ttsHelper = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
+        ttsHelper = new AppTextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshTtsSpeed() {
         UConfig uConfig = new UConfig(activity);
-        ttsHelper = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
+        ttsHelper = new AppTextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
         notifyDataSetChanged();
     }
 
@@ -134,7 +134,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
         @SuppressLint("SetTextI18n")
         public void bind(WordModel model, int position, boolean isBWord, boolean isBMeaning, boolean storybook,
-                          boolean isNote, boolean expanded, TextToSpeechHelper tts, OnToggleListener onToggle) {
+                          boolean isNote, boolean expanded, AppTextToSpeechHelper tts, OnToggleListener onToggle) {
             wordTV.setText(model.getWord());
             meaningTV.setText(model.getMeaning());
 
@@ -226,7 +226,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             antonymsTV.setOnClickListener(v -> play(antonymsTV.getContext(), model.getAntonyms(), antonymsTV, tts));
         }
 
-        private void play(Context context, String word, TextView textView, TextToSpeechHelper tts) {
+        private void play(Context context, String word, TextView textView, AppTextToSpeechHelper tts) {
             if (word == null || word.isEmpty() || "null".equals(word) || "—".equals(word)) return;
             int defaultColor = textView.getCurrentTextColor();
             textView.setTextColor(context.getResources().getColor(R.color.indigo, null));

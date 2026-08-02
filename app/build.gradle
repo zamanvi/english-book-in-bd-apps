@@ -76,7 +76,6 @@ dependencies {
     implementation libs.recyclerview
     implementation libs.swiperefreshlayout
     implementation libs.utility
-    implementation libs.texttospeech
     implementation libs.ucrop
     implementation libs.glide
 

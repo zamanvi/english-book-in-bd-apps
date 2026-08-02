@@ -32,8 +32,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.AppTextToSpeechHelper;
 import com.abmn.englishhub.R;
-import com.abmn.texttospeech.TextToSpeechHelper;
 import com.abmn.utility.UConfig;
 import com.android.volley.Request;
 
@@ -52,7 +52,7 @@ public class WizardStoryActivity extends AppCompatActivity {
 
     private Activity activity;
     private int storyId;
-    private TextToSpeechHelper ttsHelper;
+    private AppTextToSpeechHelper ttsHelper;
     private List<String[]> vocabularyData = new ArrayList<>();
 
     @Override
@@ -69,7 +69,7 @@ public class WizardStoryActivity extends AppCompatActivity {
         activity = this;
         storyId = getIntent().getIntExtra(Constant.FROM_ID, 0);
         UConfig uConfig = new UConfig(this);
-        ttsHelper = new TextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
+        ttsHelper = new AppTextToSpeechHelper(this, uConfig.getData(Constant.VOICE_SPEED));
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
