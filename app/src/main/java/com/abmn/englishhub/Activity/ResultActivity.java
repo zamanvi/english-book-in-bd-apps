@@ -349,8 +349,12 @@ public class ResultActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject(response);
                 if (json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) {
                     int newBalance = json.optInt("balance", 0);
-                    getSharedPreferences("app_prefs", MODE_PRIVATE)
-                            .edit().putInt(Constant.LIPTO_BALANCE, newBalance).apply();
+                    SharedPreferences liptoPrefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                    int maxBalance = json.optInt("max_balance", newBalance);
+                    liptoPrefs.edit()
+                            .putInt(Constant.LIPTO_BALANCE, newBalance)
+                            .putInt(Constant.LIPTO_MAX_BALANCE, Math.max(maxBalance, liptoPrefs.getInt(Constant.LIPTO_MAX_BALANCE, 0)))
+                            .apply();
                     runOnUiThread(() -> {
                         liptoEarnedTV.setText("+" + xpEarned);
                         liptoEarnedCard.setVisibility(View.VISIBLE);

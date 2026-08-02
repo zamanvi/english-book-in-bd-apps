@@ -253,6 +253,9 @@ public class ProfileFragment extends Fragment {
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
         int rank   = prefs.getInt(Constant.USER_RANK, 0);
         int lipto  = prefs.getInt(Constant.LIPTO_BALANCE, 0);
+        // Tier badge uses the highest balance ever reached, not the live
+        // spendable balance, so it never demotes after spending/gifting Lipto.
+        int liptoMax = Math.max(lipto, prefs.getInt(Constant.LIPTO_MAX_BALANCE, 0));
 
         ((TextView) view.findViewById(R.id.profileXpTV)).setText(String.valueOf(xp));
         ((TextView) view.findViewById(R.id.profileStreakTV)).setText(String.valueOf(streak));
@@ -261,7 +264,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.liptoBannerCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
 
-        bindLiptoTier(view, activity, lipto);
+        bindLiptoTier(view, activity, liptoMax);
 
         // Level progress bar
         ((TextView) view.findViewById(R.id.profileLevelLabelTV)).setText(LevelHelper.getLevelLabel(xp));

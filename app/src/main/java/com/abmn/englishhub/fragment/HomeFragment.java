@@ -23,7 +23,7 @@ import com.abmn.englishhub.Activity.WordActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.R;
-import com.abmn.texttospeech.TextToSpeechHelper;
+import com.abmn.englishhub.Helper.AppTextToSpeechHelper;
 import com.abmn.utility.UConfig;
 
 import org.json.JSONArray;
@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
     private CardView quickQuizBtn, leaderboardBtn, groupBtn, battleBtn;
 
     // TTS engine
-    private TextToSpeechHelper tts;
+    private AppTextToSpeechHelper tts;
 
     // Last lesson id for Quick Quiz + Word of the Day
     private int lastLessonId = 1;
@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment {
 
     private void initTts() {
         UConfig uConfig = new UConfig(activity);
-        tts = new TextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
+        tts = new AppTextToSpeechHelper(activity, uConfig.getData(Constant.VOICE_SPEED));
     }
 
     private void speakWord() {
@@ -213,7 +213,11 @@ public class HomeFragment extends Fragment {
                 JSONObject json = new JSONObject(response);
                 if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;
                 int balance = json.optInt("balance", 0);
-                prefs.edit().putInt(Constant.LIPTO_BALANCE, balance).apply();
+                int maxBalance = json.optInt("max_balance", balance);
+                prefs.edit()
+                        .putInt(Constant.LIPTO_BALANCE, balance)
+                        .putInt(Constant.LIPTO_MAX_BALANCE, Math.max(maxBalance, prefs.getInt(Constant.LIPTO_MAX_BALANCE, 0)))
+                        .apply();
             } catch (Exception ignored) {}
         }, error -> {});
     }

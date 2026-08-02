@@ -101,6 +101,9 @@ public class Constant {
     public static final String STREAK_DAYS        = "streak_days";
     public static final String TOTAL_XP           = "total_xp";
     public static final String LIPTO_BALANCE      = "lipto_balance";
+    // Highest Lipto balance ever reached - drives the tier badge so it never
+    // demotes just because the live balance was spent/gifted back down.
+    public static final String LIPTO_MAX_BALANCE  = "lipto_max_balance";
     public static final String USER_RANK          = "user_rank";
     public static final String USER_NAME          = "user_name";
     public static final String LAST_PLAYED_DATE   = "last_played_date";
