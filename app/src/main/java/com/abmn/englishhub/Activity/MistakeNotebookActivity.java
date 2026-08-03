@@ -44,10 +44,16 @@ public class MistakeNotebookActivity extends AppCompatActivity {
         emptyLL   = findViewById(R.id.mistakeEmptyLL);
 
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
-        findViewById(R.id.clearBtn).setOnClickListener(v -> {
-            MistakeNotebook.clear(this);
-            render();
-        });
+        findViewById(R.id.clearBtn).setOnClickListener(v ->
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("সব মুছে ফেলবে?")
+                        .setMessage("ভুল খাতার সব শব্দ মুছে যাবে। এই কাজটি ফিরিয়ে নেওয়া যাবে না।")
+                        .setPositiveButton("মুছে ফেলো", (dialog, which) -> {
+                            MistakeNotebook.clear(this);
+                            render();
+                        })
+                        .setNegativeButton("বাতিল", null)
+                        .show());
 
         adapter = new MistakeAdapter(word -> ttsHelper.speak(word));
         mistakeRV.setLayoutManager(new LinearLayoutManager(this));
