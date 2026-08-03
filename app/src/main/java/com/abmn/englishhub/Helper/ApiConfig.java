@@ -47,8 +47,16 @@ public class ApiConfig {
                     result.onResponse(true, cached, "");
                     return;
                 }
+                // Offline-capable screen (Vocabulary/Grammar/Wizard/Word lists) with
+                // nothing cached yet - let it fail quietly into the caller's own
+                // empty-state/toast instead of an "internet required" popup, since
+                // this content is designed to work offline once it's been seen.
+            } else {
+                // No cacheKey means this call has no offline story at all (Login,
+                // Battle, Lipto transfer, Notice, etc.) - internet is genuinely
+                // required here, so the blocking alert is the right call.
+                uConfig.isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
             }
-            uConfig.isConnectedAlert("ইন্টারনেট সংযোগ নেই", "এই ফিচারটি ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন");
         }
         ProgressDisplay progressDisplay = new ProgressDisplay(activity);
         if (isProgress)
