@@ -16,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -271,6 +272,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     android.util.Log.e("ItemDetailsActivity", "parse error", e);
                 }
             }else {
+                Toast.makeText(activity,
+                        "এই লেখাটি আগে খোলা হয়নি বলে অফলাইনে দেখা যাচ্ছে না। ইন্টারনেট সংযোগ করে আবার চেষ্টা করো।",
+                        Toast.LENGTH_LONG).show();
                 onSupportNavigateUp();
             }
         }, Request.Method.GET, activity, Constant.ITEM_SHOW_API + slug, new HashMap<>(), true, cacheKey);
