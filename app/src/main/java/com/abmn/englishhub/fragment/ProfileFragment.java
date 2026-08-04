@@ -401,7 +401,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> openPlayStoreListing(activity));
 
         view.findViewById(R.id.menuLogoutCV).setOnClickListener(v ->
-                new AlertDialog.Builder(activity)
+                new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
                         .setTitle("লগআউট করবে?")
                         .setMessage("তোমার account থেকে বের হয়ে যাবে।")
                         .setPositiveButton("লগআউট করো", (dialog, which) -> performLogout(activity))
@@ -409,7 +409,7 @@ public class ProfileFragment extends Fragment {
                         .show());
 
         view.findViewById(R.id.menuContactCV).setOnClickListener(v -> {
-            new AlertDialog.Builder(activity)
+            new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
                     .setTitle("যোগাযোগ করো")
                     .setMessage("norozzaman996@gmail.com")
                     .setPositiveButton("কপি করো", (dialog, which) -> {
@@ -471,7 +471,7 @@ public class ProfileFragment extends Fragment {
     private void openThemePicker(Activity activity) {
         String[] names = com.abmn.englishhub.Helper.ThemePrefs.paletteNames();
         int current = com.abmn.englishhub.Helper.ThemePrefs.getHomePalette(activity);
-        new AlertDialog.Builder(activity)
+        new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
                 .setTitle("হোম পেইজের থিম বেছে নাও")
                 .setSingleChoiceItems(names, current, (dialog, which) -> {
                     com.abmn.englishhub.Helper.ThemePrefs.setHomePalette(activity, which);

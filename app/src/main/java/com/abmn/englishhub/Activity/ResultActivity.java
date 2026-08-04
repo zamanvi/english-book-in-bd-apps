@@ -525,6 +525,7 @@ public class ResultActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
         finish();
+        super.onBackPressed();
     }
 
     // Same mute toggle QuizActivity's sound effects respect (LevelMapActivity's

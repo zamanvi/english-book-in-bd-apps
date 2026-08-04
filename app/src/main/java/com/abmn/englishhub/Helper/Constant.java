@@ -107,6 +107,10 @@ public class Constant {
     public static final String USER_RANK          = "user_rank";
     public static final String USER_NAME          = "user_name";
     public static final String LAST_PLAYED_DATE   = "last_played_date";
+    // Updated every time the app is opened (MainActivity.onResume) - used by
+    // StreakReminderReceiver to bucket users into re-engagement tiers (active/
+    // 1 day/1 week/1 month) regardless of whether they actually completed a quiz.
+    public static final String LAST_ACTIVE_TIMESTAMP = "last_active_timestamp";
     public static final String LAST_CHAPTER_SLUG  = "last_chapter_slug";
     public static final String LAST_CHAPTER_TITLE = "last_chapter_title";
 

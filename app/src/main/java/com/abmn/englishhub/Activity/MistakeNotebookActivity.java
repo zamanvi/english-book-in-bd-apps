@@ -45,7 +45,7 @@ public class MistakeNotebookActivity extends AppCompatActivity {
 
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
         findViewById(R.id.clearBtn).setOnClickListener(v ->
-                new androidx.appcompat.app.AlertDialog.Builder(this)
+                new androidx.appcompat.app.AlertDialog.Builder(this, R.style.Theme_App_Dialog)
                         .setTitle("সব মুছে ফেলবে?")
                         .setMessage("ভুল খাতার সব শব্দ মুছে যাবে। এই কাজটি ফিরিয়ে নেওয়া যাবে না।")
                         .setPositiveButton("মুছে ফেলো", (dialog, which) -> {

@@ -158,7 +158,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void showUpdateDialog(String message) {
         timeoutHandler.removeCallbacksAndMessages(null);
-        new AlertDialog.Builder(activity)
+        new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
                 .setTitle("Update Available")
                 .setMessage(message)
                 .setCancelable(false)

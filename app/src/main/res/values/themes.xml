@@ -41,6 +41,27 @@
         <item name="android:popupBackground">@color/bg_elevated</item>
     </style>
 
+    <!-- Same class of bug as OverflowMenuDark, but for AlertDialog: a plain
+         `new AlertDialog.Builder(context)` (no theme arg) falls back to the OS's
+         light Dialog.Alert default - a WHITE panel - while still inheriting this
+         app's light-on-dark android:textColor/textColorPrimary override from
+         Base.Theme.Library. Result: pale near-white title/message text on a
+         white panel, unreadable in normal state. Pass R.style.Theme_App_Dialog
+         as the second constructor arg to every AlertDialog.Builder in the app
+         so dialogs get a dark surface that matches the rest of the UI instead. -->
+    <style name="Theme.App.Dialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="colorSurface">@color/bg_elevated</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:windowBackground">@color/bg_elevated</item>
+        <item name="colorPrimary">@color/indigo</item>
+        <item name="colorAccent">@color/indigo</item>
+        <item name="colorControlNormal">@color/text_muted</item>
+        <item name="colorControlActivated">@color/indigo</item>
+    </style>
+
     <style name="listCard" parent="Theme.Library">
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:layout_marginStart">16dp</item>

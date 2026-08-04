@@ -58,18 +58,19 @@
             android:id="@+id/radioFast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="দ্রুত"
             android:textColor="@color/text_primary"
             android:textSize="15sp" />
 
         <RadioButton
-            android:visibility="gone"
             tools:ignore="HardcodedText"
             android:id="@+id/radioFaster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="অনেক দ্রুত"
-            android:textColor="@color/text_primary" />
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
 
     </RadioGroup>
 </LinearLayout>

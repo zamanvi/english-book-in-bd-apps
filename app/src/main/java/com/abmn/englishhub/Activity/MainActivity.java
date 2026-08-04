@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.StreakReminderReceiver;
 import com.abmn.englishhub.R;
 
@@ -100,6 +101,17 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Marks "last time the user actually opened the app" - separate from
+        // LAST_PLAYED_DATE (only set on quiz completion) - so the inactivity
+        // re-engagement notification tiers reflect real app opens, not just quizzes.
+        getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                .putLong(Constant.LAST_ACTIVE_TIMESTAMP, System.currentTimeMillis())
+                .apply();
     }
 
     private void loadFragment(Fragment fragment) {
