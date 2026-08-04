@@ -45,4 +45,27 @@ public class OfflineCache {
             return null;
         }
     }
+
+    private static File dir(Context context) {
+        return new File(context.getApplicationContext().getFilesDir(), DIR_NAME);
+    }
+
+    public static long getTotalSizeBytes(Context context) {
+        File[] files = dir(context).listFiles();
+        if (files == null) return 0;
+        long total = 0;
+        for (File f : files) total += f.length();
+        return total;
+    }
+
+    public static int getFileCount(Context context) {
+        File[] files = dir(context).listFiles();
+        return files == null ? 0 : files.length;
+    }
+
+    public static void clearAll(Context context) {
+        File[] files = dir(context).listFiles();
+        if (files == null) return;
+        for (File f : files) f.delete();
+    }
 }

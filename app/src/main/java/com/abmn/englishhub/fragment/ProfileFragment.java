@@ -33,10 +33,13 @@ import com.abmn.englishhub.Activity.SocialLinkActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Helper.LevelHelper;
+import com.abmn.englishhub.Helper.OfflineCache;
+import com.abmn.englishhub.Helper.OfflineDownloadManager;
 import com.abmn.englishhub.R;
 import android.widget.ProgressBar;
 import com.abmn.utility.UConfig;
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONObject;
@@ -70,6 +73,7 @@ public class ProfileFragment extends Fragment {
             buildWeekCalendar(view);
             wireMenuItems(view);
             bindAvatarPicker(view);
+            wireOfflineContentSection(view);
             return view;
         } catch (Throwable t) {
             android.widget.Toast.makeText(getContext(),
@@ -424,6 +428,102 @@ public class ProfileFragment extends Fragment {
                     .setNegativeButton("বাতিল", null)
                     .show();
         });
+    }
+
+    // ── Offline content: download everything the app would normally cache
+    // lazily on first view, so it all works with no connection. Reuses the
+    // exact same OfflineCache keys ChapterActivity/ItemActivity/
+    // ItemDetailsActivity already read from - no separate storage path. ──
+
+    private void wireOfflineContentSection(View view) {
+        Activity activity = getActivity();
+        if (activity == null) return;
+
+        MaterialButton downloadBtn = view.findViewById(R.id.downloadOfflineBtn);
+        MaterialButton removeBtn = view.findViewById(R.id.removeOfflineBtn);
+        TextView storageInfoTV = view.findViewById(R.id.offlineStorageInfoTV);
+
+        refreshOfflineStorageInfo(storageInfoTV);
+
+        downloadBtn.setOnClickListener(v ->
+                new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
+                        .setTitle("সব chapters ডাউনলোড করবে?")
+                        .setMessage("এটি ইন্টারনেট ডেটা ব্যবহার করবে। ডাউনলোড শেষ হলে ইন্টারনেট ছাড়াই সব lesson পড়তে পারবে।")
+                        .setPositiveButton("ডাউনলোড করো", (dialog, which) ->
+                                startOfflineDownload(activity, downloadBtn, removeBtn, storageInfoTV))
+                        .setNegativeButton("বাতিল", null)
+                        .show());
+
+        removeBtn.setOnClickListener(v -> {
+            if (OfflineCache.getFileCount(activity) == 0) {
+                Toast.makeText(activity, "কোনো অফলাইন কন্টেন্ট নেই", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
+                    .setTitle("অফলাইন কন্টেন্ট মুছবে?")
+                    .setMessage("ডাউনলোড করা সব chapter এই ডিভাইস থেকে মুছে যাবে। পরে আবার ইন্টারনেট দিয়ে দেখতে পারবে।")
+                    .setPositiveButton("মুছে ফেলো", (dialog, which) -> {
+                        OfflineCache.clearAll(activity);
+                        refreshOfflineStorageInfo(storageInfoTV);
+                        Toast.makeText(activity, "অফলাইন কন্টেন্ট মুছে ফেলা হয়েছে", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("বাতিল", null)
+                    .show();
+        });
+    }
+
+    private void startOfflineDownload(Activity activity, MaterialButton downloadBtn,
+                                       MaterialButton removeBtn, TextView storageInfoTV) {
+        if (OfflineDownloadManager.isRunning()) return;
+
+        downloadBtn.setEnabled(false);
+        removeBtn.setEnabled(false);
+        downloadBtn.setText("ডাউনলোড শুরু হচ্ছে...");
+
+        OfflineDownloadManager.downloadAll(activity, new OfflineDownloadManager.Listener() {
+            @Override
+            public void onProgress(int done, int total) {
+                if (!isAdded()) return;
+                downloadBtn.setText("ডাউনলোড হচ্ছে... " + done + "/" + total);
+            }
+
+            @Override
+            public void onComplete(int itemCount) {
+                if (!isAdded()) return;
+                downloadBtn.setEnabled(true);
+                removeBtn.setEnabled(true);
+                downloadBtn.setText("⬇️ সব chapters ডাউনলোড করো");
+                refreshOfflineStorageInfo(storageInfoTV);
+                Toast.makeText(activity, itemCount + "টি lesson ডাউনলোড হয়েছে", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!isAdded()) return;
+                downloadBtn.setEnabled(true);
+                removeBtn.setEnabled(true);
+                downloadBtn.setText("⬇️ সব chapters ডাউনলোড করো");
+                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void refreshOfflineStorageInfo(TextView storageInfoTV) {
+        Activity activity = getActivity();
+        if (activity == null || storageInfoTV == null) return;
+        int fileCount = OfflineCache.getFileCount(activity);
+        long bytes = OfflineCache.getTotalSizeBytes(activity);
+        if (fileCount == 0) {
+            storageInfoTV.setText("💾 এখনো কিছু ডাউনলোড করা হয়নি");
+        } else {
+            storageInfoTV.setText("💾 " + formatSize(bytes) + " ডাউনলোড করা আছে (" + fileCount + "টি ফাইল)");
+        }
+    }
+
+    private String formatSize(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format(java.util.Locale.US, "%.0f KB", bytes / 1024.0);
+        return String.format(java.util.Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0));
     }
 
     // Best-effort server-side token revoke, then always clear local session
