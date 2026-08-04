@@ -80,6 +80,8 @@ public class FcmService extends FirebaseMessagingService {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSound(android.provider.Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setVibrate(new long[]{0, 250, 250, 250})
                 .setContentIntent(pendingIntent);
 
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
