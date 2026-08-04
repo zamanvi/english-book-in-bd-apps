@@ -14,6 +14,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
         android:gravity="center_vertical">
@@ -118,6 +123,23 @@
             android:contentDescription=""
             android:visibility="gone"
             app:tint="@color/gold" />
+
+    </LinearLayout>
+
+        <!-- Note/disclaimer body - full card width, not squeezed into the
+             narrow 50/50 word|meaning cell above (that cell is sized for a
+             couple of vocabulary words, not a paragraph). Only used when
+             this row is a "দ্রষ্টব্য" note, expanded. -->
+        <TextView
+            android:id="@+id/noteBodyTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="@dimen/text_size_body_secondary"
+            android:lineSpacingExtra="3dp" />
 
     </LinearLayout>
 

@@ -114,7 +114,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
-        private final TextView counterTV, wordTV, meaningTV, synonymsTV, antonymsTV;
+        private final TextView counterTV, wordTV, meaningTV, synonymsTV, antonymsTV, noteBodyTV;
         private final ImageView expandIV;
         private final View columnDividerV;
         private final View synAntCellLL;
@@ -130,6 +130,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             expandIV = itemView.findViewById(R.id.expandIV);
             columnDividerV = itemView.findViewById(R.id.columnDividerV);
             synAntCellLL = itemView.findViewById(R.id.synAntCellLL);
+            noteBodyTV = itemView.findViewById(R.id.noteBodyTV);
         }
 
         @SuppressLint("SetTextI18n")
@@ -144,6 +145,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 meaningTV.setTextColor(android.graphics.Color.parseColor("#3A2E1A"));
                 synonymsTV.setTextColor(android.graphics.Color.parseColor("#1F7A5C"));
                 antonymsTV.setTextColor(android.graphics.Color.parseColor("#B0203A"));
+                noteBodyTV.setTextColor(android.graphics.Color.parseColor("#3A2E1A"));
             } else {
                 rootCV.setCardBackgroundColor(isNote
                         ? android.graphics.Color.parseColor("#2A2010")
@@ -152,6 +154,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 meaningTV.setTextColor(itemView.getResources().getColor(R.color.text_secondary));
                 synonymsTV.setTextColor(itemView.getResources().getColor(R.color.teal));
                 antonymsTV.setTextColor(itemView.getResources().getColor(R.color.red_wrong));
+                noteBodyTV.setTextColor(itemView.getResources().getColor(R.color.text_secondary));
             }
 
             counterTV.setText(isNote ? "📌" : "" + (position + 1));
@@ -170,23 +173,27 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 expandIV.setVisibility(View.VISIBLE);
                 expandIV.setRotation(expanded ? 90f : 0f);
                 wordTV.setMaxLines(expanded ? 2 : 1);
+                // The disclaimer paragraph never fits the narrow 50/50 word|meaning
+                // cell (sized for 1-2 vocabulary words) - it goes full-width in
+                // noteBodyTV below instead, so meaningTV stays hidden for notes.
+                meaningTV.setVisibility(View.GONE);
                 boolean showSynAntCell = expanded && (hasSyn || hasAnt);
                 if (expanded) {
-                    meaningTV.setMaxLines(Integer.MAX_VALUE);
-                    meaningTV.setEllipsize(null);
-                    meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                     synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);
                     antonymsTV.setVisibility(hasAnt ? View.VISIBLE : View.GONE);
+                    noteBodyTV.setText(meaning);
+                    noteBodyTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                 } else {
-                    meaningTV.setVisibility(View.GONE);
                     synonymsTV.setVisibility(View.GONE);
                     antonymsTV.setVisibility(View.GONE);
+                    noteBodyTV.setVisibility(View.GONE);
                 }
                 columnDividerV.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
                 synAntCellLL.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
                 rootCV.setOnClickListener(v -> onToggle.onToggle());
             } else {
                 expandIV.setVisibility(View.GONE);
+                noteBodyTV.setVisibility(View.GONE);
                 // Word and meaning now sit inline (side-by-side, 50/50 weight)
                 // instead of stacked, so each is capped to a single line.
                 wordTV.setMaxLines(1);
