@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     private String currentWord = "";
 
     // Header
-    private TextView streakTV, greetingNameTV;
+    private TextView streakTV, greetingNameTV, greetingTimeTV;
 
     // Continue learning
     private TextView lessonCountTV, continueLessonTV;
@@ -67,6 +67,16 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // The fragment's view can stay alive for hours (bottom-nav tab switches,
+        // app left open across a meal break, etc.) while onCreateView only runs
+        // once, so the time-of-day greeting was going stale. Recompute it every
+        // time the tab becomes visible again.
+        updateTimeGreeting();
+    }
+
     // ── Theme ─────────────────────────────────────────────────────
 
     private void applyHomeTheme(View root) {
@@ -78,12 +88,8 @@ public class HomeFragment extends Fragment {
     // ── View binding ─────────────────────────────────────────────
 
     private void bindViews(View view) {
-        // Time-aware greeting
-        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
-        String timeGreeting = hour < 12 ? "Good morning ☀️"
-                : hour < 17 ? "Good afternoon 👋"
-                : "Good evening 🌙";
-        ((android.widget.TextView) view.findViewById(R.id.greetingTimeTV)).setText(timeGreeting);
+        greetingTimeTV  = view.findViewById(R.id.greetingTimeTV);
+        updateTimeGreeting();
 
         greetingNameTV  = view.findViewById(R.id.greetingNameTV);
         streakTV        = view.findViewById(R.id.streakTV);
@@ -122,6 +128,17 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(activity, WordActivity.class)
                         .putExtra(Constant.FROM, String.valueOf(lastLessonId))
                         .putExtra(Constant.FROM_TITLE, "Word of the Day")));
+    }
+
+    // ── Greeting ─────────────────────────────────────────────────
+
+    private void updateTimeGreeting() {
+        if (greetingTimeTV == null) return;
+        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        String timeGreeting = hour < 12 ? "Good morning ☀️"
+                : hour < 17 ? "Good afternoon 👋"
+                : "Good evening 🌙";
+        greetingTimeTV.setText(timeGreeting);
     }
 
     // ── Click listeners ──────────────────────────────────────────
