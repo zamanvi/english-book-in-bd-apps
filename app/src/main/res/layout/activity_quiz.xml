@@ -345,10 +345,19 @@
     <!-- Anchored to questionCard's bottom (not just bottomActionRow) so it
          sits directly below the card instead of floating independently and
          leaving a dead gap once the card became wrap_content-sized. -->
+    <!-- layout_constrainedHeight lets ConstraintLayout actually shrink this
+         wrap_content block when bottomActionRow grows taller (a 2-line
+         feedback message, e.g. "সময় শেষ!") - without it, a wrap_content view
+         constrained top-and-bottom keeps its full natural height regardless
+         of how little room is left and just overflows past the bottom
+         constraint, so option D's card visually ran straight into (behind)
+         the feedback strip with no gap at all instead of leaving the 24dp
+         bottom padding visible. -->
     <LinearLayout
         android:id="@+id/optionsContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
         android:orientation="vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -569,6 +578,7 @@
             android:paddingBottom="10dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp"
             android:visibility="gone">
 

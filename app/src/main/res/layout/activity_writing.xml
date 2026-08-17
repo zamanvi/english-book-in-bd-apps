@@ -243,10 +243,15 @@
     </androidx.cardview.widget.CardView>
 
     <!-- ── Answer input + action ──────────────────────────────── -->
+    <!-- constrainedHeight: same fix as activity_quiz.xml's optionsContainer -
+         a wrap_content view pinned top-and-bottom keeps its full natural
+         height and overflows past bottomActionRow once that grows taller
+         (a 2-line feedback message), instead of shrinking to what's left. -->
     <LinearLayout
         android:id="@+id/answerContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
         android:orientation="vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -304,6 +309,7 @@
             android:paddingBottom="10dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp"
             android:visibility="gone">
 
