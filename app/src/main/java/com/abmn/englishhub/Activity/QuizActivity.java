@@ -124,7 +124,24 @@ public class QuizActivity extends AppCompatActivity {
         bindViews();
         setupClickListeners();
         setupHearts();
+        applyRoundModeLock();
         fetchQuiz();
+    }
+
+    // Round 2 (Reading) and Round 3 (Listening) questions already carry a
+    // server-dictated "direction" that decides which side is spoken vs.
+    // shown (see showQuestion()'s isListeningMode / speakCurrentWord()'s
+    // "direction" handling). The manual listening-mode toggle predates the
+    // round system and was never taught about "direction" - tapping it
+    // mid-round flips isListeningMode without touching questionTV's text,
+    // which can blank out a Reading question's passage or leave a stale
+    // empty box behind on a Listening question. Round 0 (legacy quiz) and
+    // Round 1 (plain MCQ, same shape as legacy) have no "direction" field,
+    // so the toggle stays exactly as it always worked for them.
+    private void applyRoundModeLock() {
+        if (round >= 2 && modeToggleBtn != null) {
+            modeToggleBtn.setVisibility(View.GONE);
+        }
     }
 
     // Sound assets aren't bundled yet (no res/raw/ folder exists in this repo
@@ -686,16 +703,26 @@ public class QuizActivity extends AppCompatActivity {
 
     // ── Timer ────────────────────────────────────────────────────
 
+    // Remaining time on the in-flight countdown, refreshed on every tick -
+    // lets onResume() pick the timer back up after a backgrounding instead
+    // of leaving it frozen (see onResume() below).
+    private long timerMillisRemaining = 0;
+
     private void startTimer() {
-        if (countDownTimer != null) countDownTimer.cancel();
+        timerMillisRemaining = TIMER_SECONDS * 1000L;
         timerBar.setMax(100);
         timerBar.setProgress(100);
         timerTV.setText(String.valueOf(TIMER_SECONDS));
         timerTV.setTextColor(ContextCompat.getColor(this, R.color.gold));
+        runTimer(timerMillisRemaining);
+    }
 
-        countDownTimer = new CountDownTimer(TIMER_SECONDS * 1000L, 100) {
+    private void runTimer(long durationMillis) {
+        if (countDownTimer != null) countDownTimer.cancel();
+        countDownTimer = new CountDownTimer(durationMillis, 100) {
             @Override
             public void onTick(long millisLeft) {
+                timerMillisRemaining = millisLeft;
                 int secsLeft = (int) (millisLeft / 1000) + 1;
                 int progress = (int) ((millisLeft * 100) / (TIMER_SECONDS * 1000L));
                 timerBar.setProgress(progress);
@@ -707,11 +734,26 @@ public class QuizActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
+                timerMillisRemaining = 0;
                 timerBar.setProgress(0);
                 timerTV.setText("0");
                 onTimerExpired();
             }
         }.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // onPause() only cancels the countdown, it never restarts it - so a
+        // question left running while the app was backgrounded (a call, the
+        // recents switcher, a notification) used to come back with the timer
+        // permanently stopped: no more ticks, no auto-timeout, unlimited
+        // think time on whatever question was on screen. Resume it with
+        // whatever time was left instead.
+        if (!answered && !questions.isEmpty() && countDownTimer == null && timerMillisRemaining > 0) {
+            runTimer(timerMillisRemaining);
+        }
     }
 
     // ── Progress dots ─────────────────────────────────────────────
@@ -841,6 +883,7 @@ public class QuizActivity extends AppCompatActivity {
         if (round > 0) {
             intent.putExtra("round", round);
             intent.putExtra("hearts_lost", maxLives - livesRemaining);
+            intent.putExtra("max_lives", maxLives);
         } else if (battleId > 0 && maxLives > 0) {
             intent.putExtra("lives_remaining", livesRemaining);
         }

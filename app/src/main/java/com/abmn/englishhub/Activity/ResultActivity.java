@@ -65,7 +65,13 @@ public class ResultActivity extends AppCompatActivity {
         timeSec  = getIntent().getIntExtra("time_sec", 0);
         round      = getIntent().getIntExtra("round", 0);
         heartsLost = getIntent().getIntExtra("hearts_lost", 0);
-        roundPassed = heartsLost < 3;
+        // Was hardcoded to "< 3", silently assuming every round always uses
+        // exactly 3 lives. QuizActivity/WritingActivity now send the real
+        // cap they actually played with (max_lives) - default 3 only
+        // covers an old client on the same account replaying a cached
+        // Intent shape that predates this extra.
+        int maxLivesForRound = getIntent().getIntExtra("max_lives", 3);
+        roundPassed = heartsLost < maxLivesForRound;
         livesRemaining = getIntent().getIntExtra("lives_remaining", -1);
 
         try {
@@ -77,10 +83,18 @@ public class ResultActivity extends AppCompatActivity {
         bindViews();
         populateStatic();
         animateScore();
-        if (round > 0) {
-            submitRoundResult();
-        } else {
-            submitXpAndStreak();
+        // Guard against double-crediting XP/Lipto/streak (or a duplicate
+        // round-submit call unlocking stars twice) if this Activity gets
+        // recreated after onCreate already fired once - a screen rotation
+        // or the system killing/restoring a backgrounded app both replay
+        // onCreate() with the same result Intent extras still attached.
+        // savedInstanceState is null only on the very first creation.
+        if (savedInstanceState == null) {
+            if (round > 0) {
+                submitRoundResult();
+            } else {
+                submitXpAndStreak();
+            }
         }
         setupButtons();
     }

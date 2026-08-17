@@ -81,18 +81,21 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
                     .putExtra(Constant.FROM, "" + model.getId())
                     .putExtra(Constant.FROM_TITLE, model.getTitle())
                     .putExtra(Constant.FROM_TYPE, lessonType)));
-            // Premium+locked lessons now get blocked server-side anyway,
-            // but there's no point offering a shortcut that just dead-ends
-            // in an error toast - send those users through Word list to
-            // unlock first instead.
-            if (model.isPremium()) {
-                quickQuizBtnCV.setVisibility(View.GONE);
-            } else {
-                quickQuizBtnCV.setVisibility(View.VISIBLE);
-                quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
-                        new Intent(activity, LevelMapActivity.class)
-                                .putExtra("lesson_id", model.getId())));
-            }
+            // Used to hide this shortcut for every Premium-tagged lesson,
+            // including ones this exact user has already unlocked - the
+            // lesson list has no per-user "unlocked" flag to tell the two
+            // apart (that only gets fetched once you're inside WordActivity),
+            // so a paying/unlocked user was always forced through Word list
+            // first just to reach a quiz they already had access to.
+            // LevelMapActivity already re-checks unlock status itself
+            // (GameController::levelMap) and bails out with a clear "locked"
+            // toast for anyone who isn't - same graceful dead-end this used
+            // to avoid - so it's safe to always offer the shortcut and let
+            // the real, per-user check happen there instead of guessing here.
+            quickQuizBtnCV.setVisibility(View.VISIBLE);
+            quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
+                    new Intent(activity, LevelMapActivity.class)
+                            .putExtra("lesson_id", model.getId())));
 
             titleTV.setText(model.getTitle());
             premiumBadgeTV.setVisibility(model.isPremium() ? View.VISIBLE : View.GONE);

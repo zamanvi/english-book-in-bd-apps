@@ -44,6 +44,7 @@ public class WritingActivity extends AppCompatActivity {
     private LinearLayout feedbackStrip, progressDots, comboLL;
     private TextView comboCountTV;
     private MaterialButton actionBtn;
+    private ProgressBar timerBar;
     private ProgressBar quizLoadingBar;
     private LinearLayout quizEmptyLL;
     private MaterialButton quizEmptyCloseBtn;
@@ -128,6 +129,7 @@ public class WritingActivity extends AppCompatActivity {
     private void bindViews() {
         questionNumberTV = findViewById(R.id.questionNumberTV);
         timerTV          = findViewById(R.id.timerTV);
+        timerBar         = findViewById(R.id.timerBar);
         xpCountTV        = findViewById(R.id.xpCountTV);
         comboLL          = findViewById(R.id.comboLL);
         comboCountTV     = findViewById(R.id.comboCountTV);
@@ -414,24 +416,57 @@ public class WritingActivity extends AppCompatActivity {
 
     // ── Timer ────────────────────────────────────────────────────
 
+    // Remaining time on the in-flight countdown, refreshed on every tick -
+    // lets onResume() pick the timer back up after a backgrounding instead
+    // of leaving it frozen (see onResume() below; mirrors QuizActivity).
+    private long timerMillisRemaining = 0;
+
     private void startTimer() {
-        if (countDownTimer != null) countDownTimer.cancel();
+        timerMillisRemaining = TIMER_SECONDS * 1000L;
+        if (timerBar != null) {
+            timerBar.setMax(100);
+            timerBar.setProgress(100);
+        }
         timerTV.setText(String.valueOf(TIMER_SECONDS));
         timerTV.setTextColor(ContextCompat.getColor(this, R.color.gold));
+        runTimer(timerMillisRemaining);
+    }
 
-        countDownTimer = new CountDownTimer(TIMER_SECONDS * 1000L, 1000) {
+    private void runTimer(long durationMillis) {
+        if (countDownTimer != null) countDownTimer.cancel();
+        // 100ms tick (not 1000ms) so timerBar drains smoothly instead of in
+        // big visible jumps - this bar sat in the layout unwired before,
+        // frozen at 100% for the whole round since nothing ever updated it.
+        countDownTimer = new CountDownTimer(durationMillis, 100) {
             @Override
             public void onTick(long millisLeft) {
+                timerMillisRemaining = millisLeft;
                 int secsLeft = (int) (millisLeft / 1000) + 1;
+                if (timerBar != null) {
+                    timerBar.setProgress((int) ((millisLeft * 100) / (TIMER_SECONDS * 1000L)));
+                }
                 timerTV.setText(String.valueOf(secsLeft));
                 if (secsLeft <= 5) timerTV.setTextColor(Color.parseColor("#FF3F6C"));
             }
             @Override
             public void onFinish() {
+                timerMillisRemaining = 0;
+                if (timerBar != null) timerBar.setProgress(0);
                 timerTV.setText("0");
                 onTimerExpired();
             }
         }.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // See QuizActivity#onResume - same bug, same fix: onPause() only
+        // cancels the countdown, so backgrounding mid-question used to
+        // leave the timer frozen forever instead of resuming.
+        if (!answered && !questions.isEmpty() && countDownTimer == null && timerMillisRemaining > 0) {
+            runTimer(timerMillisRemaining);
+        }
     }
 
     // ── Progress dots ────────────────────────────────────────────
@@ -481,6 +516,7 @@ public class WritingActivity extends AppCompatActivity {
         intent.putExtra("time_sec", totalTimeSec());
         intent.putExtra("round", 4);
         intent.putExtra("hearts_lost", MAX_LIVES - livesRemaining);
+        intent.putExtra("max_lives", MAX_LIVES);
         startActivity(intent);
         finish();
     }
