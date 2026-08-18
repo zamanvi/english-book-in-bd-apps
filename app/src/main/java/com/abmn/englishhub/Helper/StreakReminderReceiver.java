@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.abmn.englishhub.Activity.MainActivity;
 import com.abmn.englishhub.R;
+import com.abmn.utility.UConfig;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +41,13 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         "🚀 প্রতিদিনের এই অভ্যাসই তোমাকে এগিয়ে নিয়ে যাচ্ছে। Keep going!",
         "🏆 তুমি ঠিক পথে আছো! আজকের অনুশীলনটা সেরে নাও।",
         "💪 তোমার মতো শিক্ষার্থীরাই সেরা হয়। আজকের লেসনটা শুরু করো।",
+        // New, added on top of the above (not replacing) — a couple of
+        // light/funny ones plus a couple more emotional/heart-touching ones,
+        // per user request, same rotation pool.
+        "😄 আজকেও এসেছ? তোমার ডেডিকেশন দেখে আমরাও গর্বিত!",
+        "🎯 তুমি না আসলে আমাদের সার্ভারও একটু মন খারাপ করে বসে থাকে!",
+        "🌱 প্রতিদিনের এই ছোট্ট চেষ্টাগুলোই একদিন বড় স্বপ্ন পূরণ করবে।",
+        "❤️ তোমার এই পরিশ্রম দেখে সত্যিই ভালো লাগে। এভাবেই চালিয়ে যাও।",
     };
 
     private static final String ONE_DAY_TITLE = "তোমাকে মিস করছি 🥺";
@@ -49,6 +57,11 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         "💭 তোমাকে ছাড়া পড়ার ঘরটা একটু ফাঁকা ফাঁকা লাগছে। চলে এসো।",
         "😔 একটা দিন miss হয়ে গেছে, কিন্তু এখনো দেরি হয়নি। ফিরে এসো!",
         "🌧️ তোমার streak-টা তোমার অপেক্ষায় আছে। হারিয়ে যেতে দিও না।",
+        // New additions (funny + more emotional), same rotation pool.
+        "🐢 একদিনেই এত ভাব?? আমরা তোমার কচ্ছপ-গতির প্রত্যাবর্তনের অপেক্ষায়!",
+        "📵 তোমার ফোনে কি ইংরেজি শব্দগুলো আজ ছুটি নিয়েছে?",
+        "🕯️ একটা দিন শুধু, কিন্তু তোমার শেখার আলোটা যেন নিভে না যায়।",
+        "🤲 তোমার স্বপ্নটা এখনো বেঁচে আছে, শুধু একটু যত্নের অপেক্ষায়।",
     };
 
     private static final String ONE_WEEK_TITLE = "অনেকদিন দেখা নেই 🌸";
@@ -58,6 +71,11 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         "🙂 তোমাকে মিস করছি। ভালো থেকো, আর যখন সময় হয় ফিরে এসো।",
         "🍃 ব্যস্ততা থাকতেই পারে, তবু একটু সময় করে চলে এসো, ভালো লাগবে।",
         "💌 তোমার জন্য নতুন কিছু শেখার অপেক্ষা করছে। সময় হলে দেখে যেও।",
+        // New additions (funny + more emotional), same rotation pool.
+        "🕵️ তোমাকে খুঁজতে এবার গোয়েন্দা লাগানো লাগবে নাকি?",
+        "📅 ক্যালেন্ডারও ভুলে যাচ্ছে তোমার শেষ visit-টা কবে ছিল!",
+        "🌷 একটা সপ্তাহ অনেক লম্বা সময়, কিন্তু তোমার জায়গাটা এখনো এখানেই আছে।",
+        "🕊️ জোর করব না, শুধু জানিয়ে রাখি — তুমি ফিরলে আমরা সত্যিই খুশি হব।",
     };
 
     private static final String ONE_MONTH_TITLE = "তোমাকে খুব মিস করছি... 💔";
@@ -67,6 +85,10 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         "😞💧 এতদিন পর মনে পড়ল তোমার কথা... একবার ফিরে এসো, প্লিজ 🥹",
         "🥹💭 তোমার জায়গাটা এখনো ফাঁকা পড়ে আছে। তুমি ছাড়া সত্যিই ভালো লাগছে না... 😢",
         "😔🕊️ তুমি কি সত্যিই হাল ছেড়ে দিলে? একটা সুযোগ দাও নিজেকে, ফিরে এসো 💔",
+        // New additions (funny + more emotional), same rotation pool. Kept
+        // the funny one gentle, not flippant, given this tier's heavier tone.
+        "😅 তোমার English Grammar Book অ্যাপটা মনে হয় ধুলো জমিয়ে ফেলেছে — একটু মুছে দাও এসে!",
+        "🌌 একটা মাস অনেক লম্বা পথ... কিন্তু ফেরার পথ কখনো বন্ধ হয় না। আমরা এখনো অপেক্ষায় আছি।",
     };
 
     @Override
@@ -95,6 +117,15 @@ public class StreakReminderReceiver extends BroadcastReceiver {
         } else {
             title   = ACTIVE_TITLES[dayOfYear % ACTIVE_TITLES.length];
             message = ACTIVE_MESSAGES[dayOfYear % ACTIVE_MESSAGES.length];
+        }
+
+        // If this device belongs to a registered/logged-in user, address them
+        // by name - same "name" key LoginActivity/RegisterActivity already
+        // save via UConfig. Guests (never logged in, or logged out) have no
+        // name stored, so the message stays exactly as it was before.
+        String name = new UConfig(context).getData("name");
+        if (name != null && !name.trim().isEmpty()) {
+            message = name.trim() + ", " + message;
         }
 
         showNotification(context, title, message);
