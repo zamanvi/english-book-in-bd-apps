@@ -95,6 +95,7 @@
             <include layout="@layout/item_level_map_round" android:id="@+id/round2Include" />
             <include layout="@layout/item_level_map_round" android:id="@+id/round3Include" />
             <include layout="@layout/item_level_map_round" android:id="@+id/round4Include" />
+            <include layout="@layout/item_level_map_round" android:id="@+id/round5Include" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/mistakeNotebookBtn"

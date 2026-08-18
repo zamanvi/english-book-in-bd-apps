@@ -214,7 +214,7 @@ public class WritingActivity extends AppCompatActivity {
         quizLoadingBar.setVisibility(View.VISIBLE);
         UConfig uConfig = new UConfig(this);
         String token = uConfig.getData(Constant.TOKEN);
-        String url = Constant.GAME_ROUND_QUIZ + lessonId + "/4";
+        String url = Constant.GAME_ROUND_QUIZ + lessonId + "/5";
 
         ApiConfig.getRequest(this, url, token, response -> {
             try {
@@ -514,7 +514,7 @@ public class WritingActivity extends AppCompatActivity {
         intent.putExtra("xp", totalXpEarned);
         intent.putExtra("lesson_id", lessonId);
         intent.putExtra("time_sec", totalTimeSec());
-        intent.putExtra("round", 4);
+        intent.putExtra("round", 5);
         intent.putExtra("hearts_lost", MAX_LIVES - livesRemaining);
         intent.putExtra("max_lives", MAX_LIVES);
         startActivity(intent);

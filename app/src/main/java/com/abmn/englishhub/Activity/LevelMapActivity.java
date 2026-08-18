@@ -22,21 +22,21 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 // Entry point for the round-based Quick Quiz (Round 1 MCQ → Round 2 Reading →
-// Round 3 Listening → Round 4 Writing). Shows lock/unlock/passed state and
-// star rating per round, fetched from GameController::levelMap. Rounds 1-3
-// launch QuizActivity in round mode; Round 4 launches the dedicated
+// Round 3 Picture → Round 4 Listening → Round 5 Writing). Shows lock/unlock/
+// passed state and star rating per round, fetched from GameController::levelMap.
+// Rounds 1-4 launch QuizActivity in round mode; Round 5 launches the dedicated
 // WritingActivity (typed-answer, not multiple choice).
 public class LevelMapActivity extends AppCompatActivity {
 
-    private static final String[] ROUND_ICONS  = {"🎯", "📖", "🎧", "✍️"};
+    private static final String[] ROUND_ICONS  = {"🎯", "📖", "🖼️", "🎧", "✍️"};
     private static final String[] ROUND_TITLES = {
-            "Round 1 · MCQ", "Round 2 · Reading", "Round 3 · Listening", "Round 4 · Writing"
+            "Round 1 · MCQ", "Round 2 · Reading", "Round 3 · Picture", "Round 4 · Listening", "Round 5 · Writing"
     };
 
     private int lessonId;
     private View loadingBar;
-    private final View[] roundRoots = new View[4];
-    private final String[] roundStatus = {"locked", "locked", "locked", "locked"};
+    private final View[] roundRoots = new View[5];
+    private final String[] roundStatus = {"locked", "locked", "locked", "locked", "locked"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +62,9 @@ public class LevelMapActivity extends AppCompatActivity {
         roundRoots[1] = findViewById(R.id.round2Include);
         roundRoots[2] = findViewById(R.id.round3Include);
         roundRoots[3] = findViewById(R.id.round4Include);
+        roundRoots[4] = findViewById(R.id.round5Include);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             int round = i + 1;
             TextView iconTV = roundRoots[i].findViewById(R.id.roundIconTV);
             TextView titleTV = roundRoots[i].findViewById(R.id.roundTitleTV);
@@ -95,7 +96,7 @@ public class LevelMapActivity extends AppCompatActivity {
                 JSONArray rounds = json.optJSONArray(Constant.DATA);
                 if (rounds == null) return;
 
-                for (int i = 0; i < rounds.length() && i < 4; i++) {
+                for (int i = 0; i < rounds.length() && i < 5; i++) {
                     JSONObject r = rounds.getJSONObject(i);
                     roundStatus[i] = r.optString("status", "locked");
                     int stars = r.optInt("stars", 0);
@@ -186,7 +187,7 @@ public class LevelMapActivity extends AppCompatActivity {
             return;
         }
 
-        if (round == 4) {
+        if (round == 5) {
             startActivity(new Intent(this, WritingActivity.class)
                     .putExtra("lesson_id", lessonId));
             return;

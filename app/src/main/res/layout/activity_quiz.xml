@@ -274,6 +274,24 @@
                 android:layout_marginBottom="14dp"
                 tools:ignore="HardcodedText" />
 
+            <!-- Picture mode (Round 3): shown instead of questionTV - the
+                 word's picture, user picks the matching word among options -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pictureImageCard"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp">
+                <ImageView
+                    android:id="@+id/pictureImageIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="প্রশ্নের ছবি" />
+            </androidx.cardview.widget.CardView>
+
             <!-- Question text -->
             <TextView
                 android:id="@+id/questionTV"

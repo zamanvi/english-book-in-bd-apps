@@ -24,6 +24,7 @@ import com.abmn.englishhub.Helper.OfflineCache;
 import com.abmn.englishhub.Helper.AppTextToSpeechHelper;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,8 +43,11 @@ public class QuizActivity extends AppCompatActivity {
     private LinearLayout listeningPromptLL;
     private CardView replayBtn, modeToggleBtn;
     private ImageView modeToggleIV;
+    private ImageView pictureImageIV;
+    private CardView pictureImageCard;
     private AppTextToSpeechHelper ttsHelper;
     private boolean isListeningMode = false;
+    private boolean isPictureMode = false;
     private TextView optionATV, optionBTV, optionCTV, optionDTV;
     private TextView labelA, labelB, labelC, labelD;
     private TextView feedbackTitleTV, feedbackDetailTV, feedbackIconTV, xpEarnedTV;
@@ -234,6 +238,8 @@ public class QuizActivity extends AppCompatActivity {
         questionCategoryTV = findViewById(R.id.questionCategoryTV);
         questionHintTV     = findViewById(R.id.questionHintTV);
         listeningPromptLL  = findViewById(R.id.listeningPromptLL);
+        pictureImageIV     = findViewById(R.id.pictureImageIV);
+        pictureImageCard   = findViewById(R.id.pictureImageCard);
         replayBtn          = findViewById(R.id.replayBtn);
         modeToggleBtn      = findViewById(R.id.modeToggleBtn);
         modeToggleIV       = findViewById(R.id.modeToggleIV);
@@ -511,16 +517,25 @@ public class QuizActivity extends AppCompatActivity {
         try {
             JSONObject q = questions.get(index);
 
-            // Round 3 (Listening)'s "listen_to_meaning" half sends the
+            // Round 3 (Picture) questions carry an "image_url" instead of a
+            // "question" string entirely - check for that shape first, since
+            // JSONObject.isNull() below returns true for a missing key too
+            // and would otherwise misclassify these as listening questions.
+            isPictureMode = q.has("image_url") && !q.isNull("image_url");
+
+            // Round 4 (Listening)'s "listen_to_meaning" half sends the
             // question text as JSON null on purpose - the word must be
             // heard, not read (the real word lives in speak_text instead).
             // getString("question") would throw on that null; detect the
             // shape up front and reuse the existing manual "listen mode" UI
             // (listeningPromptLL/replay button) instead of a dedicated one.
-            isListeningMode = q.isNull("question");
+            isListeningMode = !isPictureMode && q.isNull("question");
 
             questionNumberTV.setText("প্রশ্ন " + (index + 1) + " / " + questions.size());
-            questionTV.setText(isListeningMode ? "" : q.getString("question"));
+            questionTV.setText((isListeningMode || isPictureMode) ? "" : q.getString("question"));
+            if (isPictureMode) {
+                Glide.with(this).load(q.getString("image_url")).into(pictureImageIV);
+            }
 
             JSONArray opts = q.getJSONArray("options");
             for (int i = 0; i < opts.length() && i < 4; i++) {
@@ -548,10 +563,12 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void applyModeVisibility() {
-        questionTV.setVisibility(isListeningMode ? View.GONE : View.VISIBLE);
+        questionTV.setVisibility((isListeningMode || isPictureMode) ? View.GONE : View.VISIBLE);
         listeningPromptLL.setVisibility(isListeningMode ? View.VISIBLE : View.GONE);
-        questionCategoryTV.setText(isListeningMode ? "LISTENING" : "VOCABULARY");
-        questionHintTV.setText(isListeningMode ? "অডিও শুনে সঠিক অর্থ বেছে নাও" : "সঠিক উত্তরটি বেছে নাও");
+        pictureImageCard.setVisibility(isPictureMode ? View.VISIBLE : View.GONE);
+        questionCategoryTV.setText(isPictureMode ? "PICTURE" : (isListeningMode ? "LISTENING" : "VOCABULARY"));
+        questionHintTV.setText(isPictureMode ? "ছবি দেখে সঠিক শব্দটি বেছে নাও"
+                : (isListeningMode ? "অডিও শুনে সঠিক অর্থ বেছে নাও" : "সঠিক উত্তরটি বেছে নাও"));
     }
 
     private void speakCurrentWord() {
