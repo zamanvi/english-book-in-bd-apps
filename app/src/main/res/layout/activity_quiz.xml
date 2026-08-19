@@ -23,19 +23,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Close / back -->
+        <!-- Close / back (2026-08-19 UI Polish: increased size from 36dp to 44dp) -->
         <androidx.cardview.widget.CardView
             android:id="@+id/closeBtn"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/button_size_standard"
+            android:layout_height="@dimen/button_size_standard"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="@color/bg_card"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="@dimen/icon_size_toolbar"
+                android:layout_height="@dimen/icon_size_toolbar"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_close"
                 android:contentDescription="Quiz বন্ধ করো"
@@ -116,24 +117,25 @@
 
         </LinearLayout>
 
-        <!-- Listening-mode toggle -->
+        <!-- Listening-mode toggle (2026-08-19 UI Polish: increased size, added ripple) -->
         <androidx.cardview.widget.CardView
             android:id="@+id/modeToggleBtn"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/button_size_standard"
+            android:layout_height="@dimen/button_size_standard"
             android:layout_marginStart="8dp"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="@color/bg_card"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
             <ImageView
                 android:id="@+id/modeToggleIV"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="@dimen/icon_size_toolbar"
+                android:layout_height="@dimen/icon_size_toolbar"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_volume_up"
-                android:contentDescription="Listening mode"
+                android:contentDescription="শোনার মোড চালু করো"
                 app:tint="@color/text_secondary" />
         </androidx.cardview.widget.CardView>
 

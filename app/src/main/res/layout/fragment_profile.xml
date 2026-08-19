@@ -803,7 +803,8 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                    <!-- 2026-08-19 UI Polish: increased arrow size from 14dp to 20dp (icon_size_list_arrow) -->
+                    <ImageView android:layout_width="@dimen/icon_size_list_arrow" android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/indigo" />
@@ -868,7 +869,8 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                    <!-- 2026-08-19 UI Polish: increased arrow size from 14dp to 20dp (icon_size_list_arrow) -->
+                    <ImageView android:layout_width="@dimen/icon_size_list_arrow" android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/indigo" />
@@ -933,7 +935,8 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                    <!-- 2026-08-19 UI Polish: increased arrow size from 14dp to 20dp (icon_size_list_arrow) -->
+                    <ImageView android:layout_width="@dimen/icon_size_list_arrow" android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/text_inactive" />
@@ -998,7 +1001,8 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                    <!-- 2026-08-19 UI Polish: increased arrow size from 14dp to 20dp (icon_size_list_arrow) -->
+                    <ImageView android:layout_width="@dimen/icon_size_list_arrow" android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/text_inactive" />
@@ -1063,7 +1067,8 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                    <!-- 2026-08-19 UI Polish: increased arrow size from 14dp to 20dp (icon_size_list_arrow) -->
+                    <ImageView android:layout_width="@dimen/icon_size_list_arrow" android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/text_inactive" />
@@ -1127,7 +1132,8 @@
                             android:layout_marginTop="1dp"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
-                    <ImageView android:layout_width="14dp" android:layout_height="14dp"
+                    <!-- 2026-08-19 UI Polish: increased arrow size from 14dp to 20dp (icon_size_list_arrow) -->
+                    <ImageView android:layout_width="@dimen/icon_size_list_arrow" android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/text_inactive" />

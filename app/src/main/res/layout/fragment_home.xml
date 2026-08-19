@@ -169,9 +169,10 @@
                         android:layout_marginEnd="10dp"
                         tools:ignore="HardcodedText" />
 
+                    <!-- 2026-08-19 UI Polish: use standard arrow dimen -->
                     <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="@dimen/icon_size_list_arrow"
+                        android:layout_height="@dimen/icon_size_list_arrow"
                         android:src="@drawable/ic_arrow_right"
                         android:contentDescription=""
                         app:tint="@color/text_muted" />

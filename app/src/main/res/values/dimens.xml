@@ -17,4 +17,21 @@
     <dimen name="text_size_label">12sp</dimen>           <!-- column headers, badges, pills -->
     <dimen name="text_size_caption">11sp</dimen>         <!-- counters, syn/ant, small meta -->
     <dimen name="text_size_micro">10sp</dimen>           <!-- tiny meta captions -->
+
+    <!-- Button & Icon Sizing Standards (2026-08-19 UI Polish) -->
+    <!-- Back buttons, close buttons, main action buttons -->
+    <dimen name="button_size_standard">44dp</dimen>        <!-- standard back, close, action buttons -->
+    <dimen name="button_size_small">36dp</dimen>           <!-- acceptable minimum for secondary buttons -->
+    <dimen name="button_size_large">48dp</dimen>           <!-- large primary action buttons -->
+
+    <!-- Icon sizes within buttons/toolbars -->
+    <dimen name="icon_size_toolbar">24dp</dimen>           <!-- icons in toolbar (close, mode toggle, etc) -->
+    <dimen name="icon_size_list_arrow">20dp</dimen>        <!-- arrows on list items (increased from 13dp) -->
+    <dimen name="icon_size_button_icon">18dp</dimen>       <!-- icons inside buttons -->
+    <dimen name="icon_size_badge">16dp</dimen>             <!-- badge icons (flame, bolt, etc) -->
+
+    <!-- Corner radius for buttons and cards -->
+    <dimen name="corner_radius_button">10dp</dimen>        <!-- button corners -->
+    <dimen name="corner_radius_card">14dp</dimen>          <!-- card corners -->
+    <dimen name="corner_radius_large_card">18dp</dimen>    <!-- larger cards (question card, hero banner) -->
 </resources>
