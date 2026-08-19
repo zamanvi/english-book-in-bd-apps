@@ -160,6 +160,11 @@ public class WordActivity extends AppCompatActivity {
             meaningTvW.setText("অর্থ");
             synonymsTvW.setText("Verb 2");
             antonymsTvW.setText("Verb 3");
+        } else if ("vocabulary".equals(getLessonType)) {
+            wordTvW.setText("শব্দ");
+            meaningTvW.setText("অর্থ");
+            synonymsTvW.setText("উৎস / বিষয়");
+            antonymsTvW.setText("গুরুত্ব %");
         } else {
             wordTvW.setText("শব্দ");
             meaningTvW.setText("অর্থ");
