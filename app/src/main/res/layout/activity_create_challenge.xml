@@ -117,11 +117,13 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="❤️ Lives (ঐচ্ছিক, ১-৫০ - ভুল উত্তরের সহনশীলতা)"
-                    android:layout_marginBottom="16dp"
+                    android:hint="❤️ Lives (ঐচ্ছিক)"
+                    android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/edittext_stroke_color"
-                    app:hintTextColor="@color/edittext_hint_color">
+                    app:hintTextColor="@color/edittext_hint_color"
+                    app:helperText="১-৫০ — ভুল উত্তরের সহনশীলতা"
+                    app:helperTextTextColor="@color/text_inactive">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/livesET"
                         android:layout_width="match_parent"

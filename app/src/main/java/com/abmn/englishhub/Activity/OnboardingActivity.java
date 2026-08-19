@@ -85,8 +85,8 @@ public class OnboardingActivity extends AppCompatActivity {
             dot.setRadius(size / 2f);
             dot.setCardElevation(0);
             dot.setCardBackgroundColor(i == selected
-                    ? Color.parseColor("#8B7FFF")
-                    : Color.parseColor("#2E3060"));
+                    ? Color.parseColor("#8B7FFF")  // active: bright purple
+                    : Color.parseColor("#5A5A7E")); // inactive: lighter gray-purple for better contrast
             dotsLayout.addView(dot);
         }
     }

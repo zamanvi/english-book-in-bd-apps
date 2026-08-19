@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment {
 
     // Continue learning
     private TextView lessonCountTV, continueLessonTV;
+    private CardView lessonCountBadge;
 
     // Quick actions
     private CardView quickQuizBtn, leaderboardBtn, groupBtn, battleBtn;
@@ -99,6 +100,8 @@ public class HomeFragment extends Fragment {
         ttsBtn          = view.findViewById(R.id.ttsBtn);
         lessonCountTV   = view.findViewById(R.id.lessonCountTV);
         continueLessonTV  = view.findViewById(R.id.continueLessonTV);
+        lessonCountBadge = view.findViewById(R.id.lessonCountBadge);
+        lessonCountBadge.setVisibility(android.view.View.GONE); // Hide by default, show when data loads
         quickQuizBtn    = view.findViewById(R.id.quickQuizBtn);
         leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
         groupBtn        = view.findViewById(R.id.groupBtn);
@@ -282,9 +285,13 @@ public class HomeFragment extends Fragment {
         if (System.currentTimeMillis() - cacheTime < GRAMMAR_PROGRESS_CACHE_TTL_MS) {
             int cachedTotal = prefs.getInt(Constant.GRAMMAR_PROGRESS_TOTAL_LESSONS, -1);
             String cachedChapterName = prefs.getString(Constant.GRAMMAR_PROGRESS_FIRST_CHAPTER, "");
-            if (cachedTotal >= 0) {
+            if (cachedTotal > 0) {
                 lessonCountTV.setText(cachedTotal + " lessons");
+                lessonCountBadge.setVisibility(android.view.View.VISIBLE);
                 if (lastTitle == null && !cachedChapterName.isEmpty()) continueLessonTV.setText(cachedChapterName);
+                return;
+            } else if (cachedTotal == 0) {
+                lessonCountBadge.setVisibility(android.view.View.GONE);
                 return;
             }
         }
@@ -324,7 +331,12 @@ public class HomeFragment extends Fragment {
                         .apply();
 
                 if (activity != null) activity.runOnUiThread(() -> {
-                    lessonCountTV.setText(total + " lessons");
+                    if (total > 0) {
+                        lessonCountTV.setText(total + " lessons");
+                        lessonCountBadge.setVisibility(android.view.View.VISIBLE);
+                    } else {
+                        lessonCountBadge.setVisibility(android.view.View.GONE);
+                    }
                     if (lastTitle == null && !chapName.isEmpty()) continueLessonTV.setText(chapName);
                 });
 
