@@ -20,6 +20,7 @@ public class LearnFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_learn, container, false);
+        com.abmn.englishhub.Helper.WindowInsetsHelper.applyStatusBarInsets(view);
         activity = getActivity();
 
         view.findViewById(R.id.vocabCard).setOnClickListener(v ->

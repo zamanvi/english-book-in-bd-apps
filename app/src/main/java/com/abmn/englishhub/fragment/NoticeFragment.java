@@ -49,6 +49,7 @@ public class NoticeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notice, container, false);
+        com.abmn.englishhub.Helper.WindowInsetsHelper.applyStatusBarInsets(view);
 
         define(view);
 

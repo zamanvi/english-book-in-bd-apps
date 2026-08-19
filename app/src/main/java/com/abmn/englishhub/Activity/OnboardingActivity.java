@@ -35,6 +35,8 @@ public class OnboardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
+        com.abmn.englishhub.Helper.WindowInsetsHelper.applyStatusBarInsetsAsMargin(
+                findViewById(R.id.skipTV));
 
         pager      = findViewById(R.id.onboardingPager);
         nextBtn    = findViewById(R.id.onboardingNextBtn);
