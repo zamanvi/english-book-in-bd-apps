@@ -122,12 +122,13 @@
                         android:layout_height="14dp"
                         android:background="@color/teal"
                         android:layout_marginEnd="8dp" />
+                    <!-- 2026-08-19 Typography: Increased Bangla label size from 10sp to 12sp for better readability -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="যেখানে ছেড়েছিলে"
                         android:textColor="@color/teal"
-                        android:textSize="10sp"
+                        android:textSize="@dimen/text_size_bangla_label"
                         android:textStyle="bold"
                         android:letterSpacing="0.07"
                         tools:ignore="HardcodedText" />
