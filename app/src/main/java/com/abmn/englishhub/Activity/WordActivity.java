@@ -77,6 +77,7 @@ public class WordActivity extends AppCompatActivity {
     private com.google.android.material.button.MaterialButton guestNudgeBtn;
     private CardView takeQuizBtnCV;
     private View wordEmptyLL;
+    private String apiHintText = null;  // Dynamic hint_text from API
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -528,7 +529,15 @@ public class WordActivity extends AppCompatActivity {
                             boolean isPremium = root.optBoolean("is_premium", false);
                             boolean unlocked = root.optBoolean("unlocked", true);
                             int lockedRemaining = root.optInt("locked_remaining", 0);
-                            runOnUiThread(() -> updatePremiumUnlockUI(isPremium, unlocked, lockedRemaining));
+                            // Extract dynamic hint_text from API (if present)
+                            apiHintText = root.optString("hint_text", null);
+                            runOnUiThread(() -> {
+                                updatePremiumUnlockUI(isPremium, unlocked, lockedRemaining);
+                                // Update hint text now that we have API data
+                                if (apiHintText != null) {
+                                    updateHintText(apiHintText);
+                                }
+                            });
                             // A locked Premium lesson already explains itself via the
                             // unlock card - only show the "no words" empty state for
                             // content that's genuinely supposed to be readable now.
@@ -572,6 +581,30 @@ public class WordActivity extends AppCompatActivity {
         boolean showSynAntCell = anySyn || anyAnt;
         headerDividerV.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
         headerSynAntLL.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Update hint text dynamically based on lesson pattern from API.
+     * API provides the accurate hint_text that matches available word fields.
+     */
+    @SuppressLint("SetTextI18n")
+    private void updateHintText(String hintText) {
+        if (hintText == null || hintText.isEmpty()) {
+            return;  // No update if hint is empty
+        }
+
+        // Parse hint_text format: "field1 | field2"
+        String[] parts = hintText.split("\\|");
+        if (parts.length >= 2) {
+            // Update the synonym column header
+            synonymsTvW.setText(parts[0].trim());
+            // Update the antonym column header
+            antonymsTvW.setText(parts[1].trim());
+        } else if (parts.length == 1) {
+            // Single field hint
+            synonymsTvW.setText(parts[0].trim());
+            antonymsTvW.setText("");
+        }
     }
 
     @Override
