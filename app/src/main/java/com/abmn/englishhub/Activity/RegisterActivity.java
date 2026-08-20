@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setText("তৈরি হচ্ছে...");
         errorTV.setVisibility(View.GONE);
 
-        String friendCode = friendCodeET.getText() != null ? friendCodeET.getText().toString().trim() : "";
+        String referralCodeInput = friendCodeET.getText() != null ? friendCodeET.getText().toString().trim() : "";
 
         String url = Constant.ROOT_API + "register";
         JSONObject body = new JSONObject();
@@ -83,8 +83,8 @@ public class RegisterActivity extends AppCompatActivity {
             body.put("email", email);
             body.put("password", password);
             body.put("password_confirmation", confirmPassword);
-            if (!friendCode.isEmpty()) {
-                body.put("friend_code", friendCode);
+            if (!referralCodeInput.isEmpty()) {
+                body.put("friend_code", referralCodeInput);
             }
         } catch (Exception ignored) {}
 
