@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText nameET, emailET, passwordET, confirmPasswordET;
+    private TextInputEditText nameET, emailET, passwordET, confirmPasswordET, friendCodeET;
     private TextView errorTV;
     private MaterialButton registerBtn;
 
@@ -31,7 +31,15 @@ public class RegisterActivity extends AppCompatActivity {
         emailET             = findViewById(R.id.registerEmailET);
         passwordET          = findViewById(R.id.registerPasswordET);
         confirmPasswordET   = findViewById(R.id.registerConfirmPasswordET);
+        friendCodeET        = findViewById(R.id.registerFriendCodeET);
         errorTV             = findViewById(R.id.registerErrorTV);
+
+        // Pre-fill referral code if the app was opened via a shared link
+        // carrying ?ref=CODE (Play Store install referrer / deep link).
+        String refFromIntent = getIntent() != null ? getIntent().getStringExtra("ref") : null;
+        if (refFromIntent != null && !refFromIntent.trim().isEmpty()) {
+            friendCodeET.setText(refFromIntent.trim().toUpperCase());
+        }
         registerBtn         = findViewById(R.id.registerBtn);
 
         registerBtn.setOnClickListener(v -> attemptRegister());
@@ -66,6 +74,8 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setText("তৈরি হচ্ছে...");
         errorTV.setVisibility(View.GONE);
 
+        String friendCode = friendCodeET.getText() != null ? friendCodeET.getText().toString().trim() : "";
+
         String url = Constant.ROOT_API + "register";
         JSONObject body = new JSONObject();
         try {
@@ -73,6 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
             body.put("email", email);
             body.put("password", password);
             body.put("password_confirmation", confirmPassword);
+            if (!friendCode.isEmpty()) {
+                body.put("friend_code", friendCode);
+            }
         } catch (Exception ignored) {}
 
         ApiConfig.postRequest(this, url, body, response -> {
