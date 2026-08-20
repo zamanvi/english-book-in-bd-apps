@@ -317,6 +317,7 @@ public class WordActivity extends AppCompatActivity {
         shareIntent.setType("text/plain");
         String shareMessage = "📚 \"" + title + "\" চ্যাপ্টারটা দেখো!\n\n"
                 + (wordsPreview.length() > 0 ? "কিছু শব্দ: " + wordsPreview + "...\n\n" : "")
+                + "🎁 বন্ধুকে invite করুন এবং 50 LIPTO পান!\n\n"
                 + "পুরো চ্যাপ্টার আর কুইজ খেলতে English Grammar Book অ্যাপ নামাও 👇\n"
                 + "https://play.google.com/store/apps/details?id=" + activity.getPackageName()
                 + "\n#EnglishGrammarBook #LearnEnglish";
