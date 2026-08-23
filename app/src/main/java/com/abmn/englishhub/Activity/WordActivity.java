@@ -78,6 +78,7 @@ public class WordActivity extends AppCompatActivity {
     private CardView takeQuizBtnCV;
     private View wordEmptyLL;
     private String apiHintText = null;  // Dynamic hint_text from API
+    private boolean hasCustomColumnLabels = false;  // True once column_labels applied for this lesson
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -531,10 +532,17 @@ public class WordActivity extends AppCompatActivity {
                             int lockedRemaining = root.optInt("locked_remaining", 0);
                             // Extract dynamic hint_text from API (if present)
                             apiHintText = root.optString("hint_text", null);
+                            // column_labels is only non-null when this specific lesson has
+                            // admin-set custom column names; every other lesson gets null
+                            // here and this whole block is skipped, leaving the existing
+                            // type/hint_text-based header exactly as it already is.
+                            JSONObject apiColumnLabels = root.optJSONObject("column_labels");
                             runOnUiThread(() -> {
                                 updatePremiumUnlockUI(isPremium, unlocked, lockedRemaining);
-                                // Update hint text now that we have API data
-                                if (apiHintText != null) {
+                                if (apiColumnLabels != null) {
+                                    applyColumnLabels(apiColumnLabels);
+                                } else if (apiHintText != null) {
+                                    // Update hint text now that we have API data
                                     updateHintText(apiHintText);
                                 }
                             });
@@ -563,7 +571,14 @@ public class WordActivity extends AppCompatActivity {
     // If not a single word in this lesson has a synonym/antonym value, the
     // column header for it is dead weight - hide it instead of showing an
     // empty label over a blank column.
+    //
+    // Runs on every fetchData() call (every page), so once this lesson has
+    // been confirmed (on page 1) to carry admin-set column_labels, this must
+    // stay out of the way - otherwise it would silently re-derive show/hide
+    // from word data and override the visibility applyColumnLabels() set.
     private void updateColumnHeaderVisibility() {
+        if (hasCustomColumnLabels) return;
+
         boolean anySyn = false, anyAnt = false;
         for (WordModel model : wordList) {
             String syn = model.getSynonyms();
@@ -605,6 +620,55 @@ public class WordActivity extends AppCompatActivity {
             synonymsTvW.setText(parts[0].trim());
             antonymsTvW.setText("");
         }
+    }
+
+    /**
+     * Apply this lesson's admin-typed column names (backend: Lesson::column_labels,
+     * only sent for lessons that actually have one set - see fetchData()). Each
+     * slot is {"label": string|null, "show": boolean}.
+     *
+     * Word/Meaning headers only ever get their text swapped - the header row has
+     * no collapse machinery for them (every word needs at least a term), so an
+     * empty label there is skipped rather than blanking the header.
+     *
+     * Synonyms/Antonyms reuse the exact same collapse (headerDividerV /
+     * headerSynAntLL) already used for "no synonym/antonym data in this lesson",
+     * now driven by the admin's column choice instead of by word data.
+     */
+    @SuppressLint("SetTextI18n")
+    private void applyColumnLabels(JSONObject cols) {
+        hasCustomColumnLabels = true;
+
+        String wordLabel = optSlotLabel(cols, "word");
+        if (wordLabel != null) wordTvW.setText(wordLabel);
+
+        String meaningLabel = optSlotLabel(cols, "meaning");
+        if (meaningLabel != null) meaningTvW.setText(meaningLabel);
+
+        boolean showSyn = optSlotShow(cols, "synonyms");
+        String synLabel = optSlotLabel(cols, "synonyms");
+        if (showSyn && synLabel != null) synonymsTvW.setText(synLabel);
+        synonymsTvW.setVisibility(showSyn ? View.VISIBLE : View.GONE);
+
+        boolean showAnt = optSlotShow(cols, "antonyms");
+        String antLabel = optSlotLabel(cols, "antonyms");
+        if (showAnt && antLabel != null) antonymsTvW.setText(antLabel);
+        antonymsTvW.setVisibility(showAnt ? View.VISIBLE : View.GONE);
+
+        boolean showSynAntCell = showSyn || showAnt;
+        headerDividerV.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
+        headerSynAntLL.setVisibility(showSynAntCell ? View.VISIBLE : View.GONE);
+    }
+
+    private static String optSlotLabel(JSONObject cols, String slot) {
+        JSONObject entry = cols.optJSONObject(slot);
+        if (entry == null || entry.isNull("label")) return null;
+        return entry.optString("label", null);
+    }
+
+    private static boolean optSlotShow(JSONObject cols, String slot) {
+        JSONObject entry = cols.optJSONObject(slot);
+        return entry != null && entry.optBoolean("show", false);
     }
 
     @Override
