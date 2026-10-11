@@ -172,7 +172,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             if (isNote) {
                 expandIV.setVisibility(View.VISIBLE);
                 expandIV.setRotation(expanded ? 90f : 0f);
+                // Notes keep the compact one/two-line title; ViewHolders are
+                // recycled, so the truncation must be re-applied explicitly here.
                 wordTV.setMaxLines(expanded ? 2 : 1);
+                wordTV.setEllipsize(android.text.TextUtils.TruncateAt.END);
                 // The disclaimer paragraph never fits the narrow 50/50 word|meaning
                 // cell (sized for 1-2 vocabulary words) - it goes full-width in
                 // noteBodyTV below instead, so meaningTV stays hidden for notes.
@@ -194,11 +197,19 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             } else {
                 expandIV.setVisibility(View.GONE);
                 noteBodyTV.setVisibility(View.GONE);
-                // Word and meaning now sit inline (side-by-side, 50/50 weight)
-                // instead of stacked, so each is capped to a single line.
-                wordTV.setMaxLines(1);
-                meaningTV.setMaxLines(1);
-                meaningTV.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                // Word and meaning sit side-by-side (50/50 weight). Long entries
+                // ("Scotch tape", "Bulletin board", a long Bangla meaning) used to
+                // be cut to "Scotch ta..." with no way to read the rest, so wrap
+                // them onto extra lines instead of ellipsizing. The caps are only
+                // a runaway-text safety net.
+                wordTV.setEllipsize(null);
+                wordTV.setMaxLines(4);
+                meaningTV.setEllipsize(null);
+                meaningTV.setMaxLines(4);
+                synonymsTV.setEllipsize(null);
+                synonymsTV.setMaxLines(3);
+                antonymsTV.setEllipsize(null);
+                antonymsTV.setMaxLines(3);
                 meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                 synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);
                 antonymsTV.setVisibility(hasAnt ? View.VISIBLE : View.GONE);
