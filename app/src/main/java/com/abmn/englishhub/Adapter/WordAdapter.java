@@ -216,16 +216,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 // Word and meaning sit side-by-side (50/50 weight). Long entries
                 // ("Scotch tape", "Bulletin board", a long Bangla meaning) used to
                 // be cut to "Scotch ta..." with no way to read the rest, so wrap
-                // them onto extra lines instead of ellipsizing. The caps are only
-                // a runaway-text safety net.
+                // them onto extra lines instead of ellipsizing. No line cap at all:
+                // a cap would just clip the tail silently.
                 wordTV.setEllipsize(null);
-                wordTV.setMaxLines(4);
+                wordTV.setMaxLines(Integer.MAX_VALUE);
                 meaningTV.setEllipsize(null);
-                meaningTV.setMaxLines(10);
+                meaningTV.setMaxLines(Integer.MAX_VALUE);
                 synonymsTV.setEllipsize(null);
-                synonymsTV.setMaxLines(5);
+                synonymsTV.setMaxLines(Integer.MAX_VALUE);
                 antonymsTV.setEllipsize(null);
-                antonymsTV.setMaxLines(5);
+                antonymsTV.setMaxLines(Integer.MAX_VALUE);
                 meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                 synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);
                 antonymsTV.setVisibility(hasAnt ? View.VISIBLE : View.GONE);

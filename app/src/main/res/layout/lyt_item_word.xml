@@ -51,8 +51,7 @@
                 android:layout_weight="1.5"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/text_size_body_secondary"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="10" />
+                android:fontFamily="sans-serif-medium" />
 
             <TextView
                 android:id="@+id/meaningTV"
@@ -61,8 +60,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:textColor="@color/text_secondary"
-                android:textSize="@dimen/text_size_body_secondary"
-                android:maxLines="10" />
+                android:textSize="@dimen/text_size_body_secondary" />
 
         </LinearLayout>
 
@@ -95,8 +93,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/teal"
                 android:textSize="@dimen/text_size_caption"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="5" />
+                android:fontFamily="sans-serif-medium" />
 
             <TextView
                 android:id="@+id/antonymsTV"
@@ -105,8 +102,7 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/red_wrong"
                 android:textSize="@dimen/text_size_caption"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="5" />
+                android:fontFamily="sans-serif-medium" />
 
         </LinearLayout>
 
