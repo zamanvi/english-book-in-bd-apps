@@ -43,8 +43,7 @@
             android:textColor="@color/text_primary"
             android:textSize="@dimen/text_size_row_title"
             android:textStyle="bold"
-            android:maxLines="3"
-            android:ellipsize="end" />
+            android:maxLines="5" />
 
         <ImageView
             android:layout_width="20dp"

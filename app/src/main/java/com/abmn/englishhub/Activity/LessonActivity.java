@@ -162,8 +162,8 @@ public class LessonActivity extends AppCompatActivity {
             if (child instanceof TextView) {
                 TextView titleView = (TextView) child;
                 titleView.setSingleLine(false);
-                titleView.setMaxLines(2);
-                titleView.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                titleView.setMaxLines(4);
+                titleView.setEllipsize(null);
                 break;
             }
         }

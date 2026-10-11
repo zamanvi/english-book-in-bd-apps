@@ -36,8 +36,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
-                android:maxLines="2"
-                android:ellipsize="end" />
+                android:maxLines="3" />
 
             <TextView
                 android:id="@+id/txnDateTV"

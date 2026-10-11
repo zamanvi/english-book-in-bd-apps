@@ -426,8 +426,7 @@
                     android:text="Fluent and persuasive speaker"
                     android:textColor="#C4BEFF"
                     android:textSize="@dimen/text_size_body_secondary"
-                    android:maxLines="3"
-                    android:ellipsize="end"
+                    android:maxLines="6"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -472,8 +471,7 @@
                     android:text="Shy and introverted"
                     android:textColor="#7DD3FC"
                     android:textSize="@dimen/text_size_body_secondary"
-                    android:maxLines="3"
-                    android:ellipsize="end"
+                    android:maxLines="6"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -518,8 +516,7 @@
                     android:text="Angry and aggressive"
                     android:textColor="#FDE68A"
                     android:textSize="@dimen/text_size_body_secondary"
-                    android:maxLines="3"
-                    android:ellipsize="end"
+                    android:maxLines="6"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -563,8 +560,7 @@
                     android:text="Confusing and unclear"
                     android:textColor="#FBCFE8"
                     android:textSize="@dimen/text_size_body_secondary"
-                    android:maxLines="3"
-                    android:ellipsize="end"
+                    android:maxLines="6"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

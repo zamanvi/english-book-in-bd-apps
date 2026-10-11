@@ -28,8 +28,7 @@
         android:textSize="@dimen/text_size_body"
         android:fontFamily="sans-serif-medium"
         android:lineSpacingExtra="2dp"
-        android:maxLines="2"
-        android:ellipsize="end"
+        android:maxLines="4"
         tools:ignore="HardcodedText" />
 
     <!-- ── Column header row ─────────────────────────────────── -->
