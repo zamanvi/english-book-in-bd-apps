@@ -34,7 +34,6 @@
             android:text="Lorem ipsum dolor sit amet,"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/text_size_row_title"
-            android:maxLines="5"
             tools:ignore="HardcodedText" />
 
         <TextView

@@ -112,19 +112,31 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         void onToggle();
     }
 
-    // The word column fits roughly 10 characters at the default 14sp. A single
+    // The side-by-side word column fits roughly 10 characters at the default 14sp
+    // (about 16 when the row is stacked). A single
     // long token ("Telecommunication", "Electrocardiogram") can't wrap at a
     // space, so it used to be sliced mid-word ("Thumbtac / k"). Shrink only
     // those, floor 9sp; ordinary and multi-word entries keep the normal size.
-    private static float wordTextSizeSp(String word) {
-        final float normal = 14f, floor = 9f;
-        if (word == null) return normal;
-        int longestToken = 0;
-        for (String token : word.trim().split("\\s+")) {
-            longestToken = Math.max(longestToken, token.length());
+    private static final int STACK_MEANING_CHARS = 20;
+    // one unbreakable token (e.g. a long Bangla word) wider than the narrow
+    // meaning cell would otherwise be sliced mid-word
+    private static final int STACK_MEANING_TOKEN_CHARS = 9;
+    private static final int STACK_WORD_CHARS = 14;
+
+    private static int longestToken(String text) {
+        int longest = 0;
+        if (text == null) return 0;
+        for (String token : text.trim().split("\\s+")) {
+            longest = Math.max(longest, token.length());
         }
-        if (longestToken <= 10) return normal;
-        return Math.max(floor, normal * 10f / longestToken);
+        return longest;
+    }
+
+    private static float wordTextSizeSp(String word, int capacity) {
+        final float normal = 14f, floor = 9f;
+        int longest = longestToken(word);
+        if (longest <= capacity) return normal;
+        return Math.max(floor, normal * capacity / longest);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -133,6 +145,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         private final ImageView expandIV;
         private final View columnDividerV;
         private final View synAntCellLL;
+        private final android.widget.LinearLayout wordMeaningRowLL;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,15 +158,61 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             expandIV = itemView.findViewById(R.id.expandIV);
             columnDividerV = itemView.findViewById(R.id.columnDividerV);
             synAntCellLL = itemView.findViewById(R.id.synAntCellLL);
+            wordMeaningRowLL = itemView.findViewById(R.id.wordMeaningRowLL);
             noteBodyTV = itemView.findViewById(R.id.noteBodyTV);
+        }
+
+        private static int dp(View v, int value) {
+            return Math.round(value * v.getResources().getDisplayMetrics().density);
+        }
+
+        // side-by-side (word | meaning, 1.5 : 1) or stacked (word / meaning).
+        private void applyRowMode(boolean stacked) {
+            wordMeaningRowLL.setOrientation(stacked
+                    ? android.widget.LinearLayout.VERTICAL : android.widget.LinearLayout.HORIZONTAL);
+            android.widget.LinearLayout.LayoutParams wl =
+                    (android.widget.LinearLayout.LayoutParams) wordTV.getLayoutParams();
+            android.widget.LinearLayout.LayoutParams ml =
+                    (android.widget.LinearLayout.LayoutParams) meaningTV.getLayoutParams();
+            if (stacked) {
+                wl.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+                wl.weight = 0f;
+                ml.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+                ml.weight = 0f;
+                ml.setMarginStart(0);
+                ml.topMargin = dp(meaningTV, 4);
+            } else {
+                wl.width = 0;
+                wl.weight = 1.5f;
+                ml.width = 0;
+                ml.weight = 1f;
+                ml.setMarginStart(dp(meaningTV, 8));
+                ml.topMargin = 0;
+            }
+            wordTV.setLayoutParams(wl);
+            meaningTV.setLayoutParams(ml);
         }
 
         @SuppressLint("SetTextI18n")
         public void bind(WordModel model, int position, boolean isBWord, boolean isBMeaning, boolean storybook,
                           boolean isNote, boolean expanded, AppTextToSpeechHelper tts, OnToggleListener onToggle) {
-            wordTV.setText(model.getWord());
-            wordTV.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, wordTextSizeSp(model.getWord()));
-            meaningTV.setText(model.getMeaning());
+            // A long meaning (a sentence, "যোগ - ancient practice for ...") or a long
+            // phrase doesn't belong in the narrow side-by-side cell: stack it
+            // instead (word on top, meaning full-width underneath). Notes keep
+            // their own layout. Always applied, because ViewHolders are recycled.
+            String rawWord = model.getWord();
+            String rawMeaning = model.getMeaning();
+            boolean stacked = !isNote
+                    && ((rawMeaning != null && !"null".equals(rawMeaning)
+                            && (rawMeaning.length() > STACK_MEANING_CHARS
+                                || longestToken(rawMeaning) > STACK_MEANING_TOKEN_CHARS))
+                    || (rawWord != null && rawWord.length() > STACK_WORD_CHARS));
+            applyRowMode(stacked);
+
+            wordTV.setText(rawWord);
+            wordTV.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP,
+                    wordTextSizeSp(rawWord, stacked ? 16 : 10));
+            meaningTV.setText(rawMeaning);
 
             if (storybook) {
                 rootCV.setCardBackgroundColor(android.graphics.Color.parseColor(isNote ? "#EFE6CC" : "#F7F1E1"));

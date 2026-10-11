@@ -541,6 +541,7 @@ public class QuizActivity extends AppCompatActivity {
             for (int i = 0; i < opts.length() && i < 4; i++) {
                 optionTexts[i].setText(opts.getString(i));
             }
+            applyAdaptiveTextSizes(opts);
 
             updateProgressDots(index);
         } catch (Exception e) {
@@ -550,6 +551,25 @@ public class QuizActivity extends AppCompatActivity {
         applyModeVisibility();
         if (isListeningMode) speakCurrentWord();
         startTimer();
+    }
+
+    // Sentence-length questions/options don't fit the sizes designed for single
+    // words. Step the font down with the length (never below a readable floor)
+    // and let the scroll region take whatever is still too tall. Always set an
+    // explicit size so a short question after a long one goes back to normal.
+    private void applyAdaptiveTextSizes(JSONArray opts) {
+        int qLen = questionTV.getText() == null ? 0 : questionTV.getText().length();
+        questionTV.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP,
+                qLen > 160 ? 14f : qLen > 100 ? 16f : qLen > 60 ? 18f : 20f);
+
+        int longest = 0;
+        for (int i = 0; i < opts.length() && i < 4; i++) {
+            longest = Math.max(longest, opts.optString(i, "").length());
+        }
+        float optSp = longest > 120 ? 12f : longest > 70 ? 13f : 14f;
+        for (TextView tv : optionTexts) {
+            tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, optSp);
+        }
     }
 
     // ── Listening mode ───────────────────────────────────────────
