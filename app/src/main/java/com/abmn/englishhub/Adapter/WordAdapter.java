@@ -121,7 +121,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     // one unbreakable token (e.g. a long Bangla word) wider than the narrow
     // meaning cell would otherwise be sliced mid-word
     private static final int STACK_MEANING_TOKEN_CHARS = 9;
-    private static final int STACK_WORD_CHARS = 14;
+    // a single long English word ("Administration") is shown stacked at the normal
+    // size instead of being shrunk next to its short neighbours; long phrases too
+    private static final int STACK_WORD_TOKEN_CHARS = 11;
+    private static final int STACK_WORD_CHARS = 18;
 
     private static int longestToken(String text) {
         int longest = 0;
@@ -206,7 +209,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                     && ((rawMeaning != null && !"null".equals(rawMeaning)
                             && (rawMeaning.length() > STACK_MEANING_CHARS
                                 || longestToken(rawMeaning) > STACK_MEANING_TOKEN_CHARS))
-                    || (rawWord != null && rawWord.length() > STACK_WORD_CHARS));
+                    || (rawWord != null
+                            && (longestToken(rawWord) > STACK_WORD_TOKEN_CHARS
+                                || rawWord.length() > STACK_WORD_CHARS)));
             applyRowMode(stacked);
 
             wordTV.setText(rawWord);
