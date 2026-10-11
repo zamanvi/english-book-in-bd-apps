@@ -112,6 +112,21 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         void onToggle();
     }
 
+    // The word column fits roughly 10 characters at the default 14sp. A single
+    // long token ("Telecommunication", "Electrocardiogram") can't wrap at a
+    // space, so it used to be sliced mid-word ("Thumbtac / k"). Shrink only
+    // those, floor 9sp; ordinary and multi-word entries keep the normal size.
+    private static float wordTextSizeSp(String word) {
+        final float normal = 14f, floor = 9f;
+        if (word == null) return normal;
+        int longestToken = 0;
+        for (String token : word.trim().split("\\s+")) {
+            longestToken = Math.max(longestToken, token.length());
+        }
+        if (longestToken <= 10) return normal;
+        return Math.max(floor, normal * 10f / longestToken);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView rootCV;
         private final TextView counterTV, wordTV, meaningTV, synonymsTV, antonymsTV, noteBodyTV;
@@ -137,6 +152,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         public void bind(WordModel model, int position, boolean isBWord, boolean isBMeaning, boolean storybook,
                           boolean isNote, boolean expanded, AppTextToSpeechHelper tts, OnToggleListener onToggle) {
             wordTV.setText(model.getWord());
+            wordTV.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, wordTextSizeSp(model.getWord()));
             meaningTV.setText(model.getMeaning());
 
             if (storybook) {
@@ -205,11 +221,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 wordTV.setEllipsize(null);
                 wordTV.setMaxLines(4);
                 meaningTV.setEllipsize(null);
-                meaningTV.setMaxLines(4);
+                meaningTV.setMaxLines(10);
                 synonymsTV.setEllipsize(null);
-                synonymsTV.setMaxLines(3);
+                synonymsTV.setMaxLines(5);
                 antonymsTV.setEllipsize(null);
-                antonymsTV.setMaxLines(3);
+                antonymsTV.setMaxLines(5);
                 meaningTV.setVisibility(hasMeaning ? View.VISIBLE : View.GONE);
                 synonymsTV.setVisibility(hasSyn ? View.VISIBLE : View.GONE);
                 antonymsTV.setVisibility(hasAnt ? View.VISIBLE : View.GONE);

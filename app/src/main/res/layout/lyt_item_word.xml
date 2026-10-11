@@ -48,11 +48,11 @@
                 android:id="@+id/wordTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.3"
+                android:layout_weight="1.5"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/text_size_body_secondary"
                 android:fontFamily="sans-serif-medium"
-                android:maxLines="4" />
+                android:maxLines="10" />
 
             <TextView
                 android:id="@+id/meaningTV"
@@ -62,7 +62,7 @@
                 android:layout_marginStart="8dp"
                 android:textColor="@color/text_secondary"
                 android:textSize="@dimen/text_size_body_secondary"
-                android:maxLines="4" />
+                android:maxLines="10" />
 
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:textColor="@color/teal"
                 android:textSize="@dimen/text_size_caption"
                 android:fontFamily="sans-serif-medium"
-                android:maxLines="3" />
+                android:maxLines="5" />
 
             <TextView
                 android:id="@+id/antonymsTV"
@@ -106,7 +106,7 @@
                 android:textColor="@color/red_wrong"
                 android:textSize="@dimen/text_size_caption"
                 android:fontFamily="sans-serif-medium"
-                android:maxLines="3" />
+                android:maxLines="5" />
 
         </LinearLayout>
 
