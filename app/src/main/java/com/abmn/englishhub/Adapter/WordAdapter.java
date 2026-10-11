@@ -45,6 +45,43 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private int modeCheckedSize = -1;
     private static final int STACK_LESSON_PERCENT = 15;
 
+    // Admin's per-lesson choice from the backend (lessons.layout):
+    // null/anything else = automatic, "stacked" or "compact" = fixed.
+    private String layoutPref = null;
+
+    public interface LayoutModeListener {
+        void onLayoutMode(boolean stacked);
+    }
+
+    private LayoutModeListener layoutModeListener;
+    private Boolean lastReportedStacked = null;
+
+    public void setLayoutModeListener(LayoutModeListener l) {
+        this.layoutModeListener = l;
+    }
+
+    /** Apply the backend's layout choice for this lesson ("stacked", "compact" or null = auto). */
+    @SuppressLint("NotifyDataSetChanged")
+    public void setLayoutPreference(String pref) {
+        String p = pref == null ? null : pref.trim().toLowerCase(java.util.Locale.ROOT);
+        if (!"stacked".equals(p) && !"compact".equals(p)) p = null;
+        if ((p == null && layoutPref == null) || (p != null && p.equals(layoutPref))) return;
+        layoutPref = p;
+        stackedLesson = false;
+        modeCheckedSize = -1;
+        notifyDataSetChanged();
+    }
+
+    private void reportMode() {
+        if (layoutModeListener == null) return;
+        if (lastReportedStacked != null && lastReportedStacked == stackedLesson) return;
+        lastReportedStacked = stackedLesson;
+        final boolean stacked = stackedLesson;
+        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+            if (layoutModeListener != null) layoutModeListener.onLayoutMode(stacked);
+        });
+    }
+
     public WordAdapter(List<WordModel> wordList, Activity activity) {
         this.wordList = wordList;
         this.activity = activity;
@@ -100,9 +137,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     }
 
     private void refreshLayoutMode() {
+        // fixed by the admin: no automatic decision
+        if ("stacked".equals(layoutPref) || "compact".equals(layoutPref)) {
+            stackedLesson = "stacked".equals(layoutPref);
+            reportMode();
+            return;
+        }
         int n = wordList.size();
         if (n == modeCheckedSize || stackedLesson) {
             modeCheckedSize = n;
+            reportMode();
             return;
         }
         modeCheckedSize = n;
@@ -117,6 +161,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             // rows already bound in this pass used the old mode: rebind once
             new android.os.Handler(android.os.Looper.getMainLooper()).post(this::notifyDataSetChanged);
         }
+        reportMode();
     }
 
     @NonNull

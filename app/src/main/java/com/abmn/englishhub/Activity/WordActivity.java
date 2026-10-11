@@ -64,6 +64,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView lessonTitleTV;
     private CardView headerCV;
     private View headerDividerV, headerSynAntLL;
+    private View headerWordCellLL, headerMeaningCellLL;
     private String getLessonId;
     private WordAdapter adapter;
     private ImageView wordCloseIV, meaningCloseIV;
@@ -94,6 +95,7 @@ public class WordActivity extends AppCompatActivity {
         define();
         wordList = new ArrayList<>();
         adapter = new WordAdapter(wordList, activity);
+        adapter.setLayoutModeListener(this::applyHeaderLayout);
         adapter.setStorybook(isStorybookTheme());
         wordRV.setAdapter(adapter);
         fetchData(currentPage);
@@ -117,6 +119,8 @@ public class WordActivity extends AppCompatActivity {
         counterTvW = findViewById(R.id.counterTvW);
         headerDividerV = findViewById(R.id.headerDividerV);
         headerSynAntLL = findViewById(R.id.headerSynAntLL);
+        headerWordCellLL = findViewById(R.id.headerWordCellLL);
+        headerMeaningCellLL = findViewById(R.id.headerMeaningCellLL);
         headerCV = findViewById(R.id.headerCV);
 
         wordCloseIV = findViewById(R.id.wordCloseIV);
@@ -530,6 +534,9 @@ public class WordActivity extends AppCompatActivity {
                             boolean isPremium = root.optBoolean("is_premium", false);
                             boolean unlocked = root.optBoolean("unlocked", true);
                             int lockedRemaining = root.optInt("locked_remaining", 0);
+                            // Admin's word-list layout for this lesson (null = automatic).
+                            final String apiLayout = root.isNull("layout") ? null : root.optString("layout", null);
+                            runOnUiThread(() -> adapter.setLayoutPreference(apiLayout));
                             // Extract dynamic hint_text from API (if present)
                             apiHintText = root.optString("hint_text", null);
                             // column_labels is only non-null when this specific lesson has
@@ -669,6 +676,35 @@ public class WordActivity extends AppCompatActivity {
     private static boolean optSlotShow(JSONObject cols, String slot) {
         JSONObject entry = cols.optJSONObject(slot);
         return entry != null && entry.optBoolean("show", false);
+    }
+
+    /**
+     * Stacked lessons show word above meaning, so the two header labels sit
+     * together on the left instead of being spread over two columns that the
+     * rows no longer have. Compact lessons keep the original weighted columns.
+     */
+    private void applyHeaderLayout(boolean stacked) {
+        if (headerWordCellLL == null || headerMeaningCellLL == null) return;
+        android.widget.LinearLayout.LayoutParams wl =
+                (android.widget.LinearLayout.LayoutParams) headerWordCellLL.getLayoutParams();
+        android.widget.LinearLayout.LayoutParams ml =
+                (android.widget.LinearLayout.LayoutParams) headerMeaningCellLL.getLayoutParams();
+        float d = getResources().getDisplayMetrics().density;
+        if (stacked) {
+            wl.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+            wl.weight = 0f;
+            ml.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+            ml.weight = 0f;
+            ml.setMarginStart(Math.round(18 * d));
+        } else {
+            wl.width = 0;
+            wl.weight = 1.5f;
+            ml.width = 0;
+            ml.weight = 1f;
+            ml.setMarginStart(Math.round(8 * d));
+        }
+        headerWordCellLL.setLayoutParams(wl);
+        headerMeaningCellLL.setLayoutParams(ml);
     }
 
     @Override
