@@ -37,6 +37,14 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private final Set<Integer> expandedNotePositions = new HashSet<>();
     private AppTextToSpeechHelper ttsHelper;
 
+    // Lesson-wide row layout. Decided once from the words loaded so far: when
+    // STACK_LESSON_PERCENT or more of them have a long word/meaning, EVERY row
+    // is stacked (word over meaning), otherwise EVERY row stays side-by-side.
+    // Sticky: once stacked it never flips back while pages keep loading.
+    private boolean stackedLesson = false;
+    private int modeCheckedSize = -1;
+    private static final int STACK_LESSON_PERCENT = 15;
+
     public WordAdapter(List<WordModel> wordList, Activity activity) {
         this.wordList = wordList;
         this.activity = activity;
@@ -81,6 +89,36 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    private static boolean needsStackedRow(WordModel w) {
+        String word = w.getWord();
+        String meaning = w.getMeaning();
+        boolean longWord = word != null
+                && (longestToken(word) > STACK_WORD_TOKEN_CHARS || word.length() > STACK_WORD_CHARS);
+        boolean longMeaning = meaning != null && !"null".equals(meaning)
+                && (meaning.length() > STACK_MEANING_CHARS || longestToken(meaning) > STACK_MEANING_TOKEN_CHARS);
+        return longWord || longMeaning;
+    }
+
+    private void refreshLayoutMode() {
+        int n = wordList.size();
+        if (n == modeCheckedSize || stackedLesson) {
+            modeCheckedSize = n;
+            return;
+        }
+        modeCheckedSize = n;
+        int total = 0, need = 0;
+        for (WordModel w : wordList) {
+            if (w.getWord() != null && w.getWord().contains(NOTE_MARKER)) continue;
+            total++;
+            if (needsStackedRow(w)) need++;
+        }
+        if (total > 0 && need * 100 >= total * STACK_LESSON_PERCENT) {
+            stackedLesson = true;
+            // rows already bound in this pass used the old mode: rebind once
+            new android.os.Handler(android.os.Looper.getMainLooper()).post(this::notifyDataSetChanged);
+        }
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -93,7 +131,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         WordModel word = wordList.get(position);
         boolean isNote = word.getWord() != null && word.getWord().contains(NOTE_MARKER);
         boolean expanded = expandedNotePositions.contains(position);
-        holder.bind(word, position, isBWord, isBMeaning, storybook, isNote, expanded, ttsHelper, () -> {
+        refreshLayoutMode();
+        holder.bind(word, position, isBWord, isBMeaning, storybook, isNote, expanded, stackedLesson, ttsHelper, () -> {
             if (expandedNotePositions.contains(position)) {
                 expandedNotePositions.remove(position);
             } else {
@@ -198,20 +237,17 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
         @SuppressLint("SetTextI18n")
         public void bind(WordModel model, int position, boolean isBWord, boolean isBMeaning, boolean storybook,
-                          boolean isNote, boolean expanded, AppTextToSpeechHelper tts, OnToggleListener onToggle) {
+                          boolean isNote, boolean expanded, boolean lessonStacked,
+                          AppTextToSpeechHelper tts, OnToggleListener onToggle) {
             // A long meaning (a sentence, "যোগ - ancient practice for ...") or a long
             // phrase doesn't belong in the narrow side-by-side cell: stack it
             // instead (word on top, meaning full-width underneath). Notes keep
             // their own layout. Always applied, because ViewHolders are recycled.
             String rawWord = model.getWord();
             String rawMeaning = model.getMeaning();
-            boolean stacked = !isNote
-                    && ((rawMeaning != null && !"null".equals(rawMeaning)
-                            && (rawMeaning.length() > STACK_MEANING_CHARS
-                                || longestToken(rawMeaning) > STACK_MEANING_TOKEN_CHARS))
-                    || (rawWord != null
-                            && (longestToken(rawWord) > STACK_WORD_TOKEN_CHARS
-                                || rawWord.length() > STACK_WORD_CHARS)));
+            // One layout for the whole lesson (decided by WordAdapter), never per
+            // row: mixing side-by-side and stacked rows in one list looked broken.
+            boolean stacked = !isNote && lessonStacked;
             applyRowMode(stacked);
 
             wordTV.setText(rawWord);
