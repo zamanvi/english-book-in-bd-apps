@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 def keystoreProperties = new Properties()
@@ -21,8 +22,8 @@ android {
         minSdk 24
         //noinspection EditedTargetSdkVersion
         targetSdk 36
-        versionCode 18
-        versionName "1.1.8"
+        versionCode 19
+        versionName "1.1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,4 +82,6 @@ dependencies {
 
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.messaging
+    implementation libs.firebase.crashlytics
+    implementation libs.play.review
 }

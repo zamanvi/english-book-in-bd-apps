@@ -125,10 +125,11 @@
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/splashVersionTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="v1.4.0"
+            android:text="v1.1.9"
             android:textColor="@color/text_inactive"
             android:textSize="10sp"
             android:letterSpacing="0.05"

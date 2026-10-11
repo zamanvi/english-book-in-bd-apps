@@ -97,6 +97,20 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
         setupButtons();
+
+        // Ask for a Play Store rating, but only after a solid solo result and only
+        // on the first creation (not a rotation replay). Battles are excluded:
+        // a lost/won duel isn't a calm moment to ask. The delay lets the result
+        // animation land before Google's sheet slides over it.
+        if (savedInstanceState == null && battleId == 0) {
+            final boolean wentWell = round > 0 ? roundPassed
+                    : (total > 0 && (correct * 100) / total >= 70);
+            findViewById(android.R.id.content).postDelayed(() -> {
+                if (!isFinishing() && !isDestroyed()) {
+                    com.abmn.englishhub.Helper.ReviewPromptHelper.onQuizCompleted(this, wentWell);
+                }
+            }, 2500);
+        }
     }
 
     private void bindViews() {

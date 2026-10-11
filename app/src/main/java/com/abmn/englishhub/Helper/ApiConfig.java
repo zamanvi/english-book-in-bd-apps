@@ -24,6 +24,17 @@ public class ApiConfig {
     // Singleton queue — avoids creating a new RequestQueue on every API call
     private static RequestQueue requestQueue;
 
+    // The Activity (and its progress dialog window) can already be gone by the
+    // time a slow response lands; dismissing then throws IllegalArgumentException
+    // from inside Volley's delivery callback and takes the whole app down.
+    private static void safeHide(ProgressDisplay progressDisplay) {
+        try {
+            progressDisplay.hideProgress();
+        } catch (RuntimeException e) {
+            android.util.Log.w("ApiConfig", "progress dialog already gone", e);
+        }
+    }
+
     private static RequestQueue getQueue(Context context) {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -75,7 +86,7 @@ public class ApiConfig {
         String finalUrl = m_url;
         StringRequest stringRequest = new StringRequest(method, finalUrl,
                 response -> {
-                    progressDisplay.hideProgress();
+                    safeHide(progressDisplay);
                     try {
                         JSONObject success = new JSONObject(response).getJSONObject(Constant.SUCCESS);
                         if (success.getBoolean(Constant.STATUS)){
@@ -99,7 +110,7 @@ public class ApiConfig {
                     }
                 },
                 error -> {
-                    progressDisplay.hideProgress();
+                    safeHide(progressDisplay);
                     if (cacheKey != null) {
                         String cached = OfflineCache.load(activity, cacheKey);
                         if (cached != null) {

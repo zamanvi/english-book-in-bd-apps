@@ -106,15 +106,23 @@ public class FcmService extends FirebaseMessagingService {
                 .addOnSuccessListener(token -> {
                     String authToken = new UConfig(context).getData(Constant.TOKEN);
                     if (authToken != null && !authToken.isEmpty()) {
-                        new FcmService().saveTokenToBackend(token, authToken);
+                        postTokenToBackend(context.getApplicationContext(), token, authToken);
                     }
                 });
     }
 
     private void saveTokenToBackend(String fcmToken, String authToken) {
+        postTokenToBackend(this, fcmToken, authToken);
+    }
+
+    // Static + takes a real Context: the old static path built `new FcmService()`
+    // (never attached to the framework, so getApplicationContext() is null) and
+    // handed that to Volley, which is an NPE whenever the shared queue wasn't
+    // already created.
+    private static void postTokenToBackend(Context context, String fcmToken, String authToken) {
         JSONObject body = new JSONObject();
         try { body.put("token", fcmToken); } catch (Exception ignored) {}
-        ApiConfig.postRequest(this, Constant.NOTIF_TOKEN, body, authToken,
+        ApiConfig.postRequest(context, Constant.NOTIF_TOKEN, body, authToken,
                 response -> {}, error -> {});
     }
 }

@@ -19,6 +19,8 @@ recyclerview = "1.4.0"
 swiperefreshlayout = "1.1.0"
 ucrop = "2.2.9"
 glide = "4.16.0"
+playReview = "2.0.2"
+firebaseCrashlytics = "3.0.4"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -39,7 +41,10 @@ recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 ucrop = { module = "com.github.yalantis:ucrop", version.ref = "ucrop" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+play-review = { module = "com.google.android.play:review", version.ref = "playReview" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }

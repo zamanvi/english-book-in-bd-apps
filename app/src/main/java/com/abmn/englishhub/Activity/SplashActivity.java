@@ -62,6 +62,9 @@ public class SplashActivity extends AppCompatActivity {
             uConfig.setData(Constant.VOICE_SPEED, "normal");
             uConfig.setBoolean(Constant.IS_SET_VOICE_SPEED, true);
         }
+        // Was a hardcoded "v1.4.0" in the layout, which never matched any real release.
+        android.widget.TextView splashVersionTV = findViewById(R.id.splashVersionTV);
+        if (splashVersionTV != null) splashVersionTV.setText("v" + BuildConfig.VERSION_NAME);
         setProgressBar = findViewById(R.id.setProgressBarId);
         playEntranceAnimation();
         initialWork();
