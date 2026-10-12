@@ -58,7 +58,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         activity = getActivity();
-        com.abmn.englishhub.Helper.WindowInsetsHelper.applyStatusBarInsets(view);
+        // MainActivity already pads its root by the system-bar insets; applying
+        // them again here doubled the gap under the toolbar on every tab.
         applyHomeTheme(view);
         bindViews(view);
         initTts();
@@ -77,6 +78,11 @@ public class HomeFragment extends Fragment {
         // once, so the time-of-day greeting was going stale. Recompute it every
         // time the tab becomes visible again.
         updateTimeGreeting();
+        // Coming back from a quiz/lesson resumes this same fragment (no
+        // onCreateView), so streak / "continue where you left off" stayed at
+        // whatever they were before playing. Refresh both on every resume.
+        refreshUserStats();
+        refreshContinueCard();
     }
 
     // ── Theme ─────────────────────────────────────────────────────
@@ -194,15 +200,31 @@ public class HomeFragment extends Fragment {
             greetingNameTV.setText("Hey, " + name + " 👋");
         }
 
+        // The layout already draws a flame icon next to this text - adding a
+        // 🔥 here showed two flames.
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
-        streakTV.setText("🔥 " + streak + " দিন");
+        streakTV.setText(streak + " দিন");
+    }
 
-        // Refresh from server if logged in
+    // Server refresh of streak / XP / rank / Lipto. Runs from onResume (not
+    // onCreateView) so it fires exactly once per time the tab is shown,
+    // including right after returning from a quiz.
+    private void refreshUserStats() {
+        if (activity == null) return;
+        UConfig uConfig = new UConfig(activity);
         String token = uConfig.getData(Constant.TOKEN);
-        if (token != null && !token.isEmpty()) {
-            fetchStreakFromServer(prefs, token);
-            fetchLiptoBalance(prefs, token);
-        }
+        if (token == null || token.isEmpty()) return;
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        streakTV.setText(prefs.getInt(Constant.STREAK_DAYS, 0) + " দিন");
+        fetchStreakFromServer(prefs, token);
+        fetchLiptoBalance(prefs, token);
+    }
+
+    private void refreshContinueCard() {
+        if (activity == null || continueLessonTV == null) return;
+        String lastTitle = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .getString(Constant.LAST_CHAPTER_TITLE, null);
+        if (lastTitle != null && !lastTitle.isEmpty()) continueLessonTV.setText(lastTitle);
     }
 
     private void fetchStreakFromServer(SharedPreferences prefs, String token) {
@@ -222,8 +244,9 @@ public class HomeFragment extends Fragment {
                         .putInt(Constant.USER_RANK, rank)
                         .apply();
 
-                if (activity != null) activity.runOnUiThread(() ->
-                        streakTV.setText("🔥 " + streak + " দিন"));
+                if (activity != null) activity.runOnUiThread(() -> {
+                    if (isAdded() && streakTV != null) streakTV.setText(streak + " দিন");
+                });
             } catch (Exception ignored) {}
         }, error -> {});
     }

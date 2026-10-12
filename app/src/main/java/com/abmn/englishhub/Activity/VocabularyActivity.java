@@ -46,6 +46,12 @@ public class VocabularyActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // "V1 · V2 · V3 রূপ" describes the study list; the verb quiz asks for the
+        // meaning of each verb, so don't promise verb forms on the quiz picker.
+        if (quizPickerMode) {
+            ((android.widget.TextView) findViewById(R.id.verbSubtitleTV)).setText("ক্রিয়া শব্দের অর্থ");
+        }
+
         findViewById(R.id.vocabularyCategoryCV).setOnClickListener(v ->
                 startActivity(new Intent(activity, VocabularyChapterActivity.class)
                         .putExtra(Constant.FROM_TYPE, "vocabulary")

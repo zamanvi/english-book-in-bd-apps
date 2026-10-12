@@ -66,7 +66,7 @@
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/graduation"
+                        android:src="@drawable/ic_vocabulary"
                         android:contentDescription="Vocabulary"
                         app:tint="@color/indigo" />
                     <TextView
@@ -81,7 +81,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5000+ words"
+                        android:text="5000+ শব্দ"
                         android:textColor="@color/text_inactive"
                         android:textSize="11sp"
                         android:layout_marginTop="3dp"
@@ -111,7 +111,7 @@
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/graduation"
+                        android:src="@drawable/ic_school"
                         android:contentDescription="Grammar"
                         app:tint="@color/coral" />
                     <TextView
@@ -164,7 +164,7 @@
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/graduation"
+                        android:src="@drawable/ic_volume_up"
                         android:contentDescription="Speaking"
                         app:tint="@color/teal" />
                     <TextView
@@ -209,13 +209,13 @@
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/graduation"
-                        android:contentDescription="Writing"
+                        android:src="@drawable/ic_edit_note"
+                        android:contentDescription="Reading &amp; Writing"
                         app:tint="@color/gold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Writing"
+                        android:text="Reading &amp; Writing"
                         android:textColor="@color/gold"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -224,7 +224,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reading &amp; more"
+                        android:text="পড়া ও লেখা শেখো"
                         android:textColor="@color/text_inactive"
                         android:textSize="11sp"
                         android:layout_marginTop="3dp"

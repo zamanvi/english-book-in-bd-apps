@@ -73,6 +73,15 @@ public class ResultActivity extends AppCompatActivity {
         int maxLivesForRound = getIntent().getIntExtra("max_lives", 3);
         roundPassed = heartsLost < maxLivesForRound;
         livesRemaining = getIntent().getIntExtra("lives_remaining", -1);
+        if (round > 0) {
+            // The server only pays XP for a passed round, as
+            // round(correct / total * 10). The "xp" extra is the quiz's raw
+            // "+1 per correct answer" tally, so a failed round showed "+1"
+            // that never reached the account and a 12-question round showed
+            // 12 where 10 was paid. Start from the same formula; the real
+            // number from round/submit replaces it below.
+            xpEarned = (roundPassed && total > 0) ? Math.round(correct * 10f / total) : 0;
+        }
 
         try {
             toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
@@ -260,16 +269,31 @@ public class ResultActivity extends AppCompatActivity {
                 int totalXp   = data.optInt("total_xp", 0);
                 int streak    = data.optInt("streak_days", 0);
                 int liptoWon  = data.optInt("lipto_earned", 0);
+                int serverXp  = data.optInt("xp_earned", xpEarned);
+                int rank      = data.optInt("rank", 0);
                 JSONObject box = data.optJSONObject("mystery_box");
 
-                getSharedPreferences("app_prefs", MODE_PRIVATE)
+                SharedPreferences.Editor ed = getSharedPreferences("app_prefs", MODE_PRIVATE)
                         .edit()
                         .putInt(Constant.TOTAL_XP, totalXp)
-                        .putInt(Constant.STREAK_DAYS, streak)
-                        .apply();
+                        .putInt(Constant.STREAK_DAYS, streak);
+                // Older backends don't send rank - keep the cached one then.
+                if (rank > 0) ed.putInt(Constant.USER_RANK, rank);
+                ed.apply();
 
                 runOnUiThread(() -> {
+                    xpEarned = serverXp;
+                    xpEarnedBigTV.setText("+" + serverXp);
                     streakResultTV.setText("🔥 " + streak);
+                    if (box != null && liptoWon == 0) {
+                        // A box was rolled but the daily Lipto cap swallowed
+                        // it - say so, otherwise a passed round looks like it
+                        // paid nothing for no reason.
+                        liptoIconTV.setText("⏳");
+                        liptoLabelTV.setText("আজকের Lipto সীমা পূর্ণ — কাল আবার পাবে");
+                        liptoEarnedTV.setText("0");
+                        revealMysteryBox();
+                    }
                     if (box != null && liptoWon > 0) {
                         String tier = box.optString("tier", "common");
                         String tierLabel = "epic".equals(tier) ? "জ্যাকপট! এক্সক্লুসিভ মিস্ট্রি বক্স"

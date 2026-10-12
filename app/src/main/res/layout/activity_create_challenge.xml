@@ -281,6 +281,24 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Validation message sits ABOVE the button: below it, it landed
+             off-screen on a short phone so a failed tap looked like nothing
+             happened. -->
+        <TextView
+            android:id="@+id/createErrorTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/red_wrong"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="14dp"
+            tools:ignore="HardcodedText" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createBtn"
             style="@style/btn_primary"
@@ -288,18 +306,6 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:text="🚀 চ্যালেঞ্জ তৈরি করো"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/createErrorTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/red_wrong"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_marginTop="8dp"
             tools:ignore="HardcodedText" />
 
         <!-- Success card -->

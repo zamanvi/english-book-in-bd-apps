@@ -49,6 +49,7 @@ public class WritingActivity extends AppCompatActivity {
     private LinearLayout quizEmptyLL;
     private MaterialButton quizEmptyCloseBtn;
     private LinearLayout heartsRowLL;
+    private com.abmn.englishhub.Helper.QuizExitGuard exitGuard;
 
     private final List<JSONObject> questions = new ArrayList<>();
     private int currentIndex = 0;
@@ -149,7 +150,11 @@ public class WritingActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        findViewById(R.id.closeBtn).setOnClickListener(v -> finish());
+        // Same "leave this round?" guard as QuizActivity (X + system back).
+        exitGuard = com.abmn.englishhub.Helper.QuizExitGuard.attach(this,
+                () -> !questions.isEmpty() && (currentIndex > 0 || answered
+                        || (answerET.getText() != null && answerET.getText().length() > 0)));
+        findViewById(R.id.closeBtn).setOnClickListener(v -> exitGuard.requestExit());
         quizEmptyCloseBtn.setOnClickListener(v -> finish());
         actionBtn.setOnClickListener(v -> {
             if (!answered) {
@@ -301,7 +306,7 @@ public class WritingActivity extends AppCompatActivity {
         playTone(ToneGenerator.TONE_PROP_NACK);
         playSound(soundWrongId);
         markProgressDot(currentIndex, false);
-        showFeedback(false, false, "⏱", "সময় শেষ! ⏱", "সঠিক উত্তর: " + expected, "#FF3F6C", R.drawable.bg_red_pill);
+        showFeedback(false, false, "⏱", "সময় শেষ!", "সঠিক উত্তর: " + expected, "#FF3F6C", R.drawable.bg_red_pill);
         actionBtn.setText(isLastActionableQuestion() ? "ফলাফল দেখো 🏆" : "পরবর্তী →");
     }
 
@@ -319,7 +324,7 @@ public class WritingActivity extends AppCompatActivity {
             playTone(ToneGenerator.TONE_PROP_ACK);
             playSound(soundCorrectId);
             markProgressDot(currentIndex, true);
-            showFeedback(true, false, "✓", "সঠিক! +1 XP ✓", "চমৎকার! তুমি ঠিকই লিখেছ।", "#00E8B8", R.drawable.bg_teal_pill);
+            showFeedback(true, false, "✓", "সঠিক!", "চমৎকার! তুমি ঠিকই লিখেছ।", "#00E8B8", R.drawable.bg_teal_pill);
             return;
         }
 
@@ -387,10 +392,17 @@ public class WritingActivity extends AppCompatActivity {
         feedbackTitleTV.setTextColor(c);
         feedbackDetailTV.setText(detail);
         feedbackStrip.setVisibility(View.VISIBLE);
-        xpCountTV.setText(totalXpEarned + " XP");
+        xpCountTV.setText(displayedXp() + " XP");
         if (!correct) {
             feedbackStrip.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
         }
+    }
+
+    // See QuizActivity#displayedXp - the server pays round(correct/total*10),
+    // and only when the round is passed, not 1 XP per correct answer.
+    private int displayedXp() {
+        if (questions.isEmpty()) return 0;
+        return Math.round(correctCount * 10f / questions.size());
     }
 
     private boolean isLastActionableQuestion() {
@@ -473,11 +485,13 @@ public class WritingActivity extends AppCompatActivity {
 
     private void buildProgressDots() {
         progressDots.removeAllViews();
-        int dotPx = (int) (8 * getResources().getDisplayMetrics().density);
-        int marginPx = (int) (3 * getResources().getDisplayMetrics().density);
+        float density = getResources().getDisplayMetrics().density;
+        int heightPx = (int) (6 * density);
+        int marginPx = (int) (2 * density);
+        // Equal-weight segments - see QuizActivity#buildProgressDots.
         for (int i = 0; i < questions.size(); i++) {
             View dot = new View(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dotPx, dotPx);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, heightPx, 1f);
             lp.setMargins(marginPx, 0, marginPx, 0);
             dot.setLayoutParams(lp);
             dot.setBackgroundResource(R.drawable.dot_inactive);
@@ -533,5 +547,6 @@ public class WritingActivity extends AppCompatActivity {
         if (countDownTimer != null) countDownTimer.cancel();
         if (toneGenerator != null) { toneGenerator.release(); toneGenerator = null; }
         if (soundPool != null) { soundPool.release(); soundPool = null; }
+        if (exitGuard != null) exitGuard.dismiss();
     }
 }

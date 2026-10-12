@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Segment of the quiz progress strip (name kept from the old round dots).
+     A rounded bar instead of an oval so QuizActivity/WritingActivity can give
+     every segment an equal share of the available width and never overflow. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
+    android:shape="rectangle">
     <solid android:color="@color/teal" />
+    <corners android:radius="4dp" />
 </shape>

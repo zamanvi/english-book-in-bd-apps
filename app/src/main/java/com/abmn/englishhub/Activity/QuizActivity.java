@@ -59,6 +59,9 @@ public class QuizActivity extends AppCompatActivity {
     private ProgressBar quizLoadingBar;
     private LinearLayout quizEmptyLL;
     private com.google.android.material.button.MaterialButton quizEmptyCloseBtn;
+    private androidx.core.widget.NestedScrollView quizScroll;
+    private LinearLayout optionsContainer;
+    private com.abmn.englishhub.Helper.QuizExitGuard exitGuard;
 
     // Quiz state
     private List<JSONObject> questions = new ArrayList<>();
@@ -66,6 +69,7 @@ public class QuizActivity extends AppCompatActivity {
     private int totalXpEarned = 0;
     private int correctCount = 0;
     private boolean answered = false;
+    private int lastSelectedIdx = -1;
     private CountDownTimer countDownTimer;
     private ToneGenerator toneGenerator;
     private int lessonId = 1;
@@ -260,6 +264,8 @@ public class QuizActivity extends AppCompatActivity {
         quizEmptyLL      = findViewById(R.id.quizEmptyLL);
         quizEmptyCloseBtn= findViewById(R.id.quizEmptyCloseBtn);
         heartsRowLL      = findViewById(R.id.heartsRowLL);
+        quizScroll       = findViewById(R.id.quizScroll);
+        optionsContainer = findViewById(R.id.optionsContainer);
 
         optionA = findViewById(R.id.optionA);
         optionB = findViewById(R.id.optionB);
@@ -282,7 +288,11 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        closeBtn.setOnClickListener(v -> finish());
+        // X and the system back gesture share one "leave this round?" guard -
+        // both used to finish() instantly and silently drop the round.
+        exitGuard = com.abmn.englishhub.Helper.QuizExitGuard.attach(this,
+                () -> !questions.isEmpty() && (currentIndex > 0 || answered));
+        closeBtn.setOnClickListener(v -> exitGuard.requestExit());
         quizEmptyCloseBtn.setOnClickListener(v -> finish());
         modeToggleBtn.setOnClickListener(v -> toggleListeningMode());
         replayBtn.setOnClickListener(v -> speakCurrentWord());
@@ -510,7 +520,9 @@ public class QuizActivity extends AppCompatActivity {
         if (index >= questions.size()) { goToResult(); return; }
 
         answered = false;
+        lastSelectedIdx = -1;
         resetOptionStyles();
+        if (quizScroll != null) quizScroll.scrollTo(0, 0);
         feedbackStrip.setVisibility(View.GONE);
         nextBtn.setVisibility(View.GONE);
 
@@ -586,7 +598,8 @@ public class QuizActivity extends AppCompatActivity {
         questionTV.setVisibility((isListeningMode || isPictureMode) ? View.GONE : View.VISIBLE);
         listeningPromptLL.setVisibility(isListeningMode ? View.VISIBLE : View.GONE);
         pictureImageCard.setVisibility(isPictureMode ? View.VISIBLE : View.GONE);
-        questionCategoryTV.setText(isPictureMode ? "PICTURE" : (isListeningMode ? "LISTENING" : "VOCABULARY"));
+        questionCategoryTV.setText(isPictureMode ? "PICTURE"
+                : (isListeningMode ? "LISTENING" : (round == 2 ? "READING" : "VOCABULARY")));
         questionHintTV.setText(isPictureMode ? "ছবি দেখে সঠিক শব্দটি বেছে নাও"
                 : (isListeningMode ? "অডিও শুনে সঠিক অর্থ বেছে নাও" : "সঠিক উত্তরটি বেছে নাও"));
     }
@@ -609,6 +622,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void onOptionSelected(int selectedIdx) {
         answered = true;
+        lastSelectedIdx = selectedIdx;
         if (countDownTimer != null) countDownTimer.cancel();
 
         try {
@@ -637,7 +651,7 @@ public class QuizActivity extends AppCompatActivity {
                 showWrongFeedback(selectedIdx, correctIdx, q.optString("explanation", ""));
             }
 
-            xpCountTV.setText(totalXpEarned + " XP");
+            xpCountTV.setText(displayedXp() + " XP");
             markProgressDot(currentIndex, isCorrect);
 
         } catch (Exception e) {
@@ -646,6 +660,41 @@ public class QuizActivity extends AppCompatActivity {
 
         nextBtn.setVisibility(View.VISIBLE);
         nextBtn.setText(isLastActionableQuestion() ? "See Results 🏆" : "Next →");
+        revealAnswerArea();
+    }
+
+    // Quiz XP shown while playing. In round mode the server pays
+    // round(correct / total * 10) and only when the round is passed, so show
+    // that projection instead of a raw "+1 per correct answer" count that the
+    // result screen then contradicts (12 correct of 12 showed 12 XP, paid 10).
+    private int displayedXp() {
+        if (round > 0 && !questions.isEmpty()) {
+            return Math.round(correctCount * 10f / questions.size());
+        }
+        return totalXpEarned;
+    }
+
+    // On a short screen the feedback strip + Next button take their space out
+    // of the scrolling question/options region, so the option the player just
+    // tapped (or the correct one) could end up hidden behind them. Scroll just
+    // far enough that both the picked and the correct option stay visible.
+    private void revealAnswerArea() {
+        if (quizScroll == null || optionsContainer == null) return;
+        quizScroll.postDelayed(() -> {
+            int lastNeeded = 0;
+            try {
+                JSONObject q = questions.get(currentIndex);
+                lastNeeded = Math.max(lastNeeded, q.getInt("correct_index"));
+            } catch (Exception ignored) {}
+            lastNeeded = Math.max(lastNeeded, lastSelectedIdx);
+            if (lastNeeded < 0 || lastNeeded >= optionCards.length) return;
+            int bottom = optionsContainer.getTop() + optionCards[lastNeeded].getBottom();
+            int visibleBottom = quizScroll.getScrollY() + quizScroll.getHeight();
+            if (bottom > visibleBottom) {
+                quizScroll.smoothScrollBy(0, bottom - visibleBottom
+                        + (int) (8 * getResources().getDisplayMetrics().density));
+            }
+        }, 120);
     }
 
     private void onTimerExpired() {
@@ -660,6 +709,7 @@ public class QuizActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
         nextBtn.setVisibility(View.VISIBLE);
         nextBtn.setText(isLastActionableQuestion() ? "See Results 🏆" : "Next →");
+        revealAnswerArea();
     }
 
     // True when this is the last question the player will see - either
@@ -683,7 +733,7 @@ public class QuizActivity extends AppCompatActivity {
         feedbackStrip.setBackgroundResource(R.drawable.bg_teal_pill);
         feedbackIconTV.setText("✓");
         feedbackIconTV.setTextColor(Color.parseColor("#00E8B8"));
-        feedbackTitleTV.setText("সঠিক! +1 XP ✓");
+        feedbackTitleTV.setText(round > 0 ? "সঠিক!" : "সঠিক! +1 XP");
         feedbackTitleTV.setTextColor(Color.parseColor("#00E8B8"));
         feedbackDetailTV.setText(explanation.isEmpty() ? "চমৎকার! তুমি ঠিকই ধরেছ।" : explanation);
         xpEarnedTV.setVisibility(View.GONE);
@@ -713,7 +763,10 @@ public class QuizActivity extends AppCompatActivity {
         feedbackIconTV.setTextColor(Color.parseColor("#FF3F6C"));
         feedbackTitleTV.setText("ভুল হয়েছে");
         feedbackTitleTV.setTextColor(Color.parseColor("#FF3F6C"));
-        feedbackDetailTV.setText(explanation.isEmpty() ? "হতাশ হয়ো না, চালিয়ে যাও!" : explanation);
+        feedbackDetailTV.setText(!explanation.isEmpty() ? explanation
+                : (maxLives > 0 && livesRemaining <= 0)
+                        ? (battleId > 0 ? "লাইফ শেষ — বাকিদের ফলাফলের অপেক্ষা করো" : "লাইফ শেষ — রাউন্ড এখানেই শেষ")
+                        : "হতাশ হয়ো না, চালিয়ে যাও!");
         xpEarnedTV.setVisibility(View.GONE);
         feedbackStrip.setVisibility(View.VISIBLE);
     }
@@ -731,7 +784,7 @@ public class QuizActivity extends AppCompatActivity {
         feedbackStrip.setBackgroundResource(R.drawable.bg_red_pill);
         feedbackIconTV.setText("⏱");
         feedbackIconTV.setTextColor(Color.parseColor("#FF3F6C"));
-        feedbackTitleTV.setText("সময় শেষ! ⏱");
+        feedbackTitleTV.setText("সময় শেষ!");
         feedbackTitleTV.setTextColor(Color.parseColor("#FF3F6C"));
         feedbackDetailTV.setText("সঠিক উত্তরটি দেখো");
         xpEarnedTV.setVisibility(View.GONE);
@@ -802,12 +855,16 @@ public class QuizActivity extends AppCompatActivity {
         // to 10, which used to cap this at 10 dots and leave the back half
         // of every Round 2 attempt with no correct/wrong dot feedback.
         int size = questions.size();
-        int dotPx = (int) (8 * getResources().getDisplayMetrics().density);
-        int marginPx = (int) (3 * getResources().getDisplayMetrics().density);
+        float density = getResources().getDisplayMetrics().density;
+        int heightPx = (int) (6 * density);
+        int marginPx = (int) (2 * density);
 
+        // Equal-weight segments share whatever width the strip has, so 10-20
+        // questions never overflow - fixed 14dp dots used to be clipped off the
+        // right edge as soon as the combo chip appeared next to them.
         for (int i = 0; i < size; i++) {
             View dot = new View(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dotPx, dotPx);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, heightPx, 1f);
             lp.setMargins(marginPx, 0, marginPx, 0);
             dot.setLayoutParams(lp);
             dot.setBackgroundResource(R.drawable.dot_inactive);
@@ -950,5 +1007,6 @@ public class QuizActivity extends AppCompatActivity {
             soundPool = null;
         }
         if (ttsHelper != null) ttsHelper.shutdown();
+        if (exitGuard != null) exitGuard.dismiss();
     }
 }

@@ -100,6 +100,19 @@ public class WizardChapterActivity extends AppCompatActivity {
                 failed = true;
             }
 
+            // Only one chapter today ("ইতিহাসের অদ্ভুত পাতা") - skip the one-row
+            // list and open its stories directly. Comes back automatically
+            // once an admin adds a second chapter.
+            if (!failed && chapterList.size() == 1 && !isFinishing()) {
+                WizardChapterModel only = chapterList.get(0);
+                startActivity(new android.content.Intent(activity, WizardLessonActivity.class)
+                        .putExtra(Constant.FROM_ID, only.getId())
+                        .putExtra(Constant.FROM_TITLE, only.getTitle())
+                        .putExtra(Constant.FROM_SUBTITLE, only.getSubtitle()));
+                finish();
+                return;
+            }
+
             loadingPB.setVisibility(View.GONE);
             if (chapterList.isEmpty()) {
                 emptyTV.setText(failed ? "লোড করা যায়নি" : "কোনো গল্প নেই");

@@ -315,6 +315,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 "  word-break:break-word;" +
                 "}" +
                 "*{box-sizing:border-box;}" +
+                // Stored article HTML is often text-align:justify, which on a narrow
+                // phone column stretches Bangla/English runs into huge word gaps.
+                "[style*='justify'],[align='justify']{text-align:left !important;}" +
                 "font{font-size:15.5px !important;font-family:inherit !important;color:inherit !important;}" +
                 "p,li,td,th,span,div,label,code,pre,blockquote{color:#241C10 !important;background:transparent !important;}" +
                 "a{color:#6D3FC0 !important;}" +
@@ -353,6 +356,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
                         "  word-break:break-word;" +
                         "}" +
                         "*{box-sizing:border-box;}" +
+                        /* Justified article HTML makes huge word gaps on a phone */
+                        "[style*='justify'],[align='justify']{text-align:left !important;}" +
                         /* ── Reset inline editor noise ────────────────────── */
                         "font{" +
                         "  font-size:15.5px !important;" +

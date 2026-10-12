@@ -2,6 +2,7 @@ package com.abmn.englishhub.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MenuItem;
@@ -223,6 +224,22 @@ public class VocabularyChapterActivity extends AppCompatActivity {
                 failed = true;
             } finally {
                 isLoading = false;
+            }
+
+            // A category with exactly one chapter (today: Verb) made the player
+            // tap through a one-row list just to reach the lessons. Skip it
+            // - data driven, so the list comes back by itself the moment a
+            // second chapter is added.
+            if (page == 1 && !failed && chapterList.size() == 1 && lastPage <= 1
+                    && !isFinishing()) {
+                WordChapterModel only = chapterList.get(0);
+                startActivity(new Intent(activity, LessonActivity.class)
+                        .putExtra(Constant.FROM, "" + only.getId())
+                        .putExtra(Constant.FROM_TITLE, only.getTitle())
+                        .putExtra(Constant.FROM_TYPE, only.getType())
+                        .putExtra(Constant.QUIZ_PICKER_MODE, quizPickerMode));
+                finish();
+                return;
             }
 
             if (page == 1) {

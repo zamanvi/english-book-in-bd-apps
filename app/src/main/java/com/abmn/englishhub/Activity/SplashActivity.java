@@ -142,7 +142,7 @@ public class SplashActivity extends AppCompatActivity {
                     String serverVersion = settings.optString("app_version", "");
                     String updateText = settings.optString("app_version_text", "A new update is available. Please update now.");
 
-                    if (!serverVersion.isEmpty() && !serverVersion.equals(currentVersion)) {
+                    if (!serverVersion.isEmpty() && isServerVersionNewer(serverVersion, currentVersion)) {
                         showUpdateDialog(updateText);
                     } else {
                         uConfig.setData(Constant.CACHED_APP_VERSION, currentVersion);
@@ -157,6 +157,27 @@ public class SplashActivity extends AppCompatActivity {
                 goToNext();
             }
         }, Request.Method.GET, activity, url, new HashMap<>(), false);
+    }
+
+    // Only nag when the store version is actually newer. The old "!equals"
+    // check also fired for a build that is AHEAD of the server's app_version
+    // (e.g. 1.1.9 installed while the setting still says 1.1.7), telling that
+    // user they were on an "old version". Falls back to the old inequality
+    // test if either string isn't a dotted number.
+    static boolean isServerVersionNewer(String server, String current) {
+        try {
+            String[] s = server.trim().split("\\.");
+            String[] c = current.trim().split("\\.");
+            int n = Math.max(s.length, c.length);
+            for (int i = 0; i < n; i++) {
+                int sv = i < s.length ? Integer.parseInt(s[i].replaceAll("[^0-9]", "")) : 0;
+                int cv = i < c.length ? Integer.parseInt(c[i].replaceAll("[^0-9]", "")) : 0;
+                if (sv != cv) return sv > cv;
+            }
+            return false;
+        } catch (NumberFormatException e) {
+            return !server.equals(current);
+        }
     }
 
     private void showUpdateDialog(String message) {

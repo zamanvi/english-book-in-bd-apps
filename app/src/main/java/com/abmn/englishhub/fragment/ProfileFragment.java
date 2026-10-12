@@ -69,7 +69,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         try {
             View view = inflater.inflate(R.layout.fragment_profile, container, false);
-            com.abmn.englishhub.Helper.WindowInsetsHelper.applyStatusBarInsets(view);
+        // MainActivity already pads its root by the system-bar insets; applying
+        // them again here doubled the gap under the toolbar on every tab.
             loadStats(view);
             buildWeekCalendar(view);
             wireMenuItems(view);
@@ -253,7 +254,16 @@ public class ProfileFragment extends Fragment {
         String cachedPhoto = prefs.getString("profile_photo", "");
         if (!cachedPhoto.isEmpty()) loadAvatarImage(view, cachedPhoto);
 
-        // XP / Streak / Rank / Lipto
+        view.findViewById(R.id.liptoBannerCV).setOnClickListener(v ->
+                startActivity(new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
+
+        bindStatNumbers(view, activity, prefs);
+    }
+
+    // XP / Streak / Rank / Lipto / tier / level, all from the cached prefs.
+    // Split out of loadStats() so refreshFromServer() can repaint just these
+    // numbers after the server answers, without re-binding avatar/friend code.
+    private void bindStatNumbers(View view, Activity activity, SharedPreferences prefs) {
         int xp     = prefs.getInt(Constant.TOTAL_XP, 0);
         int streak = prefs.getInt(Constant.STREAK_DAYS, 0);
         int rank   = prefs.getInt(Constant.USER_RANK, 0);
@@ -266,8 +276,6 @@ public class ProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.profileStreakTV)).setText(String.valueOf(streak));
         ((TextView) view.findViewById(R.id.profileRankTV)).setText(rank > 0 ? "#" + rank : "—");
         ((TextView) view.findViewById(R.id.profileLiptoTV)).setText(String.valueOf(lipto));
-        view.findViewById(R.id.liptoBannerCV).setOnClickListener(v ->
-                startActivity(new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
 
         bindLiptoTier(view, activity, liptoMax);
 
@@ -278,6 +286,65 @@ public class ProfileFragment extends Fragment {
                 toNext > 0 ? toNext + " XP to next level" : "Max Level! 🏆");
         ((ProgressBar) view.findViewById(R.id.profileLevelProgressBar))
                 .setProgress(LevelHelper.getLevelProgressPercent(xp));
+        ((TextView) view.findViewById(R.id.profileLevelTV)).setText(LevelHelper.getLevelTitle(xp));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshFromServer();
+    }
+
+    // The numbers above come from SharedPreferences written by other screens,
+    // so rank/streak/Lipto here went stale (rank #27 on Profile while the
+    // Leaderboard said #23). Ask the server once per time the tab is shown
+    // and repaint - the cached values stay on screen until it answers.
+    private void refreshFromServer() {
+        Activity activity = getActivity();
+        View root = getView();
+        if (activity == null || root == null) return;
+        String token = new UConfig(activity).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty()) return;
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+
+        ApiConfig.getRequest(activity, Constant.GAME_STREAK, token, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!Constant.SUCCESS.equals(json.optString(Constant.STATUS, ""))) return;
+                JSONObject data = json.optJSONObject(Constant.DATA);
+                if (data == null) return;
+                prefs.edit()
+                        .putInt(Constant.STREAK_DAYS, data.optInt("streak_days", 0))
+                        .putInt(Constant.TOTAL_XP, data.optInt("total_xp", 0))
+                        .putInt(Constant.USER_RANK, data.optInt("rank", 0))
+                        .apply();
+                repaintStats(activity, prefs);
+            } catch (Exception ignored) {}
+        }, error -> {});
+
+        ApiConfig.getRequest(activity, Constant.GAME_LIPTO_BALANCE, token, response -> {
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!Constant.SUCCESS.equals(json.optString(Constant.STATUS, ""))) return;
+                int balance = json.optInt("balance", 0);
+                int maxBalance = json.optInt("max_balance", balance);
+                prefs.edit()
+                        .putInt(Constant.LIPTO_BALANCE, balance)
+                        .putInt(Constant.LIPTO_MAX_BALANCE,
+                                Math.max(maxBalance, prefs.getInt(Constant.LIPTO_MAX_BALANCE, 0)))
+                        .apply();
+                repaintStats(activity, prefs);
+            } catch (Exception ignored) {}
+        }, error -> {});
+    }
+
+    private void repaintStats(Activity activity, SharedPreferences prefs) {
+        activity.runOnUiThread(() -> {
+            View root = getView();
+            if (!isAdded() || root == null) return;
+            bindStatNumbers(root, activity, prefs);
+            buildWeekCalendar(root);
+        });
     }
 
 

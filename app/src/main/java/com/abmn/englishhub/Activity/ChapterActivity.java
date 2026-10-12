@@ -2,6 +2,7 @@ package com.abmn.englishhub.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -157,6 +158,17 @@ public class ChapterActivity extends AppCompatActivity {
                         Log.e("ChapterActivity", "chapter parse error", e);
                     }
                 }
+                // A section with exactly one chapter (Reading & Writing today)
+                // - go straight to its lessons instead of a one-row list.
+                if (chapterList.size() == 1 && !isFinishing()) {
+                    ChapterModel only = chapterList.get(0);
+                    startActivity(new Intent(activity, ItemActivity.class)
+                            .putExtra(Constant.FROM, only.getSlug())
+                            .putExtra(Constant.FROM_TITLE, only.getTitle()));
+                    finish();
+                    return;
+                }
+
                 ChapterAdapter adapter = new ChapterAdapter(chapterList, activity);
                 chapterRV.setAdapter(adapter);
                 Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();

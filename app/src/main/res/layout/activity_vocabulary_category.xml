@@ -99,6 +99,7 @@
                     android:layout_marginTop="10dp"
                     tools:ignore="HardcodedText" />
                 <TextView
+                    android:id="@+id/verbSubtitleTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="V1 · V2 · V3 রূপ"

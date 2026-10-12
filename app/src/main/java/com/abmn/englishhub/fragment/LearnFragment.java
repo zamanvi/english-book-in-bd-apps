@@ -20,7 +20,8 @@ public class LearnFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_learn, container, false);
-        com.abmn.englishhub.Helper.WindowInsetsHelper.applyStatusBarInsets(view);
+        // MainActivity already pads its root by the system-bar insets; applying
+        // them again here doubled the gap under the toolbar on every tab.
         activity = getActivity();
 
         view.findViewById(R.id.vocabCard).setOnClickListener(v ->

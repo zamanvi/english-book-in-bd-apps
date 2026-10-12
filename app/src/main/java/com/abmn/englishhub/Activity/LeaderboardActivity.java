@@ -100,7 +100,11 @@ public class LeaderboardActivity extends AppCompatActivity {
                     rows.add(entry);
                     boolean matchById   = myUserId != null
                             && String.valueOf(entry.optInt("id")).equals(myUserId);
-                    boolean matchByName = myName != null
+                    // Names aren't unique - only fall back to a name match when
+                    // we don't know our own id, otherwise a namesake's row
+                    // (and rank) was shown as "you".
+                    boolean haveMyId = myUserId != null && !myUserId.isEmpty();
+                    boolean matchByName = !haveMyId && myName != null
                             && myName.equalsIgnoreCase(entry.optString("name"));
                     if (matchById || matchByName) {
                         myEntry = entry;
@@ -122,6 +126,21 @@ public class LeaderboardActivity extends AppCompatActivity {
                         myXpTV.setText(finalMyEntry.optInt("points", 0) + " XP");
                         myRankTV.setText("#" + finalMyEntry.optInt("rank", 0));
                         myRankCard.setVisibility(View.VISIBLE);
+                    } else {
+                        // Not in the top-50 list the server returns - fall back
+                        // to the cached rank/XP so the strip still shows where
+                        // the player stands instead of vanishing.
+                        android.content.SharedPreferences sp =
+                                getSharedPreferences("app_prefs", MODE_PRIVATE);
+                        int myRank = sp.getInt(Constant.USER_RANK, 0);
+                        String token = new UConfig(this).getData(Constant.TOKEN);
+                        if (myRank > 0 && token != null && !token.isEmpty()) {
+                            String n = new UConfig(this).getData("name");
+                            myNameTV.setText(n != null && !n.isEmpty() ? n : "You");
+                            myXpTV.setText(sp.getInt(Constant.TOTAL_XP, 0) + " XP");
+                            myRankTV.setText("#" + myRank);
+                            myRankCard.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     // List starts from rank 4
