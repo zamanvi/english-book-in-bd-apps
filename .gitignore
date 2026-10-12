@@ -18,3 +18,10 @@ local.properties
 /keystore.properties
 *.jks
 *.keystore
+
+# Built packages are outputs, never sources - a 12 MB v1.0.9 debug APK had
+# been committed here by accident. CI uploads them as workflow artifacts.
+*.apk
+*.aab
+/app/debug/
+/app/release/
