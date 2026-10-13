@@ -54,6 +54,10 @@ public class HomeFragment extends Fragment {
     // Last lesson id for Quick Quiz + Word of the Day
     private int lastLessonId = 1;
 
+    // Phase-1 shortcuts: Lipto chip, today's quiz, mistake-notebook review
+    private View liptoBadge, dailyQuizCard, reviewCard;
+    private TextView liptoChipTV, dailyQuizSubTV, reviewSubTV;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -83,6 +87,7 @@ public class HomeFragment extends Fragment {
         // whatever they were before playing. Refresh both on every resume.
         refreshUserStats();
         refreshContinueCard();
+        refreshShortcuts();
     }
 
     // ── Theme ─────────────────────────────────────────────────────
@@ -112,6 +117,32 @@ public class HomeFragment extends Fragment {
         leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
         groupBtn        = view.findViewById(R.id.groupBtn);
         battleBtn       = view.findViewById(R.id.battleBtn);
+
+        liptoBadge      = view.findViewById(R.id.liptoBadge);
+        liptoChipTV     = view.findViewById(R.id.liptoChipTV);
+        dailyQuizCard   = view.findViewById(R.id.dailyQuizCard);
+        dailyQuizSubTV  = view.findViewById(R.id.dailyQuizSubTV);
+        reviewCard      = view.findViewById(R.id.reviewCard);
+        reviewSubTV     = view.findViewById(R.id.reviewSubTV);
+
+        liptoBadge.setOnClickListener(v -> startActivity(
+                new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
+        reviewCard.setOnClickListener(v -> startActivity(
+                new Intent(activity, com.abmn.englishhub.Activity.MistakeNotebookActivity.class)));
+        dailyQuizCard.setOnClickListener(v -> {
+            SharedPreferences sp = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+            int quizLessonId = sp.getInt(Constant.LAST_QUIZ_LESSON_ID, 0);
+            if (quizLessonId > 0) {
+                // Level map re-checks login / premium lock / round state itself,
+                // so a stale remembered lesson can never skip a gate.
+                startActivity(new Intent(activity, com.abmn.englishhub.Activity.LevelMapActivity.class)
+                        .putExtra("lesson_id", quizLessonId)
+                        .putExtra("lesson_title", sp.getString(Constant.LAST_QUIZ_LESSON_TITLE, "")));
+            } else {
+                startActivity(new Intent(activity, VocabularyActivity.class)
+                        .putExtra(Constant.QUIZ_PICKER_MODE, true));
+            }
+        });
 
         // Category cards
         view.findViewById(R.id.vocabularyLL).setOnClickListener(v ->
@@ -215,9 +246,44 @@ public class HomeFragment extends Fragment {
         String token = uConfig.getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) return;
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        // Always repaint from prefs (cheap, and a finished quiz has just
+        // written fresh values there); only hit the network once per gate window.
         streakTV.setText(prefs.getInt(Constant.STREAK_DAYS, 0) + " দিন");
+        if (!com.abmn.englishhub.Helper.StatsRefreshGate.tryAcquire()) return;
         fetchStreakFromServer(prefs, token);
         fetchLiptoBalance(prefs, token);
+    }
+
+    // Lipto chip + today's-quiz subtitle + mistake-review card, all from
+    // local prefs / the local notebook - no network.
+    private void refreshShortcuts() {
+        if (activity == null || liptoBadge == null) return;
+        UConfig uConfig = new UConfig(activity);
+        SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+
+        String token = uConfig.getData(Constant.TOKEN);
+        boolean loggedIn = token != null && !token.isEmpty();
+        if (loggedIn && prefs.contains(Constant.LIPTO_BALANCE)) {
+            liptoChipTV.setText(String.valueOf(prefs.getInt(Constant.LIPTO_BALANCE, 0)));
+            liptoBadge.setVisibility(View.VISIBLE);
+        } else {
+            liptoBadge.setVisibility(View.GONE);
+        }
+
+        String quizTitle = prefs.getString(Constant.LAST_QUIZ_LESSON_TITLE, "");
+        boolean hasLesson = prefs.getInt(Constant.LAST_QUIZ_LESSON_ID, 0) > 0;
+        dailyQuizSubTV.setText(hasLesson && !quizTitle.isEmpty()
+                ? quizTitle
+                : hasLesson ? "আগের কুইজ চালিয়ে যাও"
+                            : "নতুন কুইজ শুরু করো");
+
+        int mistakes = com.abmn.englishhub.Helper.MistakeNotebook.getAll(activity).size();
+        if (mistakes > 0) {
+            reviewSubTV.setText(mistakes + " টি শব্দ রিভিউ করো");
+            reviewCard.setVisibility(View.VISIBLE);
+        } else {
+            reviewCard.setVisibility(View.GONE);
+        }
     }
 
     private void refreshContinueCard() {
@@ -262,6 +328,9 @@ public class HomeFragment extends Fragment {
                         .putInt(Constant.LIPTO_BALANCE, balance)
                         .putInt(Constant.LIPTO_MAX_BALANCE, Math.max(maxBalance, prefs.getInt(Constant.LIPTO_MAX_BALANCE, 0)))
                         .apply();
+                if (activity != null) activity.runOnUiThread(() -> {
+                    if (isAdded()) refreshShortcuts();
+                });
             } catch (Exception ignored) {}
         }, error -> {});
     }

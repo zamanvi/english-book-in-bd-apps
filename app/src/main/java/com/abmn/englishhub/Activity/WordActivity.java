@@ -142,7 +142,8 @@ public class WordActivity extends AppCompatActivity {
         takeQuizBtnCV.setOnClickListener(v -> {
             try {
                 startActivity(new Intent(activity, LevelMapActivity.class)
-                        .putExtra("lesson_id", Integer.parseInt(getLessonId)));
+                        .putExtra("lesson_id", Integer.parseInt(getLessonId))
+                        .putExtra("lesson_title", getIntent().getStringExtra(Constant.FROM_TITLE)));
             } catch (NumberFormatException ignored) {}
         });
 

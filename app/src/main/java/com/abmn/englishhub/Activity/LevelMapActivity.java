@@ -52,6 +52,7 @@ public class LevelMapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level_map);
 
         lessonId = getIntent().getIntExtra("lesson_id", 1);
+        rememberLesson(getIntent().getStringExtra("lesson_title"));
         loadingBar = findViewById(R.id.levelMapLoadingBar);
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
         findViewById(R.id.mistakeNotebookBtn).setOnClickListener(v ->
@@ -155,6 +156,20 @@ public class LevelMapActivity extends AppCompatActivity {
     // whoosh) — checked by QuizActivity/WritingActivity via the same
     // "app_prefs"/SOUND_ENABLED key before every playTone()/playSound()
     // call, so toggling it here affects every round immediately.
+    // Remembers the lesson for Home's "today's quiz" shortcut. The title is
+    // optional (older entry points don't pass one) - never overwrite a known
+    // title with an empty one for the same lesson.
+    private void rememberLesson(String title) {
+        SharedPreferences prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = prefs.edit().putInt(Constant.LAST_QUIZ_LESSON_ID, lessonId);
+        if (title != null && !title.trim().isEmpty()) {
+            ed.putString(Constant.LAST_QUIZ_LESSON_TITLE, title.trim());
+        } else if (prefs.getInt(Constant.LAST_QUIZ_LESSON_ID, -1) != lessonId) {
+            ed.remove(Constant.LAST_QUIZ_LESSON_TITLE);
+        }
+        ed.apply();
+    }
+
     private void setupSoundToggle() {
         CardView btn = findViewById(R.id.soundToggleBtn);
         ImageView icon = findViewById(R.id.soundToggleIV);

@@ -104,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     UConfig uConfig = new UConfig(this);
                     uConfig.setData(Constant.TOKEN, token);
+                    com.abmn.englishhub.Helper.StatsRefreshGate.reset(); // fresh account -> refetch stats on next screen
                     uConfig.setData("name", name);
 
                     if (userId > 0) {

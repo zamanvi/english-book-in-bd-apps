@@ -95,7 +95,8 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.BlogViewHo
             quickQuizBtnCV.setVisibility(View.VISIBLE);
             quickQuizBtnCV.setOnClickListener(v -> activity.startActivity(
                     new Intent(activity, LevelMapActivity.class)
-                            .putExtra("lesson_id", model.getId())));
+                            .putExtra("lesson_id", model.getId())
+                            .putExtra("lesson_title", model.getTitle())));
 
             titleTV.setText(model.getTitle());
             premiumBadgeTV.setVisibility(model.isPremium() ? View.VISIBLE : View.GONE);

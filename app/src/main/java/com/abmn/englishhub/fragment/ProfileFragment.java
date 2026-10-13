@@ -306,6 +306,9 @@ public class ProfileFragment extends Fragment {
         String token = new UConfig(activity).getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) return;
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        // Shared with Home: both fetch the same endpoints and write the same
+        // prefs, so one server round-trip per window is enough for both.
+        if (!com.abmn.englishhub.Helper.StatsRefreshGate.tryAcquire()) return;
 
         ApiConfig.getRequest(activity, Constant.GAME_STREAK, token, response -> {
             try {
@@ -616,7 +619,14 @@ public class ProfileFragment extends Fragment {
                 .remove(Constant.STREAK_DAYS)
                 .remove(Constant.USER_RANK)
                 .remove(Constant.LIPTO_BALANCE)
+                // Per-account leftovers that used to outlive a logout: the next
+                // account on this device inherited the old Lipto tier ceiling
+                // and "today's quiz" lesson.
+                .remove(Constant.LIPTO_MAX_BALANCE)
+                .remove(Constant.LAST_QUIZ_LESSON_ID)
+                .remove(Constant.LAST_QUIZ_LESSON_TITLE)
                 .apply();
+        com.abmn.englishhub.Helper.StatsRefreshGate.reset();
 
         Intent intent = new Intent(activity, com.abmn.englishhub.Activity.MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
