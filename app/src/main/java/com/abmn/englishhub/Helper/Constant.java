@@ -119,6 +119,8 @@ public class Constant {
     public static final String LAST_QUIZ_LESSON_ID    = "last_quiz_lesson_id";
     // Home's one-time "quiz / battle moved to the Practice tab" pointer.
     public static final String PRACTICE_HINT_DISMISSED = "practice_hint_dismissed";
+    // Selected "my exam" filter on the vocabulary chapter list ("" = all).
+    public static final String EXAM_GOAL = "exam_goal";
     public static final String LAST_QUIZ_LESSON_TITLE = "last_quiz_lesson_title";
 
     // Shared date format — used by ResultActivity + StreakReminderReceiver

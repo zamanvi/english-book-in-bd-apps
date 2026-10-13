@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -45,6 +46,12 @@ public class VocabularyChapterActivity extends AppCompatActivity {
     private View emptyLL;
     private TextView emptyTV;
     private List<WordChapterModel> chapterList;
+    // Everything fetched so far; chapterList (what the adapter shows) is the
+    // slice of it that matches the selected exam filter.
+    private final List<WordChapterModel> allChapters = new ArrayList<>();
+    private LinearLayout goalChipsLL;
+    private View goalChipsScroll;
+    private String selectedGoal = "";
     private boolean isLoading = false;
     private int currentPage = 1;
     private int lastPage = 1;
@@ -86,6 +93,10 @@ public class VocabularyChapterActivity extends AppCompatActivity {
         loadingPB = findViewById(R.id.loadingPB);
         emptyLL = findViewById(R.id.emptyLL);
         emptyTV = findViewById(R.id.emptyTV);
+        goalChipsLL = findViewById(R.id.goalChipsLL);
+        goalChipsScroll = findViewById(R.id.goalChipsScroll);
+        selectedGoal = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getString(Constant.EXAM_GOAL, "");
 
         // No unconditional "no internet" check here - fetchData() below goes
         // through ApiConfig, which serves cached content silently when
@@ -211,12 +222,14 @@ public class VocabularyChapterActivity extends AppCompatActivity {
                         String updated_at = chapter.getString("updated_at");
 
                         WordChapterModel model = new WordChapterModel(id, title, type, image_path, status, created_at, updated_at);
-                        chapterList.add(model);
+                        // optString would return the text "null" for a JSON null
+                        model.setExamTags(chapter.isNull("exam_tags") ? "" : chapter.optString("exam_tags", ""));
+                        allChapters.add(model);
                     }
                     if (currentPage == 1) {
                         lastPage = chaptersObject.getInt("last_page");
                     }
-                    Objects.requireNonNull(chapterRV.getAdapter()).notifyDataSetChanged();
+                    applyGoalFilter();
                 } else {
                     failed = true;
                 }
@@ -230,9 +243,9 @@ public class VocabularyChapterActivity extends AppCompatActivity {
             // tap through a one-row list just to reach the lessons. Skip it
             // - data driven, so the list comes back by itself the moment a
             // second chapter is added.
-            if (page == 1 && !failed && chapterList.size() == 1 && lastPage <= 1
+            if (page == 1 && !failed && allChapters.size() == 1 && lastPage <= 1
                     && !isFinishing()) {
-                WordChapterModel only = chapterList.get(0);
+                WordChapterModel only = allChapters.get(0);
                 startActivity(new Intent(activity, LessonActivity.class)
                         .putExtra(Constant.FROM, "" + only.getId())
                         .putExtra(Constant.FROM_TITLE, only.getTitle())
@@ -244,12 +257,115 @@ public class VocabularyChapterActivity extends AppCompatActivity {
 
             if (page == 1) {
                 loadingPB.setVisibility(View.GONE);
-                if (chapterList.isEmpty()) {
+                if (allChapters.isEmpty()) {
                     emptyTV.setText(failed ? "চ্যাপ্টার লোড করা যায়নি" : "কোনো চ্যাপ্টার নেই");
                     emptyLL.setVisibility(View.VISIBLE);
                 }
             }
+
+            // The exam chips need every chapter's tags, and a filtered list can
+            // be too short to ever trigger the scroll-to-load-more listener, so
+            // pull the remaining pages straight away (2 requests today).
+            if (!failed && page == currentPage && currentPage < lastPage && !isFinishing()) {
+                loadMoreData();
+            }
         }, Request.Method.GET, activity, url, new HashMap<>(), true, cacheKey);
+    }
+
+    // ── "My exam" filter ─────────────────────────────────────────────
+
+    private static final String[] GOAL_ORDER = {"hsc", "ssc", "jsc", "bcs", "bank", "medical", "admission_job"};
+
+    private static String goalLabel(String tag) {
+        switch (tag) {
+            case "hsc": return "HSC";
+            case "ssc": return "SSC";
+            case "jsc": return "JSC";
+            case "bcs": return "BCS";
+            case "bank": return "Bank";
+            case "medical": return "Medical";
+            case "admission_job": return "Admission & Job";
+            default: return tag.toUpperCase(java.util.Locale.ROOT);
+        }
+    }
+
+    private static boolean matchesGoal(WordChapterModel c, String goal) {
+        String tags = c.getExamTags();
+        if (goal.isEmpty() || tags.isEmpty()) return true; // untagged = for everybody
+        for (String t : tags.split(",")) {
+            if (t.trim().equals(goal)) return true;
+        }
+        return false;
+    }
+
+    // Rebuilds what the list shows from allChapters + the selected exam, and
+    // refreshes the chip row. Never leaves the list empty because of a filter.
+    @SuppressLint("NotifyDataSetChanged")
+    private void applyGoalFilter() {
+        java.util.TreeSet<String> present = new java.util.TreeSet<>();
+        for (WordChapterModel c : allChapters) {
+            if (c.getExamTags().isEmpty()) continue;
+            for (String t : c.getExamTags().split(",")) {
+                if (!t.trim().isEmpty()) present.add(t.trim());
+            }
+        }
+        // A saved goal that no chapter carries any more must not hide things.
+        if (!selectedGoal.isEmpty() && !present.contains(selectedGoal) && currentPage >= lastPage) {
+            selectedGoal = "";
+            getSharedPreferences("app_prefs", MODE_PRIVATE).edit().remove(Constant.EXAM_GOAL).apply();
+        }
+
+        chapterList.clear();
+        for (WordChapterModel c : allChapters) {
+            if (matchesGoal(c, selectedGoal)) chapterList.add(c);
+        }
+        if (chapterList.isEmpty() && !allChapters.isEmpty()) {
+            chapterList.addAll(allChapters);
+        }
+        if (chapterRV.getAdapter() != null) chapterRV.getAdapter().notifyDataSetChanged();
+        buildGoalChips(present);
+    }
+
+    private void buildGoalChips(java.util.Set<String> present) {
+        goalChipsLL.removeAllViews();
+        // Only worth showing when at least one chapter is tagged.
+        if (present.isEmpty()) {
+            goalChipsScroll.setVisibility(View.GONE);
+            return;
+        }
+        goalChipsScroll.setVisibility(View.VISIBLE);
+
+        java.util.List<String> ordered = new ArrayList<>();
+        for (String t : GOAL_ORDER) if (present.contains(t)) ordered.add(t);
+        for (String t : present) if (!ordered.contains(t)) ordered.add(t);
+
+        addGoalChip("", "\u09b8\u09ac");
+        for (String t : ordered) addGoalChip(t, goalLabel(t));
+    }
+
+    private void addGoalChip(String tag, String label) {
+        TextView chip = new TextView(this);
+        boolean selected = tag.equals(selectedGoal);
+        chip.setText(label);
+        chip.setTextSize(13);
+        chip.setTextColor(androidx.core.content.ContextCompat.getColor(this,
+                selected ? R.color.text_primary : R.color.text_secondary));
+        chip.setBackgroundResource(selected ? R.drawable.bg_indigo_pill : R.drawable.bg_pill_inactive);
+        float d = getResources().getDisplayMetrics().density;
+        chip.setPadding((int) (14 * d), (int) (7 * d), (int) (14 * d), (int) (7 * d));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMarginEnd((int) (8 * d));
+        chip.setLayoutParams(lp);
+        chip.setOnClickListener(v -> {
+            if (tag.equals(selectedGoal)) return;
+            selectedGoal = tag;
+            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                    .putString(Constant.EXAM_GOAL, tag).apply();
+            applyGoalFilter();
+            chapterRV.scrollToPosition(0);
+        });
+        goalChipsLL.addView(chip);
     }
 
     @Override
