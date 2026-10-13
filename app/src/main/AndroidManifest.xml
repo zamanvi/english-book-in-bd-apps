@@ -122,6 +122,9 @@
             android:name=".Activity.NoticeActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.GroupActivity"
             android:exported="false" />
         <activity

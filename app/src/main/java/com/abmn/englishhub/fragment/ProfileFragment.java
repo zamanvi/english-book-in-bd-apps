@@ -29,6 +29,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.LoginActivity;
+import com.abmn.englishhub.Activity.SettingsActivity;
 import com.abmn.englishhub.Activity.SocialLinkActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
@@ -73,9 +74,8 @@ public class ProfileFragment extends Fragment {
         // them again here doubled the gap under the toolbar on every tab.
             loadStats(view);
             buildWeekCalendar(view);
-            wireMenuItems(view);
+            wireProfileActions(view);
             bindAvatarPicker(view);
-            wireOfflineContentSection(view);
             return view;
         } catch (Throwable t) {
             android.widget.Toast.makeText(getContext(),
@@ -234,7 +234,6 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.liptoBannerCV).setVisibility(android.view.View.VISIBLE);
         view.findViewById(R.id.liptoTierCV).setVisibility(android.view.View.VISIBLE);
         view.findViewById(R.id.profileAvatarEditBtn).setVisibility(android.view.View.VISIBLE);
-        view.findViewById(R.id.menuLogoutCV).setVisibility(android.view.View.VISIBLE);
 
         TextView nameTV = view.findViewById(R.id.profileNameTV);
 
@@ -448,216 +447,45 @@ public class ProfileFragment extends Fragment {
         weekLabel.setText(activeDays + " / 7 Days");
     }
 
-    // ── Existing menu items (all logic preserved) ─────────────────
+    // ── Profile actions ───────────────────────────────────────────
+    // The 8 app-level menu rows (offline, update, theme, rating, contact,
+    // social, logout) moved to SettingsActivity; Profile keeps only the invite
+    // card and the entry to Settings.
 
-    private void wireMenuItems(View view) {
-        Activity activity = getActivity();
+    private void wireProfileActions(View view) {
+        final Activity activity = getActivity();
         if (activity == null) return;
 
-        view.findViewById(R.id.menuSocialMediaCV).setOnClickListener(v ->
-                startActivity(new Intent(activity, SocialLinkActivity.class)));
+        view.findViewById(R.id.menuSettingsCV).setOnClickListener(v ->
+                startActivity(new Intent(activity, SettingsActivity.class)));
 
-        view.findViewById(R.id.menuShareCV).setOnClickListener(v -> {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            String shareMessage = "📚 আমি English Grammar Book অ্যাপ দিয়ে ইংরেজি শিখছি!\n\n"
-                    + "এখানে আছে ৫০০০+ শব্দ, সম্পূর্ণ গ্রামার কোর্স, quiz আর মজার সব গল্প।\n\n"
-                    + "তুমিও শেখা শুরু করো 👇\n"
-                    + "https://play.google.com/store/apps/details?id=" + activity.getPackageName()
-                    + "\n#EnglishGrammarBook #LearnEnglish";
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            startActivity(Intent.createChooser(shareIntent, "শেয়ার করো"));
-        });
-
-        view.findViewById(R.id.menuUpdateCV).setOnClickListener(v -> openPlayStoreListing(activity));
-
-        view.findViewById(R.id.menuThemeCV).setOnClickListener(v -> openThemePicker(activity));
-
-        view.findViewById(R.id.menuReviewCV).setOnClickListener(v -> openPlayStoreListing(activity));
-
-        view.findViewById(R.id.menuLogoutCV).setOnClickListener(v ->
-                new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
-                        .setTitle("লগআউট করবে?")
-                        .setMessage("তোমার account থেকে বের হয়ে যাবে।")
-                        .setPositiveButton("লগআউট করো", (dialog, which) -> performLogout(activity))
-                        .setNegativeButton("বাতিল", null)
-                        .show());
-
-        view.findViewById(R.id.menuContactCV).setOnClickListener(v -> {
-            new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
-                    .setTitle("যোগাযোগ করো")
-                    .setMessage("norozzaman996@gmail.com")
-                    .setPositiveButton("কপি করো", (dialog, which) -> {
-                        ClipboardManager clipboard = (ClipboardManager)
-                                activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                        if (clipboard != null) {
-                            clipboard.setPrimaryClip(
-                                    ClipData.newPlainText("Email", "norozzaman996@gmail.com"));
-                            Toast.makeText(activity, "ইমেইল কপি হয়েছে", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("বাতিল", null)
-                    .show();
-        });
+        View invite = view.findViewById(R.id.menuInviteCV);
+        String token = new UConfig(activity).getData(Constant.TOKEN);
+        boolean loggedIn = token != null && !token.isEmpty();
+        // Invites only make sense when there is a friend code to share.
+        invite.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
+        invite.setOnClickListener(v -> shareInvite(activity));
     }
 
-    // ── Offline content: download everything the app would normally cache
-    // lazily on first view, so it all works with no connection. Reuses the
-    // exact same OfflineCache keys ChapterActivity/ItemActivity/
-    // ItemDetailsActivity already read from - no separate storage path. ──
-
-    private void wireOfflineContentSection(View view) {
-        Activity activity = getActivity();
-        if (activity == null) return;
-
-        MaterialButton downloadBtn = view.findViewById(R.id.downloadOfflineBtn);
-        MaterialButton removeBtn = view.findViewById(R.id.removeOfflineBtn);
-        TextView storageInfoTV = view.findViewById(R.id.offlineStorageInfoTV);
-
-        refreshOfflineStorageInfo(storageInfoTV);
-
-        downloadBtn.setOnClickListener(v ->
-                new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
-                        .setTitle("সব chapters ডাউনলোড করবে?")
-                        .setMessage("এটি ইন্টারনেট ডেটা ব্যবহার করবে। ডাউনলোড শেষ হলে ইন্টারনেট ছাড়াই সব lesson পড়তে পারবে।")
-                        .setPositiveButton("ডাউনলোড করো", (dialog, which) ->
-                                startOfflineDownload(activity, downloadBtn, removeBtn, storageInfoTV))
-                        .setNegativeButton("বাতিল", null)
-                        .show());
-
-        removeBtn.setOnClickListener(v -> {
-            if (OfflineCache.getFileCount(activity) == 0) {
-                Toast.makeText(activity, "কোনো অফলাইন কন্টেন্ট নেই", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
-                    .setTitle("অফলাইন কন্টেন্ট মুছবে?")
-                    .setMessage("ডাউনলোড করা সব chapter এই ডিভাইস থেকে মুছে যাবে। পরে আবার ইন্টারনেট দিয়ে দেখতে পারবে।")
-                    .setPositiveButton("মুছে ফেলো", (dialog, which) -> {
-                        OfflineCache.clearAll(activity);
-                        refreshOfflineStorageInfo(storageInfoTV);
-                        Toast.makeText(activity, "অফলাইন কন্টেন্ট মুছে ফেলা হয়েছে", Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton("বাতিল", null)
-                    .show();
-        });
-    }
-
-    private void startOfflineDownload(Activity activity, MaterialButton downloadBtn,
-                                       MaterialButton removeBtn, TextView storageInfoTV) {
-        if (OfflineDownloadManager.isRunning()) return;
-
-        downloadBtn.setEnabled(false);
-        removeBtn.setEnabled(false);
-        downloadBtn.setText("ডাউনলোড শুরু হচ্ছে...");
-
-        OfflineDownloadManager.downloadAll(activity, new OfflineDownloadManager.Listener() {
-            @Override
-            public void onProgress(int done, int total) {
-                if (!isAdded()) return;
-                downloadBtn.setText("ডাউনলোড হচ্ছে... " + done + "/" + total);
-            }
-
-            @Override
-            public void onComplete(int itemCount) {
-                if (!isAdded()) return;
-                downloadBtn.setEnabled(true);
-                removeBtn.setEnabled(true);
-                downloadBtn.setText("⬇️ সব chapters ডাউনলোড করো");
-                refreshOfflineStorageInfo(storageInfoTV);
-                Toast.makeText(activity, itemCount + "টি lesson ডাউনলোড হয়েছে", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(String message) {
-                if (!isAdded()) return;
-                downloadBtn.setEnabled(true);
-                removeBtn.setEnabled(true);
-                downloadBtn.setText("⬇️ সব chapters ডাউনলোড করো");
-                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void refreshOfflineStorageInfo(TextView storageInfoTV) {
-        Activity activity = getActivity();
-        if (activity == null || storageInfoTV == null) return;
-        int fileCount = OfflineCache.getFileCount(activity);
-        long bytes = OfflineCache.getTotalSizeBytes(activity);
-        if (fileCount == 0) {
-            storageInfoTV.setText("💾 এখনো কিছু ডাউনলোড করা হয়নি");
-        } else {
-            storageInfoTV.setText("💾 " + formatSize(bytes) + " ডাউনলোড করা আছে (" + fileCount + "টি ফাইল)");
+    private void shareInvite(Activity activity) {
+        String code = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .getString("friend_code", "");
+        StringBuilder msg = new StringBuilder()
+                .append("\uD83D\uDCDA \u0986\u09ae\u09bf English Grammar Book \u0985\u09cd\u09af\u09be\u09aa \u09a6\u09bf\u09af\u09bc\u09c7 \u0987\u0982\u09b0\u09c7\u099c\u09bf \u09b6\u09bf\u0996\u099b\u09bf!\n\n")
+                .append("\u098f\u0996\u09be\u09a8\u09c7 \u0986\u099b\u09c7 \u09eb\u09e6\u09e6\u09e6+ \u09b6\u09ac\u09cd\u09a6, \u09b8\u09ae\u09cd\u09aa\u09c2\u09b0\u09cd\u09a3 \u0997\u09cd\u09b0\u09be\u09ae\u09be\u09b0 \u0995\u09cb\u09b0\u09cd\u09b8, quiz \u0986\u09b0 \u09ae\u099c\u09be\u09b0 \u09b8\u09ac \u0997\u09b2\u09cd\u09aa\u0964\n\n")
+                .append("\u09a4\u09c1\u09ae\u09bf\u0993 \u09b6\u09c7\u0996\u09be \u09b6\u09c1\u09b0\u09c1 \u0995\u09b0\u09cb \uD83D\uDC47\n")
+                .append("https://play.google.com/store/apps/details?id=").append(activity.getPackageName());
+        if (code != null && !code.isEmpty()) {
+            // Sign-up has a friend-code field; the referrer earns Lipto when a
+            // new account registers with it.
+            msg.append("\n\n\uD83C\uDF81 \u09b8\u09be\u0987\u09a8-\u0986\u09aa\u09c7\u09b0 \u09b8\u09ae\u09af\u09bc \u0986\u09ae\u09be\u09b0 \u0995\u09cb\u09a1 \u09a6\u09bf\u0993: ").append(code);
         }
-    }
+        msg.append("\n#EnglishGrammarBook #LearnEnglish");
 
-    private String formatSize(long bytes) {
-        if (bytes < 1024) return bytes + " B";
-        if (bytes < 1024 * 1024) return String.format(java.util.Locale.US, "%.0f KB", bytes / 1024.0);
-        return String.format(java.util.Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0));
-    }
-
-    // Best-effort server-side token revoke, then always clear local session
-    // state - a network failure here shouldn't trap the user in a "logged
-    // in" app that no longer has a working token.
-    private void performLogout(Activity activity) {
-        UConfig uConfig = new UConfig(activity);
-        String token = uConfig.getData(Constant.TOKEN);
-
-        if (token != null && !token.isEmpty()) {
-            com.abmn.englishhub.Helper.ApiConfig.getRequest(
-                    activity, Constant.ROOT_API + "logout", token,
-                    response -> {}, error -> {});
-        }
-
-        uConfig.setData(Constant.TOKEN, "");
-        uConfig.setData("name", "");
-
-        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).edit()
-                .remove("user_id")
-                .remove(Constant.TOTAL_XP)
-                .remove(Constant.STREAK_DAYS)
-                .remove(Constant.USER_RANK)
-                .remove(Constant.LIPTO_BALANCE)
-                // Per-account leftovers that used to outlive a logout: the next
-                // account on this device inherited the old Lipto tier ceiling
-                // and "today's quiz" lesson.
-                .remove(Constant.LIPTO_MAX_BALANCE)
-                .remove(Constant.LAST_QUIZ_LESSON_ID)
-                .remove(Constant.LAST_QUIZ_LESSON_TITLE)
-                .apply();
-        com.abmn.englishhub.Helper.StatsRefreshGate.reset();
-
-        Intent intent = new Intent(activity, com.abmn.englishhub.Activity.MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    private void openPlayStoreListing(Activity activity) {
-        try {
-            Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName());
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
-    }
-
-    private void openThemePicker(Activity activity) {
-        String[] names = com.abmn.englishhub.Helper.ThemePrefs.paletteNames();
-        int current = com.abmn.englishhub.Helper.ThemePrefs.getHomePalette(activity);
-        new AlertDialog.Builder(activity, R.style.Theme_App_Dialog)
-                .setTitle("হোম পেইজের থিম বেছে নাও")
-                .setSingleChoiceItems(names, current, (dialog, which) -> {
-                    com.abmn.englishhub.Helper.ThemePrefs.setHomePalette(activity, which);
-                    dialog.dismiss();
-                    Toast.makeText(activity, "থিম পরিবর্তন হয়েছে — Home এ ফিরে গেলে দেখতে পাবে", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("বাতিল", null)
-                .show();
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, msg.toString());
+        startActivity(Intent.createChooser(shareIntent, "\u09b6\u09c7\u09af\u09bc\u09be\u09b0 \u0995\u09b0\u09cb"));
     }
 
     // Older installs that logged in before friend_code/profile_photo existed
