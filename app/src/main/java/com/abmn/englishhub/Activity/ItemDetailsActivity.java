@@ -174,8 +174,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         // Opened from a chapter's lesson list: name that chapter. Opened from a
-        // notice / push link there is no chapter context, so keep the app name.
-        String barTitle = getString(R.string.app_name);
+        // notice / push link there is no chapter context. The app name is too
+        // long for this bar (the palette button sits beside it and the title
+        // ends up ellipsised), so use a short neutral label.
+        String barTitle = "পাঠ";
         if (getIntent().getBooleanExtra("from_chapter", false)) {
             String chapterTitle = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     .getString(Constant.LAST_CHAPTER_TITLE, "");

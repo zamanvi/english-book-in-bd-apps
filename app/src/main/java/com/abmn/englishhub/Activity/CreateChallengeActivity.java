@@ -66,6 +66,9 @@ public class CreateChallengeActivity extends AppCompatActivity {
 
         String token = new UConfig(this).getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) {
+            android.widget.Toast.makeText(this,
+                    "বন্ধুকে চ্যালেঞ্জ করতে একটা ফ্রি অ্যাকাউন্ট লাগবে",
+                    android.widget.Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;

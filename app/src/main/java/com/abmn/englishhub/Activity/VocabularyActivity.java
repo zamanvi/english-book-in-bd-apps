@@ -42,7 +42,7 @@ public class VocabularyActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(quizPickerMode
                     ? "কুইজের জন্য বেছে নাও"
-                    : getString(R.string.app_name));
+                    : "Vocabulary");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 

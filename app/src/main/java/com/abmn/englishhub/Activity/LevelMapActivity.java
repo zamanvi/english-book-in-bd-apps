@@ -47,6 +47,10 @@ public class LevelMapActivity extends AppCompatActivity {
 
         String token = new UConfig(this).getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) {
+            // Say why the login screen suddenly appears instead of the quiz.
+            android.widget.Toast.makeText(this,
+                    "কুইজ খেলতে একটা ফ্রি অ্যাকাউন্ট লাগবে",
+                    android.widget.Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;

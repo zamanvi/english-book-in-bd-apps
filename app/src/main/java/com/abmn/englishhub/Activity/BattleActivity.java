@@ -39,6 +39,9 @@ public class BattleActivity extends AppCompatActivity {
 
         String token = new UConfig(this).getData(Constant.TOKEN);
         if (token == null || token.isEmpty()) {
+            android.widget.Toast.makeText(this,
+                    "১ বনাম ১ যুদ্ধ খেলতে একটা ফ্রি অ্যাকাউন্ট লাগবে",
+                    android.widget.Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
