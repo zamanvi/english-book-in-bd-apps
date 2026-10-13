@@ -60,10 +60,25 @@ public class ChapterActivity extends AppCompatActivity {
     private void define() {
         activity = this;
 
+        String getType = getIntent().getStringExtra("type");
+
+        // Title the screen with the section the user tapped (same words as the
+        // Learn tiles) instead of the app name, so they always know where they are.
+        String screenTitle;
+        if ("grammar".equals(getType)) {
+            screenTitle = "Grammar";
+        } else if ("writing_reading".equals(getType)) {
+            screenTitle = "Reading & Writing";
+        } else if ("daily_vocabulary".equals(getType)) {
+            screenTitle = "Daily vocabulary";
+        } else {
+            screenTitle = getString(R.string.app_name);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setTitle(screenTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -72,8 +87,6 @@ public class ChapterActivity extends AppCompatActivity {
         emptyLL = findViewById(R.id.emptyLL);
         emptyTV = findViewById(R.id.emptyTV);
         chapterList = new ArrayList<>();
-
-        String getType = getIntent().getStringExtra("type");
 
         loadingPB.setVisibility(View.VISIBLE);
         getBookData(getType);

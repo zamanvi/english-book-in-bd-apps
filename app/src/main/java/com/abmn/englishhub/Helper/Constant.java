@@ -113,6 +113,10 @@ public class Constant {
     public static final String LAST_ACTIVE_TIMESTAMP = "last_active_timestamp";
     public static final String LAST_CHAPTER_SLUG  = "last_chapter_slug";
     public static final String LAST_CHAPTER_TITLE = "last_chapter_title";
+    // The lesson (article) opened last inside LAST_CHAPTER_*, so "continue" can
+    // reopen it directly instead of only the chapter list.
+    public static final String LAST_ITEM_SLUG  = "last_item_slug";
+    public static final String LAST_ITEM_TITLE = "last_item_title";
     // Last lesson whose quiz level-map the user opened - drives Home's
     // "today's quiz" shortcut (lesson id only; the round state is always read
     // fresh by LevelMapActivity, so a stale value can never unlock anything).

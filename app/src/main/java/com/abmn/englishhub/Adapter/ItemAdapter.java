@@ -57,7 +57,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         }
 
         public void bind(ItemModel model, Activity activity) {
-            rootCV.setOnClickListener(v-> activity.startActivity(new Intent(activity, ItemDetailsActivity.class).putExtra(Constant.FROM, model.getSlug())));
+            rootCV.setOnClickListener(v-> activity.startActivity(new Intent(activity, ItemDetailsActivity.class)
+                    .putExtra(Constant.FROM, model.getSlug())
+                    // lets the reader remember this as the chapter's last lesson
+                    .putExtra("from_chapter", true)));
             titleTV.setText(model.getTitle());
             // Book articles (Grammar/Reading&Writing/Speaking) have no Lesson/Word
             // data behind them, so there's nothing for Quick Quiz to run on here -

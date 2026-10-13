@@ -35,7 +35,7 @@ public class NoticeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setTitle("\u09a8\u09cb\u099f\u09bf\u09b6");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 

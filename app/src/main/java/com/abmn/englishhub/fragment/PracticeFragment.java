@@ -34,10 +34,9 @@ public class PracticeFragment extends Fragment {
         final Activity activity = getActivity();
         reviewSubTV = view.findViewById(R.id.practiceReviewSubTV);
 
-        // Let the user pick which lesson to quiz on (same entry Home used).
+        // Same one-tap behaviour as Home's "today's quiz" (QuizLauncher).
         view.findViewById(R.id.practiceQuizCard).setOnClickListener(v ->
-                startActivity(new Intent(activity, VocabularyActivity.class)
-                        .putExtra(Constant.QUIZ_PICKER_MODE, true)));
+                com.abmn.englishhub.Helper.QuizLauncher.startQuickQuiz(activity));
 
         view.findViewById(R.id.practiceReviewCard).setOnClickListener(v ->
                 startActivity(new Intent(activity, MistakeNotebookActivity.class)));

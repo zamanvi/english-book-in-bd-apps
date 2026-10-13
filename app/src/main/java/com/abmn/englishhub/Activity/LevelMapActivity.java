@@ -37,6 +37,9 @@ public class LevelMapActivity extends AppCompatActivity {
     private View loadingBar;
     private final View[] roundRoots = new View[5];
     private final String[] roundStatus = {"locked", "locked", "locked", "locked", "locked"};
+    // Set by QuizLauncher: jump straight into the first playable round once the
+    // map has loaded. One-shot (the map re-fetches on every resume).
+    private boolean autoStartPending = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,8 @@ public class LevelMapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level_map);
 
         lessonId = getIntent().getIntExtra("lesson_id", 1);
+        autoStartPending = savedInstanceState == null
+                && getIntent().getBooleanExtra("auto_start", false);
         rememberLesson(getIntent().getStringExtra("lesson_title"));
         loadingBar = findViewById(R.id.levelMapLoadingBar);
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
@@ -103,6 +108,7 @@ public class LevelMapActivity extends AppCompatActivity {
                     int stars = r.optInt("stars", 0);
                     applyRoundState(i, roundStatus[i], stars);
                 }
+                maybeAutoStart();
             } catch (Exception ignored) {
             } finally {
                 runOnUiThread(() -> loadingBar.setVisibility(View.GONE));
@@ -152,10 +158,21 @@ public class LevelMapActivity extends AppCompatActivity {
         });
     }
 
-    // Global mute for Quick Quiz sound effects (correct/wrong tones, combo
-    // whoosh) — checked by QuizActivity/WritingActivity via the same
-    // "app_prefs"/SOUND_ENABLED key before every playTone()/playSound()
-    // call, so toggling it here affects every round immediately.
+    // Starts the first unlocked-but-not-passed round once, when the map was
+    // opened by a quiz shortcut. If everything is already passed (or nothing is
+    // unlocked) the map simply stays on screen.
+    private synchronized void maybeAutoStart() {
+        if (!autoStartPending) return;
+        autoStartPending = false;
+        for (int i = 0; i < roundStatus.length; i++) {
+            if ("unlocked".equals(roundStatus[i])) {
+                final int round = i + 1;
+                runOnUiThread(() -> { if (!isFinishing()) onRoundTapped(round); });
+                return;
+            }
+        }
+    }
+
     // Remembers the lesson for Home's "today's quiz" shortcut. The title is
     // optional (older entry points don't pass one) - never overwrite a known
     // title with an empty one for the same lesson.
@@ -170,6 +187,10 @@ public class LevelMapActivity extends AppCompatActivity {
         ed.apply();
     }
 
+    // Global mute for Quick Quiz sound effects (correct/wrong tones, combo
+    // whoosh) — checked by QuizActivity/WritingActivity via the same
+    // "app_prefs"/SOUND_ENABLED key before every playTone()/playSound()
+    // call, so toggling it here affects every round immediately.
     private void setupSoundToggle() {
         CardView btn = findViewById(R.id.soundToggleBtn);
         ImageView icon = findViewById(R.id.soundToggleIV);

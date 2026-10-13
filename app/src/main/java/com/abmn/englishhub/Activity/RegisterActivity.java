@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
         nameET              = findViewById(R.id.registerNameET);
         emailET             = findViewById(R.id.registerEmailET);
         passwordET          = findViewById(R.id.registerPasswordET);
-        confirmPasswordET   = findViewById(R.id.registerConfirmPasswordET);
         friendCodeET        = findViewById(R.id.registerFriendCodeET);
         errorTV             = findViewById(R.id.registerErrorTV);
 
@@ -51,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
         String name            = nameET.getText()            != null ? nameET.getText().toString().trim()  : "";
         String email           = emailET.getText()           != null ? emailET.getText().toString().trim()  : "";
         String password        = passwordET.getText()        != null ? passwordET.getText().toString()     : "";
-        String confirmPassword = confirmPasswordET.getText() != null ? confirmPasswordET.getText().toString() : "";
 
         if (name.isEmpty()) {
             showError("তোমার নাম লিখো");
@@ -63,10 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if (password.length() < 6) {
             showError("পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে");
-            return;
-        }
-        if (!password.equals(confirmPassword)) {
-            showError("পাসওয়ার্ড দুটো মিলছে না");
             return;
         }
 
@@ -82,7 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
             body.put("name", name);
             body.put("email", email);
             body.put("password", password);
-            body.put("password_confirmation", confirmPassword);
+            // The confirm-password field was dropped (the eye toggle lets the user
+            // check what they typed); the backend's "confirmed" rule still needs it.
+            body.put("password_confirmation", password);
             if (!referralCodeInput.isEmpty()) {
                 body.put("friend_code", referralCodeInput);
             }

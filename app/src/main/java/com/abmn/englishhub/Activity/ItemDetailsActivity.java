@@ -173,8 +173,16 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
+        // Opened from a chapter's lesson list: name that chapter. Opened from a
+        // notice / push link there is no chapter context, so keep the app name.
+        String barTitle = getString(R.string.app_name);
+        if (getIntent().getBooleanExtra("from_chapter", false)) {
+            String chapterTitle = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                    .getString(Constant.LAST_CHAPTER_TITLE, "");
+            if (chapterTitle != null && !chapterTitle.isEmpty()) barTitle = chapterTitle;
+        }
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getString(R.string.app_name));
+            getSupportActionBar().setTitle(barTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -266,6 +274,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     String title = item.getString("title");
                     String details = item.getString("details");
                     titleTV.setText(title);
+                    if (getIntent().getBooleanExtra("from_chapter", false)) {
+                        // "Continue where you left off" reopens this exact lesson.
+                        getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                                .putString(Constant.LAST_ITEM_SLUG, slug)
+                                .putString(Constant.LAST_ITEM_TITLE, title)
+                                .apply();
+                    }
                     currentDetailsHtml = details;
                     renderContent(details);
                 } catch (Exception e) {

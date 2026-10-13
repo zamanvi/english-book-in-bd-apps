@@ -80,8 +80,11 @@ public class ItemActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
+        String chapterTitle = getIntent().getStringExtra(Constant.FROM_TITLE);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getString(R.string.app_name));
+            // Say where the user is (the chapter) instead of repeating the app name.
+            getSupportActionBar().setTitle(chapterTitle != null && !chapterTitle.isEmpty()
+                    ? chapterTitle : getString(R.string.app_name));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -114,11 +117,16 @@ public class ItemActivity extends AppCompatActivity {
     // actually opened most recently, instead of always the first chapter.
     private void rememberAsLastOpened(String slug, String title) {
         if (slug == null || slug.isEmpty() || title == null || title.isEmpty()) return;
-        activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-                .edit()
+        android.content.SharedPreferences sp =
+                activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        android.content.SharedPreferences.Editor ed = sp.edit()
                 .putString(Constant.LAST_CHAPTER_SLUG, slug)
-                .putString(Constant.LAST_CHAPTER_TITLE, title)
-                .apply();
+                .putString(Constant.LAST_CHAPTER_TITLE, title);
+        // A different chapter: the remembered lesson belonged to the old one.
+        if (!slug.equals(sp.getString(Constant.LAST_CHAPTER_SLUG, ""))) {
+            ed.remove(Constant.LAST_ITEM_SLUG).remove(Constant.LAST_ITEM_TITLE);
+        }
+        ed.apply();
     }
 
     @Override
@@ -199,18 +207,9 @@ public class ItemActivity extends AppCompatActivity {
         emptyLL.setVisibility(View.VISIBLE);
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_chapter, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.homeNav) {
-            startActivity(new Intent(activity, MainActivity.class));
-        }
+        // The old overflow menu only held a "Home" entry - removed; the Up
+        // arrow and system Back already lead there.
         return super.onOptionsItemSelected(item);
     }
 }

@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.ChapterActivity;
-import com.abmn.englishhub.Activity.VocabularyActivity;
+import com.abmn.englishhub.Activity.VocabularyChapterActivity;
+import com.abmn.englishhub.Helper.Constant;
 import com.abmn.englishhub.Activity.WizardChapterActivity;
 import com.abmn.englishhub.R;
 
@@ -25,8 +26,17 @@ public class LearnFragment extends Fragment {
         // them again here doubled the gap under the toolbar on every tab.
         activity = getActivity();
 
+        // Straight to the chapter list - the Vocabulary / Verb chooser screen
+        // in between was one extra tap for every visit (Verb has its own tile).
         view.findViewById(R.id.vocabCard).setOnClickListener(v ->
-                startActivity(new Intent(activity, VocabularyActivity.class)));
+                startActivity(new Intent(activity, VocabularyChapterActivity.class)
+                        .putExtra(Constant.FROM_TYPE, "vocabulary")
+                        .putExtra(Constant.FROM_TITLE, "Vocabulary")));
+
+        view.findViewById(R.id.verbCard).setOnClickListener(v ->
+                startActivity(new Intent(activity, VocabularyChapterActivity.class)
+                        .putExtra(Constant.FROM_TYPE, "verb")
+                        .putExtra(Constant.FROM_TITLE, "Verb")));
 
         view.findViewById(R.id.grammarCard).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class)

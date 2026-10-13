@@ -285,11 +285,50 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <View
+            <!-- Verb: used to hide behind the Vocabulary/Verb chooser screen -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/verbCard"
                 android:layout_width="0dp"
                 android:layout_height="140dp"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp" />
+                android:layout_marginStart="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#00000000"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:background="@drawable/grad_quiz">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_bolt"
+                        android:contentDescription="Verb"
+                        app:tint="@color/coral" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Verb"
+                        android:textColor="@color/coral"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        tools:ignore="HardcodedText" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="V1 · V2 · V3 রূপ"
+                        android:textColor="@color/text_inactive"
+                        android:textSize="11sp"
+                        android:layout_marginTop="3dp"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

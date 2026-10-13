@@ -21,9 +21,9 @@ import com.google.android.material.button.MaterialButton;
 public class OnboardingActivity extends AppCompatActivity {
 
     private static final String[][] PAGES = {
-        {"📚", "প্রতিদিন শেখো", "Grammar, Vocabulary, Speaking —\nসব কিছু এক জায়গায়।"},
+        {"📚", "প্রতিদিন শেখো", "Grammar, Vocabulary, Reading & Writing —\nসব কিছু এক জায়গায়।"},
         {"🔥", "Streak ধরে রাখো", "প্রতিদিন quiz দাও, XP জমাও,\nleaderboard এ উঠে আসো।"},
-        {"⚔️", "বন্ধুকে চ্যালেঞ্জ করো", "গ্রুপ বানাও, 1v1 battle করো,\nনিজের ক্ষমতা প্রমাণ করো।"},
+        {"⚔️", "বন্ধুকে চ্যালেঞ্জ করো", "বন্ধুর সাথে 1v1 battle করো,\nলিডারবোর্ডে নিজের জায়গা দেখো।"},
     };
 
     private ViewPager2 pager;

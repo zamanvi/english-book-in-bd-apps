@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     private TextView streakTV, greetingNameTV, greetingTimeTV;
 
     // Continue learning
-    private TextView continueLessonTV;
+    private TextView continueLessonTV, continueLabelTV;
 
     // TTS engine
     private AppTextToSpeechHelper tts;
@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment {
         wordMeaningTV   = view.findViewById(R.id.wordMeaningTV);
         ttsBtn          = view.findViewById(R.id.ttsBtn);
         continueLessonTV  = view.findViewById(R.id.continueLessonTV);
+        continueLabelTV   = view.findViewById(R.id.continueLabelTV);
 
         liptoBadge      = view.findViewById(R.id.liptoBadge);
         liptoChipTV     = view.findViewById(R.id.liptoChipTV);
@@ -115,20 +116,10 @@ public class HomeFragment extends Fragment {
                 new Intent(activity, com.abmn.englishhub.Activity.LiptoPassbookActivity.class)));
         reviewCard.setOnClickListener(v -> startActivity(
                 new Intent(activity, com.abmn.englishhub.Activity.MistakeNotebookActivity.class)));
-        dailyQuizCard.setOnClickListener(v -> {
-            SharedPreferences sp = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-            int quizLessonId = sp.getInt(Constant.LAST_QUIZ_LESSON_ID, 0);
-            if (quizLessonId > 0) {
-                // Level map re-checks login / premium lock / round state itself,
-                // so a stale remembered lesson can never skip a gate.
-                startActivity(new Intent(activity, com.abmn.englishhub.Activity.LevelMapActivity.class)
-                        .putExtra("lesson_id", quizLessonId)
-                        .putExtra("lesson_title", sp.getString(Constant.LAST_QUIZ_LESSON_TITLE, "")));
-            } else {
-                startActivity(new Intent(activity, VocabularyActivity.class)
-                        .putExtra(Constant.QUIZ_PICKER_MODE, true));
-            }
-        });
+        // Straight into the next round of the last lesson (or the chapter
+        // picker for a first-time player) - see QuizLauncher.
+        dailyQuizCard.setOnClickListener(v ->
+                com.abmn.englishhub.Helper.QuizLauncher.startQuickQuiz(activity));
 
         // One-time pointer to the new Practice tab (the quiz / battle /
         // leaderboard tiles that used to sit here moved there).
@@ -150,10 +141,21 @@ public class HomeFragment extends Fragment {
             SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
             String lastSlug = prefs.getString(Constant.LAST_CHAPTER_SLUG, null);
             String lastTitle = prefs.getString(Constant.LAST_CHAPTER_TITLE, null);
+            String lastItemSlug = prefs.getString(Constant.LAST_ITEM_SLUG, "");
             if (lastSlug != null && lastTitle != null) {
-                startActivity(new Intent(activity, ItemActivity.class)
+                Intent chapterIntent = new Intent(activity, ItemActivity.class)
                         .putExtra(Constant.FROM, lastSlug)
-                        .putExtra(Constant.FROM_TITLE, lastTitle));
+                        .putExtra(Constant.FROM_TITLE, lastTitle);
+                if (!lastItemSlug.isEmpty()) {
+                    // Reopen the exact lesson, with the chapter list underneath
+                    // so Back still lands where the user expects.
+                    Intent itemIntent = new Intent(activity, com.abmn.englishhub.Activity.ItemDetailsActivity.class)
+                            .putExtra(Constant.FROM, lastItemSlug)
+                            .putExtra("from_chapter", true);
+                    activity.startActivities(new Intent[]{chapterIntent, itemIntent});
+                } else {
+                    startActivity(chapterIntent);
+                }
             } else {
                 startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar"));
             }
@@ -263,9 +265,18 @@ public class HomeFragment extends Fragment {
 
     private void refreshContinueCard() {
         if (activity == null || continueLessonTV == null) return;
-        String lastTitle = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-                .getString(Constant.LAST_CHAPTER_TITLE, null);
-        if (lastTitle != null && !lastTitle.isEmpty()) continueLessonTV.setText(lastTitle);
+        SharedPreferences cp = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        String shown = cp.getString(Constant.LAST_ITEM_TITLE, "");
+        if (shown == null || shown.isEmpty()) shown = cp.getString(Constant.LAST_CHAPTER_TITLE, "");
+        if (shown != null && !shown.isEmpty()) {
+            if (continueLabelTV != null) continueLabelTV.setText("যেখানে ছেড়েছিলে");
+            continueLessonTV.setText(shown);
+        } else {
+            // Nothing opened yet: "where you left off" would be a lie, and the
+            // card opens the Grammar chapter list, so say exactly that.
+            if (continueLabelTV != null) continueLabelTV.setText("শেখা শুরু করো");
+            continueLessonTV.setText("Grammar দিয়ে শুরু করো");
+        }
     }
 
     private void fetchStreakFromServer(SharedPreferences prefs, String token) {
@@ -344,16 +355,12 @@ public class HomeFragment extends Fragment {
     private void loadGrammarProgress() {
         SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         String lastTitle = prefs.getString(Constant.LAST_CHAPTER_TITLE, null);
-        if (lastTitle != null && !lastTitle.isEmpty()) {
-            continueLessonTV.setText(lastTitle);
-        }
+        refreshContinueCard();
 
         long cacheTime = prefs.getLong(Constant.GRAMMAR_PROGRESS_CACHE_TIME, 0);
         if (System.currentTimeMillis() - cacheTime < GRAMMAR_PROGRESS_CACHE_TTL_MS) {
             int cachedTotal = prefs.getInt(Constant.GRAMMAR_PROGRESS_TOTAL_LESSONS, -1);
-            String cachedChapterName = prefs.getString(Constant.GRAMMAR_PROGRESS_FIRST_CHAPTER, "");
             if (cachedTotal > 0) {
-                if (lastTitle == null && !cachedChapterName.isEmpty()) continueLessonTV.setText(cachedChapterName);
                 return;
             } else if (cachedTotal == 0) {
                 return;
@@ -393,10 +400,6 @@ public class HomeFragment extends Fragment {
                         .putString(Constant.GRAMMAR_PROGRESS_FIRST_CHAPTER, chapName)
                         .putLong(Constant.GRAMMAR_PROGRESS_CACHE_TIME, System.currentTimeMillis())
                         .apply();
-
-                if (activity != null) activity.runOnUiThread(() -> {
-                    if (isAdded() && lastTitle == null && !chapName.isEmpty()) continueLessonTV.setText(chapName);
-                });
 
             } catch (Exception ignored) {}
         }, error -> {});
