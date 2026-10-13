@@ -13,12 +13,9 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.abmn.englishhub.Activity.BattleActivity;
 import com.abmn.englishhub.Activity.ChapterActivity;
 import com.abmn.englishhub.Activity.ItemActivity;
-import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
-import com.abmn.englishhub.Activity.WizardChapterActivity;
 import com.abmn.englishhub.Activity.WordActivity;
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
@@ -42,11 +39,7 @@ public class HomeFragment extends Fragment {
     private TextView streakTV, greetingNameTV, greetingTimeTV;
 
     // Continue learning
-    private TextView lessonCountTV, continueLessonTV;
-    private CardView lessonCountBadge;
-
-    // Quick actions
-    private CardView quickQuizBtn, leaderboardBtn, groupBtn, battleBtn;
+    private TextView continueLessonTV;
 
     // TTS engine
     private AppTextToSpeechHelper tts;
@@ -109,14 +102,7 @@ public class HomeFragment extends Fragment {
         wordOfDayTV     = view.findViewById(R.id.wordOfDayTV);
         wordMeaningTV   = view.findViewById(R.id.wordMeaningTV);
         ttsBtn          = view.findViewById(R.id.ttsBtn);
-        lessonCountTV   = view.findViewById(R.id.lessonCountTV);
         continueLessonTV  = view.findViewById(R.id.continueLessonTV);
-        lessonCountBadge = view.findViewById(R.id.lessonCountBadge);
-        lessonCountBadge.setVisibility(android.view.View.GONE); // Hide by default, show when data loads
-        quickQuizBtn    = view.findViewById(R.id.quickQuizBtn);
-        leaderboardBtn  = view.findViewById(R.id.leaderboardBtn);
-        groupBtn        = view.findViewById(R.id.groupBtn);
-        battleBtn       = view.findViewById(R.id.battleBtn);
 
         liptoBadge      = view.findViewById(R.id.liptoBadge);
         liptoChipTV     = view.findViewById(R.id.liptoChipTV);
@@ -144,15 +130,22 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Category cards
-        view.findViewById(R.id.vocabularyLL).setOnClickListener(v ->
-                startActivity(new Intent(activity, VocabularyActivity.class)));
-        view.findViewById(R.id.grammarLL).setOnClickListener(v ->
-                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "grammar")));
-        view.findViewById(R.id.wizardLL).setOnClickListener(v ->
-                startActivity(new Intent(activity, WizardChapterActivity.class)));
-        view.findViewById(R.id.writingAndReadingLL).setOnClickListener(v ->
-                startActivity(new Intent(activity, ChapterActivity.class).putExtra("type", "writing_reading")));
+        // One-time pointer to the new Practice tab (the quiz / battle /
+        // leaderboard tiles that used to sit here moved there).
+        View hintCard = view.findViewById(R.id.practiceHintCard);
+        SharedPreferences hintPrefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        hintCard.setVisibility(hintPrefs.getBoolean(Constant.PRACTICE_HINT_DISMISSED, false)
+                ? View.GONE : View.VISIBLE);
+        view.findViewById(R.id.practiceHintCloseTV).setOnClickListener(v -> {
+            hintPrefs.edit().putBoolean(Constant.PRACTICE_HINT_DISMISSED, true).apply();
+            hintCard.setVisibility(View.GONE);
+        });
+        hintCard.setOnClickListener(v -> {
+            hintPrefs.edit().putBoolean(Constant.PRACTICE_HINT_DISMISSED, true).apply();
+            if (activity instanceof com.abmn.englishhub.Activity.MainActivity) {
+                ((com.abmn.englishhub.Activity.MainActivity) activity).openTab(R.id.navPractice);
+            }
+        });
         view.findViewById(R.id.continueLearningCard).setOnClickListener(v -> {
             SharedPreferences prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
             String lastSlug = prefs.getString(Constant.LAST_CHAPTER_SLUG, null);
@@ -185,26 +178,8 @@ public class HomeFragment extends Fragment {
     // ── Click listeners ──────────────────────────────────────────
 
     private void setupClickListeners() {
-        // Let the user pick which lesson to quiz on, instead of always
-        // silently defaulting to whatever lesson today's Word of the Day
-        // happens to belong to.
-        quickQuizBtn.setOnClickListener(v ->
-                startActivity(new Intent(activity, VocabularyActivity.class)
-                        .putExtra(Constant.QUIZ_PICKER_MODE, true)));
-
-        leaderboardBtn.setOnClickListener(v ->
-                startActivity(new Intent(activity, LeaderboardActivity.class)));
-
-        // Group is being reworked into a proper Tournament feature - the tile
-        // stays visible under its new name, but is a "coming soon" stub for
-        // now rather than opening the old standing-leaderboard screens.
-        groupBtn.setOnClickListener(v ->
-                android.widget.Toast.makeText(activity, "🏆 টুর্নামেন্ট শীঘ্রই আসছে!",
-                        android.widget.Toast.LENGTH_SHORT).show());
-
-        battleBtn.setOnClickListener(v ->
-                startActivity(new Intent(activity, BattleActivity.class)));
-
+        // Quiz / leaderboard / battle / tournament entry points now live in
+        // PracticeFragment (the Practice tab).
         ttsBtn.setOnClickListener(v -> speakWord());
     }
 
@@ -378,12 +353,9 @@ public class HomeFragment extends Fragment {
             int cachedTotal = prefs.getInt(Constant.GRAMMAR_PROGRESS_TOTAL_LESSONS, -1);
             String cachedChapterName = prefs.getString(Constant.GRAMMAR_PROGRESS_FIRST_CHAPTER, "");
             if (cachedTotal > 0) {
-                lessonCountTV.setText(cachedTotal + " lessons");
-                lessonCountBadge.setVisibility(android.view.View.VISIBLE);
                 if (lastTitle == null && !cachedChapterName.isEmpty()) continueLessonTV.setText(cachedChapterName);
                 return;
             } else if (cachedTotal == 0) {
-                lessonCountBadge.setVisibility(android.view.View.GONE);
                 return;
             }
         }
@@ -423,13 +395,7 @@ public class HomeFragment extends Fragment {
                         .apply();
 
                 if (activity != null) activity.runOnUiThread(() -> {
-                    if (total > 0) {
-                        lessonCountTV.setText(total + " lessons");
-                        lessonCountBadge.setVisibility(android.view.View.VISIBLE);
-                    } else {
-                        lessonCountBadge.setVisibility(android.view.View.GONE);
-                    }
-                    if (lastTitle == null && !chapName.isEmpty()) continueLessonTV.setText(chapName);
+                    if (isAdded() && lastTitle == null && !chapName.isEmpty()) continueLessonTV.setText(chapName);
                 });
 
             } catch (Exception ignored) {}

@@ -148,6 +148,11 @@ public class NoticeFragment extends Fragment {
                         lastPage = chaptersObject.getInt("last_page");
                     }
                     Objects.requireNonNull(noticeRV.getAdapter()).notifyDataSetChanged();
+                    if (page == 1 && activity != null) {
+                        int maxId = 0;
+                        for (NoticeModel n : noticeList) maxId = Math.max(maxId, n.getId());
+                        com.abmn.englishhub.Helper.NoticeBadge.markSeen(activity, maxId);
+                    }
                 } else {
                     failed = true;
                 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.ChapterActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
+import com.abmn.englishhub.Activity.WizardChapterActivity;
 import com.abmn.englishhub.R;
 
 public class LearnFragment extends Fragment {
@@ -34,6 +35,9 @@ public class LearnFragment extends Fragment {
         view.findViewById(R.id.speakingCard).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class)
                         .putExtra("type", "daily_vocabulary")));
+
+        view.findViewById(R.id.wizardCard).setOnClickListener(v ->
+                startActivity(new Intent(activity, WizardChapterActivity.class)));
 
         view.findViewById(R.id.writingCard).setOnClickListener(v ->
                 startActivity(new Intent(activity, ChapterActivity.class)

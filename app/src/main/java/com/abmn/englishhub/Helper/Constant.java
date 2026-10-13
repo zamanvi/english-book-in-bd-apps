@@ -117,6 +117,8 @@ public class Constant {
     // "today's quiz" shortcut (lesson id only; the round state is always read
     // fresh by LevelMapActivity, so a stale value can never unlock anything).
     public static final String LAST_QUIZ_LESSON_ID    = "last_quiz_lesson_id";
+    // Home's one-time "quiz / battle moved to the Practice tab" pointer.
+    public static final String PRACTICE_HINT_DISMISSED = "practice_hint_dismissed";
     public static final String LAST_QUIZ_LESSON_TITLE = "last_quiz_lesson_title";
 
     // Shared date format — used by ResultActivity + StreakReminderReceiver
