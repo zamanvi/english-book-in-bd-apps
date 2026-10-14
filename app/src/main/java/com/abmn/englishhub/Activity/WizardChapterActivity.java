@@ -59,7 +59,7 @@ public class WizardChapterActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarId);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("উইজার্ড");
+            getSupportActionBar().setTitle("True Stories");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
