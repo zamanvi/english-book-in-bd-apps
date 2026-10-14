@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="কে কত XP পেয়েছে"
+                    android:text="যোগ দেওয়ার পর কে কত XP পেয়েছে"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:layout_marginTop="2dp"
@@ -176,5 +176,19 @@
         </LinearLayout>
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/leaveGroupBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="গ্রুপ ছেড়ে দাও"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:padding="14dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

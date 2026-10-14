@@ -1,5 +1,6 @@
 package com.abmn.englishhub.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +54,7 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
 
         findViewById(R.id.shareCodeBtn).setOnClickListener(v -> shareCode());
+        findViewById(R.id.leaveGroupBtn).setOnClickListener(v -> confirmLeave());
 
         adapter = new LeaderboardAdapter(members);
         leaderboardRV.setLayoutManager(new LinearLayoutManager(this));
@@ -94,8 +96,28 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
             });
         }, error -> runOnUiThread(() -> {
             loadingPB.setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.groupLbEmptyTV))
+                    .setText("লোড করা যায়নি — একটু পরে আবার চেষ্টা করো");
             emptyLL.setVisibility(View.VISIBLE);
         }));
+    }
+
+    private void confirmLeave() {
+        new AlertDialog.Builder(this)
+                .setMessage("এই গ্রুপ ছেড়ে দেবে? আবার কোড দিয়ে যোগ দিতে পারবে।")
+                .setNegativeButton("না", null)
+                .setPositiveButton("ছেড়ে দাও", (d, w) -> leaveGroup())
+                .show();
+    }
+
+    private void leaveGroup() {
+        String token = new UConfig(this).getData(Constant.TOKEN);
+        if (token == null || token.isEmpty() || groupCode == null) return;
+        ApiConfig.deleteRequest(this, Constant.GROUP_LEADERBOARD + groupCode + "/leave", token,
+                response -> finish(),
+                error -> android.widget.Toast.makeText(this,
+                        "ছাড়া যায়নি — ইন্টারনেট দেখে আবার চেষ্টা করো",
+                        android.widget.Toast.LENGTH_SHORT).show());
     }
 
     private void shareCode() {
@@ -103,8 +125,9 @@ public class GroupLeaderboardActivity extends AppCompatActivity {
         intent.setType("text/plain");
         String groupName = groupNameTV.getText().toString();
         intent.putExtra(Intent.EXTRA_TEXT,
-                "আমার সাথে Learnify-তে \"" + groupName + "\" গ্রুপে যোগ দাও!\n" +
+                "\"" + groupName + "\" গ্রুপে আমার সাথে English শেখার XP-র লড়াই করো! 🏆\n\n" +
                 "কোড: " + groupCode + "\n" +
+                "অ্যাপ খুলে: অনুশীলন → টুর্নামেন্ট → যোগ দাও → কোড লেখো\n\n" +
                 "ডাউনলোড করো: https://play.google.com/store/apps/details?id=com.abmn.englishhub");
         startActivity(Intent.createChooser(intent, "শেয়ার করো"));
     }

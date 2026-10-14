@@ -31,7 +31,7 @@ public class GroupActivity extends AppCompatActivity {
     private LinearLayout createPanel, joinPanel;
     private TextInputEditText groupNameET, groupCodeET;
     private MaterialButton createGroupBtn, joinGroupBtn;
-    private TextView groupErrorTV;
+    private TextView groupErrorTV, groupsEmptyTV;
     private RecyclerView groupsRV;
 
     private final List<JSONObject> groupList = new ArrayList<>();
@@ -57,8 +57,14 @@ public class GroupActivity extends AppCompatActivity {
         adapter = new GroupAdapter(groupList, this);
         groupsRV.setLayoutManager(new LinearLayoutManager(this));
         groupsRV.setAdapter(adapter);
+    }
 
-        loadMyGroups();
+    // Reloaded every time the screen comes back (after creating, joining or
+    // leaving a group from the ranking screen) so the list is never stale.
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) loadMyGroups();
     }
 
     private void bindViews() {
@@ -71,6 +77,7 @@ public class GroupActivity extends AppCompatActivity {
         createGroupBtn= findViewById(R.id.createGroupBtn);
         joinGroupBtn  = findViewById(R.id.joinGroupBtn);
         groupErrorTV  = findViewById(R.id.groupErrorTV);
+        groupsEmptyTV = findViewById(R.id.groupsEmptyTV);
         groupsRV      = findViewById(R.id.groupsRV);
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
     }
@@ -117,14 +124,13 @@ public class GroupActivity extends AppCompatActivity {
                 JSONObject r = new JSONObject(response);
                 if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
                     groupNameET.setText("");
-                    groupList.add(0, r.getJSONObject("group"));
-                    adapter.notifyItemInserted(0);
                     showError("");
+                    openGroup(r.getJSONObject("group"));
                 } else {
                     showError(r.optString("message", "সমস্যা হয়েছে"));
                 }
             } catch (Exception e) { showError("সমস্যা হয়েছে"); }
-        }, error -> showError("নেটওয়ার্ক সমস্যা"));
+        }, error -> showError(errorText(error)));
     }
 
     private void joinGroup(String code) {
@@ -139,23 +145,13 @@ public class GroupActivity extends AppCompatActivity {
                 JSONObject r = new JSONObject(response);
                 if (Constant.SUCCESS.equals(r.optString(Constant.STATUS))) {
                     groupCodeET.setText("");
-                    JSONObject g = r.getJSONObject("group");
-                    boolean found = false;
-                    for (JSONObject existing : groupList) {
-                        if (existing.optString("code","").equals(g.optString("code",""))) {
-                            found = true; break;
-                        }
-                    }
-                    if (!found) {
-                        groupList.add(0, g);
-                        adapter.notifyItemInserted(0);
-                    }
                     showError("");
+                    openGroup(r.getJSONObject("group"));
                 } else {
                     showError(r.optString("message", "ভুল কোড"));
                 }
             } catch (Exception e) { showError("সমস্যা হয়েছে"); }
-        }, error -> showError("নেটওয়ার্ক সমস্যা"));
+        }, error -> showError(errorText(error)));
     }
 
     private void loadMyGroups() {
@@ -172,8 +168,29 @@ public class GroupActivity extends AppCompatActivity {
                     groupList.add(arr.getJSONObject(i));
                 }
                 adapter.notifyDataSetChanged();
+                updateEmptyState();
             } catch (Exception ignored) {}
         }, error -> {});
+    }
+
+    private void openGroup(JSONObject g) {
+        Intent i = new Intent(this, GroupLeaderboardActivity.class);
+        i.putExtra(Constant.CODE, g.optString("code", ""));
+        i.putExtra(Constant.GROUP_NAME, g.optString("name", ""));
+        startActivity(i);
+    }
+
+    // ApiConfig wraps a server-sent message in the exception it passes on; a
+    // bare network failure has no such message.
+    private String errorText(Exception e) {
+        if (e != null && e.getCause() != null && e.getMessage() != null && !e.getMessage().isEmpty()) {
+            return e.getMessage();
+        }
+        return "নেটওয়ার্ক সমস্যা — ইন্টারনেট দেখে আবার চেষ্টা করো";
+    }
+
+    private void updateEmptyState() {
+        groupsEmptyTV.setVisibility(groupList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void showError(String msg) {

@@ -181,6 +181,11 @@ public class ApiConfig {
         rawRequest(context, Request.Method.POST, url, body, token, onSuccess, onError);
     }
 
+    public static void deleteRequest(Context context, String url, String token,
+                                     SimpleCallback onSuccess, ErrorCallback onError) {
+        rawRequest(context, Request.Method.DELETE, url, null, token, onSuccess, onError);
+    }
+
     private static void rawRequest(Context context, int method, String url,
                                    JSONObject body, String authToken,
                                    SimpleCallback onSuccess, ErrorCallback onError) {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.abmn.englishhub.Activity.BattleActivity;
+import com.abmn.englishhub.Activity.GroupActivity;
 import com.abmn.englishhub.Activity.LeaderboardActivity;
 import com.abmn.englishhub.Activity.MistakeNotebookActivity;
 import com.abmn.englishhub.Activity.VocabularyActivity;
@@ -48,11 +49,10 @@ public class PracticeFragment extends Fragment {
         view.findViewById(R.id.practiceLeaderboardCard).setOnClickListener(v ->
                 startActivity(new Intent(activity, LeaderboardActivity.class)));
 
-        // Group is being reworked into a Tournament; the old group screens stay
-        // in the codebase as its base, this entry is a "coming soon" teaser.
+        // Tournament = a friends / class group ranked by XP earned since joining.
+        // GroupActivity itself sends guests to the login screen.
         view.findViewById(R.id.practiceTournamentCard).setOnClickListener(v ->
-                Toast.makeText(activity, "\uD83C\uDFC6 \u099f\u09c1\u09b0\u09cd\u09a8\u09be\u09ae\u09c7\u09a8\u09cd\u099f \u09b6\u09c0\u0998\u09cd\u09b0\u0987 \u0986\u09b8\u099b\u09c7!",
-                        Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(activity, GroupActivity.class)));
         return view;
     }
 

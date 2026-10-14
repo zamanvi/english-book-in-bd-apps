@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="গ্রুপ"
+            android:text="টুর্নামেন্ট"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -221,6 +221,19 @@
         android:paddingStart="20dp"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="10dp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/groupsEmptyTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="১. গ্রুপ তৈরি করো\n২. কোড বন্ধুদের শেয়ার করো\n৩. কুইজ খেলে XP জিতো — সবার ওপরে ওঠো"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
+        android:lineSpacingExtra="4dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:visibility="gone"
         tools:ignore="HardcodedText" />
 
     <androidx.recyclerview.widget.RecyclerView
