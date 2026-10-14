@@ -165,12 +165,12 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:src="@drawable/ic_volume_up"
-                        android:contentDescription="Daily vocabulary"
+                        android:contentDescription="Vocabulary Stories"
                         app:tint="@color/teal" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Daily vocabulary"
+                        android:text="Vocabulary Stories"
                         android:textColor="@color/teal"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -179,7 +179,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="প্রতিদিনের শব্দ"
+                        android:text="গল্পে শব্দ শিখুন"
                         android:textColor="@color/text_inactive"
                         android:textSize="11sp"
                         android:layout_marginTop="3dp"

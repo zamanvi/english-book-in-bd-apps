@@ -70,7 +70,7 @@ public class ChapterActivity extends AppCompatActivity {
         } else if ("writing_reading".equals(getType)) {
             screenTitle = "Reading & Writing";
         } else if ("daily_vocabulary".equals(getType)) {
-            screenTitle = "Daily vocabulary";
+            screenTitle = "Vocabulary Stories";
         } else {
             screenTitle = getString(R.string.app_name);
         }
