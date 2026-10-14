@@ -178,6 +178,14 @@ public class WordActivity extends AppCompatActivity {
             synonymsTvW.setText("সমার্থক শব্দ");
             antonymsTvW.setText("বিপরীত শব্দ");
         }
+        // The labels above are only a type-based guess; the lesson's real column
+        // names (column_labels / hint_text) arrive with the first API page. Keep
+        // the synonym/antonym header cells invisible (same width, no layout jump)
+        // until then, so a wrong label such as "উৎস / বিষয়" never flashes. Every
+        // response path decides the final VISIBLE/GONE state (applyColumnLabels
+        // or updateColumnHeaderVisibility).
+        headerDividerV.setVisibility(View.INVISIBLE);
+        headerSynAntLL.setVisibility(View.INVISIBLE);
         setToolbar(getLessonTitle);
 
         wordRV = findViewById(R.id.wordRV);
