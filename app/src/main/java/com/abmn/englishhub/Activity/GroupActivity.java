@@ -31,7 +31,7 @@ public class GroupActivity extends AppCompatActivity {
     private LinearLayout createPanel, joinPanel;
     private TextInputEditText groupNameET, groupCodeET;
     private MaterialButton createGroupBtn, joinGroupBtn;
-    private TextView groupErrorTV, groupsEmptyTV;
+    private TextView groupErrorTV, groupsEmptyTV, groupsLabelTV, tabCreateTV, tabJoinTV;
     private RecyclerView groupsRV;
 
     private final List<JSONObject> groupList = new ArrayList<>();
@@ -78,24 +78,31 @@ public class GroupActivity extends AppCompatActivity {
         joinGroupBtn  = findViewById(R.id.joinGroupBtn);
         groupErrorTV  = findViewById(R.id.groupErrorTV);
         groupsEmptyTV = findViewById(R.id.groupsEmptyTV);
+        groupsLabelTV = findViewById(R.id.groupsLabelTV);
+        tabCreateTV   = findViewById(R.id.tabCreateTV);
+        tabJoinTV     = findViewById(R.id.tabJoinTV);
         groupsRV      = findViewById(R.id.groupsRV);
         findViewById(R.id.backBtn).setOnClickListener(v -> finish());
     }
 
     private void setupTabs() {
-        tabCreateCV.setOnClickListener(v -> {
-            tabCreateCV.setCardBackgroundColor(getResources().getColor(R.color.indigo));
-            tabJoinCV.setCardBackgroundColor(getResources().getColor(R.color.bg_card));
-            createPanel.setVisibility(View.VISIBLE);
-            joinPanel.setVisibility(View.GONE);
-        });
+        tabCreateCV.setOnClickListener(v -> selectTab(true));
+        tabJoinCV.setOnClickListener(v -> selectTab(false));
+    }
 
-        tabJoinCV.setOnClickListener(v -> {
-            tabJoinCV.setCardBackgroundColor(getResources().getColor(R.color.indigo));
-            tabCreateCV.setCardBackgroundColor(getResources().getColor(R.color.bg_card));
-            joinPanel.setVisibility(View.VISIBLE);
-            createPanel.setVisibility(View.GONE);
-        });
+    // Selected tab = indigo card + dark label; the other = elevated card +
+    // secondary label (the same look the layout starts with).
+    private void selectTab(boolean create) {
+        int on = getResources().getColor(R.color.indigo);
+        int off = getResources().getColor(R.color.bg_elevated);
+        int onText = getResources().getColor(R.color.bg_deep);
+        int offText = getResources().getColor(R.color.text_secondary);
+        tabCreateCV.setCardBackgroundColor(create ? on : off);
+        tabJoinCV.setCardBackgroundColor(create ? off : on);
+        tabCreateTV.setTextColor(create ? onText : offText);
+        tabJoinTV.setTextColor(create ? offText : onText);
+        createPanel.setVisibility(create ? View.VISIBLE : View.GONE);
+        joinPanel.setVisibility(create ? View.GONE : View.VISIBLE);
     }
 
     private void setupButtons() {
@@ -191,6 +198,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private void updateEmptyState() {
         groupsEmptyTV.setVisibility(groupList.isEmpty() ? View.VISIBLE : View.GONE);
+        groupsLabelTV.setVisibility(groupList.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     private void showError(String msg) {

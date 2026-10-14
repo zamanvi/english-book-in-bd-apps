@@ -55,6 +55,7 @@
             app:cardCornerRadius="14dp"
             app:cardElevation="0dp">
             <TextView
+                android:id="@+id/tabCreateTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="তৈরি করো"
@@ -75,6 +76,7 @@
             app:cardCornerRadius="14dp"
             app:cardElevation="0dp">
             <TextView
+                android:id="@+id/tabJoinTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="যোগ দাও"
@@ -165,7 +167,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="8 অক্ষরের কোড লেখো (বন্ধু শেয়ার করেছে)"
+                    android:hint="৮ অক্ষরের কোড লেখো"
                     android:layout_marginBottom="16dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/edittext_stroke_color"
@@ -211,6 +213,7 @@
 
     <!-- My groups section label -->
     <TextView
+        android:id="@+id/groupsLabelTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="আমি যে গ্রুপে আছি"
@@ -227,6 +230,7 @@
         android:id="@+id/groupsEmptyTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="১. গ্রুপ তৈরি করো\n২. কোড বন্ধুদের শেয়ার করো\n৩. কুইজ খেলে XP জিতো — সবার ওপরে ওঠো"
         android:textColor="@color/text_secondary"
         android:textSize="13sp"
