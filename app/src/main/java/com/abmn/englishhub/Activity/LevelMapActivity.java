@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.abmn.englishhub.Helper.ApiConfig;
 import com.abmn.englishhub.Helper.Constant;
+import com.abmn.englishhub.Helper.QuizRounds;
 import com.abmn.englishhub.R;
 import com.abmn.utility.UConfig;
 
@@ -29,9 +30,7 @@ import org.json.JSONObject;
 public class LevelMapActivity extends AppCompatActivity {
 
     private static final String[] ROUND_ICONS  = {"🎯", "📖", "🖼️", "🎧", "✍️"};
-    private static final String[] ROUND_TITLES = {
-            "Round 1 · MCQ", "Round 2 · Reading", "Round 3 · Picture", "Round 4 · Listening", "Round 5 · Writing"
-    };
+    private static final String[] ROUND_NAMES = {"MCQ", "Reading", "Picture", "Listening", "Writing"};
 
     private int lessonId;
     private View loadingBar;
@@ -79,7 +78,8 @@ public class LevelMapActivity extends AppCompatActivity {
             TextView iconTV = roundRoots[i].findViewById(R.id.roundIconTV);
             TextView titleTV = roundRoots[i].findViewById(R.id.roundTitleTV);
             iconTV.setText(ROUND_ICONS[i]);
-            titleTV.setText(ROUND_TITLES[i]);
+            titleTV.setText("Round " + QuizRounds.displayNumber(round) + " · " + ROUND_NAMES[i]);
+            if (QuizRounds.isHidden(round)) roundRoots[i].setVisibility(View.GONE);
             roundRoots[i].setOnClickListener(v -> onRoundTapped(round));
         }
 
@@ -97,7 +97,7 @@ public class LevelMapActivity extends AppCompatActivity {
     private void fetchLevelMap() {
         loadingBar.setVisibility(View.VISIBLE);
         String token = new UConfig(this).getData(Constant.TOKEN);
-        String url = Constant.GAME_LEVEL_MAP + lessonId;
+        String url = QuizRounds.withVersion(Constant.GAME_LEVEL_MAP + lessonId);
 
         ApiConfig.getRequest(this, url, token, response -> {
             try {
@@ -141,6 +141,9 @@ public class LevelMapActivity extends AppCompatActivity {
             TextView starsTV  = roundRoots[index].findViewById(R.id.roundStarsTV);
 
             switch (status) {
+                case "soon": // switched off server-side: not shown at all
+                    roundRoots[index].setVisibility(View.GONE);
+                    break;
                 case "passed":
                     statusTV.setText("✅ ক্লিয়ার করেছো");
                     statusTV.setTextColor(ContextCompat.getColor(this, R.color.teal));

@@ -332,7 +332,7 @@ public class QuizActivity extends AppCompatActivity {
             // Round 2/3 question shapes (reading select / listening select)
             // aren't reproducible from the plain word cache, so the round
             // flow is online-only, same reasoning as battles below.
-            url = Constant.GAME_ROUND_QUIZ + lessonId + "/" + round;
+            url = com.abmn.englishhub.Helper.QuizRounds.withVersion(Constant.GAME_ROUND_QUIZ + lessonId + "/" + round);
         } else {
             url = Constant.GAME_QUIZ + lessonId + "?count=" + questionCount;
             if (wordIdsExtra != null && !wordIdsExtra.isEmpty()) {

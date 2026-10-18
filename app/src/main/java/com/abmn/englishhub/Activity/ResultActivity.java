@@ -164,7 +164,7 @@ public class ResultActivity extends AppCompatActivity {
             int stars = heartsLost == 0 ? 3 : heartsLost == 1 ? 2 : 1;
             if (roundPassed) {
                 resultEmojiTV.setText(repeat("⭐", stars));
-                resultGradeTV.setText("রাউন্ড " + round + " ক্লিয়ার! 🏆");
+                resultGradeTV.setText("রাউন্ড " + com.abmn.englishhub.Helper.QuizRounds.displayNumber(round) + " ক্লিয়ার! 🏆");
                 resultSubtitleTV.setText(stars == 3 ? "পারফেক্ট! কোনো হার্ট হারাওনি!" : "দারুণ! পরের রাউন্ড খুলে গেছে।");
             } else {
                 resultEmojiTV.setText("💔");
@@ -259,7 +259,7 @@ public class ResultActivity extends AppCompatActivity {
             body.put("hearts_lost", heartsLost);
         } catch (Exception ignored) {}
 
-        ApiConfig.postRequest(this, Constant.GAME_ROUND_SUBMIT, body, token, response -> {
+        ApiConfig.postRequest(this, com.abmn.englishhub.Helper.QuizRounds.withVersion(Constant.GAME_ROUND_SUBMIT), body, token, response -> {
             try {
                 JSONObject json = new JSONObject(response);
                 if (!json.optString(Constant.STATUS, "").equals(Constant.SUCCESS)) return;

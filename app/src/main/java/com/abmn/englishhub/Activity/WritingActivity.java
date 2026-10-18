@@ -219,7 +219,7 @@ public class WritingActivity extends AppCompatActivity {
         quizLoadingBar.setVisibility(View.VISIBLE);
         UConfig uConfig = new UConfig(this);
         String token = uConfig.getData(Constant.TOKEN);
-        String url = Constant.GAME_ROUND_QUIZ + lessonId + "/5";
+        String url = com.abmn.englishhub.Helper.QuizRounds.withVersion(Constant.GAME_ROUND_QUIZ + lessonId + "/5");
 
         ApiConfig.getRequest(this, url, token, response -> {
             try {
