@@ -52,6 +52,8 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleAdapter.ViewHolder
         // to show "?" for every current battle's opponent/score.
         String other;
         int myScore, theirScore;
+        boolean iHavePlayed = false;   // multi battles: my own row says "submitted"
+        boolean alone = false;         // multi battles: nobody else is in the room yet
         JSONArray participants = b.optJSONArray("participants");
         if (participants != null) {
             JSONObject me = null, opponent = null;
@@ -66,7 +68,10 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleAdapter.ViewHolder
                     if (opponent == null) opponent = p; // first other participant (1v1 case)
                 }
             }
-            String opponentName = opponent != null ? opponent.optString("name", "?") : "?";
+            iHavePlayed = me != null && "submitted".equals(me.optString("status", ""));
+            alone = otherCount == 0;
+            String opponentName = opponent != null ? opponent.optString("name", "") : "";
+            if (opponentName.isEmpty()) opponentName = alone ? "কেউ যোগ দেয়নি" : "বন্ধু";
             // Customize battles can have 3+ participants (multi-invite) - this
             // row only has room for one name, so name the first opponent and
             // flag how many more instead of silently hiding them.
@@ -86,7 +91,7 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleAdapter.ViewHolder
         String result = b.optString("result", "");
 
         if ("completed".equals(status)) {
-            String scoreText = (myScore >= 0 ? myScore : "?") + " - " + (theirScore >= 0 ? theirScore : "?");
+            String scoreText = alone ? "—" : (myScore >= 0 ? myScore : "?") + " - " + (theirScore >= 0 ? theirScore : "?");
             h.scoreTV.setText(scoreText);
             switch (result) {
                 case "win":
@@ -104,13 +109,27 @@ public class BattleAdapter extends RecyclerView.Adapter<BattleAdapter.ViewHolder
                     h.badgeTV.setTextColor(Color.parseColor("#facc15"));
             }
             h.statusTV.setText("শেষ");
+        } else if ("expired".equals(status)) {
+            h.badgeTV.setText("⌛");
+            h.scoreTV.setText(lessonLabel(b));
+            h.statusTV.setText("কেউ আসেনি");
         } else {
             h.badgeTV.setText("⚔");
-            h.scoreTV.setText("Lesson " + b.optInt("lesson_id", 0));
-            h.statusTV.setText("অপেক্ষায়");
+            h.scoreTV.setText(lessonLabel(b));
+            // my turn vs. waiting for the others
+            h.statusTV.setText(iHavePlayed ? (alone ? "বন্ধুর অপেক্ষায়" : "অন্যদের অপেক্ষায়") : "তোমার পালা");
         }
 
         h.itemView.setOnClickListener(v -> { if (listener != null) listener.onBattleClick(b); });
+    }
+
+    // Lesson name from the server (lesson_title); older servers only send the id.
+    private static String lessonLabel(JSONObject b) {
+        String title = b.optString("lesson_title", "");
+        if (title == null || title.isEmpty() || "null".equals(title)) {
+            return "লেসন " + b.optInt("lesson_id", 0);
+        }
+        return title;
     }
 
     @Override
