@@ -4,16 +4,15 @@ package com.abmn.englishhub.Helper;
  * Quick Quiz round numbering shared by the level map, the quiz screens and the
  * result screen.
  *
- * The server numbers the rounds 1 MCQ, 2 Reading, 3 Picture, 4 Listening,
- * 5 Writing. Picture needs word images and none exist yet, so the server has
- * it switched off (GameController::DISABLED_ROUNDS) and the unlock chain skips
- * it. The app hides that card and shows the remaining rounds as 1-4. Keep
- * {@link #HIDDEN} in step with the server; when Picture (or whatever replaces
- * it) is switched on, empty it in the same release.
+ * The server numbers the rounds 1 MCQ, 2 Reading, 3 Match pairs, 4 Listening,
+ * 5 Writing. Clients that say "?v=3" (this one) can play all five; older
+ * clients are told round 3 is "soon" and the unlock chain skips it for them.
+ * {@link #HIDDEN} lists server rounds this build does not show (none now);
+ * the displayed numbers shift down for every hidden round before them.
  */
 public final class QuizRounds {
 
-    private static final int[] HIDDEN = {3};
+    private static final int[] HIDDEN = {};
 
     private QuizRounds() {}
 
@@ -33,8 +32,8 @@ public final class QuizRounds {
         return shown;
     }
 
-    /** Tells the server this client uses the current (5-slot) round numbering. */
+    /** Tells the server this client uses the 5-slot numbering and can play Match pairs. */
     public static String withVersion(String url) {
-        return url + (url.contains("?") ? "&" : "?") + "v=2";
+        return url + (url.contains("?") ? "&" : "?") + "v=3";
     }
 }

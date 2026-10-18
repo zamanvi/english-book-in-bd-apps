@@ -29,8 +29,8 @@ import org.json.JSONObject;
 // WritingActivity (typed-answer, not multiple choice).
 public class LevelMapActivity extends AppCompatActivity {
 
-    private static final String[] ROUND_ICONS  = {"🎯", "📖", "🖼️", "🎧", "✍️"};
-    private static final String[] ROUND_NAMES = {"MCQ", "Reading", "Picture", "Listening", "Writing"};
+    private static final String[] ROUND_ICONS  = {"🎯", "📖", "🧩", "🎧", "✍️"};
+    private static final String[] ROUND_NAMES = {"MCQ", "Reading", "Match", "Listening", "Writing"};
 
     private int lessonId;
     private View loadingBar;
@@ -232,6 +232,12 @@ public class LevelMapActivity extends AppCompatActivity {
 
         if (round == 5) {
             startActivity(new Intent(this, WritingActivity.class)
+                    .putExtra("lesson_id", lessonId));
+            return;
+        }
+
+        if (round == 3) {
+            startActivity(new Intent(this, MatchPairsActivity.class)
                     .putExtra("lesson_id", lessonId));
             return;
         }

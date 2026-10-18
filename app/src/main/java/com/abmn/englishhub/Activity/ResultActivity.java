@@ -520,6 +520,9 @@ public class ResultActivity extends AppCompatActivity {
                 if (roundPassed) {
                     startActivity(new Intent(this, LevelMapActivity.class)
                             .putExtra("lesson_id", lessonId));
+                } else if (round == 3) {
+                    startActivity(new Intent(this, MatchPairsActivity.class)
+                            .putExtra("lesson_id", lessonId));
                 } else if (round == 5) {
                     // Round 5 (Writing) has its own dedicated typed-answer
                     // Activity - QuizActivity can't render its question
