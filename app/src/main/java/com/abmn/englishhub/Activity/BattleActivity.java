@@ -102,6 +102,12 @@ public class BattleActivity extends AppCompatActivity {
     // pendingRV. Now it's read and routed straight to the right screen/state.
     private void handleDeepLinkBattle(Intent intent) {
         int battleId = intent != null ? intent.getIntExtra("battle_id", 0) : 0;
+        routeBattle(battleId);
+    }
+
+    // Loads one battle and sends me where it belongs: the quiz when it is my
+    // turn, otherwise a short note. Used by notification taps and list taps.
+    private void routeBattle(int battleId) {
         if (battleId <= 0) return;
 
         String token = new UConfig(this).getData(Constant.TOKEN);
@@ -141,6 +147,10 @@ public class BattleActivity extends AppCompatActivity {
                         startActivity(qi);
                     } else if ("completed".equals(status)) {
                         Toast.makeText(this, "🏁 এই battle শেষ হয়ে গেছে — নিচে ফলাফল দেখো", Toast.LENGTH_LONG).show();
+                    } else if ("expired".equals(status)) {
+                        Toast.makeText(this, "⌛ কেউ যোগ দেয়নি, তাই এই battle শেষ", Toast.LENGTH_LONG).show();
+                    } else if (hasSubmitted(battle)) {
+                        Toast.makeText(this, "⏳ তুমি খেলে ফেলেছ — অন্যদের জন্য অপেক্ষা করো", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(this, "⏳ এখনো তোমার পালা আসেনি, একটু অপেক্ষা করো", Toast.LENGTH_LONG).show();
                     }
@@ -159,6 +169,18 @@ public class BattleActivity extends AppCompatActivity {
             JSONObject p = participants.optJSONObject(i);
             if (p != null && p.optBoolean("is_me", false)) {
                 return !"submitted".equals(p.optString("status", ""));
+            }
+        }
+        return false;
+    }
+
+    private boolean hasSubmitted(JSONObject battle) {
+        JSONArray participants = battle.optJSONArray("participants");
+        if (participants == null) return false;
+        for (int i = 0; i < participants.length(); i++) {
+            JSONObject p = participants.optJSONObject(i);
+            if (p != null && p.optBoolean("is_me", false)) {
+                return "submitted".equals(p.optString("status", ""));
             }
         }
         return false;
@@ -212,17 +234,8 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     private void openBattle(JSONObject battle) {
-        int battleId  = battle.optInt("id", 0);
-        int lessonId  = battle.optInt("lesson_id", 0);
-        String status = battle.optString("status", "");
-
-        // If pending for me (I'm opponent), go play
-        if ("challenger_done".equals(status)) {
-            Intent intent = new Intent(this, QuizActivity.class);
-            intent.putExtra("lesson_id", lessonId);
-            intent.putExtra("battle_id", battleId);
-            startActivity(intent);
-        }
-        // else already completed - could show result detail screen (future enhancement)
+        // The list rows only carry a summary; routeBattle loads the full battle
+        // (question set, lives) and handles legacy and multi-player shapes alike.
+        routeBattle(battle.optInt("id", 0));
     }
 }
